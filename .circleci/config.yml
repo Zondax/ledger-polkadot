@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ubuntu:18.04
+    steps:
+      - run:
+          name: Install dependencies
+          command: apt update && apt-get -y install build-essential git sudo wget cmake libssl-dev libgmp-dev autoconf libtool
+      - checkout
+      - run: git submodule update --init --recursive
+      - run: cmake -DDISABLE_DOCKER_BUILDS=ON . && make
+      - run: export GTEST_COLOR=1 && ctest -VV
+
+  build_ledger:
+    docker:
+      - image: zondax/ledger-docker-bolos
+    environment:
+      - BOLOS_SDK=/root/project/deps/nanos-secure-sdk
+      - BOLOS_ENV=/opt/bolos
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - run: make -C src/ledger
+
+workflows:
+  version: 2
+  build_all:
+    jobs:
+      - build
+      - build_ledger
