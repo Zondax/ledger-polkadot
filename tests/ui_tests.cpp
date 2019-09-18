@@ -109,3 +109,32 @@ TEST(UI, KusamaOtherTx) {
 
     EXPECT_EQ(output, expected);
 }
+
+TEST(UI, KusamaFails) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    const auto testTx = "0400ff96def717e304ef5c2859bbbd077a415d56b77a2ad0babc1305335031c3bf6517070010a5d4e82502000b00204aa9d101e90300003fd7b9eb6a00376e5be61f01abb429ffb0b104be05eaff4d458da48fcd425baf608f0a14489664cb1df80103d32f4af3ba1efc172ce02837f0b1c233482e0f86";
+
+    uint8_t buffer[200];
+    auto bufferLen = parseHexString(testTx, buffer);
+
+    err = parser_parse(&ctx, buffer, bufferLen);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+
+    std::string expected = "0 1/1 Balances : Transfer\n"
+                           "1 1/2 Dest : Fz8wBZz7MQA2e4H7bdqHgGpsWW9dQVFGQNUDN3z\n"
+                           "1 2/2 Dest : MUGzG1Nb\n"
+                           "2 1/1 Value : not supported\n"
+                           "3 1/1 Chain : KUSAMA\n"
+                           "4 1/1 Nonce : 0\n"
+                           "5 1/1 Tip : not supported\n"
+                           "6 1/1 Era Phase : 34\n"
+                           "7 1/1 Era Period : 64\n"
+                           "8 1/2 Block : 608F0A14489664CB1DF80103D32F4AF3BA1EFC1\n"
+                           "8 2/2 Block : 72CE02837F0B1C233482E0F86\n";
+
+    auto output = dumpUI(&ctx);
+
+    EXPECT_EQ(output, expected);
+}

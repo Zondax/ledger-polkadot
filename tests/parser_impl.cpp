@@ -146,6 +146,30 @@ TEST(SCALE, Compact2) {
     EXPECT_EQ(value, 12345);
 }
 
+TEST(SCALE, Compact3) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("0b00204aa9d101", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    compactInt_t cvalue;
+
+    err = _readCompactInt(&ctx, &cvalue);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_EQ(cvalue.len, 7);
+
+    char tmpOut[100];
+    uint8_t dummy;
+
+    err = _toStringCompactInt(&cvalue, tmpOut, 100, 0, &dummy);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+
+    // FIXME
+    EXPECT_STREQ(tmpOut, "not supported");
+}
+
 TEST(SCALE, BadTX) {
     parser_context_t ctx;
     parser_error_t err;
