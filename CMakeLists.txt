@@ -33,6 +33,7 @@ file(GLOB_RECURSE LIB_SRC
         src/ledger/deps/ledger-zxlib/src/hexutils.c
         src/ledger/deps/ledger-zxlib/src/zxmacros.c
         src/ledger/src/lib/crypto.c
+        src/ledger/src/lib/bignum.c
         src/ledger/src/lib/parser.c
         src/ledger/src/lib/parser_impl.c
         src/ledger/src/lib/parser_txdef.c
@@ -53,7 +54,7 @@ target_include_directories(app_lib PUBLIC
 ##############################################################
 #  Tests
 file(GLOB TESTS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
-add_executable(unittests ${TESTS_SRC})
+add_executable(unittests ${TESTS_SRC} tests/common.cpp)
 target_include_directories(unittests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src
         ${gtest_SOURCE_DIR}/include
