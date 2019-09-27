@@ -81,7 +81,7 @@ TEST(SCALE, Bool) {
     EXPECT_EQ(err, parser_unexpected_value);
 }
 
-TEST(SCALE, Compact) {
+TEST(SCALE_COMPACT, Compact) {
     parser_context_t ctx;
     parser_error_t err;
 
@@ -127,7 +127,7 @@ TEST(SCALE, Compact) {
     EXPECT_EQ(err, parser_value_out_of_range);
 }
 
-TEST(SCALE, Compact2) {
+TEST(SCALE_COMPACT, Compact2) {
     parser_context_t ctx;
     parser_error_t err;
 
@@ -146,7 +146,7 @@ TEST(SCALE, Compact2) {
     EXPECT_EQ(value, 12345);
 }
 
-TEST(SCALE, Compact3) {
+TEST(SCALE_COMPACT, Compact3) {
     parser_context_t ctx;
     parser_error_t err;
 
@@ -163,11 +163,159 @@ TEST(SCALE, Compact3) {
     char tmpOut[100];
     uint8_t dummy;
 
-    err = _toStringCompactInt(&cvalue, tmpOut, 100, 0, &dummy);
+    err = _toStringCompactInt(&cvalue, 0, tmpOut, 100, 0, &dummy);
     EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
 
     // FIXME
-    EXPECT_STREQ(tmpOut, "not supported");
+    EXPECT_STREQ(tmpOut, "2000000000000");
+}
+
+TEST(SCALE_COMPACT, Compact4) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("57d20a3fce96f1cf8c9cb4378c37a4873f17621ebce404f5aa13", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    compactInt_t cvalue;
+
+    err = _readCompactInt(&ctx, &cvalue);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_EQ(cvalue.len, 26);
+
+    char tmpOut[100];
+    uint8_t dummy;
+
+    err = _toStringCompactInt(&cvalue, 0, tmpOut, 100, 0, &dummy);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_STREQ(tmpOut, "123456789012345678901234567890123456789012345678901234567890");
+}
+
+TEST(SCALE_COMPACT, CompactDecimals1) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("04", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    compactInt_t cvalue;
+    err = _readCompactInt(&ctx, &cvalue);
+
+    char tmpOut[100];
+    uint8_t dummy;
+    err = _toStringCompactInt(&cvalue, 12, tmpOut, 100, 0, &dummy);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_STREQ(tmpOut, "0.000000000001");
+}
+
+TEST(SCALE_COMPACT, CompactDecimals1b) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("04", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    compactInt_t cvalue;
+    err = _readCompactInt(&ctx, &cvalue);
+
+    char tmpOut[100];
+    uint8_t dummy;
+    err = _toStringCompactInt(&cvalue, 1, tmpOut, 100, 0, &dummy);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_STREQ(tmpOut, "0.1");
+}
+
+TEST(SCALE_COMPACT, CompactDecimals1c) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("28", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    compactInt_t cvalue;
+    _readCompactInt(&ctx, &cvalue);
+
+    char tmpOut[100];
+    uint8_t dummy;
+    err = _toStringCompactInt(&cvalue, 1, tmpOut, 100, 0, &dummy);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_STREQ(tmpOut, "1.0");
+}
+
+TEST(SCALE_COMPACT, CompactDecimals1d) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("28", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    compactInt_t cvalue;
+    _readCompactInt(&ctx, &cvalue);
+
+    char tmpOut[100];
+    uint8_t dummy;
+    err = _toStringCompactInt(&cvalue, 2, tmpOut, 100, 0, &dummy);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_STREQ(tmpOut, "0.10");
+}
+
+TEST(SCALE_COMPACT, CompactDecimals1e) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("28", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    compactInt_t cvalue;
+    _readCompactInt(&ctx, &cvalue);
+
+    char tmpOut[100];
+    uint8_t dummy;
+    err = _toStringCompactInt(&cvalue, 0, tmpOut, 100, 0, &dummy);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_STREQ(tmpOut, "10");
+}
+
+TEST(SCALE_COMPACT, CompactDecimals2) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("02890700", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    compactInt_t cvalue;
+    err = _readCompactInt(&ctx, &cvalue);
+
+    char tmpOut[100];
+    uint8_t dummy;
+    err = _toStringCompactInt(&cvalue, 12, tmpOut, 100, 0, &dummy);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_STREQ(tmpOut, "0.000000123456");
+}
+
+TEST(SCALE_COMPACT, CompactDecimals4) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("131581e97df4102211", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    compactInt_t cvalue;
+    err = _readCompactInt(&ctx, &cvalue);
+
+    char tmpOut[100];
+    uint8_t dummy;
+    err = _toStringCompactInt(&cvalue, 12, tmpOut, 100, 0, &dummy);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_STREQ(tmpOut, "1234567.890123456789");
 }
 
 TEST(SCALE, BadTX) {
@@ -243,3 +391,4 @@ TEST(SCALE, FullTransferTX) {
     EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
     EXPECT_STREQ(tmpBuffer, "5FFhPjYsMtFXPbGgg2LC2Yjrnb8EMq5yhZXfBtgJs8T7TL3H");
 }
+

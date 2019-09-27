@@ -61,7 +61,10 @@ target_include_directories(unittests PRIVATE
         ${gmock_SOURCE_DIR}/include
         )
 
-target_link_libraries(unittests gtest_main app_lib)
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+add_subdirectory(tests/jsonlib)
+
+target_link_libraries(unittests gtest_main app_lib nlohmann_json::nlohmann_json)
 add_test(gtest ${PROJECT_BINARY_DIR}/unittests)
 set_tests_properties(gtest PROPERTIES WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
