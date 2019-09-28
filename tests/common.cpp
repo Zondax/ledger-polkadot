@@ -39,11 +39,17 @@ std::vector<std::string> dumpUI(parser_context_t *ctx) {
         while (pageIdx < pageCount) {
             std::stringstream ss;
 
-            parser_getItem(ctx, idx, keyBuffer, 40, valueBuffer, 40, pageIdx, &pageCount);
+            auto err = parser_getItem(ctx, idx, keyBuffer, 40, valueBuffer, 40, pageIdx, &pageCount);
+
             ss << idx << " ";
             ss << (int) pageIdx + 1 << "/" << (int) pageCount << " ";
             ss << keyBuffer << " : ";
-            ss << valueBuffer;
+
+            if (err==parser_ok) {
+                ss << valueBuffer;
+            } else {
+                ss << parser_getErrorDescription(err);
+            }
 
             answer.push_back(ss.str());
 

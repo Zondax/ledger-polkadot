@@ -318,6 +318,21 @@ TEST(SCALE_COMPACT, CompactDecimals4) {
     EXPECT_STREQ(tmpOut, "1234567.890123456789");
 }
 
+TEST(SCALE, MortalEra) {
+    parser_context_t ctx;
+    parser_error_t err;
+
+    uint8_t buffer[100];
+    auto bufferLen = parseHexString("0100", buffer);
+    parser_init(&ctx, buffer, bufferLen);
+
+    pd_ExtrinsicEra_t v;
+    err = _readEra(&ctx, &v);
+    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    EXPECT_EQ(v.phase, 0);
+    EXPECT_EQ(v.period, 4);
+}
+
 TEST(SCALE, BadTX) {
     parser_context_t ctx;
     parser_error_t err;
