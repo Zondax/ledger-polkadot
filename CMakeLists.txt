@@ -62,7 +62,7 @@ target_include_directories(unittests PRIVATE
         )
 
 set(JSON_BuildTests OFF CACHE INTERNAL "")
-add_subdirectory(tests/jsonlib)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/json)
 
 target_link_libraries(unittests gtest_main app_lib nlohmann_json::nlohmann_json)
 add_test(gtest ${PROJECT_BINARY_DIR}/unittests)
