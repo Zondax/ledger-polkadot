@@ -68,7 +68,7 @@ TEST(SCALE, Bool) {
 
     parser_init(&ctx, buffer, bufferLen);
 
-    bool_t value = bool_true;
+    pd_bool_t value = bool_true;
     parser_error_t err;
 
     err = _readBool(&ctx, &value);
