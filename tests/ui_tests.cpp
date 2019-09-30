@@ -22,7 +22,7 @@
 #include <nlohmann/json.hpp>
 #include <lib/parser_txdef.h>
 #include "lib/parser.h"
-#include "common.h"
+#include "utils/common.h"
 
 using ::testing::TestWithParam;
 using ::testing::Values;

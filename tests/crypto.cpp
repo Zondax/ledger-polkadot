@@ -25,6 +25,7 @@ using ::testing::Values;
 
 extern const char *crypto_testPubKey;
 
+/// Test that we can generate the address from a known mnemonic
 TEST(CRYPTO, fillAddress) {
     uint8_t buffer[100];
 
@@ -54,6 +55,7 @@ TEST(CRYPTO, fillAddress) {
     std::cout << addr << std::endl;
 }
 
+/// Test that we can generate the address from a known mnemonic (use default = test mnemonic)
 TEST(CRYPTO, fillAddressTestMnemonic) {
     uint8_t buffer[100];
 

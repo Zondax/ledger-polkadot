@@ -54,7 +54,7 @@ target_include_directories(app_lib PUBLIC
 ##############################################################
 #  Tests
 file(GLOB TESTS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
-add_executable(unittests ${TESTS_SRC} tests/common.cpp)
+add_executable(unittests ${TESTS_SRC} tests/utils/common.cpp)
 target_include_directories(unittests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src
         ${gtest_SOURCE_DIR}/include

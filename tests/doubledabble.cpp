@@ -47,9 +47,11 @@ INSTANTIATE_TEST_CASE_P
     bignum_testcase_t{"00e1f505", "100000000"},
     bignum_testcase_t{"00407a10f35a", "100000000000000"},
     bignum_testcase_t{"d2029649", "1234567890"},
-    bignum_testcase_t{"d20a3fce96f1cf8c9cb4378c37a4873f17621ebce404f5aa13", "123456789012345678901234567890123456789012345678901234567890"}
+    bignum_testcase_t{"d20a3fce96f1cf8c9cb4378c37a4873f17621ebce404f5aa13",
+                      "123456789012345678901234567890123456789012345678901234567890"}
 ));
 
+// Check that bignums are printed properly (parametric tests)
 TEST_P(BignumTests, print) {
     auto testcase = GetParam();
 
@@ -66,6 +68,7 @@ TEST_P(BignumTests, print) {
     EXPECT_THAT(std::string(bufferUI), testing::Eq(testcase.expectedOutput));
 }
 
+// Check that bignums are printed properly (range tests)
 TEST(Bignum, range) {
     uint8_t inBuffer[100];
 
