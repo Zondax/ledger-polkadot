@@ -3,6 +3,8 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![CircleCI](https://circleci.com/gh/ZondaX/ledger-polkadot.svg?style=shield)](https://circleci.com/gh/ZondaX/ledger-polkadot)
 
+This project contains the Kusama app for Ledger Nano S and X.
+
 ## *WARNING: WORK IN PROGRESS*
 Note: At the moment, you should be able to:
 - connect
