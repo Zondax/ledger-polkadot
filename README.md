@@ -4,13 +4,13 @@
 [![CircleCI](https://circleci.com/gh/ZondaX/ledger-polkadot.svg?style=shield)](https://circleci.com/gh/ZondaX/ledger-polkadot)
 
 ## *WARNING: WORK IN PROGRESS*
-Note: At the moment, your should be able to:
+Note: At the moment, you should be able to:
 - connect
 - retrieve version number
 - retrieve and show addresses
-- sign a few supported transactions
+- sign supported transactions (not all are supported yet)
 
-The purpose of this early release is to facilitate integration efforts.
+The purpose of this early release is to facilitate integration efforts and early testing.
  
 This repository contains the Ledger Nano S/X app for Kusama / Polkadot
 
@@ -22,6 +22,10 @@ App source code is linked as a submodule to align with Ledger's build infrastruc
 For development purposes, we recommend this complete repository (includes unit tests, tools, etc.) instead of the submodule.
 
 # Building
+
+At the moment, the only option is to build the app on your own. **Please only use a TEST DEVICE!** 
+
+Once the app is ready and we reach v1.0.0, it will be submitted to Ledger so it is published in the app Catalog. 
 
 ## Get source
 Apart from cloning, be sure you get all the submodules:
@@ -57,6 +61,27 @@ git submodule update --init --recursive
    brew install libusb
    ```
 
+  In OSX, python version is by default 2.7 and you will need python 3.x
+  
+   ```
+   brew install python3
+   ```
+   there are a few alternatives, for instance, you can create a `virtualenv`
+   
+   ```
+   pip3 install virtualenv 
+   virtualenv -p python3 <your-venv-path>
+   ``` 
+  and then activate
+  ```
+  source <your-venv-path>/bin/activate
+  ```
+  to deactivate
+  ```
+  deactivate
+  ```
+  
+
 #### Other dependencies
 
 - You need Python 3. In most cases, `make deps` will be able to install all additional dependencies:
@@ -64,7 +89,7 @@ git submodule update --init --recursive
    ```bash
    make deps
    ```
-
+  
 # Prepare your development device
 
    **Please do not use a Ledger device with funds for development purposes.** 
