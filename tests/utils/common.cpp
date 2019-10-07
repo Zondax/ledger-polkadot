@@ -25,27 +25,33 @@
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-std::vector<std::string> dumpUI(parser_context_t *ctx) {
+std::vector<std::string> dumpUI(parser_context_t *ctx,
+                                uint16_t maxKeyLen,
+                                uint16_t maxValueLen) {
     uint16_t numItems = parser_getNumItems(ctx);
 
     auto answer = std::vector<std::string>();
 
     for (uint16_t idx = 0; idx < numItems; idx++) {
-        char keyBuffer[40];
-        char valueBuffer[40];
+        char keyBuffer[1000];
+        char valueBuffer[1000];
         uint8_t pageIdx = 0;
         uint8_t pageCount = 1;
 
         while (pageIdx < pageCount) {
             std::stringstream ss;
 
-            auto err = parser_getItem(ctx, idx, keyBuffer, 40, valueBuffer, 40, pageIdx, &pageCount);
+            auto err = parser_getItem(ctx,
+                                      idx,
+                                      keyBuffer, maxKeyLen,
+                                      valueBuffer, maxValueLen,
+                                      pageIdx, &pageCount);
 
             ss << idx << " ";
             ss << (int) pageIdx + 1 << "/" << (int) pageCount << " ";
             ss << keyBuffer << " : ";
 
-            if (err==parser_ok) {
+            if (err == parser_ok) {
                 ss << valueBuffer;
             } else {
                 ss << parser_getErrorDescription(err);
@@ -59,3 +65,4 @@ std::vector<std::string> dumpUI(parser_context_t *ctx) {
 
     return answer;
 }
+

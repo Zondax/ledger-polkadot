@@ -14,4 +14,6 @@
 *  limitations under the License.
 ********************************************************************************/
 
-std::vector<std::string> dumpUI(parser_context_t *ctx);
+std::vector<std::string> dumpUI(parser_context_t *ctx,
+                                uint16_t maxKeyLen,
+                                uint16_t maxValueLen);
