@@ -230,11 +230,11 @@ TEST(SCALE, FullTransferTX) {
     EXPECT_EQ(tx.callIndex.moduleIdx, 4);
     EXPECT_EQ(tx.callIndex.idx, 0);
 
-    err = _getValue(&tx.method.balances_transfer.value.value, &tmp);
+    err = _getValue(&tx.method.basic.balances_transfer.value.value, &tmp);
     EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
     EXPECT_EQ(tmp, 0);
 
-    err = _toStringAddress(&tx.method.balances_transfer.dest, tmpBuffer, 100, 0, &pageCount);
+    err = _toStringAddress(&tx.method.basic.balances_transfer.dest, tmpBuffer, 100, 0, &pageCount);
     EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
     EXPECT_STREQ(tmpBuffer, "5FFhPjYsMtFXPbGgg2LC2Yjrnb8EMq5yhZXfBtgJs8T7TL3H");
 }

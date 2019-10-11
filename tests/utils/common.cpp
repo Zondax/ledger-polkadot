@@ -47,9 +47,7 @@ std::vector<std::string> dumpUI(parser_context_t *ctx,
                                       valueBuffer, maxValueLen,
                                       pageIdx, &pageCount);
 
-            ss << idx << " ";
-            ss << (int) pageIdx + 1 << "/" << (int) pageCount << " ";
-            ss << keyBuffer << " : ";
+            ss << idx << " | " << keyBuffer << " : ";
 
             if (err == parser_ok) {
                 ss << valueBuffer;
