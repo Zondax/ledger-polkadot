@@ -43,7 +43,7 @@ void parse(std::istream &istream) {
     if (err != parser_ok)
         return;
 
-    auto output = dumpUI(&ctx);
+    auto output = dumpUI(&ctx, 40, 40);
 
     for (const auto& line : output) {
         std::cout << line << std::endl;
