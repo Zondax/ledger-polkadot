@@ -75,7 +75,6 @@ void check_testcase(const testcase_t &tc) {
     parser_error_t err;
 
     uint8_t buffer[5000];
-
     uint16_t bufferLen = parseHexString(tc.blob.c_str(), buffer);
 
     err = parser_parse(&ctx, buffer, bufferLen);

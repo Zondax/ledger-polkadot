@@ -68,3 +68,5 @@ unittests
 *.cmake
 cmake/
 Testing/
+cmake-build-fuzz/
+

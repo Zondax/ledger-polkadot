@@ -53,8 +53,11 @@ target_include_directories(app_lib PUBLIC
 ##############################################################
 ##############################################################
 #  Tests
-file(GLOB TESTS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
-add_executable(unittests ${TESTS_SRC} tests/utils/common.cpp)
+file(GLOB TESTS_SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/utils/common.cpp)
+
+add_executable(unittests ${TESTS_SRC})
 target_include_directories(unittests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src
         ${gtest_SOURCE_DIR}/include
@@ -67,6 +70,20 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/json)
 target_link_libraries(unittests gtest_main app_lib nlohmann_json::nlohmann_json)
 add_test(gtest ${PROJECT_BINARY_DIR}/unittests)
 set_tests_properties(gtest PROPERTIES WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+
+##############################################################
+##############################################################
+#  Fuzzing
+file(GLOB FUZZING_SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/fuzzingMain.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/utils/common.cpp)
+
+add_executable(fuzzing ${FUZZING_SRC})
+target_include_directories(fuzzing PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests
+        )
+target_link_libraries(fuzzing app_lib)
 
 ###############################################################
 # Force tests to depend from app compiling

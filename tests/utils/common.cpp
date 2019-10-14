@@ -14,16 +14,14 @@
 *  limitations under the License.
 ********************************************************************************/
 
-#include "gmock/gmock.h"
-
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
 #include <hexutils.h>
 #include <lib/parser_txdef.h>
 #include "lib/parser.h"
 #include "common.h"
-
-using ::testing::TestWithParam;
-using ::testing::Values;
 
 std::vector<std::string> dumpUI(parser_context_t *ctx,
                                 uint16_t maxKeyLen,
