@@ -40,6 +40,7 @@ INSTANTIATE_TEST_CASE_P
     CompactPrintTests,
     ::testing::ValuesIn(
         {
+            // number of decimals, input, expected
             testcase_bytesPrint_t{
                 0,
                 "0b00204aa9d101",

@@ -43,6 +43,7 @@ INSTANTIATE_TEST_CASE_P
     BytesPrintTests,
     ::testing::ValuesIn(
         {
+            // pageSize, pageIndex, input, expected
             testcase_bytestPrint_t{20, 0, "1234567890", "1234567890", 1},
             testcase_bytestPrint_t{6, 0, "1234567890", "1234", 3},
             testcase_bytestPrint_t{6, 1, "1234567890", "5678", 3},
@@ -58,6 +59,7 @@ INSTANTIATE_TEST_CASE_P
         })
 );
 
+// Parametric Test. Printing long numbers + paging
 TEST_P(BytesPrintTests, BytesPrinting) {
     parser_context_t ctx;
     parser_error_t err;

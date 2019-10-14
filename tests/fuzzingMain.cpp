@@ -24,6 +24,10 @@
 #define __AFL_LOOP(x) (0)
 #endif
 
+///
+/// This file is just a fuzzing stub used by afl
+///
+
 void parse(std::istream &istream) {
     parser_context_t ctx;
     parser_error_t err;

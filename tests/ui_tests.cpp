@@ -48,6 +48,7 @@ public:
     };
 };
 
+// Retrieve testcases from json file
 std::vector<testcase_t> GetJsonTestCases() {
     auto answer = std::vector<testcase_t>();
 
@@ -104,4 +105,5 @@ INSTANTIATE_TEST_CASE_P
     JsonTests::PrintToStringParamName()
 );
 
+// Parametric test:
 TEST_P(JsonTests, CheckUIOutput) { check_testcase(GetParam()); }

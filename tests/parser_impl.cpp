@@ -25,7 +25,7 @@
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-// Test that we can parse uintxx_t correctly (uint8_t, uint16_t, uint32_t, uint64_t}
+// Test that we can parse SCALE-encoded unsigned intergers correctly (uint8_t, uint16_t, uint32_t, uint64_t}
 TEST(SCALE, UIntX) {
     parser_context_t ctx;
     parser_error_t err;
@@ -60,7 +60,7 @@ TEST(SCALE, UIntX) {
     EXPECT_EQ(v64, 4037830692);
 }
 
-// Parse SCALE booleans
+// Parse SCALE-encoded booleans
 TEST(SCALE, Bool) {
     uint8_t buffer[100];
     auto bufferLen = parseHexString("000102", buffer);
@@ -83,7 +83,7 @@ TEST(SCALE, Bool) {
     EXPECT_EQ(err, parser_unexpected_value);
 }
 
-// Parse Compact numbers
+// Parse SCALE-encoded Compact numbers
 TEST(SCALE, Compact) {
     parser_context_t ctx;
     parser_error_t err;
@@ -130,7 +130,7 @@ TEST(SCALE, Compact) {
     EXPECT_EQ(err, parser_value_out_of_range);
 }
 
-// Parse Compact numbers, reproduce/fix known bug
+// Parse SCALE-encoded Compact numbers. Reproducing old known bug
 TEST(SCALE, Compact2) {
     parser_context_t ctx;
     parser_error_t err;
@@ -150,6 +150,7 @@ TEST(SCALE, Compact2) {
     EXPECT_EQ(value, 12345);
 }
 
+// Parse SCALE-encoded mortal era objects
 TEST(SCALE, MortalEra) {
     parser_context_t ctx;
     parser_error_t err;
@@ -165,6 +166,7 @@ TEST(SCALE, MortalEra) {
     EXPECT_EQ(v.period, 4);
 }
 
+// Confirm bad transactions are rejected with an error message
 TEST(SCALE, BadTX) {
     parser_context_t ctx;
     parser_error_t err;
@@ -180,6 +182,7 @@ TEST(SCALE, BadTX) {
     EXPECT_EQ(err, parser_unexpected_callIndex) << parser_getErrorDescription(err);;
 }
 
+// Parse simple SCALE-encoded transaction
 TEST(SCALE, FullTransferTX) {
     parser_context_t ctx;
     parser_error_t err;
