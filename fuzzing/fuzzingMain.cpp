@@ -18,7 +18,7 @@
 #include <lib/parser.h>
 #include <hexutils.h>
 #include <fstream>
-#include "utils/common.h"
+#include "../tests/utils/common.h"
 
 #ifndef __AFL_LOOP
 #define __AFL_LOOP(x) (0)
