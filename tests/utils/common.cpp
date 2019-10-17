@@ -30,9 +30,9 @@ std::vector<std::string> dumpUI(parser_context_t *ctx,
 
     auto answer = std::vector<std::string>();
 
+    char keyBuffer[40];
+    char valueBuffer[40];
     for (uint16_t idx = 0; idx < numItems; idx++) {
-        char keyBuffer[1000];
-        char valueBuffer[1000];
         uint8_t pageIdx = 0;
         uint8_t pageCount = 1;
 

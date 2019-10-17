@@ -20,7 +20,6 @@ LEDGER_SRC=$(CURDIR)/src/ledger
 
 DOCKER_IMAGE=zondax/ledger-docker-bolos
 DOCKER_BOLOS_SDK=/project/deps/nanos-secure-sdk
-DOCKER_IMAGE2=zondax/ledger_bolos2
 DOCKER_BOLOS_SDK2=/project/deps/nano2-sdk
 
 SCP_PUBKEY=049bc79d139c70c83a4b19e8922e5ee3e0080bb14a2e8b0752aa42cda90a1463f689b0fa68c1c0246845c2074787b649d0d8a6c0b97d4607065eee3057bdf16b83
@@ -43,7 +42,7 @@ build2:
 	docker run -i --rm \
 	-e BOLOS_SDK=$(DOCKER_BOLOS_SDK2) -e BOLOS_ENV=/opt/bolos \
 	-u $(shell id -u) -v $(shell pwd):/project \
-	$(DOCKER_IMAGE2) \
+	$(DOCKER_IMAGE) \
 	make -C /project/src/ledger
 
 clean:

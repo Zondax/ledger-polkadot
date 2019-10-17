@@ -83,6 +83,7 @@ void check_testcase(const testcase_t &tc) {
 
     auto output = dumpUI(&ctx, 40, 40);
 
+    std::cout << std::endl;
     for (const auto & i : output) {
         std::cout << i << std::endl;
     }
