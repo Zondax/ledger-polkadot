@@ -49,13 +49,13 @@ void parse(std::istream &istream) {
 
     auto output = dumpUI(&ctx, 40, 40);
 
-    for (const auto& line : output) {
+    for (const auto &line : output) {
         std::cout << line << std::endl;
     }
 }
 
 int main(int argc, char **argv) {
-    if (argc>1) {
+    if (argc > 1) {
         std::ifstream fin;
         fin.open(argv[1]);
         parse(fin);

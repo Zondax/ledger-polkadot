@@ -20,6 +20,7 @@ enable_testing()
 set(CMAKE_CXX_STANDARD 11)
 add_subdirectory(cmake/gtest)
 
+string(APPEND CMAKE_C_FLAGS_DEBUG " -fsanitize=address -fno-omit-frame-pointer")
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address -fno-omit-frame-pointer")
 string(APPEND CMAKE_LINKER_FLAGS_DEBUG " -fsanitize=address -fno-omit-frame-pointer")
 #string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=undefined")
@@ -82,7 +83,17 @@ target_include_directories(fuzzing_stub PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src
         ${CMAKE_CURRENT_SOURCE_DIR}/tests
         )
-target_link_libraries(fuzzing_stub app_lib)
+
+add_library(app_lib32 STATIC ${LIB_SRC})
+target_include_directories(app_lib32 PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE/ref
+        )
+#set_target_properties(app_lib32 PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+
+target_link_libraries(fuzzing_stub app_lib32)
+#set_target_properties(fuzzing_stub PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
 
 ###############################################################
 # Force tests to depend from app compiling
