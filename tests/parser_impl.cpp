@@ -179,11 +179,11 @@ TEST(SCALE, BadTX) {
     parser_tx_t tx;
 
     err = _readTx(&ctx, &tx);
-    EXPECT_EQ(err, parser_unexpected_callIndex) << parser_getErrorDescription(err);;
+    EXPECT_EQ(err, parser_unexpected_buffer_end) << parser_getErrorDescription(err);;
 }
 
 // Parse simple SCALE-encoded transaction
-TEST(SCALE, FullTransferTX) {
+TEST(SCALE, TransferTXBadSpec) {
     parser_context_t ctx;
     parser_error_t err;
 
@@ -191,7 +191,7 @@ TEST(SCALE, FullTransferTX) {
                         "00003fd7b9eb6a00376e5be61f01abb429ffb0b104be05eaff4d458da48fcd425baf3fd7b9eb6a00376e5be61f"
                         "01abb429ffb0b104be05eaff4d458da48fcd425baf";
 
-    uint8_t buffer[100];
+    uint8_t buffer[500];
     auto bufferLen = parseHexString(testTx, buffer);
 
     parser_init(&ctx, buffer, bufferLen);
@@ -202,43 +202,6 @@ TEST(SCALE, FullTransferTX) {
     uint8_t pageCount = 0;
 
     err = _readTx(&ctx, &tx);
-    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
-
-    /* CHECK FIXED FIELDS */
-
-    EXPECT_EQ(tx.era.type, eEraMortal);
-    EXPECT_EQ(tx.era.period, 128);
-    EXPECT_EQ(tx.era.phase, 0);
-
-    err = _getValue(&tx.nonce.index, &tmp);
-    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
-    EXPECT_EQ(tmp, 50283);
-
-    err = _getValue(&tx.tip.value, &tmp);
-    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
-    EXPECT_EQ(tmp, 0);
-
-    EXPECT_EQ(tx.specVersion, 456);
-
-    err = _toStringHash(&tx.genesisHash, tmpBuffer, 100, 0, &pageCount);
-    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
-    EXPECT_STREQ(tmpBuffer, "3FD7B9EB6A00376E5BE61F01ABB429FFB0B104BE05EAFF4D458DA48FCD425BAF");
-
-    err = _toStringHash(&tx.blockHash, tmpBuffer, 100, 0, &pageCount);
-    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
-    EXPECT_STREQ(tmpBuffer, "3FD7B9EB6A00376E5BE61F01ABB429FFB0B104BE05EAFF4D458DA48FCD425BAF");
-
-    /* CHECK METHOD + ARGUMENTS */
-
-    EXPECT_EQ(tx.callIndex.moduleIdx, 4);
-    EXPECT_EQ(tx.callIndex.idx, 0);
-
-    err = _getValue(&tx.method.basic.balances_transfer.value.value, &tmp);
-    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
-    EXPECT_EQ(tmp, 0);
-
-    err = _toStringAddress(&tx.method.basic.balances_transfer.dest, tmpBuffer, 100, 0, &pageCount);
-    EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
-    EXPECT_STREQ(tmpBuffer, "5FFhPjYsMtFXPbGgg2LC2Yjrnb8EMq5yhZXfBtgJs8T7TL3H");
+    EXPECT_EQ(err, parser_spec_not_supported) << parser_getErrorDescription(err);
 }
 
