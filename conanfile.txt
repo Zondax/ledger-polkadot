@@ -1,0 +1,6 @@
+[requires]
+jsoncpp/1.9.0@theirix/stable
+fmt/6.0.0@bincrafters/stable
+
+[generators]
+cmake

@@ -18,13 +18,12 @@ project(ledger-polkadot VERSION 0.0.0)
 enable_testing()
 
 set(CMAKE_CXX_STANDARD 11)
+
+include(cmake/conan/CMakeLists.txt)
 add_subdirectory(cmake/gtest)
 
-string(APPEND CMAKE_C_FLAGS_DEBUG " -fsanitize=address -fno-omit-frame-pointer")
-string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address -fno-omit-frame-pointer")
-string(APPEND CMAKE_LINKER_FLAGS_DEBUG " -fsanitize=address -fno-omit-frame-pointer")
-#string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=undefined")
-#string(APPEND CMAKE_LINKER_FLAGS_DEBUG " -fsanitize=undefined")
+string(APPEND CMAKE_CXX_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
+string(APPEND CMAKE_LINKER_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
 
 ##############################################################
 ##############################################################
@@ -62,13 +61,17 @@ target_include_directories(unittests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}/include
+        ${CONAN_INCLUDE_DIRS_FMT}
+        ${CONAN_INCLUDE_DIRS_JSONCPP}
         )
 
-set(JSON_BuildTests OFF CACHE INTERNAL "")
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/json)
+target_link_libraries(unittests PRIVATE
+        gtest_main
+        app_lib
+        CONAN_PKG::fmt
+        CONAN_PKG::jsoncpp)
 
-target_link_libraries(unittests gtest_main app_lib nlohmann_json::nlohmann_json)
-add_test(unittests ${PROJECT_BINARY_DIR}/unittests)
+add_test(unittests ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unittests)
 set_tests_properties(unittests PROPERTIES WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 ##############################################################

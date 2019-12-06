@@ -2,26 +2,25 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ubuntu:18.04
+      - image: zondax/circleci:latest
     steps:
-      - run:
-          name: Install dependencies
-          command: apt update && apt-get -y install build-essential git sudo wget cmake libssl-dev libgmp-dev autoconf libtool
       - checkout
       - run: git submodule update --init --recursive
-      - run: cmake -DDISABLE_DOCKER_BUILDS=ON . && make
-      - run: export GTEST_COLOR=1 && ctest -VV
+      - run: cmake -DDISABLE_DOCKER_BUILDS=ON -DCMAKE_BUILD_TYPE=Debug . && make
+      # Unfortunately need to disable leak sanitizer https://github.com/google/sanitizers/issues/916
+      # Still run all other ASAN components
+      - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
 
   build_ledger:
     docker:
-      - image: zondax/ledger-docker-bolos
+      - image: zondax/ledger-docker-bolos:latest
     environment:
-      - BOLOS_SDK=/root/project/deps/nanos-secure-sdk
+      - BOLOS_SDK=/home/test/project/deps/nanos-secure-sdk
       - BOLOS_ENV=/opt/bolos
     steps:
       - checkout
       - run: git submodule update --init --recursive
-      - run: make -C src/ledger
+      - run: cd /home/test/project/src/ledger && make
 
 workflows:
   version: 2
