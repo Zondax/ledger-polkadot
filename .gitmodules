@@ -7,6 +7,3 @@
 [submodule "deps/BLAKE"]
 	path = deps/BLAKE
 	url = https://github.com/BLAKE2/BLAKE2
-[submodule "deps/json"]
-	path = deps/json
-	url = https://github.com/nlohmann/json.git
