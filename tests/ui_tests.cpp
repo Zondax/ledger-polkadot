@@ -111,7 +111,7 @@ void check_testcase(const testcase_t &tc) {
     }
 }
 
-INSTANTIATE_TEST_CASE_P
+INSTANTIATE_TEST_SUITE_P
 
 (
         JsonTestCases,

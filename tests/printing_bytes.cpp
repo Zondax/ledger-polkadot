@@ -36,7 +36,7 @@ typedef struct {
 class BytesPrintTests : public ::testing::TestWithParam<testcase_bytestPrint_t> {
 };
 
-INSTANTIATE_TEST_CASE_P
+INSTANTIATE_TEST_SUITE_P
 
 (
     BytesPrintTestcases,

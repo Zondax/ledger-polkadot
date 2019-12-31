@@ -33,7 +33,7 @@ typedef struct {
 
 class CompactPrintTests : public ::testing::TestWithParam<testcase_bytesPrint_t> {};
 
-INSTANTIATE_TEST_CASE_P
+INSTANTIATE_TEST_SUITE_P
 
 (
     CompactPrintTestcases,
