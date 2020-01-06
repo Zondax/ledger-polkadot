@@ -102,12 +102,12 @@ target_link_libraries(fuzzing_stub app_lib32)
 # Force tests to depend from app compiling
 ###############################################################
 
-set(DISABLE_DOCKER_BUILDS OFF CACHE BOOL "Disables Docker Builds")
-
-if (NOT DISABLE_DOCKER_BUILDS)
-    add_custom_target(ledger_app
-            COMMAND make build
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            )
-    add_dependencies(unittests ledger_app)
-endif()
+#set(DISABLE_DOCKER_BUILDS OFF CACHE BOOL "Disables Docker Builds")
+#
+#if (NOT DISABLE_DOCKER_BUILDS)
+#    add_custom_target(ledger_app
+#            COMMAND make build
+#            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#            )
+#    add_dependencies(unittests ledger_app)
+#endif()
