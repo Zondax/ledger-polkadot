@@ -17,16 +17,15 @@
 #include "gmock/gmock.h"
 
 #include <iostream>
-#include <hexutils.h>
 #include <fstream>
-#include <nlohmann/json.hpp>
+#include <json/json.h>
+#include <hexutils.h>
 #include <lib/parser_txdef.h>
 #include "lib/parser.h"
 #include "utils/common.h"
 
 using ::testing::TestWithParam;
 using ::testing::Values;
-using json = nlohmann::json;
 
 typedef struct {
     uint64_t index;
@@ -52,19 +51,34 @@ public:
 std::vector<testcase_t> GetJsonTestCases() {
     auto answer = std::vector<testcase_t>();
 
-    json j;
+    Json::CharReaderBuilder builder;
+    Json::Value obj;
+
     std::ifstream inFile("testcases.json");
-    EXPECT_TRUE(inFile.is_open()) << "Check that your working directory is pointing to the tests directory";
-    inFile >> j;
+    EXPECT_TRUE(inFile.is_open())
+                        << "\n"
+                        << "******************\n"
+                        << "Check that your working directory points to the tests directory\n"
+                        << "In CLion use $PROJECT_DIR$\\tests\n"
+                        << "******************\n";
+    if (!inFile.is_open())
+        return answer;
 
-    std::cout << "Number of testcases: " << j.size() << std::endl;
+    // Retrieve all test cases
+    JSONCPP_STRING errs;
+    Json::parseFromStream(builder, inFile, &obj, &errs);
+    std::cout << "Number of testcases: " << obj.size() << std::endl;
 
-    for (auto &item : j) {
+    for (int i = 0; i < obj.size(); i++) {
+        auto outputs = std::vector<std::string>();
+        for (auto s : obj[i]["output"])
+            outputs.push_back(s.asString());
+
         answer.push_back(testcase_t{
-            item["index"],
-            item["name"],
-            item["blob"],
-            item["output"]
+                obj[i]["index"].asUInt64(),
+                obj[i]["name"].asString(),
+                obj[i]["blob"].asString(),
+                outputs
         });
     }
 
@@ -84,7 +98,7 @@ void check_testcase(const testcase_t &tc) {
     auto output = dumpUI(&ctx, 40, 40);
 
     std::cout << std::endl;
-    for (const auto & i : output) {
+    for (const auto &i : output) {
         std::cout << i << std::endl;
     }
     std::cout << std::endl << std::endl;
@@ -97,13 +111,13 @@ void check_testcase(const testcase_t &tc) {
     }
 }
 
-INSTANTIATE_TEST_CASE_P
+INSTANTIATE_TEST_SUITE_P
 
 (
-    JsonTestCases,
-    JsonTests,
-    ::testing::ValuesIn(GetJsonTestCases()),
-    JsonTests::PrintToStringParamName()
+        JsonTestCases,
+        JsonTests,
+        ::testing::ValuesIn(GetJsonTestCases()),
+        JsonTests::PrintToStringParamName()
 );
 
 // Parametric test:

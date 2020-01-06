@@ -30,7 +30,7 @@ typedef struct {
 class BignumTests : public ::testing::TestWithParam<bignum_testcase_t> {
 };
 
-INSTANTIATE_TEST_CASE_P
+INSTANTIATE_TEST_SUITE_P
 
 (BignumTestCases, BignumTests, testing::Values(
     bignum_testcase_t{"00", "0"},

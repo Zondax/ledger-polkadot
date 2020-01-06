@@ -66,7 +66,6 @@ CMakeFiles/
 CMakeCache.txt
 unittests
 *.cmake
-cmake/
 Testing/
 cmake-build-fuzz/
 

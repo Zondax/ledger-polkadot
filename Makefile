@@ -18,51 +18,72 @@
 
 LEDGER_SRC=$(CURDIR)/src/ledger
 
-DOCKER_IMAGE=zondax/ledger-docker-bolos
+DOCKER_APP_SRC=/project/src/ledger
+DOCKER_IMAGE=zondax/ledger-docker-bolos:latest
 DOCKER_BOLOS_SDK=/project/deps/nanos-secure-sdk
-DOCKER_BOLOS_SDK2=/project/deps/nano2-sdk
+DOCKER_BOLOS_SDKX=/project/deps/nano2-sdk
 
 SCP_PUBKEY=049bc79d139c70c83a4b19e8922e5ee3e0080bb14a2e8b0752aa42cda90a1463f689b0fa68c1c0246845c2074787b649d0d8a6c0b97d4607065eee3057bdf16b83
 SCP_PRIVKEY=ff701d781f43ce106f72dc26a46b6a83e053b5d07bb3d4ceab79c91ca822a66b
 
 all: build
 
+define run_docker
+	docker run -it --rm \
+	--privileged \
+	-e SCP_PRIVKEY=$(SCP_PRIVKEY) \
+	-e BOLOS_SDK=$(1) \
+	-e BOLOS_ENV=/opt/bolos \
+	-p 1234:1234 \
+	-p 8001:8001 \
+	-p 9998-9999:9998-9999 \
+	-u $(shell id -u) \
+	-v $(shell pwd):/project \
+	-e DISPLAY=$(shell echo ${DISPLAY}) \
+	-v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+	$(DOCKER_IMAGE) \
+	"$(2)"
+endef
+
+pull:
+	docker pull $(DOCKER_IMAGE)
+
 deps:
 	@echo "Install dependencies"
 	$(CURDIR)/src/install_deps.sh
 
 build:
-	docker run -i --rm \
-	-e BOLOS_SDK=$(DOCKER_BOLOS_SDK) -e BOLOS_ENV=/opt/bolos \
-	-u $(shell id -u) -v $(shell pwd):/project \
-	$(DOCKER_IMAGE) \
-	make -C /project/src/ledger
+	@cp $(LEDGER_SRC)/nanos_icon.gif $(LEDGER_SRC)/glyphs/icon_app.gif
+	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC))
 
-build2:
-	docker run -i --rm \
-	-e BOLOS_SDK=$(DOCKER_BOLOS_SDK2) -e BOLOS_ENV=/opt/bolos \
-	-u $(shell id -u) -v $(shell pwd):/project \
-	$(DOCKER_IMAGE) \
-	make -C /project/src/ledger
+buildX:
+	@cp $(LEDGER_SRC)/nanos_icon.gif $(LEDGER_SRC)/glyphs/icon_app.gif
+	@convert $(LEDGER_SRC)/nanos_icon.gif -crop 14x14+1+1 +repage -negate $(LEDGER_SRC)/nanox_icon.gif
+	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC))
 
 clean:
-	BOLOS_SDK=$(CURDIR)/deps/nanos-secure-sdk BOLOS_ENV=/opt/bolos \
-	make -C $(LEDGER_SRC) clean
+	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) clean)
+
+shell:
+	$(call run_docker,$(DOCKER_BOLOS_SDK) -t,bash)
+
+debug: build
+	$(call run_docker,$(DOCKER_BOLOS_SDK),/home/test/speculos/speculos.py -d -n -t $(DOCKER_APP_SRC)/bin/app.elf)
+
+emu: build
+	$(call run_docker,$(DOCKER_BOLOS_SDK),/home/test/speculos/speculos.py -o -z 3 -v 8001 $(DOCKER_APP_SRC)/bin/app.elf)
 
 load: build
-	SCP_PRIVKEY=$(SCP_PRIVKEY) \
-	BOLOS_SDK=$(CURDIR)/deps/nanos-secure-sdk BOLOS_ENV=/opt/bolos \
-	make -C $(LEDGER_SRC) load
+	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) load)
 
-load2: build2
-	SCP_PRIVKEY=$(SCP_PRIVKEY) \
-	BOLOS_SDK=$(CURDIR)/deps/nano2-sdk BOLOS_ENV=/opt/bolos \
-	make -C $(LEDGER_SRC) load
+loadX:
+	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) load)
 
 delete:
-	SCP_PRIVKEY=$(SCP_PRIVKEY) \
-	BOLOS_SDK=$(CURDIR)/deps/nanos-secure-sdk BOLOS_ENV=/opt/bolos \
-	make -C $(LEDGER_SRC) delete
+	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) delete)
+
+deleteX:
+	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) delete)
 
 # This target will initialize the device with the integration testing mnemonic
 dev_init:
