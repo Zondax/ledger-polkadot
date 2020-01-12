@@ -34,7 +34,7 @@ execute_process(
         OUTPUT_VARIABLE LEDGER_MINOR_VERSION
 )
 message(STATUS "LEDGER_MINOR_VERSION [${LEDGER_MINOR_RESULT}]: ${LEDGER_MINOR_VERSION}" )
-add_compile_definitions(LEDGER_MINOR_VERSION=${LEDGER_MINOR_VERSION})
+add_definitions(-DLEDGER_MINOR_VERSION=${LEDGER_MINOR_VERSION})
 
 ##############################################################
 ##############################################################
