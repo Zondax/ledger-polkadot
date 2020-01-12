@@ -1,7 +1,7 @@
 # Ledger Kusama app (Polkadot soon)
 ![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![CircleCI](https://circleci.com/gh/ZondaX/ledger-polkadot.svg?style=shield)](https://circleci.com/gh/ZondaX/ledger-polkadot)
+[![CircleCI](https://circleci.com/gh/Zondax/ledger-polkadot.svg?style=shield)](https://circleci.com/gh/Zondax/ledger-polkadot)
 
 This project contains the Kusama app for Ledger Nano S and X.
 
