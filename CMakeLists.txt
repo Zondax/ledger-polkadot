@@ -40,11 +40,12 @@ add_compile_definitions(LEDGER_MINOR_VERSION=${LEDGER_MINOR_VERSION})
 ##############################################################
 #  static libs
 file(GLOB_RECURSE LIB_SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/src/bignum.c
+        ####
         ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE/ref/blake2b-ref.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/src/hexutils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/src/zxmacros.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/crypto.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/bignum.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/parser.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/parser_impl.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/parser_txdef.c
