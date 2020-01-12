@@ -25,22 +25,33 @@ add_subdirectory(cmake/gtest)
 string(APPEND CMAKE_CXX_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
 string(APPEND CMAKE_LINKER_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
 
+set (RETRIEVE_LEDGER_MINOR_CMD
+        "cat ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/Makefile.version | grep APPVERSION_N | cut -b 14-"
+)
+execute_process(
+        COMMAND bash "-c" ${RETRIEVE_LEDGER_MINOR_CMD}
+        RESULT_VARIABLE LEDGER_MINOR_RESULT
+        OUTPUT_VARIABLE LEDGER_MINOR_VERSION
+)
+message(STATUS "LEDGER_MINOR_VERSION [${LEDGER_MINOR_RESULT}]: ${LEDGER_MINOR_VERSION}" )
+add_compile_definitions(LEDGER_MINOR_VERSION=${LEDGER_MINOR_VERSION})
+
 ##############################################################
 ##############################################################
 #  static libs
 file(GLOB_RECURSE LIB_SRC
-        deps/BLAKE/ref/blake2b-ref.c
-        src/ledger/deps/ledger-zxlib/src/hexutils.c
-        src/ledger/deps/ledger-zxlib/src/zxmacros.c
-        src/ledger/src/lib/crypto.c
-        src/ledger/src/lib/bignum.c
-        src/ledger/src/lib/parser.c
-        src/ledger/src/lib/parser_impl.c
-        src/ledger/src/lib/parser_txdef.c
-        src/ledger/src/lib/polkadot_types.c
-        src/ledger/src/lib/polkadot_dispatch.c
-        src/ledger/src/lib/base58.c
-        src/ledger/src/lib/uint256.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE/ref/blake2b-ref.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/src/hexutils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/src/zxmacros.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/crypto.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/bignum.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/parser.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/parser_impl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/parser_txdef.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/polkadot_types.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/polkadot_dispatch.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/base58.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/uint256.c
         )
 
 add_library(app_lib STATIC ${LIB_SRC})
