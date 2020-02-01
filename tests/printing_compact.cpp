@@ -86,7 +86,7 @@ TEST_P(CompactPrintTests, CompactPrinting) {
     parser_error_t err;
 
     uint8_t buffer[100];
-    auto bufferLen = parseHexString(GetParam().input.c_str(), buffer);
+    auto bufferLen = parseHexString(buffer, sizeof(buffer), GetParam().input.c_str());
     parser_init(&ctx, buffer, bufferLen);
 
     compactInt_t cvalue;

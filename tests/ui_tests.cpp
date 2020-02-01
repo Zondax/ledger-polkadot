@@ -90,7 +90,7 @@ void check_testcase(const testcase_t &tc) {
     parser_error_t err;
 
     uint8_t buffer[5000];
-    uint16_t bufferLen = parseHexString(tc.blob.c_str(), buffer);
+    uint16_t bufferLen = parseHexString(buffer, sizeof(buffer), tc.blob.c_str());
 
     err = parser_parse(&ctx, buffer, bufferLen);
     ASSERT_EQ(err, parser_ok) << parser_getErrorDescription(err);

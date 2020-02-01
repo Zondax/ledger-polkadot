@@ -73,17 +73,17 @@ debug: build
 emu: build
 	$(call run_docker,$(DOCKER_BOLOS_SDK),/home/test/speculos/speculos.py -o -z 3 -v 8001 $(DOCKER_APP_SRC)/bin/app.elf)
 
-load: build
-	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) load)
+package:
+	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) package)
 
-loadX:
-	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) load)
+packageX:
+	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) package)
+
+load:
+	${LEDGER_SRC}/pkg/zxtool.sh load
 
 delete:
-	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) delete)
-
-deleteX:
-	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) delete)
+	${LEDGER_SRC}/pkg/zxtool.sh delete
 
 # This target will initialize the device with the integration testing mnemonic
 dev_init:

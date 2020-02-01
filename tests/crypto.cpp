@@ -42,7 +42,7 @@ TEST(CRYPTO, fillAddress) {
     std::cout << std::endl;
 
     char pk[100];
-    array_to_hexstr(pk, buffer, 32);
+    EXPECT_THAT(array_to_hexstr(pk, sizeof(pk), buffer, 32), ::testing::Eq(64));
     char *addr = (char *) (buffer + 32);
 
     EXPECT_THAT(std::string(pk),
@@ -68,7 +68,7 @@ TEST(CRYPTO, fillAddressTestMnemonic) {
     std::cout << std::endl;
 
     char pk[100];
-    array_to_hexstr(pk, buffer, 32);
+    array_to_hexstr(pk, sizeof(pk), buffer, 32);
     char *addr = (char *) (buffer + 32);
 
     EXPECT_THAT(std::string(pk),
