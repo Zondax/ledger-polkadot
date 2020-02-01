@@ -31,11 +31,13 @@ TEST(SCALE, UIntX) {
     parser_error_t err;
     uint8_t buffer[100];
     auto bufferLen = parseHexString(
-        "45"
-        "1234"
-        "12345678"
-        "1234567812345678",
-        buffer);
+            buffer,
+            sizeof(buffer),
+            "45"
+            "1234"
+            "12345678"
+            "1234567812345678"
+    );
 
     parser_init(&ctx, buffer, bufferLen);
 
@@ -63,7 +65,7 @@ TEST(SCALE, UIntX) {
 // Parse SCALE-encoded booleans
 TEST(SCALE, Bool) {
     uint8_t buffer[100];
-    auto bufferLen = parseHexString("000102", buffer);
+    auto bufferLen = parseHexString(buffer, sizeof(buffer), "000102");
     parser_context_t ctx;
 
     parser_init(&ctx, buffer, bufferLen);
@@ -89,7 +91,7 @@ TEST(SCALE, Compact) {
     parser_error_t err;
 
     uint8_t buffer[100];
-    auto bufferLen = parseHexString("0004a815010100", buffer);
+    auto bufferLen = parseHexString(buffer, sizeof(buffer), "0004a815010100");
     parser_init(&ctx, buffer, bufferLen);
 
     compactInt_t cvalue;
@@ -136,7 +138,7 @@ TEST(SCALE, Compact2) {
     parser_error_t err;
 
     uint8_t buffer[100];
-    auto bufferLen = parseHexString("e5c0", buffer);
+    auto bufferLen = parseHexString(buffer, sizeof(buffer), "e5c0");
     parser_init(&ctx, buffer, bufferLen);
 
     compactInt_t cvalue;
@@ -156,7 +158,7 @@ TEST(SCALE, MortalEra) {
     parser_error_t err;
 
     uint8_t buffer[100];
-    auto bufferLen = parseHexString("0100", buffer);
+    auto bufferLen = parseHexString(buffer, sizeof(buffer), "0100");
     parser_init(&ctx, buffer, bufferLen);
 
     pd_ExtrinsicEra_t v;
@@ -172,7 +174,7 @@ TEST(SCALE, BadTX) {
     parser_error_t err;
 
     uint8_t buffer[100];
-    auto bufferLen = parseHexString("0102030405060708091011", buffer);
+    auto bufferLen = parseHexString(buffer, sizeof(buffer), "0102030405060708091011");
 
     parser_init(&ctx, buffer, bufferLen);
 
@@ -192,7 +194,7 @@ TEST(SCALE, TransferTXBadSpec) {
                         "01abb429ffb0b104be05eaff4d458da48fcd425baf";
 
     uint8_t buffer[500];
-    auto bufferLen = parseHexString(testTx, buffer);
+    auto bufferLen = parseHexString(buffer, sizeof(buffer), testTx);
 
     parser_init(&ctx, buffer, bufferLen);
 

@@ -1,6 +1,6 @@
 [submodule "src/ledger"]
 	path = src/ledger
-	url = https://github.com/ZondaX/ledger-polkadot-app.git
+	url = https://github.com/Zondax/ledger-polkadot-app.git
 [submodule "deps/nanos-secure-sdk"]
 	path = deps/nanos-secure-sdk
 	url = https://github.com/LedgerHQ/nanos-secure-sdk.git
