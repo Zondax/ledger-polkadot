@@ -38,7 +38,7 @@ void parse(std::istream &istream) {
     uint8_t buffer[10000];
     if (input.length() > sizeof(buffer))
         return;
-    uint16_t bufferLen = parseHexString(input.c_str(), buffer);
+    uint16_t bufferLen = parseHexString(buffer, sizeof(buffer), input.c_str());
 
     if (bufferLen == 0)
         return;
