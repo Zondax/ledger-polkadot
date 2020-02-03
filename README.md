@@ -1,7 +1,9 @@
-# Ledger Kusama app (Polkadot soon)
+# Ledger Kusama app (eXpeCT ChAoS)
 ![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![CircleCI](https://circleci.com/gh/Zondax/ledger-polkadot.svg?style=shield)](https://circleci.com/gh/Zondax/ledger-polkadot)
+[![CircleCI](https://circleci.com/gh/Zondax/ledger-kusama.svg?style=shield)](https://circleci.com/gh/Zondax/ledger-kusama)
+
+https://kusama.network/
 
 This project contains the Kusama app for Ledger Nano S and X.
 
@@ -10,9 +12,7 @@ Note: At the moment, you should be able to:
 - connect
 - retrieve version number
 - retrieve and show addresses
-- sign supported transactions (not all are supported yet)
-
-The purpose of this early release is to facilitate integration efforts and early testing.
+- sign supported transactions (most transactions are supported)
 
 This repository contains the Ledger Nano S/X app for Kusama
 
