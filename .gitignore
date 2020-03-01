@@ -69,3 +69,10 @@ unittests
 Testing/
 cmake-build-fuzz/
 
+# Others
+/cmake-build-debug/
+/cmake-build-fuzz/
+\.idea
+/app/bin/
+/app/debug/
+/app/obj/
