@@ -17,6 +17,7 @@ cmake_minimum_required(VERSION 3.0)
 project(ledger-kusama VERSION 0.0.0)
 enable_testing()
 
+cmake_policy(SET CMP0025 NEW)
 set(CMAKE_CXX_STANDARD 11)
 
 include(cmake/conan/CMakeLists.txt)
@@ -26,7 +27,7 @@ string(APPEND CMAKE_CXX_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
 string(APPEND CMAKE_LINKER_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
 
 set (RETRIEVE_LEDGER_MINOR_CMD
-        "cat ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/Makefile.version | grep APPVERSION_N | cut -b 14-"
+        "cat ${CMAKE_CURRENT_SOURCE_DIR}/app/Makefile.version | grep APPVERSION_N | cut -b 14-"
 )
 execute_process(
         COMMAND bash "-c" ${RETRIEVE_LEDGER_MINOR_CMD}
@@ -40,26 +41,26 @@ add_definitions(-DLEDGER_MINOR_VERSION=${LEDGER_MINOR_VERSION})
 ##############################################################
 #  static libs
 file(GLOB_RECURSE LIB_SRC
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/src/bignum.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE2/ref/blake2b-ref.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/src/bignum.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/src/hexutils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/src/zxmacros.c
         ####
-        ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE/ref/blake2b-ref.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/src/hexutils.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/src/zxmacros.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/crypto.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/parser.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/parser_impl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/parser_txdef.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/polkadot_types.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/polkadot_dispatch.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/base58.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src/lib/uint256.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/crypto.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/parser.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/parser_impl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/parser_txdef.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/polkadot_types.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/polkadot_dispatch.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/base58.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/uint256.c
         )
 
 add_library(app_lib STATIC ${LIB_SRC})
 target_include_directories(app_lib PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/lib
-        ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE/ref
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE2/ref
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src
         )
 
 ##############################################################
@@ -70,7 +71,7 @@ file(GLOB_RECURSE TESTS_SRC
 
 add_executable(unittests ${TESTS_SRC})
 target_include_directories(unittests PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}/include
         ${CONAN_INCLUDE_DIRS_FMT}
@@ -95,31 +96,17 @@ file(GLOB FUZZING_SRC
 
 add_executable(fuzzing_stub ${FUZZING_SRC})
 target_include_directories(fuzzing_stub PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src
         ${CMAKE_CURRENT_SOURCE_DIR}/tests
         )
 
 add_library(app_lib32 STATIC ${LIB_SRC})
 target_include_directories(app_lib32 PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/deps/ledger-zxlib/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ledger/lib
-        ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE/ref
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE2/ref
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/lib
         )
 #set_target_properties(app_lib32 PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
 
 target_link_libraries(fuzzing_stub app_lib32)
 #set_target_properties(fuzzing_stub PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
-
-###############################################################
-# Force tests to depend from app compiling
-###############################################################
-
-#set(DISABLE_DOCKER_BUILDS OFF CACHE BOOL "Disables Docker Builds")
-#
-#if (NOT DISABLE_DOCKER_BUILDS)
-#    add_custom_target(ledger_app
-#            COMMAND make build
-#            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#            )
-#    add_dependencies(unittests ledger_app)
-#endif()

@@ -20,7 +20,7 @@ jobs:
     steps:
       - checkout
       - run: git submodule update --init --recursive
-      - run: cd /home/test/project/src/ledger && make
+      - run: cd /home/test/project && make
 
   build_package:
     docker:
@@ -31,10 +31,10 @@ jobs:
     steps:
       - checkout
       - run: git submodule update --init --recursive
-      - run: cd /home/test/project/src/ledger && make
+      - run: cd /home/test/project/app && make
       - store_artifacts:
-          path: /home/test/project/src/ledger/pkg/zxtool.sh
-      - run: /home/test/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(/home/test/project/src/ledger/pkg/zxtool.sh version) /home/test/project/src/ledger/pkg/zxtool.sh
+          path: /home/test/project/app/pkg/zxtool.sh
+      - run: /home/test/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(/home/test/project/app/pkg/zxtool.sh version) /home/test/project/app/pkg/zxtool.sh
 
 workflows:
   version: 2
