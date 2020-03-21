@@ -20,8 +20,8 @@
 extern "C" {
 #endif
 
-#include "zxmacros.h"
-#include "zxtypes.h"
+#include <zxmacros.h>
+#include <zxtypes.h>
 
 bool_t bignumLittleEndian_bcdprint(char *outBuffer, uint16_t outBufferLen, const uint8_t *inBCD, uint16_t inBCDLen);
 void bignumLittleEndian_to_bcd(uint8_t *bcdOut, uint16_t bcdOutLen, const uint8_t *binValue, uint16_t binValueLen);

@@ -14,6 +14,8 @@
 #*  limitations under the License.
 #********************************************************************************
 
+.PHONY: all deps build clean load delete check_python show_info_recovery_mode
+
 LEDGER_SRC=$(CURDIR)/app
 DOCKER_APP_SRC=/project
 
@@ -43,6 +45,13 @@ endef
 
 all: build
 
+check_python:
+	@python -c 'import sys; sys.exit(3-sys.version_info.major)' || (echo "The python command does not point to Python 3"; exit 1)
+
+deps: check_python
+	@echo "Install dependencies"
+	$(CURDIR)/deps/ledger-zxlib/install_deps.sh
+
 pull:
 	docker pull $(DOCKER_IMAGE)
 
@@ -69,34 +78,39 @@ debug: build
 emu: build
 	$(call run_docker,$(DOCKER_BOLOS_SDK),/home/test/speculos/speculos.py -o -z 3 -v 8001 $(DOCKER_APP_SRC)/bin/app.elf)
 
-deps:
-	@echo "Install dependencies"
-	$(CURDIR)/install_deps.sh
-
 load:
 	${LEDGER_SRC}/pkg/zxtool.sh load
 
 delete:
 	${LEDGER_SRC}/pkg/zxtool.sh delete
 
+show_info_recovery_mode:
+	@echo "This command requires a Ledger Nano S in recovery mode. To go into recovery mode, follow:"
+	@echo " 1. Settings -> Device -> Reset all and confirm"
+	@echo " 2. Unplug device, press and hold the right button, plug-in again"
+	@echo " 3. Navigate to the main menu"
+	@echo "If everything was correct, no PIN needs to be entered."
+
 # This target will initialize the device with the integration testing mnemonic
-dev_init:
+dev_init: show_info_recovery_mode
 	@echo "Initializing device with test mnemonic! WARNING TAKES 2 MINUTES AND REQUIRES RECOVERY MODE"
 	@python -m ledgerblue.hostOnboard --apdu --id 0 --prefix "" --passphrase "" --pin 5555 --words "equip will roof matter pink blind book anxiety banner elbow sun young"
 
+# This target will initialize the device with the secondary integration testing mnemonic (Bob)
+dev_init_secondary: check_python show_info_recovery_mode
+	@echo "Initializing device with secondary test mnemonic! WARNING TAKES 2 MINUTES AND REQUIRES RECOVERY MODE"
+	@python -m ledgerblue.hostOnboard --apdu --id 0 --prefix "" --passphrase "" --pin 5555 --words "elite vote proof agree february step sibling sand grocery axis false cup"
+
 # This target will setup a custom developer certificate
-dev_ca:
+dev_ca: check_python
 	@python -m ledgerblue.setupCustomCA --targetId 0x31100004 --public $(SCP_PUBKEY) --name zondax
 
-dev_ca_delete:
+dev_ca_delete: check_python
 	@python -m ledgerblue.resetCustomCA --targetId 0x31100004
 
 # This target will setup a custom developer certificate
-dev_ca2:
+dev_ca2: check_python
 	@python -m ledgerblue.setupCustomCA --targetId 0x33000004 --public $(SCP_PUBKEY) --name zondax
 
-dev_ca_delete2:
+dev_ca_delete2: check_python
 	@python -m ledgerblue.resetCustomCA --targetId 0x33000004
-
-update_zxlib:
-	rsync -a --exclude='.git/' ../ledger-zxlib $(CURDIR)/deps

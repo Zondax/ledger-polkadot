@@ -203,7 +203,7 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
         if (decimalPlaces == 0) {
             uint64_to_str(bufferUI, sizeof(bufferUI), v);
         } else {
-            fpuint64_to_str(bufferUI, v, decimalPlaces);
+            fpuint64_to_str(bufferUI, sizeof(bufferUI), v, decimalPlaces);
         }
 
         pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);

@@ -1,5 +1,6 @@
+#!/usr/bin/env bash
 #*******************************************************************************
-#*   (c) 2019 ZondaX GmbH
+#*   (c) 2018 ZondaX GmbH
 #*
 #*  Licensed under the Apache License, Version 2.0 (the "License");
 #*  you may not use this file except in compliance with the License.
@@ -14,16 +15,18 @@
 #*  limitations under the License.
 #********************************************************************************
 
-# We use BOLOS_SDK to determine the develoment environment that is being used
-# BOLOS_SDK IS  DEFINED	 	We use the plain Makefile for Ledger
-# BOLOS_SDK NOT DEFINED		We use a containerized build approach
-
-ifeq ($(BOLOS_SDK),)
-include $(CURDIR)/deps/ledger-zxlib/cmake/dockerized_build.mk
-else
-default:
-	$(MAKE) -C app
-%:
-	$(info "Calling app Makefile for target $@")
-	$(MAKE) -C app $@
-endif
+os_string="$(uname -s)"
+case "${os_string}" in
+	Linux*)
+		sudo apt-get install libusb-1.0.0 libudev-dev
+		pip install -U setuptools
+		pip install -U --no-cache ledgerblue ecpy
+		;;
+	Darwin*)
+		brew install libusb
+		pip install -U ledgerblue ecpy
+		;;
+	*)
+		echo "OS not recognized"
+		;;
+esac
