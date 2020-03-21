@@ -16,7 +16,7 @@
 ********************************************************************************/
 
 #include "actions.h"
-#include "lib/crypto.h"
+#include "crypto.h"
 #include "tx.h"
 #include "apdu_codes.h"
 #include <os_io_seproxyhal.h>

@@ -1,5 +1,5 @@
 /*******************************************************************************
-*   (c) 2019 ZondaX GmbH
+*   (c) 2019 Zondax GmbH
 *   (c) 2016 Ledger
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,9 +17,7 @@
 #pragma once
 
 #include <stdint.h>
-
-#define MENU_MAIN_APP_LINE1 "Kusama"
-#define MENU_MAIN_APP_LINE2 "Web3"
+#include "coin.h"
 
 #define CUR_FLOW G_ux.flow_stack[G_ux.stack_count-1]
 

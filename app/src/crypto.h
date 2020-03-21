@@ -17,20 +17,24 @@
 #pragma once
 
 #include <zxmacros.h>
+#include "coin.h"
+#include <stdbool.h>
+#include <sigutils.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define BIP44_LEN_DEFAULT 5u
-#define ED25519_PK_LEN 32u
+#define HDPATH_LEN_DEFAULT  5u
+#define ED25519_PK_LEN      32u
+#define PK_LEN              ED25519_PK_LEN
 #define SS58_ADDRESS_MAX_LEN 60u
 
 #define PK_LEN ED25519_PK_LEN
 
-extern uint32_t bip44Path[BIP44_LEN_DEFAULT];
+extern uint32_t hdPath[HDPATH_LEN_DEFAULT];
 
-void crypto_extractPublicKey(const uint32_t path[BIP44_LEN_DEFAULT], uint8_t *pubKey, uint16_t pubKeyLen);
+void crypto_extractPublicKey(const uint32_t path[HDPATH_LEN_DEFAULT], uint8_t *pubKey, uint16_t pubKeyLen);
 
 uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
                                 uint8_t addressType, const uint8_t *pubkey);

@@ -1,5 +1,5 @@
 /*******************************************************************************
-*   (c) 2018, 2019 ZondaX GmbH
+*   (c) 2018, 2019 Zondax GmbH
 *   (c) 2016 Ledger
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -177,7 +177,12 @@ void h_review_loop_end() {
     ux_flow_relayout();
 }
 
-void splitValueField() {}
+void splitValueField() {
+    uint16_t vlen = strlen(viewdata.value);
+    if (vlen == 0 ) {
+        strcpy(viewdata.value, " ");
+    }
+}
 
 //////////////////////////
 //////////////////////////

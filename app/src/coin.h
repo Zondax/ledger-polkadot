@@ -30,6 +30,11 @@ extern "C" {
 
 #define SUPPORTED_SPEC_VERSION LEDGER_MINOR_VERSION
 
+#define MENU_MAIN_APP_LINE1 "Kusama"
+#define MENU_MAIN_APP_LINE2 "Web3"
+
+#define VIEW_ADDRESS_BUFFER_OFFSET    (PK_LEN)
+
 #ifdef __cplusplus
 }
 #endif

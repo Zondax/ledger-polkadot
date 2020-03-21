@@ -24,7 +24,7 @@
 #include "view.h"
 #include "actions.h"
 #include "tx.h"
-#include "lib/crypto.h"
+#include "crypto.h"
 #include "coin.h"
 #include "zxmacros.h"
 
@@ -47,9 +47,9 @@ unsigned char io_event(unsigned char channel) {
 
         case SEPROXYHAL_TAG_TICKER_EVENT: { //
             UX_TICKER_EVENT(G_io_seproxyhal_spi_buffer, {
-                if (UX_ALLOWED) {
-                    UX_REDISPLAY();
-                }
+                    if (UX_ALLOWED) {
+                        UX_REDISPLAY();
+                    }
             });
             break;
         }
@@ -90,24 +90,18 @@ unsigned short io_exchange_al(unsigned char channel, unsigned short tx_len) {
     return 0;
 }
 
-void extractBip44(uint32_t rx, uint32_t offset) {
-    if ((rx - offset) < sizeof(uint32_t) * BIP44_LEN_DEFAULT) {
+void extractHDPath(uint32_t rx, uint32_t offset) {
+    if ((rx - offset) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT) {
         THROW(APDU_CODE_WRONG_LENGTH);
     }
 
-    MEMCPY(bip44Path, G_io_apdu_buffer + offset, sizeof(uint32_t) * BIP44_LEN_DEFAULT);
+    MEMCPY(hdPath, G_io_apdu_buffer + offset, sizeof(uint32_t) * HDPATH_LEN_DEFAULT);
 
-    // Check values
-    if (bip44Path[0] != BIP44_0_DEFAULT ||
-        bip44Path[1] != BIP44_1_DEFAULT) {
+    const bool mainnet = hdPath[0] == HDPATH_0_DEFAULT &&
+                         hdPath[1] == HDPATH_1_DEFAULT;
+
+    if (!mainnet) {
         THROW(APDU_CODE_DATA_INVALID);
-    }
-
-    // Check all items are hardened
-    for (uint8_t i = 0; i < BIP44_LEN_DEFAULT; i++) {
-        if ( (bip44Path[i] & 0x80000000u) == 0) {
-            THROW(APDU_CODE_DATA_INVALID);
-        }
     }
 }
 
@@ -127,7 +121,7 @@ bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
         case 0:
             tx_initialize();
             tx_reset();
-            extractBip44(rx, OFFSET_DATA);
+            extractHDPath(rx, OFFSET_DATA);
             return false;
         case 1:
             added = tx_append(&(G_io_apdu_buffer[OFFSET_DATA]), rx - OFFSET_DATA);
@@ -190,7 +184,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                 }
 
                 case INS_GET_ADDR_ED25519: {
-                    extractBip44(rx, OFFSET_DATA);
+                    extractHDPath(rx, OFFSET_DATA);
 
                     uint8_t requireConfirmation = G_io_apdu_buffer[OFFSET_P1];
 

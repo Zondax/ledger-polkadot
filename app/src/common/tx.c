@@ -17,7 +17,7 @@
 #include "tx.h"
 #include "apdu_codes.h"
 #include "buffering.h"
-#include "lib/parser.h"
+#include "parser.h"
 #include <string.h>
 #include "zxmacros.h"
 

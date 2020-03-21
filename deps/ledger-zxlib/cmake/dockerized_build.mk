@@ -1,5 +1,5 @@
 #*******************************************************************************
-#*   (c) 2019 ZondaX GmbH
+#*   (c) 2019 Zondax GmbH
 #*
 #*  Licensed under the Apache License, Version 2.0 (the "License");
 #*  you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 LEDGER_SRC=$(CURDIR)/app
 DOCKER_APP_SRC=/project
+DOCKER_APP_BIN=$(DOCKER_APP_SRC)/app/bin/app.elf
 
 DOCKER_IMAGE=zondax/ledger-docker-bolos:latest
 DOCKER_BOLOS_SDK=/project/deps/nanos-secure-sdk
@@ -26,8 +27,18 @@ DOCKER_BOLOS_SDKX=/project/deps/nano2-sdk
 SCP_PUBKEY=049bc79d139c70c83a4b19e8922e5ee3e0080bb14a2e8b0752aa42cda90a1463f689b0fa68c1c0246845c2074787b649d0d8a6c0b97d4607065eee3057bdf16b83
 SCP_PRIVKEY=ff701d781f43ce106f72dc26a46b6a83e053b5d07bb3d4ceab79c91ca822a66b
 
+INTERACTIVE:=$(shell [ -t 0 ] && echo 1)
+
+ifdef INTERACTIVE
+INTERACTIVE_SETTING:="-i"
+TTY_SETTING:="-t"
+else
+INTERACTIVE_SETTING:=
+TTY_SETTING:=
+endif
+
 define run_docker
-	docker run -it --rm \
+	docker run $(TTY_SETTING) $(INTERACTIVE_SETTING) --rm \
 	--privileged \
 	-e SCP_PRIVKEY=$(SCP_PRIVKEY) \
 	-e BOLOS_SDK=$(1) \
@@ -55,13 +66,16 @@ deps: check_python
 pull:
 	docker pull $(DOCKER_IMAGE)
 
-build:
+build_rust:
+	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) rust)
+
+build: build_rust
 	$(info Replacing app icon)
 	@cp $(LEDGER_SRC)/nanos_icon.gif $(LEDGER_SRC)/glyphs/icon_app.gif
 	$(info calling make inside docker)
 	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC))
 
-buildX:
+buildX: build_rust
 	@cp $(LEDGER_SRC)/nanos_icon.gif $(LEDGER_SRC)/glyphs/icon_app.gif
 	@convert $(LEDGER_SRC)/nanos_icon.gif -crop 14x14+1+1 +repage -negate $(LEDGER_SRC)/nanox_icon.gif
 	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC))
@@ -73,10 +87,11 @@ shell:
 	$(call run_docker,$(DOCKER_BOLOS_SDK) -t,bash)
 
 debug: build
-	$(call run_docker,$(DOCKER_BOLOS_SDK),/home/test/speculos/speculos.py -d -n -t $(DOCKER_APP_SRC)/bin/app.elf)
+	$(call run_docker,$(DOCKER_BOLOS_SDK),/home/zondax/speculos/speculos.py --debug --display headless -t $(DOCKER_APP_BIN))
 
 emu: build
-	$(call run_docker,$(DOCKER_BOLOS_SDK),/home/test/speculos/speculos.py -o -z 3 -v 8001 $(DOCKER_APP_SRC)/bin/app.elf)
+	$(call run_docker,$(DOCKER_BOLOS_SDK),/home/zondax/speculos/speculos.py --ontop --zoom 3 --vnc-port 8001 $(DOCKER_APP_BIN))
+
 
 load:
 	${LEDGER_SRC}/pkg/zxtool.sh load
