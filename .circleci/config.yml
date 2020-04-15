@@ -13,32 +13,33 @@ jobs:
 
   build_ledger:
     docker:
-      - image: zondax/ledger-docker-bolos:latest
+      - image: zondax/builder-bolos:latest
     environment:
-      - BOLOS_SDK=/home/test/project/deps/nanos-secure-sdk
+      - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
       - BOLOS_ENV=/opt/bolos
     steps:
       - checkout
       - run: git submodule update --init --recursive
-      - run: cd /home/test/project && make
+      - run: cd /home/zondax/project && make
 
   build_package:
     docker:
-      - image: zondax/ledger-docker-bolos:latest
+      - image: zondax/builder-bolos:latest
     environment:
-      - BOLOS_SDK=/home/test/project/deps/nanos-secure-sdk
+      - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
       - BOLOS_ENV=/opt/bolos
     steps:
       - checkout
       - run: git submodule update --init --recursive
-      - run: cd /home/test/project/app && make
+      - run: cd /home/zondax/project/app && make
       - store_artifacts:
-          path: /home/test/project/app/pkg/zxtool.sh
-      - run: /home/test/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(/home/test/project/app/pkg/zxtool.sh version) /home/test/project/app/pkg/zxtool.sh
+          path: /home/zondax/project/app/pkg/zxtool.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/zxtool.sh
 
 workflows:
   version: 2
-  build_all:
+
+  default:
     jobs:
       - build
       - build_ledger

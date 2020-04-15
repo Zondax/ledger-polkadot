@@ -74,6 +74,7 @@ file(GLOB_RECURSE TESTS_SRC
 add_executable(unittests ${TESTS_SRC})
 target_include_directories(unittests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}/include
         ${CONAN_INCLUDE_DIRS_FMT}
@@ -99,6 +100,7 @@ file(GLOB FUZZING_SRC
 add_executable(fuzzing_stub ${FUZZING_SRC})
 target_include_directories(fuzzing_stub PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib
         ${CMAKE_CURRENT_SOURCE_DIR}/tests
         )
 
@@ -106,7 +108,9 @@ add_library(app_lib32 STATIC ${LIB_SRC})
 target_include_directories(app_lib32 PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE2/ref
         ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/app/lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/common
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib
         )
 #set_target_properties(app_lib32 PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
 

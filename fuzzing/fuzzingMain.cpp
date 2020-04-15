@@ -14,8 +14,8 @@
 *  limitations under the License.
 ********************************************************************************/
 #include <iostream>
-#include <lib/parser_common.h>
-#include <lib/parser.h>
+#include <parser_common.h>
+#include <parser.h>
 #include <hexutils.h>
 #include <fstream>
 #include "../tests/utils/common.h"
