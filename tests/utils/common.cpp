@@ -19,8 +19,8 @@
 #include <sstream>
 #include <vector>
 #include <hexutils.h>
-#include <lib/parser_txdef.h>
-#include "lib/parser.h"
+#include <parser_txdef.h>
+#include "common/parser.h"
 #include "common.h"
 
 std::vector<std::string> dumpUI(parser_context_t *ctx,

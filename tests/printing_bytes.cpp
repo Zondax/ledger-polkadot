@@ -18,9 +18,9 @@
 
 #include <iostream>
 #include <hexutils.h>
-#include <lib/parser_txdef.h>
-#include <lib/parser.h>
-#include "lib/parser_impl.h"
+#include <parser_txdef.h>
+#include <parser.h>
+#include "parser_impl.h"
 
 using ::testing::TestWithParam;
 using ::testing::Values;

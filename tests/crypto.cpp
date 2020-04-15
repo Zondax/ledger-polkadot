@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include <hexutils.h>
-#include <lib/crypto.h>
+#include <crypto.h>
 
 using ::testing::TestWithParam;
 using ::testing::Values;

@@ -23,8 +23,8 @@ extern "C" {
 #include <stddef.h>
 
 #define DECIMAL_PLACES      12              // Specific to Kusama
-#define BIP44_0_DEFAULT                  (0x80000000 | 0x2c)
-#define BIP44_1_DEFAULT                  (0x80000000 | 0x1b2)       // 434
+#define HDPATH_0_DEFAULT                  (0x80000000 | 0x2c)
+#define HDPATH_1_DEFAULT                  (0x80000000 | 0x1b2)       // 434
 
 #define PK_ADDRESS_TYPE     02
 

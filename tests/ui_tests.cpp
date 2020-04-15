@@ -20,8 +20,8 @@
 #include <fstream>
 #include <json/json.h>
 #include <hexutils.h>
-#include <lib/parser_txdef.h>
-#include "lib/parser.h"
+#include <parser_txdef.h>
+#include "parser.h"
 #include "utils/common.h"
 
 using ::testing::TestWithParam;
