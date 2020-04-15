@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #*******************************************************************************
-#*   (c) 2018 ZondaX GmbH
+#*   (c) 2018 Zondax GmbH
 #*
 #*  Licensed under the Apache License, Version 2.0 (the "License");
 #*  you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
 #*  See the License for the specific language governing permissions and
 #*  limitations under the License.
 #********************************************************************************
-
-SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 
 os_string="$(uname -s)"
 case "${os_string}" in

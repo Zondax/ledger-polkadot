@@ -19,7 +19,7 @@
 
 #include "base58.h"
 
-uint32_t bip44Path[BIP44_LEN_DEFAULT];
+uint32_t hdPath[HDPATH_LEN_DEFAULT];
 #define SS58_BLAKE_PREFIX  (const unsigned char *) "SS58PRE"
 #define SS58_BLAKE_PREFIX_LEN 7
 
@@ -30,7 +30,7 @@ uint32_t bip44Path[BIP44_LEN_DEFAULT];
 #if defined(TARGET_NANOS) || defined(TARGET_NANOX)
 #include "cx.h"
 
-void crypto_extractPublicKey(const uint32_t path[BIP44_LEN_DEFAULT], uint8_t *pubKey, uint16_t pubKeyLen) {
+void crypto_extractPublicKey(const uint32_t path[HDPATH_LEN_DEFAULT], uint8_t *pubKey, uint16_t pubKeyLen) {
     cx_ecfp_public_key_t cx_publicKey;
     cx_ecfp_private_key_t cx_privateKey;
     uint8_t privateKeyData[32];
@@ -47,7 +47,7 @@ void crypto_extractPublicKey(const uint32_t path[BIP44_LEN_DEFAULT], uint8_t *pu
                     HDW_NORMAL,
                     CX_CURVE_Ed25519,
                     path,
-                    BIP44_LEN_DEFAULT,
+                    HDPATH_LEN_DEFAULT,
                     privateKeyData,
                     NULL,
                     NULL,
@@ -98,8 +98,8 @@ uint16_t crypto_sign(uint8_t *signature, uint16_t signatureMaxlen, const uint8_t
             os_perso_derive_node_bip32_seed_key(
                     HDW_NORMAL,
                     CX_CURVE_Ed25519,
-                    bip44Path,
-                    BIP44_LEN_DEFAULT,
+                    hdPath,
+                    HDPATH_LEN_DEFAULT,
                     privateKeyData,
                     NULL,
                     NULL,
@@ -147,7 +147,7 @@ int ss58hash(const unsigned char *in, unsigned int inLen,
 
 char *crypto_testPubKey;
 
-void crypto_extractPublicKey(const uint32_t path[BIP44_LEN_DEFAULT], uint8_t *pubKey, uint16_t pubKeyLen) {
+void crypto_extractPublicKey(const uint32_t path[HDPATH_LEN_DEFAULT], uint8_t *pubKey, uint16_t pubKeyLen) {
     ///////////////////////////////////////
     // THIS IS ONLY USED FOR TEST PURPOSES
     ///////////////////////////////////////
@@ -210,7 +210,7 @@ uint16_t crypto_fillAddress(uint8_t *buffer, uint16_t bufferLen) {
         return 0;
     }
     MEMZERO(buffer, bufferLen);
-    crypto_extractPublicKey(bip44Path, buffer, bufferLen);
+    crypto_extractPublicKey(hdPath, buffer, bufferLen);
 
     size_t outLen = crypto_SS58EncodePubkey(buffer + ED25519_PK_LEN,
                                             bufferLen - ED25519_PK_LEN,

@@ -1,7 +1,7 @@
 #*******************************************************************************
 #   Ledger App
+#   (c) 2018-2020 Zondax GmbH
 #   (c) 2017 Ledger
-#   (c) 2019 ZondaX GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,6 +19,9 @@
 ifeq ($(BOLOS_SDK),)
 $(error BOLOS_SDK is not set)
 endif
+
+MY_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+
 include $(BOLOS_SDK)/Makefile.defines
 
 # Main app configuration
@@ -51,7 +54,7 @@ all: default
 	@echo "APPHEX=\"" >> $(CURDIR)/pkg/zxtool.sh
 	@cat $(CURDIR)/bin/app.hex >> $(CURDIR)/pkg/zxtool.sh
 	@echo "\"" >> $(CURDIR)/pkg/zxtool.sh
-	@cat $(CURDIR)/scripts/template.sh >> $(CURDIR)/pkg/zxtool.sh
+	@cat $(CURDIR)/../deps/ledger-zxlib/scripts/template.sh >> $(CURDIR)/pkg/zxtool.sh
 	@chmod +x $(CURDIR)/pkg/zxtool.sh
 
 ############
@@ -70,10 +73,11 @@ DEFINES += HAVE_IO_USB HAVE_L4_USBLIB IO_USB_MAX_ENDPOINTS=7 IO_HID_EP_LENGTH=64
 DEFINES += LEDGER_MAJOR_VERSION=$(APPVERSION_M) LEDGER_MINOR_VERSION=$(APPVERSION_N) LEDGER_PATCH_VERSION=$(APPVERSION_P)
 
 DEFINES   += HAVE_U2F HAVE_IO_U2F
-DEFINES   += U2F_PROXY_MAGIC=\"DOT\"
+DEFINES   += U2F_PROXY_MAGIC=\"KSM\"
 DEFINES   += USB_SEGMENT_SIZE=64
 DEFINES   += U2F_MAX_MESSAGE_SIZE=264 #257+5+2
 DEFINES   += HAVE_BOLOS_APP_STACK_CANARY
+DEFINES   += NDEBUG
 
 WEBUSB_URL     = www.ledgerwallet.com
 DEFINES       += HAVE_WEBUSB WEBUSB_URL_SIZE_B=$(shell echo -n $(WEBUSB_URL) | wc -c) WEBUSB_URL=$(shell echo -n $(WEBUSB_URL) | sed -e "s/./\\\'\0\\\',/g")
@@ -94,15 +98,14 @@ DEFINES          += HAVE_UX_FLOW
 SDK_SOURCE_PATH  += lib_ux
 else
 # Assume Nano S
-DEFINES += IO_SEPROXYHAL_BUFFER_SIZE_B=128
-DEFINES += HAVE_BOLOS_UX COMPLIANCE_UX_160 HAVE_UX_LEGACY HAVE_UX_FLOW
+DEFINES       += IO_SEPROXYHAL_BUFFER_SIZE_B=128
+DEFINES       += HAVE_BOLOS_UX COMPLIANCE_UX_160 HAVE_UX_LEGACY HAVE_UX_FLOW
 endif
 
 # X specific
 
 #Feature temporarily disabled
 DEFINES   += LEDGER_SPECIFIC
-#DEFINES += TESTING_ENABLED
 
 # Compiler, assembler, and linker
 
@@ -125,7 +128,7 @@ endif
 #########################
 
 CC := $(CLANGPATH)clang
-CFLAGS += -O3 -Os
+CFLAGS += -O3 -Os -Wno-unknown-pragmas
 
 AS := $(GCCPATH)arm-none-eabi-gcc
 AFLAGS +=
@@ -137,7 +140,11 @@ LDLIBS   += -lm -lgcc -lc
 ##########################
 include $(BOLOS_SDK)/Makefile.glyphs
 
-APP_SOURCE_PATH += src ../deps/ledger-zxlib/include ../deps/ledger-zxlib/src
+APP_SOURCE_PATH += $(MY_DIR)/src
+APP_SOURCE_PATH += $(MY_DIR)/../deps/ledger-zxlib/include
+APP_SOURCE_PATH += $(MY_DIR)/../deps/ledger-zxlib/src
+APP_SOURCE_PATH += $(MY_DIR)/../deps/ledger-zxlib/app/common
+
 SDK_SOURCE_PATH += lib_stusb lib_u2f lib_stusb_impl
 
 #SDK_SOURCE_PATH  += lib_blewbxx lib_blewbxx_impl
@@ -149,5 +156,15 @@ include $(BOLOS_SDK)/Makefile.rules
 #add dependency on custom makefile filename
 dep/%.d: %.c Makefile
 
+rust:
+	# Do nothing
+
+# load, delete and listvariants are provided to comply with Ledger requirements
+load:
+	python -m ledgerblue.loadApp $(APP_LOAD_PARAMS)
+
+delete:
+	python -m ledgerblue.deleteApp $(COMMON_DELETE_PARAMS)
+
 listvariants:
-	@echo VARIANTS COIN DOT
+	@echo VARIANTS COIN KSM

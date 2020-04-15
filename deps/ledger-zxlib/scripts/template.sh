@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 #*******************************************************************************
-#   Ledger App
-#   (c) 2017 Ledger
-#   (c) 2018 ZondaX GmbH
+#  (c) 2018 Zondax GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.

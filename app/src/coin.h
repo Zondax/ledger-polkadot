@@ -1,5 +1,5 @@
 /*******************************************************************************
-*   (c) 2019 ZondaX GmbH
+*  (c) 2019 ZondaX GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -13,34 +13,27 @@
 *  See the License for the specific language governing permissions and
 *  limitations under the License.
 ********************************************************************************/
-
 #pragma once
-
-#include <zxmacros.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define BIP44_LEN_DEFAULT 5u
-#define ED25519_PK_LEN 32u
-#define SS58_ADDRESS_MAX_LEN 60u
+#include <stdint.h>
+#include <stddef.h>
 
-#define PK_LEN ED25519_PK_LEN
+#define DECIMAL_PLACES      12              // Specific to Kusama
+#define HDPATH_0_DEFAULT                  (0x80000000 | 0x2c)
+#define HDPATH_1_DEFAULT                  (0x80000000 | 0x1b2)       // 434
 
-extern uint32_t bip44Path[BIP44_LEN_DEFAULT];
+#define PK_ADDRESS_TYPE     02
 
-void crypto_extractPublicKey(const uint32_t path[BIP44_LEN_DEFAULT], uint8_t *pubKey, uint16_t pubKeyLen);
+#define SUPPORTED_SPEC_VERSION LEDGER_MINOR_VERSION
 
-uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
-                                uint8_t addressType, const uint8_t *pubkey);
+#define MENU_MAIN_APP_LINE1 "Kusama"
+#define MENU_MAIN_APP_LINE2 "Web3"
 
-uint16_t crypto_fillAddress(uint8_t *buffer, uint16_t bufferLen);
-
-uint16_t crypto_sign(uint8_t *signature,
-                     uint16_t signatureMaxlen,
-                     const uint8_t *message,
-                     uint16_t messageLen);
+#define VIEW_ADDRESS_BUFFER_OFFSET    (PK_LEN)
 
 #ifdef __cplusplus
 }

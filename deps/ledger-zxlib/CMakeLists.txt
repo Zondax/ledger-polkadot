@@ -1,5 +1,5 @@
 #*******************************************************************************
-#*   (c) 2018 ZondaX GmbH
+#*   (c) 2018 Zondax GmbH
 #*
 #*  Licensed under the Apache License, Version 2.0 (the "License");
 #*  you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ set(CMAKE_CXX_STANDARD 11)
 add_subdirectory(cmake/gtest)
 
 include_directories(
-        include
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 ###############
@@ -38,7 +38,7 @@ file(GLOB_RECURSE TESTS_SRC
 set(BUILD_TESTS OFF CACHE BOOL "Enables tests")
 
 add_library(zxlib STATIC ${ZXLIB_SRC})
-target_include_directories(zxlib PRIVATE include)
+target_include_directories(zxlib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 #target_link_libraries(zxlib)
 
 enable_testing()
@@ -48,7 +48,7 @@ add_executable(zxlib_tests
         )
 
 target_include_directories(zxlib_tests PRIVATE
-        include
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}/include
         )

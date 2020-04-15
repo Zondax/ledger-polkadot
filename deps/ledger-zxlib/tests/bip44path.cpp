@@ -1,5 +1,5 @@
 /*******************************************************************************
-*   (c) 2018 ZondaX GmbH
+*   (c) 2018 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -17,6 +17,48 @@
 #include <zxmacros.h>
 
 namespace {
+    TEST(MACROS, bip32empty) {
+        char buffer[100];
+        uint32_t path[] = {44, 60, 0, 0, 1};
+        bip32_to_str(buffer, sizeof(buffer), path, 0);
+        EXPECT_EQ("EMPTY PATH", std::string(buffer));
+    }
+
+    TEST(MACROS, bip32tooManyChildren) {
+        char buffer[100];
+        uint32_t path[] = {44, 60, 0, 0, 1};
+        bip32_to_str(buffer, sizeof(buffer), path, 200);
+        EXPECT_EQ("ERROR", std::string(buffer));
+    }
+
+    TEST(MACROS, bip32notEnoughSpaceInBuffer1) {
+        char buffer[6];
+        uint32_t path[] = {1234, 60, 0, 0, 1};
+        bip32_to_str(buffer, sizeof(buffer), path, 5);
+        EXPECT_EQ("ERROR", std::string(buffer));
+    }
+
+    TEST(MACROS, bip32notEnoughSpaceInBuffer2) {
+        char buffer[9];
+        uint32_t path[] = {1, 1, 1, 1, 1};
+        bip32_to_str(buffer, sizeof(buffer), path, 5);
+        EXPECT_EQ("ERROR", std::string(buffer));
+    }
+
+    TEST(MACROS, bip32notEnoughSpaceInBuffer3) {
+        char buffer[10];
+        uint32_t path[] = {1, 1, 1, 1, 0x80000001 };
+        bip32_to_str(buffer, sizeof(buffer), path, 5);
+        EXPECT_EQ("ERROR", std::string(buffer));
+    }
+
+    TEST(MACROS, bip32justEnoughSpaceInBuffer3) {
+        char buffer[10];
+        uint32_t path[] = {1, 1, 1, 1, 1};
+        bip32_to_str(buffer, sizeof(buffer), path, 5);
+        EXPECT_EQ("1/1/1/1/1", std::string(buffer));
+    }
+
     TEST(MACROS, bip44path1) {
         uint32_t path[] = {44, 60, 0, 0, 1};
 
