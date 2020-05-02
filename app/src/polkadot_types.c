@@ -21,11 +21,19 @@
 #include <stddef.h>
 #include <zxmacros.h>
 
+parser_error_t _readCompactAssignments(parser_context_t *c, pd_CompactAssignments_t *v) {
+    return _readCompactInt(c, v);
+}
+
 parser_error_t _readCompactAuctionIndex(parser_context_t *c, pd_CompactAuctionIndex_t *v) {
     return _readCompactInt(c, v);
 }
 
 parser_error_t _readCompactBlockNumber(parser_context_t *c, pd_CompactBlockNumber_t *v) {
+    return _readCompactInt(c, v);
+}
+
+parser_error_t _readCompactEraIndex(parser_context_t *c, pd_CompactEraIndex_t *v) {
     return _readCompactInt(c, v);
 }
 
@@ -67,6 +75,42 @@ parser_error_t _readCompactSubId(parser_context_t *c, pd_CompactSubId_t *v) {
 
 parser_error_t _readAccountId(parser_context_t *c, pd_AccountId_t *v) {
     GEN_DEF_READARRAY(32)
+}
+
+parser_error_t _readAccountIndex(parser_context_t *c, pd_AccountIndex_t *v) {
+    return _readUInt32(c, &v->value);
+}
+
+parser_error_t _readAccountVoteSplit(parser_context_t *c, pd_AccountVoteSplit_t *v) {
+    CHECK_ERROR(_readBalanceOf(c, &v->aye));
+    CHECK_ERROR(_readBalanceOf(c, &v->nay));
+    return parser_ok;
+}
+
+parser_error_t _readAccountVoteStandard(parser_context_t *c, pd_AccountVoteStandard_t *v) {
+    CHECK_ERROR(_readVote(c, &v->vote));
+    CHECK_ERROR(_readBalanceOf(c, &v->balance));
+    return parser_ok;
+}
+
+parser_error_t _readAccountVote(parser_context_t *c, pd_AccountVote_t *v) {
+    CHECK_INPUT();
+    CHECK_ERROR(_readUInt8(c, &v->value))
+
+    switch (v->value) {
+        case 0:
+            CHECK_INPUT();
+            CHECK_ERROR(_readAccountVoteStandard(c, &v->voteStandard))
+            break;
+        case 1:
+            CHECK_INPUT();
+            CHECK_ERROR(_readAccountVoteSplit(c, &v->voteSplit))
+            break;
+        default:
+            break;
+    }
+
+    return parser_ok;
 }
 
 parser_error_t _readAttestedCandidate(parser_context_t *c, pd_AttestedCandidate_t *v) {
@@ -145,6 +189,10 @@ parser_error_t _readData(parser_context_t *c, pd_Data_t *v) {
     return parser_ok;
 }
 
+parser_error_t _readDoubleVoteReport(parser_context_t *c, pd_DoubleVoteReport_t *v) {
+    return parser_not_supported;
+}
+
 parser_error_t _readEcdsaSignature(parser_context_t *c, pd_EcdsaSignature_t *v) {
     GEN_DEF_READARRAY(65)
 }
@@ -155,6 +203,10 @@ parser_error_t _readEraIndex(parser_context_t *c, pd_EraIndex_t *v) {
 
 parser_error_t _readEthereumAddress(parser_context_t *c, pd_EthereumAddress_t *v) {
     GEN_DEF_READARRAY(20)
+}
+
+parser_error_t _readHeadData(parser_context_t *c, pd_HeadData_t *v) {
+    return parser_not_supported;
 }
 
 parser_error_t _readHeader(parser_context_t *c, pd_Header_t *v) {
@@ -194,6 +246,10 @@ parser_error_t _readKey(parser_context_t *c, pd_Key_t *v) {
     GEN_DEF_READARRAY(32)
 }
 
+parser_error_t _readLookupSource(parser_context_t *c, pd_LookupSource_t *v) {
+    GEN_DEF_READARRAY(32)
+}
+
 parser_error_t _readMoreAttestations(parser_context_t *c, pd_MoreAttestations_t *v) {
     return parser_not_supported;
 }
@@ -202,6 +258,14 @@ parser_error_t _readParaInfo(parser_context_t *c, pd_ParaInfo_t *v) {
     CHECK_INPUT();
     CHECK_ERROR(_readUInt8(c, &v->scheduling))
     return parser_ok;
+}
+
+parser_error_t _readPerbill(parser_context_t *c, pd_Perbill_t *v) {
+    return _readUInt32(c, &v->value);
+}
+
+parser_error_t _readPhragmenScore(parser_context_t *c, pd_PhragmenScore_t *v) {
+    return parser_not_supported;
 }
 
 parser_error_t _readReferendumIndex(parser_context_t *c, pd_ReferendumIndex_t *v) {
@@ -239,6 +303,12 @@ parser_error_t _readTupleAccountIdData(parser_context_t *c, pd_TupleAccountIdDat
     return parser_not_supported;
 }
 
+parser_error_t _readTupleAccountIdu32(parser_context_t *c, pd_TupleAccountIdu32_t *v) {
+    CHECK_ERROR(_readAccountId(c, &v->accountId))
+    CHECK_ERROR(_readu32(c, &v->num))
+    return parser_ok;
+}
+
 parser_error_t _readTupleBalanceOfBalanceOfBlockNumber(parser_context_t *c, pd_TupleBalanceOfBalanceOfBlockNumber_t *v) {
     CHECK_ERROR(_readBalanceOf(c, &v->balance1))
     CHECK_ERROR(_readBalanceOf(c, &v->balance2))
@@ -253,9 +323,23 @@ parser_error_t _readTupleDataData(parser_context_t *c, pd_TupleDataData_t *v) {
     return parser_ok;
 }
 
+parser_error_t _readValidationCode(parser_context_t *c, pd_ValidationCode_t *v) {
+    return parser_not_supported;
+}
+
+parser_error_t _readValidatorIndex(parser_context_t *c, pd_ValidatorIndex_t *v) {
+    return parser_not_supported;
+}
+
 parser_error_t _readValidatorPrefs(parser_context_t *c, pd_ValidatorPrefs_t *v) {
     CHECK_INPUT();
     return _readCompactBalance(c, &v->balance);
+}
+
+parser_error_t _readVestingInfo(parser_context_t *c, pd_VestingInfo_t *v) {
+    CHECK_ERROR(_readBalanceOf(c, &v->locked))
+    CHECK_ERROR(_readBalanceOf(c, &v->per_block))
+    CHECK_ERROR(_readBlockNumber(c, &v->starting_block))
 }
 
 parser_error_t _readVote(parser_context_t *c, pd_Vote_t *v) {
@@ -285,10 +369,6 @@ parser_error_t _readVecAccountId(parser_context_t *c, pd_VecAccountId_t *v) {
     GEN_DEF_READVECTOR(AccountId)
 }
 
-parser_error_t _readVecAddress(parser_context_t *c, pd_VecAddress_t *v) {
-    GEN_DEF_READVECTOR(Address)
-}
-
 parser_error_t _readVecAttestedCandidate(parser_context_t *c, pd_VecAttestedCandidate_t *v) {
     GEN_DEF_READVECTOR(AttestedCandidate)
 }
@@ -309,16 +389,36 @@ parser_error_t _readVecKey(parser_context_t *c, pd_VecKey_t *v) {
     GEN_DEF_READVECTOR(Key)
 }
 
+parser_error_t _readVecLookupSource(parser_context_t *c, pd_VecLookupSource_t *v) {
+    GEN_DEF_READVECTOR(LookupSource)
+}
+
 parser_error_t _readVecTupleAccountIdData(parser_context_t *c, pd_VecTupleAccountIdData_t *v) {
     GEN_DEF_READVECTOR(TupleAccountIdData)
+}
+
+parser_error_t _readVecTupleAccountIdu32(parser_context_t *c, pd_VecTupleAccountIdu32_t *v) {
+    GEN_DEF_READVECTOR(TupleAccountIdu32)
 }
 
 parser_error_t _readVecTupleDataData(parser_context_t *c, pd_VecTupleDataData_t *v) {
     GEN_DEF_READVECTOR(TupleDataData)
 }
 
+parser_error_t _readVecValidatorIndex(parser_context_t *c, pd_VecValidatorIndex_t *v) {
+    GEN_DEF_READVECTOR(ValidatorIndex)
+}
+
 parser_error_t _readVecu32(parser_context_t *c, pd_Vecu32_t *v) {
     GEN_DEF_READVECTOR(u32)
+}
+
+parser_error_t _readOptionAccountId(parser_context_t *c, pd_OptionAccountId_t *v) {
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readAccountId(c, &v->contained))
+    }
+    return parser_ok;
 }
 
 parser_error_t _readOptionChangesTrieConfiguration(parser_context_t *c, pd_OptionChangesTrieConfiguration_t *v) {
@@ -357,6 +457,15 @@ parser_error_t _readOptionu8_array_20(parser_context_t *c, pd_Optionu8_array_20_
 ///////////////////////////////////
 ///////////////////////////////////
 
+parser_error_t _toStringCompactAssignments(
+        const pd_CompactAssignments_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    return _toStringCompactInt(v, 0, outValue, outValueLen, pageIdx, pageCount);
+}
+
 parser_error_t _toStringCompactAuctionIndex(
         const pd_CompactAuctionIndex_t *v,
         char *outValue,
@@ -368,6 +477,15 @@ parser_error_t _toStringCompactAuctionIndex(
 
 parser_error_t _toStringCompactBlockNumber(
         const pd_CompactBlockNumber_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    return _toStringCompactInt(v, 0, outValue, outValueLen, pageIdx, pageCount);
+}
+
+parser_error_t _toStringCompactEraIndex(
+        const pd_CompactEraIndex_t *v,
         char *outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
@@ -465,6 +583,84 @@ parser_error_t _toStringAccountId(
     return _toStringPubkeyAsAddress(v->_ptr, outValue, outValueLen, pageIdx, pageCount);
 }
 
+parser_error_t _toStringAccountIndex(
+        const pd_AccountIndex_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    return _toStringu32(&v->value, outValue, outValueLen, pageIdx, pageCount);
+}
+
+parser_error_t _toStringAccountVoteSplit(
+        const pd_AccountVoteSplit_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+       switch (pageIdx) {
+        case 0:
+            snprintf(outValue, outValueLen, "Split");
+            break;
+        case 1:
+            _toStringBalanceOf(&v->aye, outValue, outValueLen, 0, pageCount);
+            break;
+        case 2:
+            _toStringBalanceOf(&v->nay, outValue, outValueLen, 0, pageCount);
+            break;
+        default:
+            return parser_unexpected_value;
+    }
+
+    *pageCount = 3;
+    return parser_ok;
+}
+
+parser_error_t _toStringAccountVoteStandard(
+        const pd_AccountVoteStandard_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+        switch (pageIdx) {
+        case 0:
+            snprintf(outValue, outValueLen, "Standard");
+            break;
+        case 1:
+            CHECK_ERROR(_toStringVote(&v->vote, outValue, outValueLen, 0, pageCount));
+            break;
+        case 2:
+            CHECK_ERROR(_toStringBalanceOf(&v->balance, outValue, outValueLen, 0, pageCount));
+            break;
+        default:
+            return parser_unexpected_value;
+    }
+
+    *pageCount = 3;
+    return parser_ok;
+}
+
+parser_error_t _toStringAccountVote(
+        const pd_AccountVote_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    switch (v->value) {
+        case 0:
+            _toStringAccountVoteStandard(&v->voteStandard, outValue, outValueLen, pageIdx, pageCount);
+            break;
+        case 1:
+            _toStringAccountVoteSplit(&v->voteSplit, outValue, outValueLen, pageIdx, pageCount);
+            break;
+        default:
+           return parser_unexpected_value;
+    }
+
+    return parser_ok;
+}
+
 parser_error_t _toStringAttestedCandidate(
         const pd_AttestedCandidate_t *v,
         char *outValue,
@@ -472,7 +668,7 @@ parser_error_t _toStringAttestedCandidate(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -514,7 +710,7 @@ parser_error_t _toStringCall(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -525,7 +721,7 @@ parser_error_t _toStringChangesTrieConfiguration(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -604,6 +800,17 @@ parser_error_t _toStringData(
     return parser_print_not_supported;
 }
 
+parser_error_t _toStringDoubleVoteReport(
+        const pd_DoubleVoteReport_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    
+    return parser_print_not_supported;
+}
+
 parser_error_t _toStringEcdsaSignature(
         const pd_EcdsaSignature_t *v,
         char *outValue,
@@ -631,6 +838,17 @@ parser_error_t _toStringEthereumAddress(
     GEN_DEF_TOSTRING_ARRAY(20)
 }
 
+parser_error_t _toStringHeadData(
+        const pd_HeadData_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    
+    return parser_print_not_supported;
+}
+
 parser_error_t _toStringHeader(
         const pd_Header_t *v,
         char *outValue,
@@ -638,7 +856,7 @@ parser_error_t _toStringHeader(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -649,7 +867,7 @@ parser_error_t _toStringHeartbeat(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -660,7 +878,7 @@ parser_error_t _toStringIdentityFields(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -781,7 +999,7 @@ parser_error_t _toStringIdentityJudgement(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -792,7 +1010,7 @@ parser_error_t _toStringKeyValue(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -803,8 +1021,17 @@ parser_error_t _toStringKey(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
+}
+
+parser_error_t _toStringLookupSource(
+        const pd_LookupSource_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    return _toStringPubkeyAsAddress(v->_ptr, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringMoreAttestations(
@@ -814,7 +1041,7 @@ parser_error_t _toStringMoreAttestations(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -839,6 +1066,26 @@ parser_error_t _toStringParaInfo(
     }
 
     return parser_ok;
+}
+
+parser_error_t _toStringPerbill(
+        const pd_Perbill_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    return _toStringu32(&v->value, outValue, outValueLen, pageIdx, pageCount);
+}
+
+parser_error_t _toStringPhragmenScore(
+        const pd_PhragmenScore_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    
+    return parser_print_not_supported;
 }
 
 parser_error_t _toStringReferendumIndex(
@@ -901,7 +1148,7 @@ parser_error_t _toStringSocietyJudgement(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -912,7 +1159,7 @@ parser_error_t _toStringTimepoint(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
 }
 
@@ -923,8 +1170,38 @@ parser_error_t _toStringTupleAccountIdData(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-
+    
     return parser_print_not_supported;
+}
+
+parser_error_t _toStringTupleAccountIdu32(
+        const pd_TupleAccountIdu32_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    // Get all pages first
+    uint8_t pages[2];
+    CHECK_ERROR(_toStringAccountId(&v->accountId, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringu32(&v->num, outValue, outValueLen, 0, &pages[1]))
+
+    *pageCount = pages[0] + pages[1];
+    if (pageIdx > *pageCount) {
+        return parser_display_idx_out_of_range;
+    }
+
+    if (pageIdx < pages[0]) {
+        CHECK_ERROR(_toStringAccountId(&v->accountId, outValue, outValueLen, pageIdx, &pages[0]))
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringu32(&v->num, outValue, outValueLen, pageIdx, &pages[1]))
+        return parser_ok;
+    }
+
+    return parser_display_idx_out_of_range;
 }
 
 parser_error_t _toStringTupleBalanceOfBalanceOfBlockNumber(
@@ -1007,6 +1284,28 @@ parser_error_t _toStringTupleDataData(
     return parser_display_idx_out_of_range;
 }
 
+parser_error_t _toStringValidationCode(
+        const pd_ValidationCode_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    
+    return parser_print_not_supported;
+}
+
+parser_error_t _toStringValidatorIndex(
+        const pd_ValidatorIndex_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    
+    return parser_print_not_supported;
+}
+
 parser_error_t _toStringValidatorPrefs(
         const pd_ValidatorPrefs_t *v,
         char *outValue,
@@ -1014,6 +1313,47 @@ parser_error_t _toStringValidatorPrefs(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     return _toStringCompactBalance(&v->balance, outValue, outValueLen, pageIdx, pageCount);
+}
+
+parser_error_t _toStringVestingInfo(
+        const pd_VestingInfo_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+  CLEAN_AND_CHECK()
+
+  // Index + count pages
+  uint8_t pages[3];
+  CHECK_ERROR(_toStringBalanceOf(&v->locked, outValue, outValueLen, 0, &pages[0]))
+  CHECK_ERROR(_toStringBalanceOf(&v->per_block, outValue, outValueLen, 0, &pages[1]))
+  CHECK_ERROR(_toStringBlockNumber(&v->starting_block, outValue, outValueLen, 0, &pages[2]))
+
+  *pageCount = pages[0] + pages[1] + pages[2];
+  if (pageIdx > *pageCount) {
+    return parser_display_idx_out_of_range;
+  }
+
+  if (pageIdx < pages[0]) {
+    CHECK_ERROR(_toStringBalanceOf(&v->locked, outValue, outValueLen, pageIdx, &pages[0]))
+    return parser_ok;
+  }
+  pageIdx -= pages[0];
+
+  //////
+  if (pageIdx < pages[1]) {
+    CHECK_ERROR(_toStringBalanceOf(&v->per_block, outValue, outValueLen, pageIdx, &pages[1]))
+    return parser_ok;
+  }
+  pageIdx -= pages[1];
+  
+  //////
+  if (pageIdx < pages[2]) {
+    CHECK_ERROR(_toStringBlockNumber(&v->starting_block, outValue, outValueLen, pageIdx, &pages[2]))
+    return parser_ok;
+  }
+
+  return parser_display_idx_out_of_range;
 }
 
 parser_error_t _toStringVote(
@@ -1063,15 +1403,6 @@ parser_error_t _toStringVecAccountId(
     GEN_DEF_TOSTRING_VECTOR(AccountId);
 }
 
-parser_error_t _toStringVecAddress(
-        const pd_VecAddress_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    GEN_DEF_TOSTRING_VECTOR(Address);
-}
-
 parser_error_t _toStringVecAttestedCandidate(
         const pd_VecAttestedCandidate_t *v,
         char *outValue,
@@ -1117,6 +1448,15 @@ parser_error_t _toStringVecKey(
     GEN_DEF_TOSTRING_VECTOR(Key);
 }
 
+parser_error_t _toStringVecLookupSource(
+        const pd_VecLookupSource_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    GEN_DEF_TOSTRING_VECTOR(LookupSource);
+}
+
 parser_error_t _toStringVecTupleAccountIdData(
         const pd_VecTupleAccountIdData_t *v,
         char *outValue,
@@ -1124,6 +1464,15 @@ parser_error_t _toStringVecTupleAccountIdData(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     GEN_DEF_TOSTRING_VECTOR(TupleAccountIdData);
+}
+
+parser_error_t _toStringVecTupleAccountIdu32(
+        const pd_VecTupleAccountIdu32_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    GEN_DEF_TOSTRING_VECTOR(TupleAccountIdu32);
 }
 
 parser_error_t _toStringVecTupleDataData(
@@ -1135,6 +1484,15 @@ parser_error_t _toStringVecTupleDataData(
     GEN_DEF_TOSTRING_VECTOR(TupleDataData);
 }
 
+parser_error_t _toStringVecValidatorIndex(
+        const pd_VecValidatorIndex_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    GEN_DEF_TOSTRING_VECTOR(ValidatorIndex);
+}
+
 parser_error_t _toStringVecu32(
         const pd_Vecu32_t *v,
         char *outValue,
@@ -1142,6 +1500,24 @@ parser_error_t _toStringVecu32(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     GEN_DEF_TOSTRING_VECTOR(u32);
+}
+
+parser_error_t _toStringOptionAccountId(
+    const pd_OptionAccountId_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount) {
+    if (v->some > 0) {
+        CHECK_ERROR(_toStringAccountId(
+            &v->contained,
+            outValue, outValueLen,
+            pageIdx, pageCount
+        ));
+    } else {
+        snprintf(outValue, outValueLen, "None");
+    }
+    return parser_ok;
 }
 
 parser_error_t _toStringOptionChangesTrieConfiguration(

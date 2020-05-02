@@ -50,10 +50,13 @@ extern "C" {
 #define PD_CALL_IDENTITY 25
 #define PD_CALL_SOCIETY 26
 #define PD_CALL_RECOVERY 27
+#define PD_CALL_VESTING 28
+#define PD_CALL_SCHEDULER 29
 
 
 #define PD_CALL_SYSTEM_FILL_BLOCK 0
 typedef struct {
+    pd_Perbill_t _ratio;
 } pd_system_fill_block_t;
 
 #define PD_CALL_SYSTEM_REMARK 1
@@ -96,34 +99,60 @@ typedef struct {
     pd_Key_t prefix;
 } pd_system_kill_prefix_t;
 
+#define PD_CALL_SYSTEM_SUICIDE 9
+typedef struct {
+} pd_system_suicide_t;
+
 #define PD_CALL_TIMESTAMP_SET 0
 typedef struct {
     pd_CompactMoment_t now;
 } pd_timestamp_set_t;
 
+#define PD_CALL_INDICES_CLAIM 0
+typedef struct {
+    pd_AccountIndex_t index;
+} pd_indices_claim_t;
+
+#define PD_CALL_INDICES_TRANSFER 1
+typedef struct {
+    pd_AccountId_t new_;
+    pd_AccountIndex_t index;
+} pd_indices_transfer_t;
+
+#define PD_CALL_INDICES_FREE 2
+typedef struct {
+    pd_AccountIndex_t index;
+} pd_indices_free_t;
+
+#define PD_CALL_INDICES_FORCE_TRANSFER 3
+typedef struct {
+    pd_AccountId_t new_;
+    pd_AccountIndex_t index;
+} pd_indices_force_transfer_t;
+
 #define PD_CALL_BALANCES_TRANSFER 0
 typedef struct {
-    pd_Address_t dest;
+    pd_LookupSource_t dest;
     pd_CompactBalance_t value;
 } pd_balances_transfer_t;
 
 #define PD_CALL_BALANCES_SET_BALANCE 1
 typedef struct {
-    pd_Address_t who;
+    pd_LookupSource_t who;
     pd_CompactBalance_t new_free;
     pd_CompactBalance_t new_reserved;
 } pd_balances_set_balance_t;
 
 #define PD_CALL_BALANCES_FORCE_TRANSFER 2
 typedef struct {
-    pd_Address_t source;
-    pd_Address_t dest;
+    pd_LookupSource_t source;
+    pd_LookupSource_t dest;
     pd_CompactBalance_t value;
 } pd_balances_force_transfer_t;
 
 #define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE 3
 typedef struct {
-    pd_Address_t dest;
+    pd_LookupSource_t dest;
     pd_CompactBalance_t value;
 } pd_balances_transfer_keep_alive_t;
 
@@ -134,7 +163,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_BOND 0
 typedef struct {
-    pd_Address_t controller;
+    pd_LookupSource_t controller;
     pd_CompactBalanceOf_t value;
     pd_RewardDestination_t payee;
 } pd_staking_bond_t;
@@ -160,7 +189,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_NOMINATE 5
 typedef struct {
-    pd_VecAddress_t targets;
+    pd_VecLookupSource_t targets;
 } pd_staking_nominate_t;
 
 #define PD_CALL_STAKING_CHILL 6
@@ -174,7 +203,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_SET_CONTROLLER 8
 typedef struct {
-    pd_Address_t controller;
+    pd_LookupSource_t controller;
 } pd_staking_set_controller_t;
 
 #define PD_CALL_STAKING_SET_VALIDATOR_COUNT 9
@@ -210,16 +239,63 @@ typedef struct {
     pd_Vecu32_t slash_indices;
 } pd_staking_cancel_deferred_slash_t;
 
-#define PD_CALL_STAKING_REBOND 16
+#define PD_CALL_STAKING_PAYOUT_NOMINATOR 16
+typedef struct {
+    pd_EraIndex_t era;
+    pd_VecTupleAccountIdu32_t validators;
+} pd_staking_payout_nominator_t;
+
+#define PD_CALL_STAKING_PAYOUT_VALIDATOR 17
+typedef struct {
+    pd_EraIndex_t era;
+} pd_staking_payout_validator_t;
+
+#define PD_CALL_STAKING_PAYOUT_STAKERS 18
+typedef struct {
+    pd_AccountId_t validator_stash;
+    pd_EraIndex_t era;
+} pd_staking_payout_stakers_t;
+
+#define PD_CALL_STAKING_REBOND 19
 typedef struct {
     pd_CompactBalanceOf_t value;
 } pd_staking_rebond_t;
+
+#define PD_CALL_STAKING_SET_HISTORY_DEPTH 20
+typedef struct {
+    pd_CompactEraIndex_t new_history_depth;
+} pd_staking_set_history_depth_t;
+
+#define PD_CALL_STAKING_REAP_STASH 21
+typedef struct {
+    pd_AccountId_t stash;
+} pd_staking_reap_stash_t;
+
+#define PD_CALL_STAKING_SUBMIT_ELECTION_SOLUTION 22
+typedef struct {
+    pd_VecValidatorIndex_t winners;
+    pd_CompactAssignments_t compact_assignments;
+    pd_PhragmenScore_t score;
+    pd_EraIndex_t era;
+} pd_staking_submit_election_solution_t;
+
+#define PD_CALL_STAKING_SUBMIT_ELECTION_SOLUTION_UNSIGNED 23
+typedef struct {
+    pd_VecValidatorIndex_t winners;
+    pd_CompactAssignments_t compact_assignments;
+    pd_PhragmenScore_t score;
+    pd_EraIndex_t era;
+} pd_staking_submit_election_solution_unsigned_t;
 
 #define PD_CALL_SESSION_SET_KEYS 0
 typedef struct {
     pd_Keys_t keys;
     pd_Bytes_t proof;
 } pd_session_set_keys_t;
+
+#define PD_CALL_SESSION_PURGE_KEYS 1
+typedef struct {
+} pd_session_purge_keys_t;
 
 #define PD_CALL_FINALITYTRACKER_FINAL_HINT 0
 typedef struct {
@@ -251,13 +327,13 @@ typedef struct {
 #define PD_CALL_DEMOCRACY_VOTE 2
 typedef struct {
     pd_CompactReferendumIndex_t ref_index;
-    pd_Vote_t vote;
+    pd_AccountVote_t vote;
 } pd_democracy_vote_t;
 
 #define PD_CALL_DEMOCRACY_PROXY_VOTE 3
 typedef struct {
     pd_CompactReferendumIndex_t ref_index;
-    pd_Vote_t vote;
+    pd_AccountVote_t vote;
 } pd_democracy_proxy_vote_t;
 
 #define PD_CALL_DEMOCRACY_EMERGENCY_CANCEL 4
@@ -302,24 +378,25 @@ typedef struct {
     pd_ReferendumIndex_t which;
 } pd_democracy_cancel_queued_t;
 
-#define PD_CALL_DEMOCRACY_SET_PROXY 12
+#define PD_CALL_DEMOCRACY_ACTIVATE_PROXY 12
 typedef struct {
     pd_AccountId_t proxy;
-} pd_democracy_set_proxy_t;
+} pd_democracy_activate_proxy_t;
 
-#define PD_CALL_DEMOCRACY_RESIGN_PROXY 13
+#define PD_CALL_DEMOCRACY_CLOSE_PROXY 13
 typedef struct {
-} pd_democracy_resign_proxy_t;
+} pd_democracy_close_proxy_t;
 
-#define PD_CALL_DEMOCRACY_REMOVE_PROXY 14
+#define PD_CALL_DEMOCRACY_DEACTIVATE_PROXY 14
 typedef struct {
     pd_AccountId_t proxy;
-} pd_democracy_remove_proxy_t;
+} pd_democracy_deactivate_proxy_t;
 
 #define PD_CALL_DEMOCRACY_DELEGATE 15
 typedef struct {
     pd_AccountId_t to;
     pd_Conviction_t conviction;
+    pd_BalanceOf_t balance;
 } pd_democracy_delegate_t;
 
 #define PD_CALL_DEMOCRACY_UNDELEGATE 16
@@ -345,9 +422,53 @@ typedef struct {
     pd_Hash_t proposal_hash;
 } pd_democracy_reap_preimage_t;
 
+#define PD_CALL_DEMOCRACY_UNLOCK 21
+typedef struct {
+    pd_AccountId_t target;
+} pd_democracy_unlock_t;
+
+#define PD_CALL_DEMOCRACY_OPEN_PROXY 22
+typedef struct {
+    pd_AccountId_t target;
+} pd_democracy_open_proxy_t;
+
+#define PD_CALL_DEMOCRACY_REMOVE_VOTE 23
+typedef struct {
+    pd_ReferendumIndex_t index;
+} pd_democracy_remove_vote_t;
+
+#define PD_CALL_DEMOCRACY_REMOVE_OTHER_VOTE 24
+typedef struct {
+    pd_AccountId_t target;
+    pd_ReferendumIndex_t index;
+} pd_democracy_remove_other_vote_t;
+
+#define PD_CALL_DEMOCRACY_PROXY_DELEGATE 25
+typedef struct {
+    pd_AccountId_t to;
+    pd_Conviction_t conviction;
+    pd_BalanceOf_t balance;
+} pd_democracy_proxy_delegate_t;
+
+#define PD_CALL_DEMOCRACY_PROXY_UNDELEGATE 26
+typedef struct {
+} pd_democracy_proxy_undelegate_t;
+
+#define PD_CALL_DEMOCRACY_PROXY_REMOVE_VOTE 27
+typedef struct {
+    pd_ReferendumIndex_t index;
+} pd_democracy_proxy_remove_vote_t;
+
+#define PD_CALL_DEMOCRACY_ENACT_PROPOSAL 28
+typedef struct {
+    pd_Hash_t proposal_hash;
+    pd_ReferendumIndex_t index;
+} pd_democracy_enact_proposal_t;
+
 #define PD_CALL_COUNCIL_SET_MEMBERS 0
 typedef struct {
     pd_VecAccountId_t new_members;
+    pd_OptionAccountId_t prime;
 } pd_council_set_members_t;
 
 #define PD_CALL_COUNCIL_VOTE 3
@@ -357,9 +478,16 @@ typedef struct {
     pd_bool_t approve;
 } pd_council_vote_t;
 
+#define PD_CALL_COUNCIL_CLOSE 4
+typedef struct {
+    pd_Hash_t proposal;
+    pd_CompactProposalIndex_t index;
+} pd_council_close_t;
+
 #define PD_CALL_TECHNICALCOMMITTEE_SET_MEMBERS 0
 typedef struct {
     pd_VecAccountId_t new_members;
+    pd_OptionAccountId_t prime;
 } pd_technicalcommittee_set_members_t;
 
 #define PD_CALL_TECHNICALCOMMITTEE_VOTE 3
@@ -368,6 +496,12 @@ typedef struct {
     pd_CompactProposalIndex_t index;
     pd_bool_t approve;
 } pd_technicalcommittee_vote_t;
+
+#define PD_CALL_TECHNICALCOMMITTEE_CLOSE 4
+typedef struct {
+    pd_Hash_t proposal;
+    pd_CompactProposalIndex_t index;
+} pd_technicalcommittee_close_t;
 
 #define PD_CALL_ELECTIONSPHRAGMEN_VOTE 0
 typedef struct {
@@ -381,7 +515,7 @@ typedef struct {
 
 #define PD_CALL_ELECTIONSPHRAGMEN_REPORT_DEFUNCT_VOTER 2
 typedef struct {
-    pd_Address_t target;
+    pd_LookupSource_t target;
 } pd_electionsphragmen_report_defunct_voter_t;
 
 #define PD_CALL_ELECTIONSPHRAGMEN_SUBMIT_CANDIDACY 3
@@ -394,7 +528,7 @@ typedef struct {
 
 #define PD_CALL_ELECTIONSPHRAGMEN_REMOVE_MEMBER 5
 typedef struct {
-    pd_Address_t who;
+    pd_LookupSource_t who;
 } pd_electionsphragmen_remove_member_t;
 
 #define PD_CALL_TECHNICALMEMBERSHIP_ADD_MEMBER 0
@@ -423,10 +557,19 @@ typedef struct {
     pd_AccountId_t new_;
 } pd_technicalmembership_change_key_t;
 
+#define PD_CALL_TECHNICALMEMBERSHIP_SET_PRIME 5
+typedef struct {
+    pd_AccountId_t who;
+} pd_technicalmembership_set_prime_t;
+
+#define PD_CALL_TECHNICALMEMBERSHIP_CLEAR_PRIME 6
+typedef struct {
+} pd_technicalmembership_clear_prime_t;
+
 #define PD_CALL_TREASURY_PROPOSE_SPEND 0
 typedef struct {
     pd_CompactBalanceOf_t value;
-    pd_Address_t beneficiary;
+    pd_LookupSource_t beneficiary;
 } pd_treasury_propose_spend_t;
 
 #define PD_CALL_TREASURY_REJECT_PROPOSAL 1
@@ -486,6 +629,11 @@ typedef struct {
     pd_VecAttestedCandidate_t heads;
 } pd_parachains_set_heads_t;
 
+#define PD_CALL_PARACHAINS_REPORT_DOUBLE_VOTE 1
+typedef struct {
+    pd_DoubleVoteReport_t report;
+} pd_parachains_report_double_vote_t;
+
 #define PD_CALL_ATTESTATIONS_MORE_ATTESTATIONS 0
 typedef struct {
     pd_MoreAttestations_t _more;
@@ -516,7 +664,7 @@ typedef struct {
 
 #define PD_CALL_SLOTS_SET_OFFBOARDING 3
 typedef struct {
-    pd_Address_t dest;
+    pd_LookupSource_t dest;
 } pd_slots_set_offboarding_t;
 
 #define PD_CALL_SLOTS_FIX_DEPLOY_DATA 4
@@ -524,21 +672,22 @@ typedef struct {
     pd_CompactSubId_t sub;
     pd_CompactParaId_t para_id;
     pd_Hash_t code_hash;
-    pd_Bytes_t initial_head_data;
+    pd_u32_t code_size;
+    pd_HeadData_t initial_head_data;
 } pd_slots_fix_deploy_data_t;
 
 #define PD_CALL_SLOTS_ELABORATE_DEPLOY_DATA 5
 typedef struct {
     pd_CompactParaId_t para_id;
-    pd_Bytes_t code;
+    pd_ValidationCode_t code;
 } pd_slots_elaborate_deploy_data_t;
 
 #define PD_CALL_REGISTRAR_REGISTER_PARA 0
 typedef struct {
     pd_CompactParaId_t id;
     pd_ParaInfo_t info;
-    pd_Bytes_t code;
-    pd_Bytes_t initial_head_data;
+    pd_ValidationCode_t code;
+    pd_HeadData_t initial_head_data;
 } pd_registrar_register_para_t;
 
 #define PD_CALL_REGISTRAR_DEREGISTER_PARA 1
@@ -553,8 +702,8 @@ typedef struct {
 
 #define PD_CALL_REGISTRAR_REGISTER_PARATHREAD 3
 typedef struct {
-    pd_Bytes_t code;
-    pd_Bytes_t initial_head_data;
+    pd_ValidationCode_t code;
+    pd_HeadData_t initial_head_data;
 } pd_registrar_register_parathread_t;
 
 #define PD_CALL_REGISTRAR_SELECT_PARATHREAD 4
@@ -659,13 +808,13 @@ typedef struct {
 #define PD_CALL_IDENTITY_PROVIDE_JUDGEMENT 9
 typedef struct {
     pd_CompactRegistrarIndex_t reg_index;
-    pd_Address_t target;
+    pd_LookupSource_t target;
     pd_IdentityJudgement_t judgement;
 } pd_identity_provide_judgement_t;
 
 #define PD_CALL_IDENTITY_KILL_IDENTITY 10
 typedef struct {
-    pd_Address_t target;
+    pd_LookupSource_t target;
 } pd_identity_kill_identity_t;
 
 #define PD_CALL_SOCIETY_BID 0
@@ -692,7 +841,7 @@ typedef struct {
 
 #define PD_CALL_SOCIETY_VOTE 4
 typedef struct {
-    pd_Address_t candidate;
+    pd_LookupSource_t candidate;
     pd_bool_t approve;
 } pd_society_vote_t;
 
@@ -777,6 +926,26 @@ typedef struct {
 typedef struct {
 } pd_recovery_remove_recovery_t;
 
+#define PD_CALL_RECOVERY_CANCEL_RECOVERED 8
+typedef struct {
+    pd_AccountId_t account;
+} pd_recovery_cancel_recovered_t;
+
+#define PD_CALL_VESTING_VEST 0
+typedef struct {
+} pd_vesting_vest_t;
+
+#define PD_CALL_VESTING_VEST_OTHER 1
+typedef struct {
+    pd_LookupSource_t target;
+} pd_vesting_vest_other_t;
+
+#define PD_CALL_VESTING_VESTED_TRANSFER 2
+typedef struct {
+    pd_LookupSource_t target;
+    pd_VestingInfo_t schedule;
+} pd_vesting_vested_transfer_t;
+
 
 typedef union {
     pd_system_fill_block_t system_fill_block;
@@ -788,7 +957,12 @@ typedef union {
     pd_system_set_storage_t system_set_storage;
     pd_system_kill_storage_t system_kill_storage;
     pd_system_kill_prefix_t system_kill_prefix;
+    pd_system_suicide_t system_suicide;
     pd_timestamp_set_t timestamp_set;
+    pd_indices_claim_t indices_claim;
+    pd_indices_transfer_t indices_transfer;
+    pd_indices_free_t indices_free;
+    pd_indices_force_transfer_t indices_force_transfer;
     pd_balances_transfer_t balances_transfer;
     pd_balances_set_balance_t balances_set_balance;
     pd_balances_force_transfer_t balances_force_transfer;
@@ -810,8 +984,16 @@ typedef union {
     pd_staking_force_unstake_t staking_force_unstake;
     pd_staking_force_new_era_always_t staking_force_new_era_always;
     pd_staking_cancel_deferred_slash_t staking_cancel_deferred_slash;
+    pd_staking_payout_nominator_t staking_payout_nominator;
+    pd_staking_payout_validator_t staking_payout_validator;
+    pd_staking_payout_stakers_t staking_payout_stakers;
     pd_staking_rebond_t staking_rebond;
+    pd_staking_set_history_depth_t staking_set_history_depth;
+    pd_staking_reap_stash_t staking_reap_stash;
+    pd_staking_submit_election_solution_t staking_submit_election_solution;
+    pd_staking_submit_election_solution_unsigned_t staking_submit_election_solution_unsigned;
     pd_session_set_keys_t session_set_keys;
+    pd_session_purge_keys_t session_purge_keys;
     pd_finalitytracker_final_hint_t finalitytracker_final_hint;
     pd_grandpa_report_misbehavior_t grandpa_report_misbehavior;
     pd_imonline_heartbeat_t imonline_heartbeat;
@@ -827,19 +1009,29 @@ typedef union {
     pd_democracy_veto_external_t democracy_veto_external;
     pd_democracy_cancel_referendum_t democracy_cancel_referendum;
     pd_democracy_cancel_queued_t democracy_cancel_queued;
-    pd_democracy_set_proxy_t democracy_set_proxy;
-    pd_democracy_resign_proxy_t democracy_resign_proxy;
-    pd_democracy_remove_proxy_t democracy_remove_proxy;
+    pd_democracy_activate_proxy_t democracy_activate_proxy;
+    pd_democracy_close_proxy_t democracy_close_proxy;
+    pd_democracy_deactivate_proxy_t democracy_deactivate_proxy;
     pd_democracy_delegate_t democracy_delegate;
     pd_democracy_undelegate_t democracy_undelegate;
     pd_democracy_clear_public_proposals_t democracy_clear_public_proposals;
     pd_democracy_note_preimage_t democracy_note_preimage;
     pd_democracy_note_imminent_preimage_t democracy_note_imminent_preimage;
     pd_democracy_reap_preimage_t democracy_reap_preimage;
+    pd_democracy_unlock_t democracy_unlock;
+    pd_democracy_open_proxy_t democracy_open_proxy;
+    pd_democracy_remove_vote_t democracy_remove_vote;
+    pd_democracy_remove_other_vote_t democracy_remove_other_vote;
+    pd_democracy_proxy_delegate_t democracy_proxy_delegate;
+    pd_democracy_proxy_undelegate_t democracy_proxy_undelegate;
+    pd_democracy_proxy_remove_vote_t democracy_proxy_remove_vote;
+    pd_democracy_enact_proposal_t democracy_enact_proposal;
     pd_council_set_members_t council_set_members;
     pd_council_vote_t council_vote;
+    pd_council_close_t council_close;
     pd_technicalcommittee_set_members_t technicalcommittee_set_members;
     pd_technicalcommittee_vote_t technicalcommittee_vote;
+    pd_technicalcommittee_close_t technicalcommittee_close;
     pd_electionsphragmen_vote_t electionsphragmen_vote;
     pd_electionsphragmen_remove_voter_t electionsphragmen_remove_voter;
     pd_electionsphragmen_report_defunct_voter_t electionsphragmen_report_defunct_voter;
@@ -851,6 +1043,8 @@ typedef union {
     pd_technicalmembership_swap_member_t technicalmembership_swap_member;
     pd_technicalmembership_reset_members_t technicalmembership_reset_members;
     pd_technicalmembership_change_key_t technicalmembership_change_key;
+    pd_technicalmembership_set_prime_t technicalmembership_set_prime;
+    pd_technicalmembership_clear_prime_t technicalmembership_clear_prime;
     pd_treasury_propose_spend_t treasury_propose_spend;
     pd_treasury_reject_proposal_t treasury_reject_proposal;
     pd_treasury_approve_proposal_t treasury_approve_proposal;
@@ -862,6 +1056,7 @@ typedef union {
     pd_claims_claim_t claims_claim;
     pd_claims_mint_claim_t claims_mint_claim;
     pd_parachains_set_heads_t parachains_set_heads;
+    pd_parachains_report_double_vote_t parachains_report_double_vote;
     pd_attestations_more_attestations_t attestations_more_attestations;
     pd_slots_new_auction_t slots_new_auction;
     pd_slots_bid_t slots_bid;
@@ -912,6 +1107,10 @@ typedef union {
     pd_recovery_claim_recovery_t recovery_claim_recovery;
     pd_recovery_close_recovery_t recovery_close_recovery;
     pd_recovery_remove_recovery_t recovery_remove_recovery;
+    pd_recovery_cancel_recovered_t recovery_cancel_recovered;
+    pd_vesting_vest_t vesting_vest;
+    pd_vesting_vest_other_t vesting_vest_other;
+    pd_vesting_vested_transfer_t vesting_vested_transfer;
 } pd_MethodBasic_t;
 
 typedef struct {
