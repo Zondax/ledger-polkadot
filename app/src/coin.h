@@ -22,9 +22,25 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 
-#define DECIMAL_PLACES      12              // Specific to Kusama
-#define HDPATH_0_DEFAULT                  (0x80000000 | 0x2c)
-#define HDPATH_1_DEFAULT                  (0x80000000 | 0x1b2)       // 434
+#define HDPATH_0_DEFAULT     (0x80000000 | 0x2c)
+#define HDPATH_1_DEFAULT     (0x80000000 | 0x1b2)       // 434
+#define HDPATH_2_DEFAULT     (0x80000000u | 0u)
+#define HDPATH_3_DEFAULT     (0u)
+#define HDPATH_4_DEFAULT     (0u)
+
+#define HDPATH_LEN_DEFAULT   5
+
+// Specific to Kusama
+#define COIN_AMOUNT_DECIMAL_PLACES      12
+
+typedef enum {
+    addr_ed22519     = 0,
+    addr_sr25519     = 1
+} address_kind_e;
+
+#define ED25519_PK_LEN            32u
+
+#define VIEW_ADDRESS_BUFFER_OFFSET    (ED25519_PK_LEN)
 
 #define PK_ADDRESS_TYPE     02
 
@@ -33,7 +49,11 @@ extern "C" {
 #define MENU_MAIN_APP_LINE1 "Kusama"
 #define MENU_MAIN_APP_LINE2 "Web3"
 
-#define VIEW_ADDRESS_BUFFER_OFFSET    (PK_LEN)
+
+#define APPVERSION_LINE2 ""
+
+#define VIEW_ADDRESS_ITEM_COUNT             2
+#define VIEW_ADDRESS_LAST_PAGE_DEFAULT      0
 
 #ifdef __cplusplus
 }

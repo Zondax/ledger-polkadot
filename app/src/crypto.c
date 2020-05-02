@@ -35,7 +35,7 @@ void crypto_extractPublicKey(const uint32_t path[HDPATH_LEN_DEFAULT], uint8_t *p
     cx_ecfp_private_key_t cx_privateKey;
     uint8_t privateKeyData[32];
 
-    if (pubKeyLen < PK_LEN) {
+    if (pubKeyLen < ED25519_PK_LEN) {
         return;
     }
 

@@ -43,11 +43,24 @@ void os_exit(uint32_t id) {
 
 const ux_menu_entry_t menu_main[] = {
     {NULL, NULL, 0, &C_icon_app, MENU_MAIN_APP_LINE1, MENU_MAIN_APP_LINE2, 33, 12},
-    {NULL, NULL, 0, NULL, "v"APPVERSION, NULL, 0, 0},
+    {NULL, NULL, 0, &C_icon_app, "v"APPVERSION, APPVERSION_LINE2, 33, 12},
     {NULL, os_exit, 0, &C_icon_dashboard, "Quit", NULL, 50, 29},
     UX_MENU_END
 };
 
+#if !defined(HAVE_UX_FLOW)
+void h_addr_button_left();
+void h_addr_button_right();
+void h_addr_button_both();
+void view_addr_show();
+
+static const bagl_element_t view_address[] = {
+    UI_BACKGROUND_LEFT_RIGHT_ICONS,
+    UI_LabelLine(UIID_LABEL + 0, 0, 8, UI_SCREEN_WIDTH, UI_11PX, UI_WHITE, UI_BLACK, viewdata.key),
+    UI_LabelLine(UIID_LABEL + 0, 0, 19, UI_SCREEN_WIDTH, UI_11PX, UI_WHITE, UI_BLACK, viewdata.value),
+    UI_LabelLineScrolling(UIID_LABELSCROLL, 0, 30, 128, UI_11PX, UI_WHITE, UI_BLACK, viewdata.value2),
+};
+#else
 UX_STEP_NOCB_INIT(ux_addr_flow_1_step, paging,
         { h_addr_update_item(CUR_FLOW.index); },
         { .title = "Address", .text = viewdata.addr, });
@@ -63,12 +76,14 @@ UX_FLOW(
     &ux_addr_flow_3_step
 );
 
+#endif
+
 void h_review(unsigned int _) { UNUSED(_); view_sign_show_impl(); }
 
 const ux_menu_entry_t menu_sign[] = {
     {NULL, h_review, 0, NULL, "View transaction", NULL, 0, 0},
     {NULL, h_sign_accept, 0, NULL, "Sign transaction", NULL, 0, 0},
-    {NULL, h_sign_reject, 0, &C_icon_back, "Reject", NULL, 60, 40},
+    {NULL, h_sign_reject, 0, NULL, "Reject", NULL, 0, 0},
     UX_MENU_END
 };
 
@@ -86,6 +101,28 @@ static const bagl_element_t view_error[] = {
     UI_LabelLine(UIID_LABEL + 0, 0, 19, UI_SCREEN_WIDTH, UI_11PX, UI_WHITE, UI_BLACK, viewdata.value),
     UI_LabelLineScrolling(UIID_LABELSCROLL, 0, 30, 128, UI_11PX, UI_WHITE, UI_BLACK, viewdata.value2),
 };
+
+#if !defined(HAVE_UX_FLOW)
+static unsigned int view_address_button(unsigned int button_mask, unsigned int button_mask_counter) {
+    switch (button_mask) {
+        case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
+            // Press both left and right buttons to quit
+            h_addr_button_both();
+            break;
+
+        case BUTTON_EVT_RELEASED | BUTTON_LEFT:
+            // Press left to progress to the previous element
+            h_addr_button_left();
+            break;
+
+        case BUTTON_EVT_RELEASED | BUTTON_RIGHT:
+            // Press right to progress to the next element
+            h_addr_button_right();
+            break;
+    }
+    return 0;
+}
+#endif
 
 static unsigned int view_error_button(unsigned int button_mask, unsigned int button_mask_counter) {
     switch (button_mask) {
@@ -134,12 +171,13 @@ const bagl_element_t *view_prepro(const bagl_element_t *element) {
 }
 
 void h_review_button_left() {
-    h_review_decrease();
+    h_paging_decrease();
 
     view_error_t err = h_review_update_data();
     switch(err) {
         case view_no_error:
             view_review_show();
+            UX_WAIT();
             break;
         case view_no_data:
             view_sign_show_s();
@@ -147,20 +185,20 @@ void h_review_button_left() {
         case view_error_detected:
         default:
             view_error_show();
+            UX_WAIT();
             break;
     }
-
-    UX_WAIT();
 }
 
 void h_review_button_right() {
-    h_review_increase();
+    h_paging_increase();
 
     view_error_t err = h_review_update_data();
 
     switch(err) {
         case view_no_error:
             view_review_show();
+            UX_WAIT();
             break;
         case view_no_data:
             view_sign_show_s();
@@ -168,10 +206,9 @@ void h_review_button_right() {
         case view_error_detected:
         default:
             view_error_show();
+            UX_WAIT();
             break;
     }
-
-    UX_WAIT();
 }
 
 void splitValueField() {
@@ -194,11 +231,26 @@ void view_idle_show_impl() {
 }
 
 void view_address_show_impl() {
+#if !defined(HAVE_UX_FLOW)
+    h_paging_init();
+
+    view_error_t err = h_addr_update_item(viewdata.itemIdx);
+    switch(err) {
+        case view_no_error:
+            view_addr_show();
+            break;
+        case view_error_detected:
+        default:
+            view_error_show();
+            break;
+    }
+#else
     ux_layout_paging_reset();
     if(G_ux.stack_count == 0) {
         ux_stack_push();
     }
     ux_flow_init(0, ux_addr_flow, NULL);
+#endif
 }
 
 void view_error_show_impl() {
@@ -206,7 +258,7 @@ void view_error_show_impl() {
 }
 
 void view_sign_show_impl() {
-    h_review_init();
+    h_paging_init();
 
     view_error_t err = h_review_update_data();
     switch(err) {
@@ -230,5 +282,67 @@ void view_sign_show_s(void){
 void view_review_show() {
     UX_DISPLAY(view_review, view_prepro);
 }
+
+#if !defined(HAVE_UX_FLOW)
+void h_addr_button_left() {
+    h_paging_decrease();
+
+    view_error_t err = h_addr_update_item(viewdata.itemIdx);
+
+    switch(err) {
+        case view_no_error:
+            view_addr_show();
+            break;
+        case view_no_data:
+            // FIXME:
+        case view_error_detected:
+        default:
+            view_error_show();
+            break;
+    }
+
+    UX_WAIT();
+}
+
+void h_addr_button_right() {
+    h_paging_increase();
+    view_error_t err = h_addr_update_item(viewdata.itemIdx);
+
+    switch(err) {
+        case view_no_error:
+            view_addr_show();
+            break;
+        case view_no_data:
+            // FIXME:
+        case view_error_detected:
+        default:
+            view_error_show();
+            break;
+    }
+
+    UX_WAIT();
+}
+
+void h_addr_button_both() {
+    view_error_t err = h_addr_update_item(viewdata.itemIdx);
+
+    switch(err) {
+        case view_no_error:
+            h_address_accept(0);
+            break;
+        case view_no_data:
+            // FIXME:
+        case view_error_detected:
+        default:
+            view_error_show();
+            break;
+    }
+    UX_WAIT();
+}
+
+void view_addr_show() {
+    UX_DISPLAY(view_address, view_prepro);
+}
+#endif
 
 #endif

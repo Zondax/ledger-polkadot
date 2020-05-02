@@ -54,4 +54,4 @@ size_t parseHexString(uint8_t *out, uint16_t outLen, const char *input) {
     }
 
     return (len / 2);
-};
+}

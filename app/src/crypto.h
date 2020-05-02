@@ -25,12 +25,7 @@
 extern "C" {
 #endif
 
-#define HDPATH_LEN_DEFAULT  5u
-#define ED25519_PK_LEN      32u
-#define PK_LEN              ED25519_PK_LEN
 #define SS58_ADDRESS_MAX_LEN 60u
-
-#define PK_LEN ED25519_PK_LEN
 
 extern uint32_t hdPath[HDPATH_LEN_DEFAULT];
 

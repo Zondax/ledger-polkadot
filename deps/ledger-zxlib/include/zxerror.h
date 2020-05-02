@@ -13,35 +13,20 @@
 *  See the License for the specific language governing permissions and
 *  limitations under the License.
 ********************************************************************************/
-#include "zxmacros.h"
-#include "utf8.h"
 
-size_t asciify(char *utf8_in_ascii_out)
-{
-    return asciify_ext(utf8_in_ascii_out, utf8_in_ascii_out);
-}
+#pragma once
 
-size_t asciify_ext(const char *utf8_in, char *ascii_only_out) {
-    void *p = (void *) utf8_in;
-    char *q = ascii_only_out;
-
-    // utf8valid returns zero on success
-    while (*((char *) p) && utf8valid(p) == 0) {
-        utf8_int32_t tmp_codepoint = 0;
-        p = utf8codepoint(p, &tmp_codepoint);
-        *q = (tmp_codepoint >= 32 && tmp_codepoint <= 0x7F) ? tmp_codepoint : '.';
-        q++;
-    }
-
-    // Terminate string
-    *q = 0;
-    return q - ascii_only_out;
-}
-
-void handle_stack_overflow() {
-#if defined (TARGET_NANOS) || defined(TARGET_NANOX)
-    io_seproxyhal_se_reset();
-#else
-    while(1);
+#ifdef __cplusplus
+extern "C" {
 #endif
+
+typedef enum {
+    zxerr_ok,
+    zxerr_buffer_too_small,
+    zxerr_out_of_bounds,
+    zxerr_encoding_failed,
+} zxerr_t;
+
+#ifdef __cplusplus
 }
+#endif

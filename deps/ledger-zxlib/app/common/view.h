@@ -17,6 +17,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "coin.h"
 
 #if defined(LEDGER_SPECIFIC)
 #include "bolos_target.h"
@@ -36,7 +37,7 @@ void view_idle_show(unsigned int ignored);
 void view_error_show();
 
 // shows address in the screen
-void view_address_show();
+void view_address_show(address_kind_e addressKind);
 
 // Shows review screen + later sign menu
 void view_sign_show();
