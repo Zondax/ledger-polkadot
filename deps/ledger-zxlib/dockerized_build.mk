@@ -16,7 +16,9 @@
 
 .PHONY: all deps build clean load delete check_python show_info_recovery_mode
 
-TESTS_ZEMU_DIR ?= $(CURDIR)/tests_zemu
+TESTS_ZEMU_DIR?=$(CURDIR)/tests_zemu
+TESTS_ZEMU_JS_PACKAGE?=
+TESTS_ZEMU_JS_DIR?=
 
 LEDGER_SRC=$(CURDIR)/app
 DOCKER_APP_SRC=/project
@@ -30,7 +32,10 @@ SCP_PRIVKEY=ff701d781f43ce106f72dc26a46b6a83e053b5d07bb3d4ceab79c91ca822a66b
 
 INTERACTIVE:=$(shell [ -t 0 ] && echo 1)
 USERID:=$(shell id -u)
-$(info USERID: $(USERID))
+$(info USERID                : $(USERID))
+$(info TESTS_ZEMU_DIR        : $(TESTS_ZEMU_DIR))
+$(info TESTS_ZEMU_JS_DIR     : $(TESTS_ZEMU_JS_DIR))
+$(info TESTS_ZEMU_JS_PACKAGE : $(TESTS_ZEMU_JS_PACKAGE))
 
 ifeq ($(USERID),1001)
 # TODO: Use podman inside circleci machines?
@@ -147,7 +152,7 @@ dev_ca_delete2: check_python
 ########################## ZEMU Section ###############################
 
 .PHONY: zemu_install_js_link
-ifeq ($(TESTS_ZEMU_JS_PACKAGE),)
+ifeq ($(TESTS_ZEMU_JS_DIR),)
 zemu_install_js_link:
 	@echo "No local package defined"
 else

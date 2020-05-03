@@ -48,19 +48,10 @@ jobs:
             nvm use 13.12.0
             npm install -g yarn
       - run:
-          name: Build js app
-          command: |
-            nvm use 13.12.0
-            cd js && yarn install && yarn build
-      - run:
           name: Build/Install build js deps
           command: |
             nvm use 13.12.0
             make zemu_install
-      - run:
-          name: Workaround/Pull docker
-          command: |
-            docker pull zondax/builder-zemu
       - run:
           name: Run zemu tests
           command: |
