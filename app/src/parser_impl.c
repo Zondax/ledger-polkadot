@@ -314,7 +314,7 @@ parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
 parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
                                        char *outValue, uint16_t outValueLen,
                                        uint8_t pageIdx, uint8_t *pageCount) {
-    return _toStringCompactInt(&v->value, DECIMAL_PLACES, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, outValue, outValueLen, pageIdx, pageCount);
 }
 
 ////////////////////////////////////////////////////////////////

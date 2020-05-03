@@ -16,24 +16,6 @@
 #include "zxmacros.h"
 #include "utf8.h"
 
-#ifdef LEDGER_SPECIFIC
-#include <stdio.h>
-#include "stdint.h"
-void __logstack()
-{
-    uint8_t st;
-    uint32_t tmp1 = (uint32_t)&st - (uint32_t)&app_stack_canary;
-    uint32_t tmp2 = 0x20002800 - (uint32_t)&st;
-    char buffer[30];
-    snprintf(buffer, 40, "%d / %d", tmp1, tmp2);
-    LOG(buffer);
-}
-#else
-
-void __logstack() {}
-
-#endif
-
 size_t asciify(char *utf8_in_ascii_out)
 {
     return asciify_ext(utf8_in_ascii_out, utf8_in_ascii_out);
@@ -47,11 +29,19 @@ size_t asciify_ext(const char *utf8_in, char *ascii_only_out) {
     while (*((char *) p) && utf8valid(p) == 0) {
         utf8_int32_t tmp_codepoint = 0;
         p = utf8codepoint(p, &tmp_codepoint);
-        *q = (tmp_codepoint >= 32 && tmp_codepoint <= 0x7F)? tmp_codepoint : '.';
+        *q = (tmp_codepoint >= 32 && tmp_codepoint <= 0x7F) ? tmp_codepoint : '.';
         q++;
     }
 
     // Terminate string
     *q = 0;
     return q - ascii_only_out;
+}
+
+void handle_stack_overflow() {
+#if defined (TARGET_NANOS) || defined(TARGET_NANOX)
+    io_seproxyhal_se_reset();
+#else
+    while(1);
+#endif
 }

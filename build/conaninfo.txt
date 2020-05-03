@@ -1,0 +1,42 @@
+[settings]
+    arch=x86_64
+    build_type=Debug
+    compiler=gcc
+    compiler.libcxx=libstdc++11
+    compiler.version=9
+    os=Linux
+
+[requires]
+    fmt/6.Y.Z
+    jsoncpp/1.Y.Z
+
+[options]
+
+
+[full_settings]
+    arch=x86_64
+    arch_build=x86_64
+    build_type=Debug
+    compiler=gcc
+    compiler.libcxx=libstdc++11
+    compiler.version=9
+    os=Linux
+    os_build=Linux
+
+[full_requires]
+    fmt/6.0.0@bincrafters/stable:038baac88f4c7bfa972ce5adac1616bed8fe2ef4
+    jsoncpp/1.9.0@theirix/stable:dfe2c959761ac11a1b854db19439f3576ba4b371
+
+[full_options]
+    fmt:fPIC=True
+    fmt:header_only=False
+    fmt:shared=False
+    fmt:with_fmt_alias=False
+    jsoncpp:shared=False
+    jsoncpp:use_pic=False
+
+[recipe_hash]
+
+
+[env]
+

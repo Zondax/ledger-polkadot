@@ -1,0 +1,34 @@
+{
+ "options": [
+  [
+   "fmt:fPIC",
+   "True"
+  ],
+  [
+   "fmt:header_only",
+   "False"
+  ],
+  [
+   "fmt:shared",
+   "False"
+  ],
+  [
+   "fmt:with_fmt_alias",
+   "False"
+  ],
+  [
+   "jsoncpp:shared",
+   "False"
+  ],
+  [
+   "jsoncpp:use_pic",
+   "False"
+  ]
+ ],
+ "root": {
+  "name": null,
+  "version": null,
+  "user": null,
+  "channel": null
+ }
+}

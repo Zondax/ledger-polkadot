@@ -1,5 +1,5 @@
 /*******************************************************************************
-*   (c) 2019 ZondaX GmbH
+*   (c) 2019 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ void crypto_extractPublicKey(const uint32_t path[HDPATH_LEN_DEFAULT], uint8_t *p
     cx_ecfp_private_key_t cx_privateKey;
     uint8_t privateKeyData[32];
 
-    if (pubKeyLen < PK_LEN) {
+    if (pubKeyLen < ED25519_PK_LEN) {
         return;
     }
 
@@ -77,7 +77,6 @@ void crypto_extractPublicKey(const uint32_t path[HDPATH_LEN_DEFAULT], uint8_t *p
 uint16_t crypto_sign(uint8_t *signature, uint16_t signatureMaxlen, const uint8_t *message, uint16_t messageLen) {
     const uint8_t *toSign = message;
     uint8_t messageDigest[32];
-    int signatureLength;
 
     if (messageLen > 256) {
         // Hash it
@@ -90,6 +89,9 @@ uint16_t crypto_sign(uint8_t *signature, uint16_t signatureMaxlen, const uint8_t
 
     cx_ecfp_private_key_t cx_privateKey;
     uint8_t privateKeyData[32];
+    int signatureLength;
+    unsigned int info = 0;
+
     BEGIN_TRY
     {
         TRY
@@ -107,7 +109,6 @@ uint16_t crypto_sign(uint8_t *signature, uint16_t signatureMaxlen, const uint8_t
             cx_ecfp_init_private_key(CX_CURVE_Ed25519, privateKeyData, 32, &cx_privateKey);
 
             // Sign
-            unsigned int info = 0;
             *signature = SIGNATURE_TYPE_ED25519;
             signatureLength = cx_eddsa_sign(&cx_privateKey,
                                             CX_LAST,

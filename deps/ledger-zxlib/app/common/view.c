@@ -37,14 +37,14 @@ void h_address_accept(unsigned int _) {
     UNUSED(_);
     view_idle_show(0);
     UX_WAIT();
-    app_reply_address();
+    app_reply_address(viewdata.addrKind);
 }
 
 void h_error_accept(unsigned int _) {
     UNUSED(_);
     view_idle_show(0);
     UX_WAIT();
-    app_reply_address();
+    app_reply_error();
 }
 
 void h_sign_accept(unsigned int _) {
@@ -73,25 +73,41 @@ void h_sign_reject(unsigned int _) {
     io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
 }
 
-void h_review_init() {
-    viewdata.idx = 0;
+void h_paging_init() {
+    viewdata.itemIdx = 0;
     viewdata.pageIdx = 0;
     viewdata.pageCount = 1;
 }
 
-void h_review_increase() {
-    viewdata.pageIdx++;
-    if (viewdata.pageIdx >= viewdata.pageCount) {
-        viewdata.idx++;
-        viewdata.pageIdx = 0;
+void h_paging_increase() {
+    if (viewdata.pageIdx + 1 < viewdata.pageCount) {
+        // increase page
+        viewdata.pageIdx++;
+    } else {
+        // passed page count, go to next index
+        if (viewdata.itemIdx + 1 < viewdata.itemCount) {
+            viewdata.itemIdx++;
+            viewdata.pageIdx = 0;
+        }
     }
 }
 
-void h_review_decrease() {
-    viewdata.pageIdx--;
-    if (viewdata.pageIdx < 0) {
-        viewdata.idx--;
-        viewdata.pageIdx = 0;
+void h_paging_decrease() {
+    if (viewdata.pageIdx != 0) {
+        viewdata.pageIdx--;
+    } else {
+        if (viewdata.itemIdx > 0) {
+            viewdata.itemIdx--;
+            // jump to last page. update will cap this value
+            viewdata.pageIdx = VIEW_ADDRESS_LAST_PAGE_DEFAULT;
+        }
+    }
+}
+
+void h_paging_set_page_count(uint8_t pageCount) {
+    viewdata.pageCount = pageCount;
+    if (viewdata.pageIdx > viewdata.pageCount) {
+        viewdata.pageIdx = viewdata.pageCount - 1;
     }
 }
 
@@ -99,7 +115,7 @@ view_error_t h_review_update_data() {
     tx_error_t err = tx_no_error;
 
     do {
-        err = tx_getItem(viewdata.idx,
+        err = tx_getItem(viewdata.itemIdx,
                          viewdata.key, MAX_CHARS_PER_KEY_LINE,
                          viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
                          viewdata.pageIdx, &viewdata.pageCount);
@@ -109,7 +125,7 @@ view_error_t h_review_update_data() {
         }
 
         if (viewdata.pageCount == 0) {
-            h_review_increase();
+            h_paging_increase();
         }
     } while (viewdata.pageCount == 0);
 
@@ -122,16 +138,14 @@ view_error_t h_review_update_data() {
 }
 
 view_error_t h_addr_update_item(uint8_t idx) {
-    MEMZERO(viewdata.addr, MAX_CHARS_ADDR);
+    MEMZERO(viewdata.value, MAX_CHARS_PER_VALUE1_LINE);
+
     switch (idx) {
-        case 0:
-            snprintf(viewdata.addr, MAX_CHARS_ADDR, "%s", (char *) (G_io_apdu_buffer + VIEW_ADDRESS_BUFFER_OFFSET));
-            break;
-        case 1:
-            bip32_to_str(viewdata.addr, MAX_CHARS_ADDR, hdPath, HDPATH_LEN_DEFAULT);
-            break;
+        case 0: return view_printAddr();
+        case 1: return view_printPath();
+        default:
+            return view_error_detected;
     }
-    return view_no_error;
 }
 
 void io_seproxyhal_display(const bagl_element_t *element) {
@@ -146,7 +160,9 @@ void view_idle_show(unsigned int ignored) {
     view_idle_show_impl();
 }
 
-void view_address_show() {
+void view_address_show(address_kind_e addressKind) {
+    viewdata.addrKind = addressKind;
+    viewdata.itemCount = VIEW_ADDRESS_ITEM_COUNT;          // Address, path, etc.
     view_address_show_impl();
 }
 

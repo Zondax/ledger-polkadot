@@ -1166,7 +1166,7 @@ utf8_int32_t utf8lwrcodepoint(utf8_int32_t cp) {
             case 0x03f9: cp = 0x03f2; break;
             case 0x03f7: cp = 0x03f8; break;
             case 0x03fa: cp = 0x03fb; break;
-        };
+        }
     }
 
     return cp;
@@ -1242,7 +1242,7 @@ utf8_int32_t utf8uprcodepoint(utf8_int32_t cp) {
             case 0x03f2: cp = 0x03f9; break;
             case 0x03f8: cp = 0x03f7; break;
             case 0x03fb: cp = 0x03fa; break;
-        };
+        }
     }
 
     return cp;

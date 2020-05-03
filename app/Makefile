@@ -77,13 +77,12 @@ DEFINES   += U2F_PROXY_MAGIC=\"KSM\"
 DEFINES   += USB_SEGMENT_SIZE=64
 DEFINES   += U2F_MAX_MESSAGE_SIZE=264 #257+5+2
 DEFINES   += HAVE_BOLOS_APP_STACK_CANARY
-DEFINES   += NDEBUG
 
 WEBUSB_URL     = www.ledgerwallet.com
 DEFINES       += HAVE_WEBUSB WEBUSB_URL_SIZE_B=$(shell echo -n $(WEBUSB_URL) | wc -c) WEBUSB_URL=$(shell echo -n $(WEBUSB_URL) | sed -e "s/./\\\'\0\\\',/g")
 
 ifeq ($(TARGET_NAME),TARGET_NANOX)
-DEFINES += IO_SEPROXYHAL_BUFFER_SIZE_B=300
+DEFINES       += IO_SEPROXYHAL_BUFFER_SIZE_B=300
 
 DEFINES       += HAVE_GLO096
 DEFINES       += HAVE_BAGL BAGL_WIDTH=128 BAGL_HEIGHT=64
@@ -135,12 +134,13 @@ AFLAGS +=
 
 LD       := $(GCCPATH)arm-none-eabi-gcc
 LDFLAGS  += -O3 -Os
-LDLIBS   += -lm -lgcc -lc
+LDLIBS   += -Lrust/target/thumbv6m-none-eabi/release -lrslib -lm -lgcc -lc
 
 ##########################
 include $(BOLOS_SDK)/Makefile.glyphs
 
 APP_SOURCE_PATH += $(MY_DIR)/src
+APP_SOURCE_PATH += $(MY_DIR)/rust/include
 APP_SOURCE_PATH += $(MY_DIR)/../deps/ledger-zxlib/include
 APP_SOURCE_PATH += $(MY_DIR)/../deps/ledger-zxlib/src
 APP_SOURCE_PATH += $(MY_DIR)/../deps/ledger-zxlib/app/common
@@ -150,14 +150,11 @@ SDK_SOURCE_PATH += lib_stusb lib_u2f lib_stusb_impl
 #SDK_SOURCE_PATH  += lib_blewbxx lib_blewbxx_impl
 SDK_SOURCE_PATH  += lib_ux
 
-# Import generic rules from the SDK
-include $(BOLOS_SDK)/Makefile.rules
-
-#add dependency on custom makefile filename
-dep/%.d: %.c Makefile
-
 rust:
-	# Do nothing
+	cd rust && CARGO_HOME="$(CURDIR)/rust/.cargo" cargo build --target thumbv6m-none-eabi --release
+
+rust_clean:
+	cd rust && CARGO_HOME="$(CURDIR)/rust/.cargo" cargo clean
 
 # load, delete and listvariants are provided to comply with Ledger requirements
 load:
@@ -165,6 +162,16 @@ load:
 
 delete:
 	python -m ledgerblue.deleteApp $(COMMON_DELETE_PARAMS)
+
+.PHONY: rust
+
+all: default rust
+
+# Import generic rules from the SDK
+include $(BOLOS_SDK)/Makefile.rules
+
+#add dependency on custom makefile filename
+dep/%.d: %.c Makefile
 
 listvariants:
 	@echo VARIANTS COIN KSM

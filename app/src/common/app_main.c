@@ -1,5 +1,5 @@
 /*******************************************************************************
-*   (c) 2018, 2019 ZondaX GmbH
+*   (c) 2018, 2019 Zondax GmbH
 *   (c) 2016 Ledger
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -190,7 +190,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
 
                     if (requireConfirmation) {
                         app_fill_address();
-                        view_address_show();
+                        view_address_show(addr_ed22519);
                         *flags |= IO_ASYNCH_REPLY;
                         break;
                     }

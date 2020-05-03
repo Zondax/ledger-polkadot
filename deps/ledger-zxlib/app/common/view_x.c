@@ -105,7 +105,7 @@ const ux_flow_step_t *const ux_sign_flow[] = {
 void h_review_loop_start() {
     if (flow_inside_loop) {
         // coming from right
-        h_review_decrease();
+        h_paging_decrease();
         if (viewdata.idx<0) {
             // exit to the left
             flow_inside_loop = 0;
@@ -114,7 +114,7 @@ void h_review_loop_start() {
         }
     } else {
     // coming from left
-        h_review_init();
+        h_paging_init();
     }
 
     view_error_t err = h_review_update_data();
@@ -138,7 +138,7 @@ void h_review_loop_inside() {
 void h_review_loop_end() {
     if (flow_inside_loop) {
         // coming from left
-        h_review_increase();
+        h_paging_increase();
         view_error_t err = h_review_update_data();
 
         switch(err) {
@@ -157,7 +157,7 @@ void h_review_loop_end() {
         }
     } else {
     // coming from right
-        h_review_decrease();
+        h_paging_decrease();
         view_error_t err = h_review_update_data();
 
         switch(err) {
@@ -214,8 +214,8 @@ void view_error_show_impl() {
 }
 
 void view_sign_show_impl(){
-    h_review_init();
-    h_review_decrease();
+    h_paging_init();
+    h_paging_decrease();
     ////
     flow_inside_loop = 0;
     if(G_ux.stack_count == 0) {

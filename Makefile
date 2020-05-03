@@ -19,7 +19,7 @@
 # BOLOS_SDK NOT DEFINED		We use a containerized build approach
 
 ifeq ($(BOLOS_SDK),)
-include $(CURDIR)/deps/ledger-zxlib/cmake/dockerized_build.mk
+include $(CURDIR)/deps/ledger-zxlib/dockerized_build.mk
 else
 default:
 	$(MAKE) -C app
