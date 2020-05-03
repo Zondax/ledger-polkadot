@@ -141,14 +141,11 @@ view_error_t h_addr_update_item(uint8_t idx) {
     MEMZERO(viewdata.value, MAX_CHARS_PER_VALUE1_LINE);
 
     switch (idx) {
-        case 0:
-            snprintf(viewdata.addr, MAX_CHARS_ADDR, "%s", (char *) (G_io_apdu_buffer + VIEW_ADDRESS_BUFFER_OFFSET));
-            break;
-        case 1:
-            bip32_to_str(viewdata.addr, MAX_CHARS_ADDR, hdPath, HDPATH_LEN_DEFAULT);
-            break;
+        case 0: return view_printAddr();
+        case 1: return view_printPath();
+        default:
+            return view_error_detected;
     }
-    return view_no_error;
 }
 
 void io_seproxyhal_display(const bagl_element_t *element) {

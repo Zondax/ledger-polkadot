@@ -1,5 +1,5 @@
 /*******************************************************************************
-*  (c) 2019 ZondaX GmbH
+*  (c) 2019 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ uint8_t *tx_get_buffer();
 const char *tx_parse();
 
 /// Return the number of items in the transaction
-uint8_t tx_getNumItems();
+tx_error_t tx_getNumItems(uint16_t *num_items);
 
 /// Gets an specific item from the transaction (including paging)
 tx_error_t tx_getItem(int8_t displayIdx,

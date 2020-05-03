@@ -31,39 +31,46 @@
 
 parser_error_t parser_parse(parser_context_t *ctx,
                             const uint8_t *data,
-                            uint16_t dataLen) {
+                            size_t dataLen) {
     parser_init(ctx, data, dataLen);
     return _readTx(ctx, &parser_tx_obj);
 }
 
-parser_error_t parser_validate() {
+parser_error_t parser_validate(const parser_context_t *ctx) {
     return parser_ok;
 }
 
-uint8_t parser_getNumItems(parser_context_t *ctx) {
+parser_error_t parser_getNumItems(const parser_context_t *ctx, uint16_t *num_items) {
     uint8_t methodArgCount = _getMethod_NumItems(parser_tx_obj.callIndex.moduleIdx,
                                                  parser_tx_obj.callIndex.idx,
                                                  &parser_tx_obj.method);
 
-    return FIELD_FIXED_TOTAL_COUNT + methodArgCount;
+    *num_items = FIELD_FIXED_TOTAL_COUNT + methodArgCount;
+    return parser_ok;
 }
 
-parser_error_t parser_getItem(parser_context_t *ctx,
-                              int8_t displayIdx,
+parser_error_t parser_getItem(const parser_context_t *ctx,
+                              uint16_t displayIdx,
                               char *outKey, uint16_t outKeyLen,
                               char *outValue, uint16_t outValueLen,
                               uint8_t pageIdx, uint8_t *pageCount) {
-    snprintf(outKey, outKeyLen, "? %d/%d", displayIdx + 1, parser_getNumItems(ctx));
-    snprintf(outValue, outValueLen, "? %d", pageIdx);
+    MEMZERO(outKey, outKeyLen);
+    MEMZERO(outValue, outValueLen);
 
-    parser_error_t err = parser_ok;
+    uint16_t numItems;
+
+    CHECK_PARSER_ERR(parser_getNumItems(ctx, &numItems));
     *pageCount = 1;
 
-    if (displayIdx < 0 || displayIdx >= parser_getNumItems(ctx)) {
+    if (displayIdx < 0 || displayIdx >= numItems) {
         *pageCount = 0;
         return parser_no_data;
     }
 
+    snprintf(outKey, outKeyLen, "? %d/%d", displayIdx + 1, numItems);
+    snprintf(outValue, outValueLen, "? %d", pageIdx);
+
+    parser_error_t err = parser_ok;
     if (displayIdx == FIELD_METHOD) {
         snprintf(outKey, outKeyLen, "%s",
                  _getMethod_ModuleName(parser_tx_obj.callIndex.moduleIdx));

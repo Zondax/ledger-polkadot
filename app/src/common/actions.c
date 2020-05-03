@@ -1,6 +1,6 @@
 /*******************************************************************************
 *   (c) 2016 Ledger
-*   (c) 2019 ZondaX GmbH
+*   (c) 2019 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 
 uint8_t app_sign() {
     uint8_t *signature = G_io_apdu_buffer;
+
     const uint8_t *message = tx_get_buffer();
     const uint16_t messageLength = tx_get_buffer_length();
 

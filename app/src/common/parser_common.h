@@ -1,5 +1,5 @@
 /*******************************************************************************
-*  (c) 2019 ZondaX GmbH
+*  (c) 2019 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -22,6 +22,11 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 
+#define CHECK_PARSER_ERR(__CALL) { \
+    parser_error_t __err = __CALL;  \
+    CHECK_APP_CANARY()  \
+    if (__err!=parser_ok) return __err;}
+
 typedef enum {
     // Generic errors
     parser_ok = 0,
@@ -29,6 +34,7 @@ typedef enum {
     parser_init_context_empty,
     parser_display_idx_out_of_range,
     parser_display_page_out_of_range,
+    parser_unexepected_error,
     // Coin specific
     parser_spec_not_supported,
     parser_not_supported,

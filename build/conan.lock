@@ -1,0 +1,25 @@
+{
+ "profile_host": "[settings]\narch=x86_64\narch_build=x86_64\nbuild_type=Debug\ncompiler=gcc\ncompiler.libcxx=libstdc++11\ncompiler.version=9\nos=Linux\nos_build=Linux\n[options]\n[build_requires]\n[env]\n",
+ "graph_lock": {
+  "nodes": {
+   "0": {
+    "pref": null,
+    "options": "fmt:fPIC=True\nfmt:header_only=False\nfmt:shared=False\nfmt:with_fmt_alias=False\njsoncpp:shared=False\njsoncpp:use_pic=False",
+    "requires": [
+     "1",
+     "2"
+    ],
+    "path": "/home/lenij/zondax/ledger-kusama/conanfile.txt"
+   },
+   "1": {
+    "pref": "jsoncpp/1.9.0@theirix/stable#0:dfe2c959761ac11a1b854db19439f3576ba4b371#0",
+    "options": "shared=False\nuse_pic=False"
+   },
+   "2": {
+    "pref": "fmt/6.0.0@bincrafters/stable#0:038baac88f4c7bfa972ce5adac1616bed8fe2ef4#8d4795df26d02e8439b9dec75107d8fe",
+    "options": "fPIC=True\nheader_only=False\nshared=False\nwith_fmt_alias=False"
+   }
+  }
+ },
+ "version": "0.3"
+}
