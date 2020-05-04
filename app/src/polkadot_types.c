@@ -340,6 +340,7 @@ parser_error_t _readVestingInfo(parser_context_t *c, pd_VestingInfo_t *v) {
     CHECK_ERROR(_readBalanceOf(c, &v->locked))
     CHECK_ERROR(_readBalanceOf(c, &v->per_block))
     CHECK_ERROR(_readBlockNumber(c, &v->starting_block))
+    return parser_ok;
 }
 
 parser_error_t _readVote(parser_context_t *c, pd_Vote_t *v) {
@@ -668,7 +669,7 @@ parser_error_t _toStringAttestedCandidate(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -710,7 +711,7 @@ parser_error_t _toStringCall(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -721,7 +722,7 @@ parser_error_t _toStringChangesTrieConfiguration(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -807,7 +808,7 @@ parser_error_t _toStringDoubleVoteReport(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -845,7 +846,7 @@ parser_error_t _toStringHeadData(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -856,7 +857,7 @@ parser_error_t _toStringHeader(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -867,7 +868,7 @@ parser_error_t _toStringHeartbeat(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -878,7 +879,7 @@ parser_error_t _toStringIdentityFields(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -999,7 +1000,7 @@ parser_error_t _toStringIdentityJudgement(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1010,7 +1011,7 @@ parser_error_t _toStringKeyValue(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1021,7 +1022,7 @@ parser_error_t _toStringKey(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1041,7 +1042,7 @@ parser_error_t _toStringMoreAttestations(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1084,7 +1085,7 @@ parser_error_t _toStringPhragmenScore(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1148,7 +1149,7 @@ parser_error_t _toStringSocietyJudgement(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1159,7 +1160,7 @@ parser_error_t _toStringTimepoint(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1170,7 +1171,7 @@ parser_error_t _toStringTupleAccountIdData(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1291,7 +1292,7 @@ parser_error_t _toStringValidationCode(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1302,7 +1303,7 @@ parser_error_t _toStringValidatorIndex(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1346,7 +1347,7 @@ parser_error_t _toStringVestingInfo(
     return parser_ok;
   }
   pageIdx -= pages[1];
-  
+
   //////
   if (pageIdx < pages[2]) {
     CHECK_ERROR(_toStringBlockNumber(&v->starting_block, outValue, outValueLen, pageIdx, &pages[2]))

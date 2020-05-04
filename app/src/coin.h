@@ -43,7 +43,9 @@ typedef enum {
 
 #define MENU_MAIN_APP_LINE1 "Kusama"
 #define MENU_MAIN_APP_LINE2 "Web3"
-#define APPVERSION_LINE2 ""
+
+#define APPVERSION_LINE1 "Kusama"
+#define APPVERSION_LINE2 "v"APPVERSION
 
 // Specific to Kusama
 #define PK_ADDRESS_TYPE     02

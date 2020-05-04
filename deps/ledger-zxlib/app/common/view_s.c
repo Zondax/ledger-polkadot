@@ -43,7 +43,9 @@ void os_exit(uint32_t id) {
 
 const ux_menu_entry_t menu_main[] = {
     {NULL, NULL, 0, &C_icon_app, MENU_MAIN_APP_LINE1, MENU_MAIN_APP_LINE2, 33, 12},
-    {NULL, NULL, 0, &C_icon_app, "v"APPVERSION, APPVERSION_LINE2, 33, 12},
+    {NULL, NULL, 0, &C_icon_app, APPVERSION_LINE1, APPVERSION_LINE2, 33, 12},
+    {NULL, NULL, 0, &C_icon_app, "Developed by", "Zondax.ch", 33, 12},
+    {NULL, NULL, 0, &C_icon_app, "under Apache", "License 2.0", 33, 12},
     {NULL, os_exit, 0, &C_icon_dashboard, "Quit", NULL, 50, 29},
     UX_MENU_END
 };

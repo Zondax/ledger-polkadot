@@ -1105,496 +1105,496 @@ parser_error_t _readMethodBasic(
     uint8_t moduleIdx,
     uint8_t callIdx,
     pd_MethodBasic_t *method) {
-    uint16_t callPrivIdx = (moduleIdx << 8u) + callIdx;
+    uint16_t callPrivIdx = ( (uint16_t) moduleIdx << 8u) + callIdx;
 
     switch(callPrivIdx) {
-        case ((0u << 8u) + 0):
+        case 0: /* module 0 call 0 */
             CHECK_ERROR(_readMethod_system_fill_block(c, &method->system_fill_block))
             break;
-        case ((0u << 8u) + 1):
+        case 1: /* module 0 call 1 */
             CHECK_ERROR(_readMethod_system_remark(c, &method->system_remark))
             break;
-        case ((0u << 8u) + 2):
+        case 2: /* module 0 call 2 */
             CHECK_ERROR(_readMethod_system_set_heap_pages(c, &method->system_set_heap_pages))
             break;
-        case ((0u << 8u) + 3):
+        case 3: /* module 0 call 3 */
             CHECK_ERROR(_readMethod_system_set_code(c, &method->system_set_code))
             break;
-        case ((0u << 8u) + 4):
+        case 4: /* module 0 call 4 */
             CHECK_ERROR(_readMethod_system_set_code_without_checks(c, &method->system_set_code_without_checks))
             break;
-        case ((0u << 8u) + 5):
+        case 5: /* module 0 call 5 */
             CHECK_ERROR(_readMethod_system_set_changes_trie_config(c, &method->system_set_changes_trie_config))
             break;
-        case ((0u << 8u) + 6):
+        case 6: /* module 0 call 6 */
             CHECK_ERROR(_readMethod_system_set_storage(c, &method->system_set_storage))
             break;
-        case ((0u << 8u) + 7):
+        case 7: /* module 0 call 7 */
             CHECK_ERROR(_readMethod_system_kill_storage(c, &method->system_kill_storage))
             break;
-        case ((0u << 8u) + 8):
+        case 8: /* module 0 call 8 */
             CHECK_ERROR(_readMethod_system_kill_prefix(c, &method->system_kill_prefix))
             break;
-        case ((0u << 8u) + 9):
+        case 9: /* module 0 call 9 */
             CHECK_ERROR(_readMethod_system_suicide(c, &method->system_suicide))
             break;
-        case ((2u << 8u) + 0):
+        case 512: /* module 2 call 0 */
             CHECK_ERROR(_readMethod_timestamp_set(c, &method->timestamp_set))
             break;
-        case ((3u << 8u) + 0):
+        case 768: /* module 3 call 0 */
             CHECK_ERROR(_readMethod_indices_claim(c, &method->indices_claim))
             break;
-        case ((3u << 8u) + 1):
+        case 769: /* module 3 call 1 */
             CHECK_ERROR(_readMethod_indices_transfer(c, &method->indices_transfer))
             break;
-        case ((3u << 8u) + 2):
+        case 770: /* module 3 call 2 */
             CHECK_ERROR(_readMethod_indices_free(c, &method->indices_free))
             break;
-        case ((3u << 8u) + 3):
+        case 771: /* module 3 call 3 */
             CHECK_ERROR(_readMethod_indices_force_transfer(c, &method->indices_force_transfer))
             break;
-        case ((4u << 8u) + 0):
+        case 1024: /* module 4 call 0 */
             CHECK_ERROR(_readMethod_balances_transfer(c, &method->balances_transfer))
             break;
-        case ((4u << 8u) + 1):
+        case 1025: /* module 4 call 1 */
             CHECK_ERROR(_readMethod_balances_set_balance(c, &method->balances_set_balance))
             break;
-        case ((4u << 8u) + 2):
+        case 1026: /* module 4 call 2 */
             CHECK_ERROR(_readMethod_balances_force_transfer(c, &method->balances_force_transfer))
             break;
-        case ((4u << 8u) + 3):
+        case 1027: /* module 4 call 3 */
             CHECK_ERROR(_readMethod_balances_transfer_keep_alive(c, &method->balances_transfer_keep_alive))
             break;
-        case ((5u << 8u) + 0):
+        case 1280: /* module 5 call 0 */
             CHECK_ERROR(_readMethod_authorship_set_uncles(c, &method->authorship_set_uncles))
             break;
-        case ((6u << 8u) + 0):
+        case 1536: /* module 6 call 0 */
             CHECK_ERROR(_readMethod_staking_bond(c, &method->staking_bond))
             break;
-        case ((6u << 8u) + 1):
+        case 1537: /* module 6 call 1 */
             CHECK_ERROR(_readMethod_staking_bond_extra(c, &method->staking_bond_extra))
             break;
-        case ((6u << 8u) + 2):
+        case 1538: /* module 6 call 2 */
             CHECK_ERROR(_readMethod_staking_unbond(c, &method->staking_unbond))
             break;
-        case ((6u << 8u) + 3):
+        case 1539: /* module 6 call 3 */
             CHECK_ERROR(_readMethod_staking_withdraw_unbonded(c, &method->staking_withdraw_unbonded))
             break;
-        case ((6u << 8u) + 4):
+        case 1540: /* module 6 call 4 */
             CHECK_ERROR(_readMethod_staking_validate(c, &method->staking_validate))
             break;
-        case ((6u << 8u) + 5):
+        case 1541: /* module 6 call 5 */
             CHECK_ERROR(_readMethod_staking_nominate(c, &method->staking_nominate))
             break;
-        case ((6u << 8u) + 6):
+        case 1542: /* module 6 call 6 */
             CHECK_ERROR(_readMethod_staking_chill(c, &method->staking_chill))
             break;
-        case ((6u << 8u) + 7):
+        case 1543: /* module 6 call 7 */
             CHECK_ERROR(_readMethod_staking_set_payee(c, &method->staking_set_payee))
             break;
-        case ((6u << 8u) + 8):
+        case 1544: /* module 6 call 8 */
             CHECK_ERROR(_readMethod_staking_set_controller(c, &method->staking_set_controller))
             break;
-        case ((6u << 8u) + 9):
+        case 1545: /* module 6 call 9 */
             CHECK_ERROR(_readMethod_staking_set_validator_count(c, &method->staking_set_validator_count))
             break;
-        case ((6u << 8u) + 10):
+        case 1546: /* module 6 call 10 */
             CHECK_ERROR(_readMethod_staking_force_no_eras(c, &method->staking_force_no_eras))
             break;
-        case ((6u << 8u) + 11):
+        case 1547: /* module 6 call 11 */
             CHECK_ERROR(_readMethod_staking_force_new_era(c, &method->staking_force_new_era))
             break;
-        case ((6u << 8u) + 12):
+        case 1548: /* module 6 call 12 */
             CHECK_ERROR(_readMethod_staking_set_invulnerables(c, &method->staking_set_invulnerables))
             break;
-        case ((6u << 8u) + 13):
+        case 1549: /* module 6 call 13 */
             CHECK_ERROR(_readMethod_staking_force_unstake(c, &method->staking_force_unstake))
             break;
-        case ((6u << 8u) + 14):
+        case 1550: /* module 6 call 14 */
             CHECK_ERROR(_readMethod_staking_force_new_era_always(c, &method->staking_force_new_era_always))
             break;
-        case ((6u << 8u) + 15):
+        case 1551: /* module 6 call 15 */
             CHECK_ERROR(_readMethod_staking_cancel_deferred_slash(c, &method->staking_cancel_deferred_slash))
             break;
-        case ((6u << 8u) + 16):
+        case 1552: /* module 6 call 16 */
             CHECK_ERROR(_readMethod_staking_payout_nominator(c, &method->staking_payout_nominator))
             break;
-        case ((6u << 8u) + 17):
+        case 1553: /* module 6 call 17 */
             CHECK_ERROR(_readMethod_staking_payout_validator(c, &method->staking_payout_validator))
             break;
-        case ((6u << 8u) + 18):
+        case 1554: /* module 6 call 18 */
             CHECK_ERROR(_readMethod_staking_payout_stakers(c, &method->staking_payout_stakers))
             break;
-        case ((6u << 8u) + 19):
+        case 1555: /* module 6 call 19 */
             CHECK_ERROR(_readMethod_staking_rebond(c, &method->staking_rebond))
             break;
-        case ((6u << 8u) + 20):
+        case 1556: /* module 6 call 20 */
             CHECK_ERROR(_readMethod_staking_set_history_depth(c, &method->staking_set_history_depth))
             break;
-        case ((6u << 8u) + 21):
+        case 1557: /* module 6 call 21 */
             CHECK_ERROR(_readMethod_staking_reap_stash(c, &method->staking_reap_stash))
             break;
-        case ((6u << 8u) + 22):
+        case 1558: /* module 6 call 22 */
             CHECK_ERROR(_readMethod_staking_submit_election_solution(c, &method->staking_submit_election_solution))
             break;
-        case ((6u << 8u) + 23):
+        case 1559: /* module 6 call 23 */
             CHECK_ERROR(_readMethod_staking_submit_election_solution_unsigned(c, &method->staking_submit_election_solution_unsigned))
             break;
-        case ((8u << 8u) + 0):
+        case 2048: /* module 8 call 0 */
             CHECK_ERROR(_readMethod_session_set_keys(c, &method->session_set_keys))
             break;
-        case ((8u << 8u) + 1):
+        case 2049: /* module 8 call 1 */
             CHECK_ERROR(_readMethod_session_purge_keys(c, &method->session_purge_keys))
             break;
-        case ((9u << 8u) + 0):
+        case 2304: /* module 9 call 0 */
             CHECK_ERROR(_readMethod_finalitytracker_final_hint(c, &method->finalitytracker_final_hint))
             break;
-        case ((10u << 8u) + 0):
+        case 2560: /* module 10 call 0 */
             CHECK_ERROR(_readMethod_grandpa_report_misbehavior(c, &method->grandpa_report_misbehavior))
             break;
-        case ((11u << 8u) + 0):
+        case 2816: /* module 11 call 0 */
             CHECK_ERROR(_readMethod_imonline_heartbeat(c, &method->imonline_heartbeat))
             break;
-        case ((13u << 8u) + 0):
+        case 3328: /* module 13 call 0 */
             CHECK_ERROR(_readMethod_democracy_propose(c, &method->democracy_propose))
             break;
-        case ((13u << 8u) + 1):
+        case 3329: /* module 13 call 1 */
             CHECK_ERROR(_readMethod_democracy_second(c, &method->democracy_second))
             break;
-        case ((13u << 8u) + 2):
+        case 3330: /* module 13 call 2 */
             CHECK_ERROR(_readMethod_democracy_vote(c, &method->democracy_vote))
             break;
-        case ((13u << 8u) + 3):
+        case 3331: /* module 13 call 3 */
             CHECK_ERROR(_readMethod_democracy_proxy_vote(c, &method->democracy_proxy_vote))
             break;
-        case ((13u << 8u) + 4):
+        case 3332: /* module 13 call 4 */
             CHECK_ERROR(_readMethod_democracy_emergency_cancel(c, &method->democracy_emergency_cancel))
             break;
-        case ((13u << 8u) + 5):
+        case 3333: /* module 13 call 5 */
             CHECK_ERROR(_readMethod_democracy_external_propose(c, &method->democracy_external_propose))
             break;
-        case ((13u << 8u) + 6):
+        case 3334: /* module 13 call 6 */
             CHECK_ERROR(_readMethod_democracy_external_propose_majority(c, &method->democracy_external_propose_majority))
             break;
-        case ((13u << 8u) + 7):
+        case 3335: /* module 13 call 7 */
             CHECK_ERROR(_readMethod_democracy_external_propose_default(c, &method->democracy_external_propose_default))
             break;
-        case ((13u << 8u) + 8):
+        case 3336: /* module 13 call 8 */
             CHECK_ERROR(_readMethod_democracy_fast_track(c, &method->democracy_fast_track))
             break;
-        case ((13u << 8u) + 9):
+        case 3337: /* module 13 call 9 */
             CHECK_ERROR(_readMethod_democracy_veto_external(c, &method->democracy_veto_external))
             break;
-        case ((13u << 8u) + 10):
+        case 3338: /* module 13 call 10 */
             CHECK_ERROR(_readMethod_democracy_cancel_referendum(c, &method->democracy_cancel_referendum))
             break;
-        case ((13u << 8u) + 11):
+        case 3339: /* module 13 call 11 */
             CHECK_ERROR(_readMethod_democracy_cancel_queued(c, &method->democracy_cancel_queued))
             break;
-        case ((13u << 8u) + 12):
+        case 3340: /* module 13 call 12 */
             CHECK_ERROR(_readMethod_democracy_activate_proxy(c, &method->democracy_activate_proxy))
             break;
-        case ((13u << 8u) + 13):
+        case 3341: /* module 13 call 13 */
             CHECK_ERROR(_readMethod_democracy_close_proxy(c, &method->democracy_close_proxy))
             break;
-        case ((13u << 8u) + 14):
+        case 3342: /* module 13 call 14 */
             CHECK_ERROR(_readMethod_democracy_deactivate_proxy(c, &method->democracy_deactivate_proxy))
             break;
-        case ((13u << 8u) + 15):
+        case 3343: /* module 13 call 15 */
             CHECK_ERROR(_readMethod_democracy_delegate(c, &method->democracy_delegate))
             break;
-        case ((13u << 8u) + 16):
+        case 3344: /* module 13 call 16 */
             CHECK_ERROR(_readMethod_democracy_undelegate(c, &method->democracy_undelegate))
             break;
-        case ((13u << 8u) + 17):
+        case 3345: /* module 13 call 17 */
             CHECK_ERROR(_readMethod_democracy_clear_public_proposals(c, &method->democracy_clear_public_proposals))
             break;
-        case ((13u << 8u) + 18):
+        case 3346: /* module 13 call 18 */
             CHECK_ERROR(_readMethod_democracy_note_preimage(c, &method->democracy_note_preimage))
             break;
-        case ((13u << 8u) + 19):
+        case 3347: /* module 13 call 19 */
             CHECK_ERROR(_readMethod_democracy_note_imminent_preimage(c, &method->democracy_note_imminent_preimage))
             break;
-        case ((13u << 8u) + 20):
+        case 3348: /* module 13 call 20 */
             CHECK_ERROR(_readMethod_democracy_reap_preimage(c, &method->democracy_reap_preimage))
             break;
-        case ((13u << 8u) + 21):
+        case 3349: /* module 13 call 21 */
             CHECK_ERROR(_readMethod_democracy_unlock(c, &method->democracy_unlock))
             break;
-        case ((13u << 8u) + 22):
+        case 3350: /* module 13 call 22 */
             CHECK_ERROR(_readMethod_democracy_open_proxy(c, &method->democracy_open_proxy))
             break;
-        case ((13u << 8u) + 23):
+        case 3351: /* module 13 call 23 */
             CHECK_ERROR(_readMethod_democracy_remove_vote(c, &method->democracy_remove_vote))
             break;
-        case ((13u << 8u) + 24):
+        case 3352: /* module 13 call 24 */
             CHECK_ERROR(_readMethod_democracy_remove_other_vote(c, &method->democracy_remove_other_vote))
             break;
-        case ((13u << 8u) + 25):
+        case 3353: /* module 13 call 25 */
             CHECK_ERROR(_readMethod_democracy_proxy_delegate(c, &method->democracy_proxy_delegate))
             break;
-        case ((13u << 8u) + 26):
+        case 3354: /* module 13 call 26 */
             CHECK_ERROR(_readMethod_democracy_proxy_undelegate(c, &method->democracy_proxy_undelegate))
             break;
-        case ((13u << 8u) + 27):
+        case 3355: /* module 13 call 27 */
             CHECK_ERROR(_readMethod_democracy_proxy_remove_vote(c, &method->democracy_proxy_remove_vote))
             break;
-        case ((13u << 8u) + 28):
+        case 3356: /* module 13 call 28 */
             CHECK_ERROR(_readMethod_democracy_enact_proposal(c, &method->democracy_enact_proposal))
             break;
-        case ((14u << 8u) + 0):
+        case 3584: /* module 14 call 0 */
             CHECK_ERROR(_readMethod_council_set_members(c, &method->council_set_members))
             break;
-        case ((14u << 8u) + 3):
+        case 3587: /* module 14 call 3 */
             CHECK_ERROR(_readMethod_council_vote(c, &method->council_vote))
             break;
-        case ((14u << 8u) + 4):
+        case 3588: /* module 14 call 4 */
             CHECK_ERROR(_readMethod_council_close(c, &method->council_close))
             break;
-        case ((15u << 8u) + 0):
+        case 3840: /* module 15 call 0 */
             CHECK_ERROR(_readMethod_technicalcommittee_set_members(c, &method->technicalcommittee_set_members))
             break;
-        case ((15u << 8u) + 3):
+        case 3843: /* module 15 call 3 */
             CHECK_ERROR(_readMethod_technicalcommittee_vote(c, &method->technicalcommittee_vote))
             break;
-        case ((15u << 8u) + 4):
+        case 3844: /* module 15 call 4 */
             CHECK_ERROR(_readMethod_technicalcommittee_close(c, &method->technicalcommittee_close))
             break;
-        case ((16u << 8u) + 0):
+        case 4096: /* module 16 call 0 */
             CHECK_ERROR(_readMethod_electionsphragmen_vote(c, &method->electionsphragmen_vote))
             break;
-        case ((16u << 8u) + 1):
+        case 4097: /* module 16 call 1 */
             CHECK_ERROR(_readMethod_electionsphragmen_remove_voter(c, &method->electionsphragmen_remove_voter))
             break;
-        case ((16u << 8u) + 2):
+        case 4098: /* module 16 call 2 */
             CHECK_ERROR(_readMethod_electionsphragmen_report_defunct_voter(c, &method->electionsphragmen_report_defunct_voter))
             break;
-        case ((16u << 8u) + 3):
+        case 4099: /* module 16 call 3 */
             CHECK_ERROR(_readMethod_electionsphragmen_submit_candidacy(c, &method->electionsphragmen_submit_candidacy))
             break;
-        case ((16u << 8u) + 4):
+        case 4100: /* module 16 call 4 */
             CHECK_ERROR(_readMethod_electionsphragmen_renounce_candidacy(c, &method->electionsphragmen_renounce_candidacy))
             break;
-        case ((16u << 8u) + 5):
+        case 4101: /* module 16 call 5 */
             CHECK_ERROR(_readMethod_electionsphragmen_remove_member(c, &method->electionsphragmen_remove_member))
             break;
-        case ((17u << 8u) + 0):
+        case 4352: /* module 17 call 0 */
             CHECK_ERROR(_readMethod_technicalmembership_add_member(c, &method->technicalmembership_add_member))
             break;
-        case ((17u << 8u) + 1):
+        case 4353: /* module 17 call 1 */
             CHECK_ERROR(_readMethod_technicalmembership_remove_member(c, &method->technicalmembership_remove_member))
             break;
-        case ((17u << 8u) + 2):
+        case 4354: /* module 17 call 2 */
             CHECK_ERROR(_readMethod_technicalmembership_swap_member(c, &method->technicalmembership_swap_member))
             break;
-        case ((17u << 8u) + 3):
+        case 4355: /* module 17 call 3 */
             CHECK_ERROR(_readMethod_technicalmembership_reset_members(c, &method->technicalmembership_reset_members))
             break;
-        case ((17u << 8u) + 4):
+        case 4356: /* module 17 call 4 */
             CHECK_ERROR(_readMethod_technicalmembership_change_key(c, &method->technicalmembership_change_key))
             break;
-        case ((17u << 8u) + 5):
+        case 4357: /* module 17 call 5 */
             CHECK_ERROR(_readMethod_technicalmembership_set_prime(c, &method->technicalmembership_set_prime))
             break;
-        case ((17u << 8u) + 6):
+        case 4358: /* module 17 call 6 */
             CHECK_ERROR(_readMethod_technicalmembership_clear_prime(c, &method->technicalmembership_clear_prime))
             break;
-        case ((18u << 8u) + 0):
+        case 4608: /* module 18 call 0 */
             CHECK_ERROR(_readMethod_treasury_propose_spend(c, &method->treasury_propose_spend))
             break;
-        case ((18u << 8u) + 1):
+        case 4609: /* module 18 call 1 */
             CHECK_ERROR(_readMethod_treasury_reject_proposal(c, &method->treasury_reject_proposal))
             break;
-        case ((18u << 8u) + 2):
+        case 4610: /* module 18 call 2 */
             CHECK_ERROR(_readMethod_treasury_approve_proposal(c, &method->treasury_approve_proposal))
             break;
-        case ((18u << 8u) + 3):
+        case 4611: /* module 18 call 3 */
             CHECK_ERROR(_readMethod_treasury_report_awesome(c, &method->treasury_report_awesome))
             break;
-        case ((18u << 8u) + 4):
+        case 4612: /* module 18 call 4 */
             CHECK_ERROR(_readMethod_treasury_retract_tip(c, &method->treasury_retract_tip))
             break;
-        case ((18u << 8u) + 5):
+        case 4613: /* module 18 call 5 */
             CHECK_ERROR(_readMethod_treasury_tip_new(c, &method->treasury_tip_new))
             break;
-        case ((18u << 8u) + 6):
+        case 4614: /* module 18 call 6 */
             CHECK_ERROR(_readMethod_treasury_tip(c, &method->treasury_tip))
             break;
-        case ((18u << 8u) + 7):
+        case 4615: /* module 18 call 7 */
             CHECK_ERROR(_readMethod_treasury_close_tip(c, &method->treasury_close_tip))
             break;
-        case ((19u << 8u) + 0):
+        case 4864: /* module 19 call 0 */
             CHECK_ERROR(_readMethod_claims_claim(c, &method->claims_claim))
             break;
-        case ((19u << 8u) + 1):
+        case 4865: /* module 19 call 1 */
             CHECK_ERROR(_readMethod_claims_mint_claim(c, &method->claims_mint_claim))
             break;
-        case ((20u << 8u) + 0):
+        case 5120: /* module 20 call 0 */
             CHECK_ERROR(_readMethod_parachains_set_heads(c, &method->parachains_set_heads))
             break;
-        case ((20u << 8u) + 1):
+        case 5121: /* module 20 call 1 */
             CHECK_ERROR(_readMethod_parachains_report_double_vote(c, &method->parachains_report_double_vote))
             break;
-        case ((21u << 8u) + 0):
+        case 5376: /* module 21 call 0 */
             CHECK_ERROR(_readMethod_attestations_more_attestations(c, &method->attestations_more_attestations))
             break;
-        case ((22u << 8u) + 0):
+        case 5632: /* module 22 call 0 */
             CHECK_ERROR(_readMethod_slots_new_auction(c, &method->slots_new_auction))
             break;
-        case ((22u << 8u) + 1):
+        case 5633: /* module 22 call 1 */
             CHECK_ERROR(_readMethod_slots_bid(c, &method->slots_bid))
             break;
-        case ((22u << 8u) + 2):
+        case 5634: /* module 22 call 2 */
             CHECK_ERROR(_readMethod_slots_bid_renew(c, &method->slots_bid_renew))
             break;
-        case ((22u << 8u) + 3):
+        case 5635: /* module 22 call 3 */
             CHECK_ERROR(_readMethod_slots_set_offboarding(c, &method->slots_set_offboarding))
             break;
-        case ((22u << 8u) + 4):
+        case 5636: /* module 22 call 4 */
             CHECK_ERROR(_readMethod_slots_fix_deploy_data(c, &method->slots_fix_deploy_data))
             break;
-        case ((22u << 8u) + 5):
+        case 5637: /* module 22 call 5 */
             CHECK_ERROR(_readMethod_slots_elaborate_deploy_data(c, &method->slots_elaborate_deploy_data))
             break;
-        case ((23u << 8u) + 0):
+        case 5888: /* module 23 call 0 */
             CHECK_ERROR(_readMethod_registrar_register_para(c, &method->registrar_register_para))
             break;
-        case ((23u << 8u) + 1):
+        case 5889: /* module 23 call 1 */
             CHECK_ERROR(_readMethod_registrar_deregister_para(c, &method->registrar_deregister_para))
             break;
-        case ((23u << 8u) + 2):
+        case 5890: /* module 23 call 2 */
             CHECK_ERROR(_readMethod_registrar_set_thread_count(c, &method->registrar_set_thread_count))
             break;
-        case ((23u << 8u) + 3):
+        case 5891: /* module 23 call 3 */
             CHECK_ERROR(_readMethod_registrar_register_parathread(c, &method->registrar_register_parathread))
             break;
-        case ((23u << 8u) + 4):
+        case 5892: /* module 23 call 4 */
             CHECK_ERROR(_readMethod_registrar_select_parathread(c, &method->registrar_select_parathread))
             break;
-        case ((23u << 8u) + 5):
+        case 5893: /* module 23 call 5 */
             CHECK_ERROR(_readMethod_registrar_deregister_parathread(c, &method->registrar_deregister_parathread))
             break;
-        case ((23u << 8u) + 6):
+        case 5894: /* module 23 call 6 */
             CHECK_ERROR(_readMethod_registrar_swap(c, &method->registrar_swap))
             break;
-        case ((24u << 8u) + 0):
+        case 6144: /* module 24 call 0 */
             CHECK_ERROR(_readMethod_utility_batch(c, &method->utility_batch))
             break;
-        case ((24u << 8u) + 1):
+        case 6145: /* module 24 call 1 */
             CHECK_ERROR(_readMethod_utility_as_sub(c, &method->utility_as_sub))
             break;
-        case ((24u << 8u) + 2):
+        case 6146: /* module 24 call 2 */
             CHECK_ERROR(_readMethod_utility_as_multi(c, &method->utility_as_multi))
             break;
-        case ((24u << 8u) + 3):
+        case 6147: /* module 24 call 3 */
             CHECK_ERROR(_readMethod_utility_approve_as_multi(c, &method->utility_approve_as_multi))
             break;
-        case ((24u << 8u) + 4):
+        case 6148: /* module 24 call 4 */
             CHECK_ERROR(_readMethod_utility_cancel_as_multi(c, &method->utility_cancel_as_multi))
             break;
-        case ((25u << 8u) + 0):
+        case 6400: /* module 25 call 0 */
             CHECK_ERROR(_readMethod_identity_add_registrar(c, &method->identity_add_registrar))
             break;
-        case ((25u << 8u) + 1):
+        case 6401: /* module 25 call 1 */
             CHECK_ERROR(_readMethod_identity_set_identity(c, &method->identity_set_identity))
             break;
-        case ((25u << 8u) + 2):
+        case 6402: /* module 25 call 2 */
             CHECK_ERROR(_readMethod_identity_set_subs(c, &method->identity_set_subs))
             break;
-        case ((25u << 8u) + 3):
+        case 6403: /* module 25 call 3 */
             CHECK_ERROR(_readMethod_identity_clear_identity(c, &method->identity_clear_identity))
             break;
-        case ((25u << 8u) + 4):
+        case 6404: /* module 25 call 4 */
             CHECK_ERROR(_readMethod_identity_request_judgement(c, &method->identity_request_judgement))
             break;
-        case ((25u << 8u) + 5):
+        case 6405: /* module 25 call 5 */
             CHECK_ERROR(_readMethod_identity_cancel_request(c, &method->identity_cancel_request))
             break;
-        case ((25u << 8u) + 6):
+        case 6406: /* module 25 call 6 */
             CHECK_ERROR(_readMethod_identity_set_fee(c, &method->identity_set_fee))
             break;
-        case ((25u << 8u) + 7):
+        case 6407: /* module 25 call 7 */
             CHECK_ERROR(_readMethod_identity_set_account_id(c, &method->identity_set_account_id))
             break;
-        case ((25u << 8u) + 8):
+        case 6408: /* module 25 call 8 */
             CHECK_ERROR(_readMethod_identity_set_fields(c, &method->identity_set_fields))
             break;
-        case ((25u << 8u) + 9):
+        case 6409: /* module 25 call 9 */
             CHECK_ERROR(_readMethod_identity_provide_judgement(c, &method->identity_provide_judgement))
             break;
-        case ((25u << 8u) + 10):
+        case 6410: /* module 25 call 10 */
             CHECK_ERROR(_readMethod_identity_kill_identity(c, &method->identity_kill_identity))
             break;
-        case ((26u << 8u) + 0):
+        case 6656: /* module 26 call 0 */
             CHECK_ERROR(_readMethod_society_bid(c, &method->society_bid))
             break;
-        case ((26u << 8u) + 1):
+        case 6657: /* module 26 call 1 */
             CHECK_ERROR(_readMethod_society_unbid(c, &method->society_unbid))
             break;
-        case ((26u << 8u) + 2):
+        case 6658: /* module 26 call 2 */
             CHECK_ERROR(_readMethod_society_vouch(c, &method->society_vouch))
             break;
-        case ((26u << 8u) + 3):
+        case 6659: /* module 26 call 3 */
             CHECK_ERROR(_readMethod_society_unvouch(c, &method->society_unvouch))
             break;
-        case ((26u << 8u) + 4):
+        case 6660: /* module 26 call 4 */
             CHECK_ERROR(_readMethod_society_vote(c, &method->society_vote))
             break;
-        case ((26u << 8u) + 5):
+        case 6661: /* module 26 call 5 */
             CHECK_ERROR(_readMethod_society_defender_vote(c, &method->society_defender_vote))
             break;
-        case ((26u << 8u) + 6):
+        case 6662: /* module 26 call 6 */
             CHECK_ERROR(_readMethod_society_payout(c, &method->society_payout))
             break;
-        case ((26u << 8u) + 7):
+        case 6663: /* module 26 call 7 */
             CHECK_ERROR(_readMethod_society_found(c, &method->society_found))
             break;
-        case ((26u << 8u) + 8):
+        case 6664: /* module 26 call 8 */
             CHECK_ERROR(_readMethod_society_unfound(c, &method->society_unfound))
             break;
-        case ((26u << 8u) + 9):
+        case 6665: /* module 26 call 9 */
             CHECK_ERROR(_readMethod_society_judge_suspended_member(c, &method->society_judge_suspended_member))
             break;
-        case ((26u << 8u) + 10):
+        case 6666: /* module 26 call 10 */
             CHECK_ERROR(_readMethod_society_judge_suspended_candidate(c, &method->society_judge_suspended_candidate))
             break;
-        case ((26u << 8u) + 11):
+        case 6667: /* module 26 call 11 */
             CHECK_ERROR(_readMethod_society_set_max_members(c, &method->society_set_max_members))
             break;
-        case ((27u << 8u) + 0):
+        case 6912: /* module 27 call 0 */
             CHECK_ERROR(_readMethod_recovery_as_recovered(c, &method->recovery_as_recovered))
             break;
-        case ((27u << 8u) + 1):
+        case 6913: /* module 27 call 1 */
             CHECK_ERROR(_readMethod_recovery_set_recovered(c, &method->recovery_set_recovered))
             break;
-        case ((27u << 8u) + 2):
+        case 6914: /* module 27 call 2 */
             CHECK_ERROR(_readMethod_recovery_create_recovery(c, &method->recovery_create_recovery))
             break;
-        case ((27u << 8u) + 3):
+        case 6915: /* module 27 call 3 */
             CHECK_ERROR(_readMethod_recovery_initiate_recovery(c, &method->recovery_initiate_recovery))
             break;
-        case ((27u << 8u) + 4):
+        case 6916: /* module 27 call 4 */
             CHECK_ERROR(_readMethod_recovery_vouch_recovery(c, &method->recovery_vouch_recovery))
             break;
-        case ((27u << 8u) + 5):
+        case 6917: /* module 27 call 5 */
             CHECK_ERROR(_readMethod_recovery_claim_recovery(c, &method->recovery_claim_recovery))
             break;
-        case ((27u << 8u) + 6):
+        case 6918: /* module 27 call 6 */
             CHECK_ERROR(_readMethod_recovery_close_recovery(c, &method->recovery_close_recovery))
             break;
-        case ((27u << 8u) + 7):
+        case 6919: /* module 27 call 7 */
             CHECK_ERROR(_readMethod_recovery_remove_recovery(c, &method->recovery_remove_recovery))
             break;
-        case ((27u << 8u) + 8):
+        case 6920: /* module 27 call 8 */
             CHECK_ERROR(_readMethod_recovery_cancel_recovered(c, &method->recovery_cancel_recovered))
             break;
-        case ((28u << 8u) + 0):
+        case 7168: /* module 28 call 0 */
             CHECK_ERROR(_readMethod_vesting_vest(c, &method->vesting_vest))
             break;
-        case ((28u << 8u) + 1):
+        case 7169: /* module 28 call 1 */
             CHECK_ERROR(_readMethod_vesting_vest_other(c, &method->vesting_vest_other))
             break;
-        case ((28u << 8u) + 2):
+        case 7170: /* module 28 call 2 */
             CHECK_ERROR(_readMethod_vesting_vested_transfer(c, &method->vesting_vested_transfer))
             break;
     default:
@@ -1609,508 +1609,508 @@ parser_error_t _readMethod(
     uint8_t moduleIdx,
     uint8_t callIdx,
     pd_Method_t *method) {
-    uint16_t callPrivIdx = (moduleIdx << 8u) + callIdx;
+    uint16_t callPrivIdx = ( (uint16_t) moduleIdx << 8u) + callIdx;
 
     switch(callPrivIdx) {
-        case ((0u << 8u) + 0):
+        case 0: /* module 0 call 0 */
             CHECK_ERROR(_readMethod_system_fill_block(c, &method->basic.system_fill_block))
             break;
-        case ((0u << 8u) + 1):
+        case 1: /* module 0 call 1 */
             CHECK_ERROR(_readMethod_system_remark(c, &method->basic.system_remark))
             break;
-        case ((0u << 8u) + 2):
+        case 2: /* module 0 call 2 */
             CHECK_ERROR(_readMethod_system_set_heap_pages(c, &method->basic.system_set_heap_pages))
             break;
-        case ((0u << 8u) + 3):
+        case 3: /* module 0 call 3 */
             CHECK_ERROR(_readMethod_system_set_code(c, &method->basic.system_set_code))
             break;
-        case ((0u << 8u) + 4):
+        case 4: /* module 0 call 4 */
             CHECK_ERROR(_readMethod_system_set_code_without_checks(c, &method->basic.system_set_code_without_checks))
             break;
-        case ((0u << 8u) + 5):
+        case 5: /* module 0 call 5 */
             CHECK_ERROR(_readMethod_system_set_changes_trie_config(c, &method->basic.system_set_changes_trie_config))
             break;
-        case ((0u << 8u) + 6):
+        case 6: /* module 0 call 6 */
             CHECK_ERROR(_readMethod_system_set_storage(c, &method->basic.system_set_storage))
             break;
-        case ((0u << 8u) + 7):
+        case 7: /* module 0 call 7 */
             CHECK_ERROR(_readMethod_system_kill_storage(c, &method->basic.system_kill_storage))
             break;
-        case ((0u << 8u) + 8):
+        case 8: /* module 0 call 8 */
             CHECK_ERROR(_readMethod_system_kill_prefix(c, &method->basic.system_kill_prefix))
             break;
-        case ((0u << 8u) + 9):
+        case 9: /* module 0 call 9 */
             CHECK_ERROR(_readMethod_system_suicide(c, &method->basic.system_suicide))
             break;
-        case ((2u << 8u) + 0):
+        case 512: /* module 2 call 0 */
             CHECK_ERROR(_readMethod_timestamp_set(c, &method->basic.timestamp_set))
             break;
-        case ((3u << 8u) + 0):
+        case 768: /* module 3 call 0 */
             CHECK_ERROR(_readMethod_indices_claim(c, &method->basic.indices_claim))
             break;
-        case ((3u << 8u) + 1):
+        case 769: /* module 3 call 1 */
             CHECK_ERROR(_readMethod_indices_transfer(c, &method->basic.indices_transfer))
             break;
-        case ((3u << 8u) + 2):
+        case 770: /* module 3 call 2 */
             CHECK_ERROR(_readMethod_indices_free(c, &method->basic.indices_free))
             break;
-        case ((3u << 8u) + 3):
+        case 771: /* module 3 call 3 */
             CHECK_ERROR(_readMethod_indices_force_transfer(c, &method->basic.indices_force_transfer))
             break;
-        case ((4u << 8u) + 0):
+        case 1024: /* module 4 call 0 */
             CHECK_ERROR(_readMethod_balances_transfer(c, &method->basic.balances_transfer))
             break;
-        case ((4u << 8u) + 1):
+        case 1025: /* module 4 call 1 */
             CHECK_ERROR(_readMethod_balances_set_balance(c, &method->basic.balances_set_balance))
             break;
-        case ((4u << 8u) + 2):
+        case 1026: /* module 4 call 2 */
             CHECK_ERROR(_readMethod_balances_force_transfer(c, &method->basic.balances_force_transfer))
             break;
-        case ((4u << 8u) + 3):
+        case 1027: /* module 4 call 3 */
             CHECK_ERROR(_readMethod_balances_transfer_keep_alive(c, &method->basic.balances_transfer_keep_alive))
             break;
-        case ((5u << 8u) + 0):
+        case 1280: /* module 5 call 0 */
             CHECK_ERROR(_readMethod_authorship_set_uncles(c, &method->basic.authorship_set_uncles))
             break;
-        case ((6u << 8u) + 0):
+        case 1536: /* module 6 call 0 */
             CHECK_ERROR(_readMethod_staking_bond(c, &method->basic.staking_bond))
             break;
-        case ((6u << 8u) + 1):
+        case 1537: /* module 6 call 1 */
             CHECK_ERROR(_readMethod_staking_bond_extra(c, &method->basic.staking_bond_extra))
             break;
-        case ((6u << 8u) + 2):
+        case 1538: /* module 6 call 2 */
             CHECK_ERROR(_readMethod_staking_unbond(c, &method->basic.staking_unbond))
             break;
-        case ((6u << 8u) + 3):
+        case 1539: /* module 6 call 3 */
             CHECK_ERROR(_readMethod_staking_withdraw_unbonded(c, &method->basic.staking_withdraw_unbonded))
             break;
-        case ((6u << 8u) + 4):
+        case 1540: /* module 6 call 4 */
             CHECK_ERROR(_readMethod_staking_validate(c, &method->basic.staking_validate))
             break;
-        case ((6u << 8u) + 5):
+        case 1541: /* module 6 call 5 */
             CHECK_ERROR(_readMethod_staking_nominate(c, &method->basic.staking_nominate))
             break;
-        case ((6u << 8u) + 6):
+        case 1542: /* module 6 call 6 */
             CHECK_ERROR(_readMethod_staking_chill(c, &method->basic.staking_chill))
             break;
-        case ((6u << 8u) + 7):
+        case 1543: /* module 6 call 7 */
             CHECK_ERROR(_readMethod_staking_set_payee(c, &method->basic.staking_set_payee))
             break;
-        case ((6u << 8u) + 8):
+        case 1544: /* module 6 call 8 */
             CHECK_ERROR(_readMethod_staking_set_controller(c, &method->basic.staking_set_controller))
             break;
-        case ((6u << 8u) + 9):
+        case 1545: /* module 6 call 9 */
             CHECK_ERROR(_readMethod_staking_set_validator_count(c, &method->basic.staking_set_validator_count))
             break;
-        case ((6u << 8u) + 10):
+        case 1546: /* module 6 call 10 */
             CHECK_ERROR(_readMethod_staking_force_no_eras(c, &method->basic.staking_force_no_eras))
             break;
-        case ((6u << 8u) + 11):
+        case 1547: /* module 6 call 11 */
             CHECK_ERROR(_readMethod_staking_force_new_era(c, &method->basic.staking_force_new_era))
             break;
-        case ((6u << 8u) + 12):
+        case 1548: /* module 6 call 12 */
             CHECK_ERROR(_readMethod_staking_set_invulnerables(c, &method->basic.staking_set_invulnerables))
             break;
-        case ((6u << 8u) + 13):
+        case 1549: /* module 6 call 13 */
             CHECK_ERROR(_readMethod_staking_force_unstake(c, &method->basic.staking_force_unstake))
             break;
-        case ((6u << 8u) + 14):
+        case 1550: /* module 6 call 14 */
             CHECK_ERROR(_readMethod_staking_force_new_era_always(c, &method->basic.staking_force_new_era_always))
             break;
-        case ((6u << 8u) + 15):
+        case 1551: /* module 6 call 15 */
             CHECK_ERROR(_readMethod_staking_cancel_deferred_slash(c, &method->basic.staking_cancel_deferred_slash))
             break;
-        case ((6u << 8u) + 16):
+        case 1552: /* module 6 call 16 */
             CHECK_ERROR(_readMethod_staking_payout_nominator(c, &method->basic.staking_payout_nominator))
             break;
-        case ((6u << 8u) + 17):
+        case 1553: /* module 6 call 17 */
             CHECK_ERROR(_readMethod_staking_payout_validator(c, &method->basic.staking_payout_validator))
             break;
-        case ((6u << 8u) + 18):
+        case 1554: /* module 6 call 18 */
             CHECK_ERROR(_readMethod_staking_payout_stakers(c, &method->basic.staking_payout_stakers))
             break;
-        case ((6u << 8u) + 19):
+        case 1555: /* module 6 call 19 */
             CHECK_ERROR(_readMethod_staking_rebond(c, &method->basic.staking_rebond))
             break;
-        case ((6u << 8u) + 20):
+        case 1556: /* module 6 call 20 */
             CHECK_ERROR(_readMethod_staking_set_history_depth(c, &method->basic.staking_set_history_depth))
             break;
-        case ((6u << 8u) + 21):
+        case 1557: /* module 6 call 21 */
             CHECK_ERROR(_readMethod_staking_reap_stash(c, &method->basic.staking_reap_stash))
             break;
-        case ((6u << 8u) + 22):
+        case 1558: /* module 6 call 22 */
             CHECK_ERROR(_readMethod_staking_submit_election_solution(c, &method->basic.staking_submit_election_solution))
             break;
-        case ((6u << 8u) + 23):
+        case 1559: /* module 6 call 23 */
             CHECK_ERROR(_readMethod_staking_submit_election_solution_unsigned(c, &method->basic.staking_submit_election_solution_unsigned))
             break;
-        case ((8u << 8u) + 0):
+        case 2048: /* module 8 call 0 */
             CHECK_ERROR(_readMethod_session_set_keys(c, &method->basic.session_set_keys))
             break;
-        case ((8u << 8u) + 1):
+        case 2049: /* module 8 call 1 */
             CHECK_ERROR(_readMethod_session_purge_keys(c, &method->basic.session_purge_keys))
             break;
-        case ((9u << 8u) + 0):
+        case 2304: /* module 9 call 0 */
             CHECK_ERROR(_readMethod_finalitytracker_final_hint(c, &method->basic.finalitytracker_final_hint))
             break;
-        case ((10u << 8u) + 0):
+        case 2560: /* module 10 call 0 */
             CHECK_ERROR(_readMethod_grandpa_report_misbehavior(c, &method->basic.grandpa_report_misbehavior))
             break;
-        case ((11u << 8u) + 0):
+        case 2816: /* module 11 call 0 */
             CHECK_ERROR(_readMethod_imonline_heartbeat(c, &method->basic.imonline_heartbeat))
             break;
-        case ((13u << 8u) + 0):
+        case 3328: /* module 13 call 0 */
             CHECK_ERROR(_readMethod_democracy_propose(c, &method->basic.democracy_propose))
             break;
-        case ((13u << 8u) + 1):
+        case 3329: /* module 13 call 1 */
             CHECK_ERROR(_readMethod_democracy_second(c, &method->basic.democracy_second))
             break;
-        case ((13u << 8u) + 2):
+        case 3330: /* module 13 call 2 */
             CHECK_ERROR(_readMethod_democracy_vote(c, &method->basic.democracy_vote))
             break;
-        case ((13u << 8u) + 3):
+        case 3331: /* module 13 call 3 */
             CHECK_ERROR(_readMethod_democracy_proxy_vote(c, &method->basic.democracy_proxy_vote))
             break;
-        case ((13u << 8u) + 4):
+        case 3332: /* module 13 call 4 */
             CHECK_ERROR(_readMethod_democracy_emergency_cancel(c, &method->basic.democracy_emergency_cancel))
             break;
-        case ((13u << 8u) + 5):
+        case 3333: /* module 13 call 5 */
             CHECK_ERROR(_readMethod_democracy_external_propose(c, &method->basic.democracy_external_propose))
             break;
-        case ((13u << 8u) + 6):
+        case 3334: /* module 13 call 6 */
             CHECK_ERROR(_readMethod_democracy_external_propose_majority(c, &method->basic.democracy_external_propose_majority))
             break;
-        case ((13u << 8u) + 7):
+        case 3335: /* module 13 call 7 */
             CHECK_ERROR(_readMethod_democracy_external_propose_default(c, &method->basic.democracy_external_propose_default))
             break;
-        case ((13u << 8u) + 8):
+        case 3336: /* module 13 call 8 */
             CHECK_ERROR(_readMethod_democracy_fast_track(c, &method->basic.democracy_fast_track))
             break;
-        case ((13u << 8u) + 9):
+        case 3337: /* module 13 call 9 */
             CHECK_ERROR(_readMethod_democracy_veto_external(c, &method->basic.democracy_veto_external))
             break;
-        case ((13u << 8u) + 10):
+        case 3338: /* module 13 call 10 */
             CHECK_ERROR(_readMethod_democracy_cancel_referendum(c, &method->basic.democracy_cancel_referendum))
             break;
-        case ((13u << 8u) + 11):
+        case 3339: /* module 13 call 11 */
             CHECK_ERROR(_readMethod_democracy_cancel_queued(c, &method->basic.democracy_cancel_queued))
             break;
-        case ((13u << 8u) + 12):
+        case 3340: /* module 13 call 12 */
             CHECK_ERROR(_readMethod_democracy_activate_proxy(c, &method->basic.democracy_activate_proxy))
             break;
-        case ((13u << 8u) + 13):
+        case 3341: /* module 13 call 13 */
             CHECK_ERROR(_readMethod_democracy_close_proxy(c, &method->basic.democracy_close_proxy))
             break;
-        case ((13u << 8u) + 14):
+        case 3342: /* module 13 call 14 */
             CHECK_ERROR(_readMethod_democracy_deactivate_proxy(c, &method->basic.democracy_deactivate_proxy))
             break;
-        case ((13u << 8u) + 15):
+        case 3343: /* module 13 call 15 */
             CHECK_ERROR(_readMethod_democracy_delegate(c, &method->basic.democracy_delegate))
             break;
-        case ((13u << 8u) + 16):
+        case 3344: /* module 13 call 16 */
             CHECK_ERROR(_readMethod_democracy_undelegate(c, &method->basic.democracy_undelegate))
             break;
-        case ((13u << 8u) + 17):
+        case 3345: /* module 13 call 17 */
             CHECK_ERROR(_readMethod_democracy_clear_public_proposals(c, &method->basic.democracy_clear_public_proposals))
             break;
-        case ((13u << 8u) + 18):
+        case 3346: /* module 13 call 18 */
             CHECK_ERROR(_readMethod_democracy_note_preimage(c, &method->basic.democracy_note_preimage))
             break;
-        case ((13u << 8u) + 19):
+        case 3347: /* module 13 call 19 */
             CHECK_ERROR(_readMethod_democracy_note_imminent_preimage(c, &method->basic.democracy_note_imminent_preimage))
             break;
-        case ((13u << 8u) + 20):
+        case 3348: /* module 13 call 20 */
             CHECK_ERROR(_readMethod_democracy_reap_preimage(c, &method->basic.democracy_reap_preimage))
             break;
-        case ((13u << 8u) + 21):
+        case 3349: /* module 13 call 21 */
             CHECK_ERROR(_readMethod_democracy_unlock(c, &method->basic.democracy_unlock))
             break;
-        case ((13u << 8u) + 22):
+        case 3350: /* module 13 call 22 */
             CHECK_ERROR(_readMethod_democracy_open_proxy(c, &method->basic.democracy_open_proxy))
             break;
-        case ((13u << 8u) + 23):
+        case 3351: /* module 13 call 23 */
             CHECK_ERROR(_readMethod_democracy_remove_vote(c, &method->basic.democracy_remove_vote))
             break;
-        case ((13u << 8u) + 24):
+        case 3352: /* module 13 call 24 */
             CHECK_ERROR(_readMethod_democracy_remove_other_vote(c, &method->basic.democracy_remove_other_vote))
             break;
-        case ((13u << 8u) + 25):
+        case 3353: /* module 13 call 25 */
             CHECK_ERROR(_readMethod_democracy_proxy_delegate(c, &method->basic.democracy_proxy_delegate))
             break;
-        case ((13u << 8u) + 26):
+        case 3354: /* module 13 call 26 */
             CHECK_ERROR(_readMethod_democracy_proxy_undelegate(c, &method->basic.democracy_proxy_undelegate))
             break;
-        case ((13u << 8u) + 27):
+        case 3355: /* module 13 call 27 */
             CHECK_ERROR(_readMethod_democracy_proxy_remove_vote(c, &method->basic.democracy_proxy_remove_vote))
             break;
-        case ((13u << 8u) + 28):
+        case 3356: /* module 13 call 28 */
             CHECK_ERROR(_readMethod_democracy_enact_proposal(c, &method->basic.democracy_enact_proposal))
             break;
-        case ((14u << 8u) + 0):
+        case 3584: /* module 14 call 0 */
             CHECK_ERROR(_readMethod_council_set_members(c, &method->basic.council_set_members))
             break;
-        case ((14u << 8u) + 1):
+        case 3585: /* module 14 call 1 */
             CHECK_ERROR(_readMethod_council_execute(c, &method->nested.council_execute))
             break;
-        case ((14u << 8u) + 2):
+        case 3586: /* module 14 call 2 */
             CHECK_ERROR(_readMethod_council_propose(c, &method->nested.council_propose))
             break;
-        case ((14u << 8u) + 3):
+        case 3587: /* module 14 call 3 */
             CHECK_ERROR(_readMethod_council_vote(c, &method->basic.council_vote))
             break;
-        case ((14u << 8u) + 4):
+        case 3588: /* module 14 call 4 */
             CHECK_ERROR(_readMethod_council_close(c, &method->basic.council_close))
             break;
-        case ((15u << 8u) + 0):
+        case 3840: /* module 15 call 0 */
             CHECK_ERROR(_readMethod_technicalcommittee_set_members(c, &method->basic.technicalcommittee_set_members))
             break;
-        case ((15u << 8u) + 1):
+        case 3841: /* module 15 call 1 */
             CHECK_ERROR(_readMethod_technicalcommittee_execute(c, &method->nested.technicalcommittee_execute))
             break;
-        case ((15u << 8u) + 2):
+        case 3842: /* module 15 call 2 */
             CHECK_ERROR(_readMethod_technicalcommittee_propose(c, &method->nested.technicalcommittee_propose))
             break;
-        case ((15u << 8u) + 3):
+        case 3843: /* module 15 call 3 */
             CHECK_ERROR(_readMethod_technicalcommittee_vote(c, &method->basic.technicalcommittee_vote))
             break;
-        case ((15u << 8u) + 4):
+        case 3844: /* module 15 call 4 */
             CHECK_ERROR(_readMethod_technicalcommittee_close(c, &method->basic.technicalcommittee_close))
             break;
-        case ((16u << 8u) + 0):
+        case 4096: /* module 16 call 0 */
             CHECK_ERROR(_readMethod_electionsphragmen_vote(c, &method->basic.electionsphragmen_vote))
             break;
-        case ((16u << 8u) + 1):
+        case 4097: /* module 16 call 1 */
             CHECK_ERROR(_readMethod_electionsphragmen_remove_voter(c, &method->basic.electionsphragmen_remove_voter))
             break;
-        case ((16u << 8u) + 2):
+        case 4098: /* module 16 call 2 */
             CHECK_ERROR(_readMethod_electionsphragmen_report_defunct_voter(c, &method->basic.electionsphragmen_report_defunct_voter))
             break;
-        case ((16u << 8u) + 3):
+        case 4099: /* module 16 call 3 */
             CHECK_ERROR(_readMethod_electionsphragmen_submit_candidacy(c, &method->basic.electionsphragmen_submit_candidacy))
             break;
-        case ((16u << 8u) + 4):
+        case 4100: /* module 16 call 4 */
             CHECK_ERROR(_readMethod_electionsphragmen_renounce_candidacy(c, &method->basic.electionsphragmen_renounce_candidacy))
             break;
-        case ((16u << 8u) + 5):
+        case 4101: /* module 16 call 5 */
             CHECK_ERROR(_readMethod_electionsphragmen_remove_member(c, &method->basic.electionsphragmen_remove_member))
             break;
-        case ((17u << 8u) + 0):
+        case 4352: /* module 17 call 0 */
             CHECK_ERROR(_readMethod_technicalmembership_add_member(c, &method->basic.technicalmembership_add_member))
             break;
-        case ((17u << 8u) + 1):
+        case 4353: /* module 17 call 1 */
             CHECK_ERROR(_readMethod_technicalmembership_remove_member(c, &method->basic.technicalmembership_remove_member))
             break;
-        case ((17u << 8u) + 2):
+        case 4354: /* module 17 call 2 */
             CHECK_ERROR(_readMethod_technicalmembership_swap_member(c, &method->basic.technicalmembership_swap_member))
             break;
-        case ((17u << 8u) + 3):
+        case 4355: /* module 17 call 3 */
             CHECK_ERROR(_readMethod_technicalmembership_reset_members(c, &method->basic.technicalmembership_reset_members))
             break;
-        case ((17u << 8u) + 4):
+        case 4356: /* module 17 call 4 */
             CHECK_ERROR(_readMethod_technicalmembership_change_key(c, &method->basic.technicalmembership_change_key))
             break;
-        case ((17u << 8u) + 5):
+        case 4357: /* module 17 call 5 */
             CHECK_ERROR(_readMethod_technicalmembership_set_prime(c, &method->basic.technicalmembership_set_prime))
             break;
-        case ((17u << 8u) + 6):
+        case 4358: /* module 17 call 6 */
             CHECK_ERROR(_readMethod_technicalmembership_clear_prime(c, &method->basic.technicalmembership_clear_prime))
             break;
-        case ((18u << 8u) + 0):
+        case 4608: /* module 18 call 0 */
             CHECK_ERROR(_readMethod_treasury_propose_spend(c, &method->basic.treasury_propose_spend))
             break;
-        case ((18u << 8u) + 1):
+        case 4609: /* module 18 call 1 */
             CHECK_ERROR(_readMethod_treasury_reject_proposal(c, &method->basic.treasury_reject_proposal))
             break;
-        case ((18u << 8u) + 2):
+        case 4610: /* module 18 call 2 */
             CHECK_ERROR(_readMethod_treasury_approve_proposal(c, &method->basic.treasury_approve_proposal))
             break;
-        case ((18u << 8u) + 3):
+        case 4611: /* module 18 call 3 */
             CHECK_ERROR(_readMethod_treasury_report_awesome(c, &method->basic.treasury_report_awesome))
             break;
-        case ((18u << 8u) + 4):
+        case 4612: /* module 18 call 4 */
             CHECK_ERROR(_readMethod_treasury_retract_tip(c, &method->basic.treasury_retract_tip))
             break;
-        case ((18u << 8u) + 5):
+        case 4613: /* module 18 call 5 */
             CHECK_ERROR(_readMethod_treasury_tip_new(c, &method->basic.treasury_tip_new))
             break;
-        case ((18u << 8u) + 6):
+        case 4614: /* module 18 call 6 */
             CHECK_ERROR(_readMethod_treasury_tip(c, &method->basic.treasury_tip))
             break;
-        case ((18u << 8u) + 7):
+        case 4615: /* module 18 call 7 */
             CHECK_ERROR(_readMethod_treasury_close_tip(c, &method->basic.treasury_close_tip))
             break;
-        case ((19u << 8u) + 0):
+        case 4864: /* module 19 call 0 */
             CHECK_ERROR(_readMethod_claims_claim(c, &method->basic.claims_claim))
             break;
-        case ((19u << 8u) + 1):
+        case 4865: /* module 19 call 1 */
             CHECK_ERROR(_readMethod_claims_mint_claim(c, &method->basic.claims_mint_claim))
             break;
-        case ((20u << 8u) + 0):
+        case 5120: /* module 20 call 0 */
             CHECK_ERROR(_readMethod_parachains_set_heads(c, &method->basic.parachains_set_heads))
             break;
-        case ((20u << 8u) + 1):
+        case 5121: /* module 20 call 1 */
             CHECK_ERROR(_readMethod_parachains_report_double_vote(c, &method->basic.parachains_report_double_vote))
             break;
-        case ((21u << 8u) + 0):
+        case 5376: /* module 21 call 0 */
             CHECK_ERROR(_readMethod_attestations_more_attestations(c, &method->basic.attestations_more_attestations))
             break;
-        case ((22u << 8u) + 0):
+        case 5632: /* module 22 call 0 */
             CHECK_ERROR(_readMethod_slots_new_auction(c, &method->basic.slots_new_auction))
             break;
-        case ((22u << 8u) + 1):
+        case 5633: /* module 22 call 1 */
             CHECK_ERROR(_readMethod_slots_bid(c, &method->basic.slots_bid))
             break;
-        case ((22u << 8u) + 2):
+        case 5634: /* module 22 call 2 */
             CHECK_ERROR(_readMethod_slots_bid_renew(c, &method->basic.slots_bid_renew))
             break;
-        case ((22u << 8u) + 3):
+        case 5635: /* module 22 call 3 */
             CHECK_ERROR(_readMethod_slots_set_offboarding(c, &method->basic.slots_set_offboarding))
             break;
-        case ((22u << 8u) + 4):
+        case 5636: /* module 22 call 4 */
             CHECK_ERROR(_readMethod_slots_fix_deploy_data(c, &method->basic.slots_fix_deploy_data))
             break;
-        case ((22u << 8u) + 5):
+        case 5637: /* module 22 call 5 */
             CHECK_ERROR(_readMethod_slots_elaborate_deploy_data(c, &method->basic.slots_elaborate_deploy_data))
             break;
-        case ((23u << 8u) + 0):
+        case 5888: /* module 23 call 0 */
             CHECK_ERROR(_readMethod_registrar_register_para(c, &method->basic.registrar_register_para))
             break;
-        case ((23u << 8u) + 1):
+        case 5889: /* module 23 call 1 */
             CHECK_ERROR(_readMethod_registrar_deregister_para(c, &method->basic.registrar_deregister_para))
             break;
-        case ((23u << 8u) + 2):
+        case 5890: /* module 23 call 2 */
             CHECK_ERROR(_readMethod_registrar_set_thread_count(c, &method->basic.registrar_set_thread_count))
             break;
-        case ((23u << 8u) + 3):
+        case 5891: /* module 23 call 3 */
             CHECK_ERROR(_readMethod_registrar_register_parathread(c, &method->basic.registrar_register_parathread))
             break;
-        case ((23u << 8u) + 4):
+        case 5892: /* module 23 call 4 */
             CHECK_ERROR(_readMethod_registrar_select_parathread(c, &method->basic.registrar_select_parathread))
             break;
-        case ((23u << 8u) + 5):
+        case 5893: /* module 23 call 5 */
             CHECK_ERROR(_readMethod_registrar_deregister_parathread(c, &method->basic.registrar_deregister_parathread))
             break;
-        case ((23u << 8u) + 6):
+        case 5894: /* module 23 call 6 */
             CHECK_ERROR(_readMethod_registrar_swap(c, &method->basic.registrar_swap))
             break;
-        case ((24u << 8u) + 0):
+        case 6144: /* module 24 call 0 */
             CHECK_ERROR(_readMethod_utility_batch(c, &method->basic.utility_batch))
             break;
-        case ((24u << 8u) + 1):
+        case 6145: /* module 24 call 1 */
             CHECK_ERROR(_readMethod_utility_as_sub(c, &method->basic.utility_as_sub))
             break;
-        case ((24u << 8u) + 2):
+        case 6146: /* module 24 call 2 */
             CHECK_ERROR(_readMethod_utility_as_multi(c, &method->basic.utility_as_multi))
             break;
-        case ((24u << 8u) + 3):
+        case 6147: /* module 24 call 3 */
             CHECK_ERROR(_readMethod_utility_approve_as_multi(c, &method->basic.utility_approve_as_multi))
             break;
-        case ((24u << 8u) + 4):
+        case 6148: /* module 24 call 4 */
             CHECK_ERROR(_readMethod_utility_cancel_as_multi(c, &method->basic.utility_cancel_as_multi))
             break;
-        case ((25u << 8u) + 0):
+        case 6400: /* module 25 call 0 */
             CHECK_ERROR(_readMethod_identity_add_registrar(c, &method->basic.identity_add_registrar))
             break;
-        case ((25u << 8u) + 1):
+        case 6401: /* module 25 call 1 */
             CHECK_ERROR(_readMethod_identity_set_identity(c, &method->basic.identity_set_identity))
             break;
-        case ((25u << 8u) + 2):
+        case 6402: /* module 25 call 2 */
             CHECK_ERROR(_readMethod_identity_set_subs(c, &method->basic.identity_set_subs))
             break;
-        case ((25u << 8u) + 3):
+        case 6403: /* module 25 call 3 */
             CHECK_ERROR(_readMethod_identity_clear_identity(c, &method->basic.identity_clear_identity))
             break;
-        case ((25u << 8u) + 4):
+        case 6404: /* module 25 call 4 */
             CHECK_ERROR(_readMethod_identity_request_judgement(c, &method->basic.identity_request_judgement))
             break;
-        case ((25u << 8u) + 5):
+        case 6405: /* module 25 call 5 */
             CHECK_ERROR(_readMethod_identity_cancel_request(c, &method->basic.identity_cancel_request))
             break;
-        case ((25u << 8u) + 6):
+        case 6406: /* module 25 call 6 */
             CHECK_ERROR(_readMethod_identity_set_fee(c, &method->basic.identity_set_fee))
             break;
-        case ((25u << 8u) + 7):
+        case 6407: /* module 25 call 7 */
             CHECK_ERROR(_readMethod_identity_set_account_id(c, &method->basic.identity_set_account_id))
             break;
-        case ((25u << 8u) + 8):
+        case 6408: /* module 25 call 8 */
             CHECK_ERROR(_readMethod_identity_set_fields(c, &method->basic.identity_set_fields))
             break;
-        case ((25u << 8u) + 9):
+        case 6409: /* module 25 call 9 */
             CHECK_ERROR(_readMethod_identity_provide_judgement(c, &method->basic.identity_provide_judgement))
             break;
-        case ((25u << 8u) + 10):
+        case 6410: /* module 25 call 10 */
             CHECK_ERROR(_readMethod_identity_kill_identity(c, &method->basic.identity_kill_identity))
             break;
-        case ((26u << 8u) + 0):
+        case 6656: /* module 26 call 0 */
             CHECK_ERROR(_readMethod_society_bid(c, &method->basic.society_bid))
             break;
-        case ((26u << 8u) + 1):
+        case 6657: /* module 26 call 1 */
             CHECK_ERROR(_readMethod_society_unbid(c, &method->basic.society_unbid))
             break;
-        case ((26u << 8u) + 2):
+        case 6658: /* module 26 call 2 */
             CHECK_ERROR(_readMethod_society_vouch(c, &method->basic.society_vouch))
             break;
-        case ((26u << 8u) + 3):
+        case 6659: /* module 26 call 3 */
             CHECK_ERROR(_readMethod_society_unvouch(c, &method->basic.society_unvouch))
             break;
-        case ((26u << 8u) + 4):
+        case 6660: /* module 26 call 4 */
             CHECK_ERROR(_readMethod_society_vote(c, &method->basic.society_vote))
             break;
-        case ((26u << 8u) + 5):
+        case 6661: /* module 26 call 5 */
             CHECK_ERROR(_readMethod_society_defender_vote(c, &method->basic.society_defender_vote))
             break;
-        case ((26u << 8u) + 6):
+        case 6662: /* module 26 call 6 */
             CHECK_ERROR(_readMethod_society_payout(c, &method->basic.society_payout))
             break;
-        case ((26u << 8u) + 7):
+        case 6663: /* module 26 call 7 */
             CHECK_ERROR(_readMethod_society_found(c, &method->basic.society_found))
             break;
-        case ((26u << 8u) + 8):
+        case 6664: /* module 26 call 8 */
             CHECK_ERROR(_readMethod_society_unfound(c, &method->basic.society_unfound))
             break;
-        case ((26u << 8u) + 9):
+        case 6665: /* module 26 call 9 */
             CHECK_ERROR(_readMethod_society_judge_suspended_member(c, &method->basic.society_judge_suspended_member))
             break;
-        case ((26u << 8u) + 10):
+        case 6666: /* module 26 call 10 */
             CHECK_ERROR(_readMethod_society_judge_suspended_candidate(c, &method->basic.society_judge_suspended_candidate))
             break;
-        case ((26u << 8u) + 11):
+        case 6667: /* module 26 call 11 */
             CHECK_ERROR(_readMethod_society_set_max_members(c, &method->basic.society_set_max_members))
             break;
-        case ((27u << 8u) + 0):
+        case 6912: /* module 27 call 0 */
             CHECK_ERROR(_readMethod_recovery_as_recovered(c, &method->basic.recovery_as_recovered))
             break;
-        case ((27u << 8u) + 1):
+        case 6913: /* module 27 call 1 */
             CHECK_ERROR(_readMethod_recovery_set_recovered(c, &method->basic.recovery_set_recovered))
             break;
-        case ((27u << 8u) + 2):
+        case 6914: /* module 27 call 2 */
             CHECK_ERROR(_readMethod_recovery_create_recovery(c, &method->basic.recovery_create_recovery))
             break;
-        case ((27u << 8u) + 3):
+        case 6915: /* module 27 call 3 */
             CHECK_ERROR(_readMethod_recovery_initiate_recovery(c, &method->basic.recovery_initiate_recovery))
             break;
-        case ((27u << 8u) + 4):
+        case 6916: /* module 27 call 4 */
             CHECK_ERROR(_readMethod_recovery_vouch_recovery(c, &method->basic.recovery_vouch_recovery))
             break;
-        case ((27u << 8u) + 5):
+        case 6917: /* module 27 call 5 */
             CHECK_ERROR(_readMethod_recovery_claim_recovery(c, &method->basic.recovery_claim_recovery))
             break;
-        case ((27u << 8u) + 6):
+        case 6918: /* module 27 call 6 */
             CHECK_ERROR(_readMethod_recovery_close_recovery(c, &method->basic.recovery_close_recovery))
             break;
-        case ((27u << 8u) + 7):
+        case 6919: /* module 27 call 7 */
             CHECK_ERROR(_readMethod_recovery_remove_recovery(c, &method->basic.recovery_remove_recovery))
             break;
-        case ((27u << 8u) + 8):
+        case 6920: /* module 27 call 8 */
             CHECK_ERROR(_readMethod_recovery_cancel_recovered(c, &method->basic.recovery_cancel_recovered))
             break;
-        case ((28u << 8u) + 0):
+        case 7168: /* module 28 call 0 */
             CHECK_ERROR(_readMethod_vesting_vest(c, &method->basic.vesting_vest))
             break;
-        case ((28u << 8u) + 1):
+        case 7169: /* module 28 call 1 */
             CHECK_ERROR(_readMethod_vesting_vest_other(c, &method->basic.vesting_vest_other))
             break;
-        case ((28u << 8u) + 2):
+        case 7170: /* module 28 call 2 */
             CHECK_ERROR(_readMethod_vesting_vested_transfer(c, &method->basic.vesting_vested_transfer))
             break;
         default:
@@ -2166,176 +2166,176 @@ const char * _getMethod_ModuleName(uint8_t moduleIdx) {
 
 
 const char * _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx) {
-    uint16_t callPrivIdx = (moduleIdx << 8u) + callIdx;
+    uint16_t callPrivIdx = ( (uint16_t) moduleIdx << 8u) + callIdx;
 
     switch(callPrivIdx) {
-        case ((0u << 8u) + 0):   return "Fill block";
-        case ((0u << 8u) + 1):   return "Remark";
-        case ((0u << 8u) + 2):   return "Set heap pages";
-        case ((0u << 8u) + 3):   return "Set code";
-        case ((0u << 8u) + 4):   return "Set code without checks";
-        case ((0u << 8u) + 5):   return "Set changes trie config";
-        case ((0u << 8u) + 6):   return "Set storage";
-        case ((0u << 8u) + 7):   return "Kill storage";
-        case ((0u << 8u) + 8):   return "Kill prefix";
-        case ((0u << 8u) + 9):   return "Suicide";
-        case ((2u << 8u) + 0):   return "Set";
-        case ((3u << 8u) + 0):   return "Claim";
-        case ((3u << 8u) + 1):   return "Transfer";
-        case ((3u << 8u) + 2):   return "Free";
-        case ((3u << 8u) + 3):   return "Force transfer";
-        case ((4u << 8u) + 0):   return "Transfer";
-        case ((4u << 8u) + 1):   return "Set balance";
-        case ((4u << 8u) + 2):   return "Force transfer";
-        case ((4u << 8u) + 3):   return "Transfer keep alive";
-        case ((5u << 8u) + 0):   return "Set uncles";
-        case ((6u << 8u) + 0):   return "Bond";
-        case ((6u << 8u) + 1):   return "Bond extra";
-        case ((6u << 8u) + 2):   return "Unbond";
-        case ((6u << 8u) + 3):   return "Withdraw unbonded";
-        case ((6u << 8u) + 4):   return "Validate";
-        case ((6u << 8u) + 5):   return "Nominate";
-        case ((6u << 8u) + 6):   return "Chill";
-        case ((6u << 8u) + 7):   return "Set payee";
-        case ((6u << 8u) + 8):   return "Set controller";
-        case ((6u << 8u) + 9):   return "Set validator count";
-        case ((6u << 8u) + 10):   return "Force no eras";
-        case ((6u << 8u) + 11):   return "Force new era";
-        case ((6u << 8u) + 12):   return "Set invulnerables";
-        case ((6u << 8u) + 13):   return "Force unstake";
-        case ((6u << 8u) + 14):   return "Force new era always";
-        case ((6u << 8u) + 15):   return "Cancel deferred slash";
-        case ((6u << 8u) + 16):   return "Payout nominator";
-        case ((6u << 8u) + 17):   return "Payout validator";
-        case ((6u << 8u) + 18):   return "Payout stakers";
-        case ((6u << 8u) + 19):   return "Rebond";
-        case ((6u << 8u) + 20):   return "Set history depth";
-        case ((6u << 8u) + 21):   return "Reap stash";
-        case ((6u << 8u) + 22):   return "Submit election solution";
-        case ((6u << 8u) + 23):   return "Submit election solution unsigned";
-        case ((8u << 8u) + 0):   return "Set keys";
-        case ((8u << 8u) + 1):   return "Purge keys";
-        case ((9u << 8u) + 0):   return "Final hint";
-        case ((10u << 8u) + 0):   return "Report misbehavior";
-        case ((11u << 8u) + 0):   return "Heartbeat";
-        case ((13u << 8u) + 0):   return "Propose";
-        case ((13u << 8u) + 1):   return "Second";
-        case ((13u << 8u) + 2):   return "Vote";
-        case ((13u << 8u) + 3):   return "Proxy vote";
-        case ((13u << 8u) + 4):   return "Emergency cancel";
-        case ((13u << 8u) + 5):   return "External propose";
-        case ((13u << 8u) + 6):   return "External propose majority";
-        case ((13u << 8u) + 7):   return "External propose default";
-        case ((13u << 8u) + 8):   return "Fast track";
-        case ((13u << 8u) + 9):   return "Veto external";
-        case ((13u << 8u) + 10):   return "Cancel referendum";
-        case ((13u << 8u) + 11):   return "Cancel queued";
-        case ((13u << 8u) + 12):   return "Activate proxy";
-        case ((13u << 8u) + 13):   return "Close proxy";
-        case ((13u << 8u) + 14):   return "Deactivate proxy";
-        case ((13u << 8u) + 15):   return "Delegate";
-        case ((13u << 8u) + 16):   return "Undelegate";
-        case ((13u << 8u) + 17):   return "Clear public proposals";
-        case ((13u << 8u) + 18):   return "Note preimage";
-        case ((13u << 8u) + 19):   return "Note imminent preimage";
-        case ((13u << 8u) + 20):   return "Reap preimage";
-        case ((13u << 8u) + 21):   return "Unlock";
-        case ((13u << 8u) + 22):   return "Open proxy";
-        case ((13u << 8u) + 23):   return "Remove vote";
-        case ((13u << 8u) + 24):   return "Remove other vote";
-        case ((13u << 8u) + 25):   return "Proxy delegate";
-        case ((13u << 8u) + 26):   return "Proxy undelegate";
-        case ((13u << 8u) + 27):   return "Proxy remove vote";
-        case ((13u << 8u) + 28):   return "Enact proposal";
-        case ((14u << 8u) + 0):   return "Set members";
-        case ((14u << 8u) + 1):   return "Execute";
-        case ((14u << 8u) + 2):   return "Propose";
-        case ((14u << 8u) + 3):   return "Vote";
-        case ((14u << 8u) + 4):   return "Close";
-        case ((15u << 8u) + 0):   return "Set members";
-        case ((15u << 8u) + 1):   return "Execute";
-        case ((15u << 8u) + 2):   return "Propose";
-        case ((15u << 8u) + 3):   return "Vote";
-        case ((15u << 8u) + 4):   return "Close";
-        case ((16u << 8u) + 0):   return "Vote";
-        case ((16u << 8u) + 1):   return "Remove voter";
-        case ((16u << 8u) + 2):   return "Report defunct voter";
-        case ((16u << 8u) + 3):   return "Submit candidacy";
-        case ((16u << 8u) + 4):   return "Renounce candidacy";
-        case ((16u << 8u) + 5):   return "Remove member";
-        case ((17u << 8u) + 0):   return "Add member";
-        case ((17u << 8u) + 1):   return "Remove member";
-        case ((17u << 8u) + 2):   return "Swap member";
-        case ((17u << 8u) + 3):   return "Reset members";
-        case ((17u << 8u) + 4):   return "Change key";
-        case ((17u << 8u) + 5):   return "Set prime";
-        case ((17u << 8u) + 6):   return "Clear prime";
-        case ((18u << 8u) + 0):   return "Propose spend";
-        case ((18u << 8u) + 1):   return "Reject proposal";
-        case ((18u << 8u) + 2):   return "Approve proposal";
-        case ((18u << 8u) + 3):   return "Report awesome";
-        case ((18u << 8u) + 4):   return "Retract tip";
-        case ((18u << 8u) + 5):   return "Tip new";
-        case ((18u << 8u) + 6):   return "Tip";
-        case ((18u << 8u) + 7):   return "Close tip";
-        case ((19u << 8u) + 0):   return "Claim";
-        case ((19u << 8u) + 1):   return "Mint claim";
-        case ((20u << 8u) + 0):   return "Set heads";
-        case ((20u << 8u) + 1):   return "Report double vote";
-        case ((21u << 8u) + 0):   return "More attestations";
-        case ((22u << 8u) + 0):   return "New auction";
-        case ((22u << 8u) + 1):   return "Bid";
-        case ((22u << 8u) + 2):   return "Bid renew";
-        case ((22u << 8u) + 3):   return "Set offboarding";
-        case ((22u << 8u) + 4):   return "Fix deploy data";
-        case ((22u << 8u) + 5):   return "Elaborate deploy data";
-        case ((23u << 8u) + 0):   return "Register para";
-        case ((23u << 8u) + 1):   return "Deregister para";
-        case ((23u << 8u) + 2):   return "Set thread count";
-        case ((23u << 8u) + 3):   return "Register parathread";
-        case ((23u << 8u) + 4):   return "Select parathread";
-        case ((23u << 8u) + 5):   return "Deregister parathread";
-        case ((23u << 8u) + 6):   return "Swap";
-        case ((24u << 8u) + 0):   return "Batch";
-        case ((24u << 8u) + 1):   return "As sub";
-        case ((24u << 8u) + 2):   return "As multi";
-        case ((24u << 8u) + 3):   return "Approve as multi";
-        case ((24u << 8u) + 4):   return "Cancel as multi";
-        case ((25u << 8u) + 0):   return "Add registrar";
-        case ((25u << 8u) + 1):   return "Set identity";
-        case ((25u << 8u) + 2):   return "Set subs";
-        case ((25u << 8u) + 3):   return "Clear identity";
-        case ((25u << 8u) + 4):   return "Request judgement";
-        case ((25u << 8u) + 5):   return "Cancel request";
-        case ((25u << 8u) + 6):   return "Set fee";
-        case ((25u << 8u) + 7):   return "Set account id";
-        case ((25u << 8u) + 8):   return "Set fields";
-        case ((25u << 8u) + 9):   return "Provide judgement";
-        case ((25u << 8u) + 10):   return "Kill identity";
-        case ((26u << 8u) + 0):   return "Bid";
-        case ((26u << 8u) + 1):   return "Unbid";
-        case ((26u << 8u) + 2):   return "Vouch";
-        case ((26u << 8u) + 3):   return "Unvouch";
-        case ((26u << 8u) + 4):   return "Vote";
-        case ((26u << 8u) + 5):   return "Defender vote";
-        case ((26u << 8u) + 6):   return "Payout";
-        case ((26u << 8u) + 7):   return "Found";
-        case ((26u << 8u) + 8):   return "Unfound";
-        case ((26u << 8u) + 9):   return "Judge suspended member";
-        case ((26u << 8u) + 10):   return "Judge suspended candidate";
-        case ((26u << 8u) + 11):   return "Set max members";
-        case ((27u << 8u) + 0):   return "As recovered";
-        case ((27u << 8u) + 1):   return "Set recovered";
-        case ((27u << 8u) + 2):   return "Create recovery";
-        case ((27u << 8u) + 3):   return "Initiate recovery";
-        case ((27u << 8u) + 4):   return "Vouch recovery";
-        case ((27u << 8u) + 5):   return "Claim recovery";
-        case ((27u << 8u) + 6):   return "Close recovery";
-        case ((27u << 8u) + 7):   return "Remove recovery";
-        case ((27u << 8u) + 8):   return "Cancel recovered";
-        case ((28u << 8u) + 0):   return "Vest";
-        case ((28u << 8u) + 1):   return "Vest other";
-        case ((28u << 8u) + 2):   return "Vested transfer";
+        case 0: /* module 0 call 0 */   return "Fill block";
+        case 1: /* module 0 call 1 */   return "Remark";
+        case 2: /* module 0 call 2 */   return "Set heap pages";
+        case 3: /* module 0 call 3 */   return "Set code";
+        case 4: /* module 0 call 4 */   return "Set code without checks";
+        case 5: /* module 0 call 5 */   return "Set changes trie config";
+        case 6: /* module 0 call 6 */   return "Set storage";
+        case 7: /* module 0 call 7 */   return "Kill storage";
+        case 8: /* module 0 call 8 */   return "Kill prefix";
+        case 9: /* module 0 call 9 */   return "Suicide";
+        case 512: /* module 2 call 0 */   return "Set";
+        case 768: /* module 3 call 0 */   return "Claim";
+        case 769: /* module 3 call 1 */   return "Transfer";
+        case 770: /* module 3 call 2 */   return "Free";
+        case 771: /* module 3 call 3 */   return "Force transfer";
+        case 1024: /* module 4 call 0 */   return "Transfer";
+        case 1025: /* module 4 call 1 */   return "Set balance";
+        case 1026: /* module 4 call 2 */   return "Force transfer";
+        case 1027: /* module 4 call 3 */   return "Transfer keep alive";
+        case 1280: /* module 5 call 0 */   return "Set uncles";
+        case 1536: /* module 6 call 0 */   return "Bond";
+        case 1537: /* module 6 call 1 */   return "Bond extra";
+        case 1538: /* module 6 call 2 */   return "Unbond";
+        case 1539: /* module 6 call 3 */   return "Withdraw unbonded";
+        case 1540: /* module 6 call 4 */   return "Validate";
+        case 1541: /* module 6 call 5 */   return "Nominate";
+        case 1542: /* module 6 call 6 */   return "Chill";
+        case 1543: /* module 6 call 7 */   return "Set payee";
+        case 1544: /* module 6 call 8 */   return "Set controller";
+        case 1545: /* module 6 call 9 */   return "Set validator count";
+        case 1546: /* module 6 call 10 */   return "Force no eras";
+        case 1547: /* module 6 call 11 */   return "Force new era";
+        case 1548: /* module 6 call 12 */   return "Set invulnerables";
+        case 1549: /* module 6 call 13 */   return "Force unstake";
+        case 1550: /* module 6 call 14 */   return "Force new era always";
+        case 1551: /* module 6 call 15 */   return "Cancel deferred slash";
+        case 1552: /* module 6 call 16 */   return "Payout nominator";
+        case 1553: /* module 6 call 17 */   return "Payout validator";
+        case 1554: /* module 6 call 18 */   return "Payout stakers";
+        case 1555: /* module 6 call 19 */   return "Rebond";
+        case 1556: /* module 6 call 20 */   return "Set history depth";
+        case 1557: /* module 6 call 21 */   return "Reap stash";
+        case 1558: /* module 6 call 22 */   return "Submit election solution";
+        case 1559: /* module 6 call 23 */   return "Submit election solution unsigned";
+        case 2048: /* module 8 call 0 */   return "Set keys";
+        case 2049: /* module 8 call 1 */   return "Purge keys";
+        case 2304: /* module 9 call 0 */   return "Final hint";
+        case 2560: /* module 10 call 0 */   return "Report misbehavior";
+        case 2816: /* module 11 call 0 */   return "Heartbeat";
+        case 3328: /* module 13 call 0 */   return "Propose";
+        case 3329: /* module 13 call 1 */   return "Second";
+        case 3330: /* module 13 call 2 */   return "Vote";
+        case 3331: /* module 13 call 3 */   return "Proxy vote";
+        case 3332: /* module 13 call 4 */   return "Emergency cancel";
+        case 3333: /* module 13 call 5 */   return "External propose";
+        case 3334: /* module 13 call 6 */   return "External propose majority";
+        case 3335: /* module 13 call 7 */   return "External propose default";
+        case 3336: /* module 13 call 8 */   return "Fast track";
+        case 3337: /* module 13 call 9 */   return "Veto external";
+        case 3338: /* module 13 call 10 */   return "Cancel referendum";
+        case 3339: /* module 13 call 11 */   return "Cancel queued";
+        case 3340: /* module 13 call 12 */   return "Activate proxy";
+        case 3341: /* module 13 call 13 */   return "Close proxy";
+        case 3342: /* module 13 call 14 */   return "Deactivate proxy";
+        case 3343: /* module 13 call 15 */   return "Delegate";
+        case 3344: /* module 13 call 16 */   return "Undelegate";
+        case 3345: /* module 13 call 17 */   return "Clear public proposals";
+        case 3346: /* module 13 call 18 */   return "Note preimage";
+        case 3347: /* module 13 call 19 */   return "Note imminent preimage";
+        case 3348: /* module 13 call 20 */   return "Reap preimage";
+        case 3349: /* module 13 call 21 */   return "Unlock";
+        case 3350: /* module 13 call 22 */   return "Open proxy";
+        case 3351: /* module 13 call 23 */   return "Remove vote";
+        case 3352: /* module 13 call 24 */   return "Remove other vote";
+        case 3353: /* module 13 call 25 */   return "Proxy delegate";
+        case 3354: /* module 13 call 26 */   return "Proxy undelegate";
+        case 3355: /* module 13 call 27 */   return "Proxy remove vote";
+        case 3356: /* module 13 call 28 */   return "Enact proposal";
+        case 3584: /* module 14 call 0 */   return "Set members";
+        case 3585: /* module 14 call 1 */   return "Execute";
+        case 3586: /* module 14 call 2 */   return "Propose";
+        case 3587: /* module 14 call 3 */   return "Vote";
+        case 3588: /* module 14 call 4 */   return "Close";
+        case 3840: /* module 15 call 0 */   return "Set members";
+        case 3841: /* module 15 call 1 */   return "Execute";
+        case 3842: /* module 15 call 2 */   return "Propose";
+        case 3843: /* module 15 call 3 */   return "Vote";
+        case 3844: /* module 15 call 4 */   return "Close";
+        case 4096: /* module 16 call 0 */   return "Vote";
+        case 4097: /* module 16 call 1 */   return "Remove voter";
+        case 4098: /* module 16 call 2 */   return "Report defunct voter";
+        case 4099: /* module 16 call 3 */   return "Submit candidacy";
+        case 4100: /* module 16 call 4 */   return "Renounce candidacy";
+        case 4101: /* module 16 call 5 */   return "Remove member";
+        case 4352: /* module 17 call 0 */   return "Add member";
+        case 4353: /* module 17 call 1 */   return "Remove member";
+        case 4354: /* module 17 call 2 */   return "Swap member";
+        case 4355: /* module 17 call 3 */   return "Reset members";
+        case 4356: /* module 17 call 4 */   return "Change key";
+        case 4357: /* module 17 call 5 */   return "Set prime";
+        case 4358: /* module 17 call 6 */   return "Clear prime";
+        case 4608: /* module 18 call 0 */   return "Propose spend";
+        case 4609: /* module 18 call 1 */   return "Reject proposal";
+        case 4610: /* module 18 call 2 */   return "Approve proposal";
+        case 4611: /* module 18 call 3 */   return "Report awesome";
+        case 4612: /* module 18 call 4 */   return "Retract tip";
+        case 4613: /* module 18 call 5 */   return "Tip new";
+        case 4614: /* module 18 call 6 */   return "Tip";
+        case 4615: /* module 18 call 7 */   return "Close tip";
+        case 4864: /* module 19 call 0 */   return "Claim";
+        case 4865: /* module 19 call 1 */   return "Mint claim";
+        case 5120: /* module 20 call 0 */   return "Set heads";
+        case 5121: /* module 20 call 1 */   return "Report double vote";
+        case 5376: /* module 21 call 0 */   return "More attestations";
+        case 5632: /* module 22 call 0 */   return "New auction";
+        case 5633: /* module 22 call 1 */   return "Bid";
+        case 5634: /* module 22 call 2 */   return "Bid renew";
+        case 5635: /* module 22 call 3 */   return "Set offboarding";
+        case 5636: /* module 22 call 4 */   return "Fix deploy data";
+        case 5637: /* module 22 call 5 */   return "Elaborate deploy data";
+        case 5888: /* module 23 call 0 */   return "Register para";
+        case 5889: /* module 23 call 1 */   return "Deregister para";
+        case 5890: /* module 23 call 2 */   return "Set thread count";
+        case 5891: /* module 23 call 3 */   return "Register parathread";
+        case 5892: /* module 23 call 4 */   return "Select parathread";
+        case 5893: /* module 23 call 5 */   return "Deregister parathread";
+        case 5894: /* module 23 call 6 */   return "Swap";
+        case 6144: /* module 24 call 0 */   return "Batch";
+        case 6145: /* module 24 call 1 */   return "As sub";
+        case 6146: /* module 24 call 2 */   return "As multi";
+        case 6147: /* module 24 call 3 */   return "Approve as multi";
+        case 6148: /* module 24 call 4 */   return "Cancel as multi";
+        case 6400: /* module 25 call 0 */   return "Add registrar";
+        case 6401: /* module 25 call 1 */   return "Set identity";
+        case 6402: /* module 25 call 2 */   return "Set subs";
+        case 6403: /* module 25 call 3 */   return "Clear identity";
+        case 6404: /* module 25 call 4 */   return "Request judgement";
+        case 6405: /* module 25 call 5 */   return "Cancel request";
+        case 6406: /* module 25 call 6 */   return "Set fee";
+        case 6407: /* module 25 call 7 */   return "Set account id";
+        case 6408: /* module 25 call 8 */   return "Set fields";
+        case 6409: /* module 25 call 9 */   return "Provide judgement";
+        case 6410: /* module 25 call 10 */   return "Kill identity";
+        case 6656: /* module 26 call 0 */   return "Bid";
+        case 6657: /* module 26 call 1 */   return "Unbid";
+        case 6658: /* module 26 call 2 */   return "Vouch";
+        case 6659: /* module 26 call 3 */   return "Unvouch";
+        case 6660: /* module 26 call 4 */   return "Vote";
+        case 6661: /* module 26 call 5 */   return "Defender vote";
+        case 6662: /* module 26 call 6 */   return "Payout";
+        case 6663: /* module 26 call 7 */   return "Found";
+        case 6664: /* module 26 call 8 */   return "Unfound";
+        case 6665: /* module 26 call 9 */   return "Judge suspended member";
+        case 6666: /* module 26 call 10 */   return "Judge suspended candidate";
+        case 6667: /* module 26 call 11 */   return "Set max members";
+        case 6912: /* module 27 call 0 */   return "As recovered";
+        case 6913: /* module 27 call 1 */   return "Set recovered";
+        case 6914: /* module 27 call 2 */   return "Create recovery";
+        case 6915: /* module 27 call 3 */   return "Initiate recovery";
+        case 6916: /* module 27 call 4 */   return "Vouch recovery";
+        case 6917: /* module 27 call 5 */   return "Claim recovery";
+        case 6918: /* module 27 call 6 */   return "Close recovery";
+        case 6919: /* module 27 call 7 */   return "Remove recovery";
+        case 6920: /* module 27 call 8 */   return "Cancel recovered";
+        case 7168: /* module 28 call 0 */   return "Vest";
+        case 7169: /* module 28 call 1 */   return "Vest other";
+        case 7170: /* module 28 call 2 */   return "Vested transfer";
     default:
         return NULL;
     }
@@ -2344,176 +2344,176 @@ const char * _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx) {
 }
 
 uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *method) {
-    uint16_t callPrivIdx = (moduleIdx << 8u) + callIdx;
+    uint16_t callPrivIdx = ( (uint16_t) moduleIdx << 8u) + callIdx;
 
     switch(callPrivIdx) {
-        case ((0u << 8u) + 0): return 1;
-        case ((0u << 8u) + 1): return 1;
-        case ((0u << 8u) + 2): return 1;
-        case ((0u << 8u) + 3): return 1;
-        case ((0u << 8u) + 4): return 1;
-        case ((0u << 8u) + 5): return 1;
-        case ((0u << 8u) + 6): return 1;
-        case ((0u << 8u) + 7): return 1;
-        case ((0u << 8u) + 8): return 1;
-        case ((0u << 8u) + 9): return 0;
-        case ((2u << 8u) + 0): return 1;
-        case ((3u << 8u) + 0): return 1;
-        case ((3u << 8u) + 1): return 2;
-        case ((3u << 8u) + 2): return 1;
-        case ((3u << 8u) + 3): return 2;
-        case ((4u << 8u) + 0): return 2;
-        case ((4u << 8u) + 1): return 3;
-        case ((4u << 8u) + 2): return 3;
-        case ((4u << 8u) + 3): return 2;
-        case ((5u << 8u) + 0): return 1;
-        case ((6u << 8u) + 0): return 3;
-        case ((6u << 8u) + 1): return 1;
-        case ((6u << 8u) + 2): return 1;
-        case ((6u << 8u) + 3): return 0;
-        case ((6u << 8u) + 4): return 1;
-        case ((6u << 8u) + 5): return 1;
-        case ((6u << 8u) + 6): return 0;
-        case ((6u << 8u) + 7): return 1;
-        case ((6u << 8u) + 8): return 1;
-        case ((6u << 8u) + 9): return 1;
-        case ((6u << 8u) + 10): return 0;
-        case ((6u << 8u) + 11): return 0;
-        case ((6u << 8u) + 12): return 1;
-        case ((6u << 8u) + 13): return 1;
-        case ((6u << 8u) + 14): return 0;
-        case ((6u << 8u) + 15): return 2;
-        case ((6u << 8u) + 16): return 2;
-        case ((6u << 8u) + 17): return 1;
-        case ((6u << 8u) + 18): return 2;
-        case ((6u << 8u) + 19): return 1;
-        case ((6u << 8u) + 20): return 1;
-        case ((6u << 8u) + 21): return 1;
-        case ((6u << 8u) + 22): return 4;
-        case ((6u << 8u) + 23): return 4;
-        case ((8u << 8u) + 0): return 2;
-        case ((8u << 8u) + 1): return 0;
-        case ((9u << 8u) + 0): return 1;
-        case ((10u << 8u) + 0): return 1;
-        case ((11u << 8u) + 0): return 2;
-        case ((13u << 8u) + 0): return 2;
-        case ((13u << 8u) + 1): return 1;
-        case ((13u << 8u) + 2): return 2;
-        case ((13u << 8u) + 3): return 2;
-        case ((13u << 8u) + 4): return 1;
-        case ((13u << 8u) + 5): return 1;
-        case ((13u << 8u) + 6): return 1;
-        case ((13u << 8u) + 7): return 1;
-        case ((13u << 8u) + 8): return 3;
-        case ((13u << 8u) + 9): return 1;
-        case ((13u << 8u) + 10): return 1;
-        case ((13u << 8u) + 11): return 1;
-        case ((13u << 8u) + 12): return 1;
-        case ((13u << 8u) + 13): return 0;
-        case ((13u << 8u) + 14): return 1;
-        case ((13u << 8u) + 15): return 3;
-        case ((13u << 8u) + 16): return 0;
-        case ((13u << 8u) + 17): return 0;
-        case ((13u << 8u) + 18): return 1;
-        case ((13u << 8u) + 19): return 1;
-        case ((13u << 8u) + 20): return 1;
-        case ((13u << 8u) + 21): return 1;
-        case ((13u << 8u) + 22): return 1;
-        case ((13u << 8u) + 23): return 1;
-        case ((13u << 8u) + 24): return 2;
-        case ((13u << 8u) + 25): return 3;
-        case ((13u << 8u) + 26): return 0;
-        case ((13u << 8u) + 27): return 1;
-        case ((13u << 8u) + 28): return 2;
-        case ((14u << 8u) + 0): return 2;
-        case ((14u << 8u) + 1): return 1;
-        case ((14u << 8u) + 2): return 2;
-        case ((14u << 8u) + 3): return 3;
-        case ((14u << 8u) + 4): return 2;
-        case ((15u << 8u) + 0): return 2;
-        case ((15u << 8u) + 1): return 1;
-        case ((15u << 8u) + 2): return 2;
-        case ((15u << 8u) + 3): return 3;
-        case ((15u << 8u) + 4): return 2;
-        case ((16u << 8u) + 0): return 2;
-        case ((16u << 8u) + 1): return 0;
-        case ((16u << 8u) + 2): return 1;
-        case ((16u << 8u) + 3): return 0;
-        case ((16u << 8u) + 4): return 0;
-        case ((16u << 8u) + 5): return 1;
-        case ((17u << 8u) + 0): return 1;
-        case ((17u << 8u) + 1): return 1;
-        case ((17u << 8u) + 2): return 2;
-        case ((17u << 8u) + 3): return 1;
-        case ((17u << 8u) + 4): return 1;
-        case ((17u << 8u) + 5): return 1;
-        case ((17u << 8u) + 6): return 0;
-        case ((18u << 8u) + 0): return 2;
-        case ((18u << 8u) + 1): return 1;
-        case ((18u << 8u) + 2): return 1;
-        case ((18u << 8u) + 3): return 2;
-        case ((18u << 8u) + 4): return 1;
-        case ((18u << 8u) + 5): return 3;
-        case ((18u << 8u) + 6): return 2;
-        case ((18u << 8u) + 7): return 1;
-        case ((19u << 8u) + 0): return 2;
-        case ((19u << 8u) + 1): return 3;
-        case ((20u << 8u) + 0): return 1;
-        case ((20u << 8u) + 1): return 1;
-        case ((21u << 8u) + 0): return 1;
-        case ((22u << 8u) + 0): return 2;
-        case ((22u << 8u) + 1): return 5;
-        case ((22u << 8u) + 2): return 4;
-        case ((22u << 8u) + 3): return 1;
-        case ((22u << 8u) + 4): return 5;
-        case ((22u << 8u) + 5): return 2;
-        case ((23u << 8u) + 0): return 4;
-        case ((23u << 8u) + 1): return 1;
-        case ((23u << 8u) + 2): return 1;
-        case ((23u << 8u) + 3): return 2;
-        case ((23u << 8u) + 4): return 3;
-        case ((23u << 8u) + 5): return 0;
-        case ((23u << 8u) + 6): return 1;
-        case ((24u << 8u) + 0): return 1;
-        case ((24u << 8u) + 1): return 2;
-        case ((24u << 8u) + 2): return 4;
-        case ((24u << 8u) + 3): return 4;
-        case ((24u << 8u) + 4): return 4;
-        case ((25u << 8u) + 0): return 1;
-        case ((25u << 8u) + 1): return 1;
-        case ((25u << 8u) + 2): return 1;
-        case ((25u << 8u) + 3): return 0;
-        case ((25u << 8u) + 4): return 2;
-        case ((25u << 8u) + 5): return 1;
-        case ((25u << 8u) + 6): return 2;
-        case ((25u << 8u) + 7): return 2;
-        case ((25u << 8u) + 8): return 2;
-        case ((25u << 8u) + 9): return 3;
-        case ((25u << 8u) + 10): return 1;
-        case ((26u << 8u) + 0): return 1;
-        case ((26u << 8u) + 1): return 1;
-        case ((26u << 8u) + 2): return 3;
-        case ((26u << 8u) + 3): return 1;
-        case ((26u << 8u) + 4): return 2;
-        case ((26u << 8u) + 5): return 1;
-        case ((26u << 8u) + 6): return 0;
-        case ((26u << 8u) + 7): return 3;
-        case ((26u << 8u) + 8): return 0;
-        case ((26u << 8u) + 9): return 2;
-        case ((26u << 8u) + 10): return 2;
-        case ((26u << 8u) + 11): return 1;
-        case ((27u << 8u) + 0): return 2;
-        case ((27u << 8u) + 1): return 2;
-        case ((27u << 8u) + 2): return 3;
-        case ((27u << 8u) + 3): return 1;
-        case ((27u << 8u) + 4): return 2;
-        case ((27u << 8u) + 5): return 1;
-        case ((27u << 8u) + 6): return 1;
-        case ((27u << 8u) + 7): return 0;
-        case ((27u << 8u) + 8): return 1;
-        case ((28u << 8u) + 0): return 0;
-        case ((28u << 8u) + 1): return 1;
-        case ((28u << 8u) + 2): return 2;
+        case 0: /* module 0 call 0 */ return 1;
+        case 1: /* module 0 call 1 */ return 1;
+        case 2: /* module 0 call 2 */ return 1;
+        case 3: /* module 0 call 3 */ return 1;
+        case 4: /* module 0 call 4 */ return 1;
+        case 5: /* module 0 call 5 */ return 1;
+        case 6: /* module 0 call 6 */ return 1;
+        case 7: /* module 0 call 7 */ return 1;
+        case 8: /* module 0 call 8 */ return 1;
+        case 9: /* module 0 call 9 */ return 0;
+        case 512: /* module 2 call 0 */ return 1;
+        case 768: /* module 3 call 0 */ return 1;
+        case 769: /* module 3 call 1 */ return 2;
+        case 770: /* module 3 call 2 */ return 1;
+        case 771: /* module 3 call 3 */ return 2;
+        case 1024: /* module 4 call 0 */ return 2;
+        case 1025: /* module 4 call 1 */ return 3;
+        case 1026: /* module 4 call 2 */ return 3;
+        case 1027: /* module 4 call 3 */ return 2;
+        case 1280: /* module 5 call 0 */ return 1;
+        case 1536: /* module 6 call 0 */ return 3;
+        case 1537: /* module 6 call 1 */ return 1;
+        case 1538: /* module 6 call 2 */ return 1;
+        case 1539: /* module 6 call 3 */ return 0;
+        case 1540: /* module 6 call 4 */ return 1;
+        case 1541: /* module 6 call 5 */ return 1;
+        case 1542: /* module 6 call 6 */ return 0;
+        case 1543: /* module 6 call 7 */ return 1;
+        case 1544: /* module 6 call 8 */ return 1;
+        case 1545: /* module 6 call 9 */ return 1;
+        case 1546: /* module 6 call 10 */ return 0;
+        case 1547: /* module 6 call 11 */ return 0;
+        case 1548: /* module 6 call 12 */ return 1;
+        case 1549: /* module 6 call 13 */ return 1;
+        case 1550: /* module 6 call 14 */ return 0;
+        case 1551: /* module 6 call 15 */ return 2;
+        case 1552: /* module 6 call 16 */ return 2;
+        case 1553: /* module 6 call 17 */ return 1;
+        case 1554: /* module 6 call 18 */ return 2;
+        case 1555: /* module 6 call 19 */ return 1;
+        case 1556: /* module 6 call 20 */ return 1;
+        case 1557: /* module 6 call 21 */ return 1;
+        case 1558: /* module 6 call 22 */ return 4;
+        case 1559: /* module 6 call 23 */ return 4;
+        case 2048: /* module 8 call 0 */ return 2;
+        case 2049: /* module 8 call 1 */ return 0;
+        case 2304: /* module 9 call 0 */ return 1;
+        case 2560: /* module 10 call 0 */ return 1;
+        case 2816: /* module 11 call 0 */ return 2;
+        case 3328: /* module 13 call 0 */ return 2;
+        case 3329: /* module 13 call 1 */ return 1;
+        case 3330: /* module 13 call 2 */ return 2;
+        case 3331: /* module 13 call 3 */ return 2;
+        case 3332: /* module 13 call 4 */ return 1;
+        case 3333: /* module 13 call 5 */ return 1;
+        case 3334: /* module 13 call 6 */ return 1;
+        case 3335: /* module 13 call 7 */ return 1;
+        case 3336: /* module 13 call 8 */ return 3;
+        case 3337: /* module 13 call 9 */ return 1;
+        case 3338: /* module 13 call 10 */ return 1;
+        case 3339: /* module 13 call 11 */ return 1;
+        case 3340: /* module 13 call 12 */ return 1;
+        case 3341: /* module 13 call 13 */ return 0;
+        case 3342: /* module 13 call 14 */ return 1;
+        case 3343: /* module 13 call 15 */ return 3;
+        case 3344: /* module 13 call 16 */ return 0;
+        case 3345: /* module 13 call 17 */ return 0;
+        case 3346: /* module 13 call 18 */ return 1;
+        case 3347: /* module 13 call 19 */ return 1;
+        case 3348: /* module 13 call 20 */ return 1;
+        case 3349: /* module 13 call 21 */ return 1;
+        case 3350: /* module 13 call 22 */ return 1;
+        case 3351: /* module 13 call 23 */ return 1;
+        case 3352: /* module 13 call 24 */ return 2;
+        case 3353: /* module 13 call 25 */ return 3;
+        case 3354: /* module 13 call 26 */ return 0;
+        case 3355: /* module 13 call 27 */ return 1;
+        case 3356: /* module 13 call 28 */ return 2;
+        case 3584: /* module 14 call 0 */ return 2;
+        case 3585: /* module 14 call 1 */ return 1;
+        case 3586: /* module 14 call 2 */ return 2;
+        case 3587: /* module 14 call 3 */ return 3;
+        case 3588: /* module 14 call 4 */ return 2;
+        case 3840: /* module 15 call 0 */ return 2;
+        case 3841: /* module 15 call 1 */ return 1;
+        case 3842: /* module 15 call 2 */ return 2;
+        case 3843: /* module 15 call 3 */ return 3;
+        case 3844: /* module 15 call 4 */ return 2;
+        case 4096: /* module 16 call 0 */ return 2;
+        case 4097: /* module 16 call 1 */ return 0;
+        case 4098: /* module 16 call 2 */ return 1;
+        case 4099: /* module 16 call 3 */ return 0;
+        case 4100: /* module 16 call 4 */ return 0;
+        case 4101: /* module 16 call 5 */ return 1;
+        case 4352: /* module 17 call 0 */ return 1;
+        case 4353: /* module 17 call 1 */ return 1;
+        case 4354: /* module 17 call 2 */ return 2;
+        case 4355: /* module 17 call 3 */ return 1;
+        case 4356: /* module 17 call 4 */ return 1;
+        case 4357: /* module 17 call 5 */ return 1;
+        case 4358: /* module 17 call 6 */ return 0;
+        case 4608: /* module 18 call 0 */ return 2;
+        case 4609: /* module 18 call 1 */ return 1;
+        case 4610: /* module 18 call 2 */ return 1;
+        case 4611: /* module 18 call 3 */ return 2;
+        case 4612: /* module 18 call 4 */ return 1;
+        case 4613: /* module 18 call 5 */ return 3;
+        case 4614: /* module 18 call 6 */ return 2;
+        case 4615: /* module 18 call 7 */ return 1;
+        case 4864: /* module 19 call 0 */ return 2;
+        case 4865: /* module 19 call 1 */ return 3;
+        case 5120: /* module 20 call 0 */ return 1;
+        case 5121: /* module 20 call 1 */ return 1;
+        case 5376: /* module 21 call 0 */ return 1;
+        case 5632: /* module 22 call 0 */ return 2;
+        case 5633: /* module 22 call 1 */ return 5;
+        case 5634: /* module 22 call 2 */ return 4;
+        case 5635: /* module 22 call 3 */ return 1;
+        case 5636: /* module 22 call 4 */ return 5;
+        case 5637: /* module 22 call 5 */ return 2;
+        case 5888: /* module 23 call 0 */ return 4;
+        case 5889: /* module 23 call 1 */ return 1;
+        case 5890: /* module 23 call 2 */ return 1;
+        case 5891: /* module 23 call 3 */ return 2;
+        case 5892: /* module 23 call 4 */ return 3;
+        case 5893: /* module 23 call 5 */ return 0;
+        case 5894: /* module 23 call 6 */ return 1;
+        case 6144: /* module 24 call 0 */ return 1;
+        case 6145: /* module 24 call 1 */ return 2;
+        case 6146: /* module 24 call 2 */ return 4;
+        case 6147: /* module 24 call 3 */ return 4;
+        case 6148: /* module 24 call 4 */ return 4;
+        case 6400: /* module 25 call 0 */ return 1;
+        case 6401: /* module 25 call 1 */ return 1;
+        case 6402: /* module 25 call 2 */ return 1;
+        case 6403: /* module 25 call 3 */ return 0;
+        case 6404: /* module 25 call 4 */ return 2;
+        case 6405: /* module 25 call 5 */ return 1;
+        case 6406: /* module 25 call 6 */ return 2;
+        case 6407: /* module 25 call 7 */ return 2;
+        case 6408: /* module 25 call 8 */ return 2;
+        case 6409: /* module 25 call 9 */ return 3;
+        case 6410: /* module 25 call 10 */ return 1;
+        case 6656: /* module 26 call 0 */ return 1;
+        case 6657: /* module 26 call 1 */ return 1;
+        case 6658: /* module 26 call 2 */ return 3;
+        case 6659: /* module 26 call 3 */ return 1;
+        case 6660: /* module 26 call 4 */ return 2;
+        case 6661: /* module 26 call 5 */ return 1;
+        case 6662: /* module 26 call 6 */ return 0;
+        case 6663: /* module 26 call 7 */ return 3;
+        case 6664: /* module 26 call 8 */ return 0;
+        case 6665: /* module 26 call 9 */ return 2;
+        case 6666: /* module 26 call 10 */ return 2;
+        case 6667: /* module 26 call 11 */ return 1;
+        case 6912: /* module 27 call 0 */ return 2;
+        case 6913: /* module 27 call 1 */ return 2;
+        case 6914: /* module 27 call 2 */ return 3;
+        case 6915: /* module 27 call 3 */ return 1;
+        case 6916: /* module 27 call 4 */ return 2;
+        case 6917: /* module 27 call 5 */ return 1;
+        case 6918: /* module 27 call 6 */ return 1;
+        case 6919: /* module 27 call 7 */ return 0;
+        case 6920: /* module 27 call 8 */ return 1;
+        case 7168: /* module 28 call 0 */ return 0;
+        case 7169: /* module 28 call 1 */ return 1;
+        case 7170: /* module 28 call 2 */ return 2;
     default:
     return 0;
     }
@@ -2523,227 +2523,227 @@ uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *met
 
 
 const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx) {
-    uint16_t callPrivIdx = (moduleIdx << 8u) + callIdx;
+    uint16_t callPrivIdx = ( (uint16_t) moduleIdx << 8u) + callIdx;
 
     switch(callPrivIdx) {
-        case ((0u << 8u) + 0):
+        case 0: /* module 0 call 0 */
             switch(itemIdx) {
                 case 0: return "Ratio";
                 default: return NULL;
             }
-        case ((0u << 8u) + 1):
+        case 1: /* module 0 call 1 */
             switch(itemIdx) {
                 case 0: return "Remark";
                 default: return NULL;
             }
-        case ((0u << 8u) + 2):
+        case 2: /* module 0 call 2 */
             switch(itemIdx) {
                 case 0: return "Pages";
                 default: return NULL;
             }
-        case ((0u << 8u) + 3):
+        case 3: /* module 0 call 3 */
             switch(itemIdx) {
                 case 0: return "Code";
                 default: return NULL;
             }
-        case ((0u << 8u) + 4):
+        case 4: /* module 0 call 4 */
             switch(itemIdx) {
                 case 0: return "Code";
                 default: return NULL;
             }
-        case ((0u << 8u) + 5):
+        case 5: /* module 0 call 5 */
             switch(itemIdx) {
                 case 0: return "Changes trie config";
                 default: return NULL;
             }
-        case ((0u << 8u) + 6):
+        case 6: /* module 0 call 6 */
             switch(itemIdx) {
                 case 0: return "Items";
                 default: return NULL;
             }
-        case ((0u << 8u) + 7):
+        case 7: /* module 0 call 7 */
             switch(itemIdx) {
                 case 0: return "Keys";
                 default: return NULL;
             }
-        case ((0u << 8u) + 8):
+        case 8: /* module 0 call 8 */
             switch(itemIdx) {
                 case 0: return "Prefix";
                 default: return NULL;
             }
-        case ((0u << 8u) + 9):
+        case 9: /* module 0 call 9 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((2u << 8u) + 0):
+        case 512: /* module 2 call 0 */
             switch(itemIdx) {
                 case 0: return "Now";
                 default: return NULL;
             }
-        case ((3u << 8u) + 0):
+        case 768: /* module 3 call 0 */
             switch(itemIdx) {
                 case 0: return "Index";
                 default: return NULL;
             }
-        case ((3u << 8u) + 1):
+        case 769: /* module 3 call 1 */
             switch(itemIdx) {
                 case 0: return "New";
                 case 1: return "Index";
                 default: return NULL;
             }
-        case ((3u << 8u) + 2):
+        case 770: /* module 3 call 2 */
             switch(itemIdx) {
                 case 0: return "Index";
                 default: return NULL;
             }
-        case ((3u << 8u) + 3):
+        case 771: /* module 3 call 3 */
             switch(itemIdx) {
                 case 0: return "New";
                 case 1: return "Index";
                 default: return NULL;
             }
-        case ((4u << 8u) + 0):
+        case 1024: /* module 4 call 0 */
             switch(itemIdx) {
                 case 0: return "Dest";
                 case 1: return "Value";
                 default: return NULL;
             }
-        case ((4u << 8u) + 1):
+        case 1025: /* module 4 call 1 */
             switch(itemIdx) {
                 case 0: return "Who";
                 case 1: return "New free";
                 case 2: return "New reserved";
                 default: return NULL;
             }
-        case ((4u << 8u) + 2):
+        case 1026: /* module 4 call 2 */
             switch(itemIdx) {
                 case 0: return "Source";
                 case 1: return "Dest";
                 case 2: return "Value";
                 default: return NULL;
             }
-        case ((4u << 8u) + 3):
+        case 1027: /* module 4 call 3 */
             switch(itemIdx) {
                 case 0: return "Dest";
                 case 1: return "Value";
                 default: return NULL;
             }
-        case ((5u << 8u) + 0):
+        case 1280: /* module 5 call 0 */
             switch(itemIdx) {
                 case 0: return "New uncles";
                 default: return NULL;
             }
-        case ((6u << 8u) + 0):
+        case 1536: /* module 6 call 0 */
             switch(itemIdx) {
                 case 0: return "Controller";
                 case 1: return "Value";
                 case 2: return "Payee";
                 default: return NULL;
             }
-        case ((6u << 8u) + 1):
+        case 1537: /* module 6 call 1 */
             switch(itemIdx) {
                 case 0: return "Max additional";
                 default: return NULL;
             }
-        case ((6u << 8u) + 2):
+        case 1538: /* module 6 call 2 */
             switch(itemIdx) {
                 case 0: return "Value";
                 default: return NULL;
             }
-        case ((6u << 8u) + 3):
+        case 1539: /* module 6 call 3 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((6u << 8u) + 4):
+        case 1540: /* module 6 call 4 */
             switch(itemIdx) {
                 case 0: return "Prefs";
                 default: return NULL;
             }
-        case ((6u << 8u) + 5):
+        case 1541: /* module 6 call 5 */
             switch(itemIdx) {
                 case 0: return "Targets";
                 default: return NULL;
             }
-        case ((6u << 8u) + 6):
+        case 1542: /* module 6 call 6 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((6u << 8u) + 7):
+        case 1543: /* module 6 call 7 */
             switch(itemIdx) {
                 case 0: return "Payee";
                 default: return NULL;
             }
-        case ((6u << 8u) + 8):
+        case 1544: /* module 6 call 8 */
             switch(itemIdx) {
                 case 0: return "Controller";
                 default: return NULL;
             }
-        case ((6u << 8u) + 9):
+        case 1545: /* module 6 call 9 */
             switch(itemIdx) {
                 case 0: return "New";
                 default: return NULL;
             }
-        case ((6u << 8u) + 10):
+        case 1546: /* module 6 call 10 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((6u << 8u) + 11):
+        case 1547: /* module 6 call 11 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((6u << 8u) + 12):
+        case 1548: /* module 6 call 12 */
             switch(itemIdx) {
                 case 0: return "Validators";
                 default: return NULL;
             }
-        case ((6u << 8u) + 13):
+        case 1549: /* module 6 call 13 */
             switch(itemIdx) {
                 case 0: return "Stash";
                 default: return NULL;
             }
-        case ((6u << 8u) + 14):
+        case 1550: /* module 6 call 14 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((6u << 8u) + 15):
+        case 1551: /* module 6 call 15 */
             switch(itemIdx) {
                 case 0: return "Era";
                 case 1: return "Slash indices";
                 default: return NULL;
             }
-        case ((6u << 8u) + 16):
+        case 1552: /* module 6 call 16 */
             switch(itemIdx) {
                 case 0: return "Era";
                 case 1: return "Validators";
                 default: return NULL;
             }
-        case ((6u << 8u) + 17):
+        case 1553: /* module 6 call 17 */
             switch(itemIdx) {
                 case 0: return "Era";
                 default: return NULL;
             }
-        case ((6u << 8u) + 18):
+        case 1554: /* module 6 call 18 */
             switch(itemIdx) {
                 case 0: return "Validator stash";
                 case 1: return "Era";
                 default: return NULL;
             }
-        case ((6u << 8u) + 19):
+        case 1555: /* module 6 call 19 */
             switch(itemIdx) {
                 case 0: return "Value";
                 default: return NULL;
             }
-        case ((6u << 8u) + 20):
+        case 1556: /* module 6 call 20 */
             switch(itemIdx) {
                 case 0: return "New history depth";
                 default: return NULL;
             }
-        case ((6u << 8u) + 21):
+        case 1557: /* module 6 call 21 */
             switch(itemIdx) {
                 case 0: return "Stash";
                 default: return NULL;
             }
-        case ((6u << 8u) + 22):
+        case 1558: /* module 6 call 22 */
             switch(itemIdx) {
                 case 0: return "Winners";
                 case 1: return "Compact assignments";
@@ -2751,7 +2751,7 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 3: return "Era";
                 default: return NULL;
             }
-        case ((6u << 8u) + 23):
+        case 1559: /* module 6 call 23 */
             switch(itemIdx) {
                 case 0: return "Winners";
                 case 1: return "Compact assignments";
@@ -2759,387 +2759,387 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 3: return "Era";
                 default: return NULL;
             }
-        case ((8u << 8u) + 0):
+        case 2048: /* module 8 call 0 */
             switch(itemIdx) {
                 case 0: return "Keys";
                 case 1: return "Proof";
                 default: return NULL;
             }
-        case ((8u << 8u) + 1):
+        case 2049: /* module 8 call 1 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((9u << 8u) + 0):
+        case 2304: /* module 9 call 0 */
             switch(itemIdx) {
                 case 0: return "Hint";
                 default: return NULL;
             }
-        case ((10u << 8u) + 0):
+        case 2560: /* module 10 call 0 */
             switch(itemIdx) {
                 case 0: return "Report";
                 default: return NULL;
             }
-        case ((11u << 8u) + 0):
+        case 2816: /* module 11 call 0 */
             switch(itemIdx) {
                 case 0: return "Heartbeat";
                 case 1: return "Signature";
                 default: return NULL;
             }
-        case ((13u << 8u) + 0):
+        case 3328: /* module 13 call 0 */
             switch(itemIdx) {
                 case 0: return "Proposal hash";
                 case 1: return "Value";
                 default: return NULL;
             }
-        case ((13u << 8u) + 1):
+        case 3329: /* module 13 call 1 */
             switch(itemIdx) {
                 case 0: return "Proposal";
                 default: return NULL;
             }
-        case ((13u << 8u) + 2):
+        case 3330: /* module 13 call 2 */
             switch(itemIdx) {
                 case 0: return "Ref index";
                 case 1: return "Vote";
                 default: return NULL;
             }
-        case ((13u << 8u) + 3):
+        case 3331: /* module 13 call 3 */
             switch(itemIdx) {
                 case 0: return "Ref index";
                 case 1: return "Vote";
                 default: return NULL;
             }
-        case ((13u << 8u) + 4):
+        case 3332: /* module 13 call 4 */
             switch(itemIdx) {
                 case 0: return "Ref index";
                 default: return NULL;
             }
-        case ((13u << 8u) + 5):
+        case 3333: /* module 13 call 5 */
             switch(itemIdx) {
                 case 0: return "Proposal hash";
                 default: return NULL;
             }
-        case ((13u << 8u) + 6):
+        case 3334: /* module 13 call 6 */
             switch(itemIdx) {
                 case 0: return "Proposal hash";
                 default: return NULL;
             }
-        case ((13u << 8u) + 7):
+        case 3335: /* module 13 call 7 */
             switch(itemIdx) {
                 case 0: return "Proposal hash";
                 default: return NULL;
             }
-        case ((13u << 8u) + 8):
+        case 3336: /* module 13 call 8 */
             switch(itemIdx) {
                 case 0: return "Proposal hash";
                 case 1: return "Voting period";
                 case 2: return "Delay";
                 default: return NULL;
             }
-        case ((13u << 8u) + 9):
+        case 3337: /* module 13 call 9 */
             switch(itemIdx) {
                 case 0: return "Proposal hash";
                 default: return NULL;
             }
-        case ((13u << 8u) + 10):
+        case 3338: /* module 13 call 10 */
             switch(itemIdx) {
                 case 0: return "Ref index";
                 default: return NULL;
             }
-        case ((13u << 8u) + 11):
+        case 3339: /* module 13 call 11 */
             switch(itemIdx) {
                 case 0: return "Which";
                 default: return NULL;
             }
-        case ((13u << 8u) + 12):
+        case 3340: /* module 13 call 12 */
             switch(itemIdx) {
                 case 0: return "Proxy";
                 default: return NULL;
             }
-        case ((13u << 8u) + 13):
+        case 3341: /* module 13 call 13 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((13u << 8u) + 14):
+        case 3342: /* module 13 call 14 */
             switch(itemIdx) {
                 case 0: return "Proxy";
                 default: return NULL;
             }
-        case ((13u << 8u) + 15):
+        case 3343: /* module 13 call 15 */
             switch(itemIdx) {
                 case 0: return "To";
                 case 1: return "Conviction";
                 case 2: return "Balance";
                 default: return NULL;
             }
-        case ((13u << 8u) + 16):
+        case 3344: /* module 13 call 16 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((13u << 8u) + 17):
+        case 3345: /* module 13 call 17 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((13u << 8u) + 18):
-            switch(itemIdx) {
-                case 0: return "Encoded proposal";
-                default: return NULL;
-            }
-        case ((13u << 8u) + 19):
+        case 3346: /* module 13 call 18 */
             switch(itemIdx) {
                 case 0: return "Encoded proposal";
                 default: return NULL;
             }
-        case ((13u << 8u) + 20):
+        case 3347: /* module 13 call 19 */
+            switch(itemIdx) {
+                case 0: return "Encoded proposal";
+                default: return NULL;
+            }
+        case 3348: /* module 13 call 20 */
             switch(itemIdx) {
                 case 0: return "Proposal hash";
                 default: return NULL;
             }
-        case ((13u << 8u) + 21):
+        case 3349: /* module 13 call 21 */
             switch(itemIdx) {
                 case 0: return "Target";
                 default: return NULL;
             }
-        case ((13u << 8u) + 22):
+        case 3350: /* module 13 call 22 */
             switch(itemIdx) {
                 case 0: return "Target";
                 default: return NULL;
             }
-        case ((13u << 8u) + 23):
+        case 3351: /* module 13 call 23 */
             switch(itemIdx) {
                 case 0: return "Index";
                 default: return NULL;
             }
-        case ((13u << 8u) + 24):
+        case 3352: /* module 13 call 24 */
             switch(itemIdx) {
                 case 0: return "Target";
                 case 1: return "Index";
                 default: return NULL;
             }
-        case ((13u << 8u) + 25):
+        case 3353: /* module 13 call 25 */
             switch(itemIdx) {
                 case 0: return "To";
                 case 1: return "Conviction";
                 case 2: return "Balance";
                 default: return NULL;
             }
-        case ((13u << 8u) + 26):
+        case 3354: /* module 13 call 26 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((13u << 8u) + 27):
+        case 3355: /* module 13 call 27 */
             switch(itemIdx) {
                 case 0: return "Index";
                 default: return NULL;
             }
-        case ((13u << 8u) + 28):
+        case 3356: /* module 13 call 28 */
             switch(itemIdx) {
                 case 0: return "Proposal hash";
                 case 1: return "Index";
                 default: return NULL;
             }
-        case ((14u << 8u) + 0):
+        case 3584: /* module 14 call 0 */
             switch(itemIdx) {
                 case 0: return "New members";
                 case 1: return "Prime";
                 default: return NULL;
             }
-        case ((14u << 8u) + 1):
+        case 3585: /* module 14 call 1 */
             switch(itemIdx) {
                 case 0: return "Proposal";
                 default: return NULL;
             }
-        case ((14u << 8u) + 2):
+        case 3586: /* module 14 call 2 */
             switch(itemIdx) {
                 case 0: return "Threshold";
                 case 1: return "Proposal";
                 default: return NULL;
             }
-        case ((14u << 8u) + 3):
+        case 3587: /* module 14 call 3 */
             switch(itemIdx) {
                 case 0: return "Proposal";
                 case 1: return "Index";
                 case 2: return "Approve";
                 default: return NULL;
             }
-        case ((14u << 8u) + 4):
+        case 3588: /* module 14 call 4 */
             switch(itemIdx) {
                 case 0: return "Proposal";
                 case 1: return "Index";
                 default: return NULL;
             }
-        case ((15u << 8u) + 0):
+        case 3840: /* module 15 call 0 */
             switch(itemIdx) {
                 case 0: return "New members";
                 case 1: return "Prime";
                 default: return NULL;
             }
-        case ((15u << 8u) + 1):
+        case 3841: /* module 15 call 1 */
             switch(itemIdx) {
                 case 0: return "Proposal";
                 default: return NULL;
             }
-        case ((15u << 8u) + 2):
+        case 3842: /* module 15 call 2 */
             switch(itemIdx) {
                 case 0: return "Threshold";
                 case 1: return "Proposal";
                 default: return NULL;
             }
-        case ((15u << 8u) + 3):
+        case 3843: /* module 15 call 3 */
             switch(itemIdx) {
                 case 0: return "Proposal";
                 case 1: return "Index";
                 case 2: return "Approve";
                 default: return NULL;
             }
-        case ((15u << 8u) + 4):
+        case 3844: /* module 15 call 4 */
             switch(itemIdx) {
                 case 0: return "Proposal";
                 case 1: return "Index";
                 default: return NULL;
             }
-        case ((16u << 8u) + 0):
+        case 4096: /* module 16 call 0 */
             switch(itemIdx) {
                 case 0: return "Votes";
                 case 1: return "Value";
                 default: return NULL;
             }
-        case ((16u << 8u) + 1):
+        case 4097: /* module 16 call 1 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((16u << 8u) + 2):
+        case 4098: /* module 16 call 2 */
             switch(itemIdx) {
                 case 0: return "Target";
                 default: return NULL;
             }
-        case ((16u << 8u) + 3):
+        case 4099: /* module 16 call 3 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((16u << 8u) + 4):
+        case 4100: /* module 16 call 4 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((16u << 8u) + 5):
-            switch(itemIdx) {
-                case 0: return "Who";
-                default: return NULL;
-            }
-        case ((17u << 8u) + 0):
+        case 4101: /* module 16 call 5 */
             switch(itemIdx) {
                 case 0: return "Who";
                 default: return NULL;
             }
-        case ((17u << 8u) + 1):
+        case 4352: /* module 17 call 0 */
             switch(itemIdx) {
                 case 0: return "Who";
                 default: return NULL;
             }
-        case ((17u << 8u) + 2):
+        case 4353: /* module 17 call 1 */
+            switch(itemIdx) {
+                case 0: return "Who";
+                default: return NULL;
+            }
+        case 4354: /* module 17 call 2 */
             switch(itemIdx) {
                 case 0: return "Remove";
                 case 1: return "Add";
                 default: return NULL;
             }
-        case ((17u << 8u) + 3):
+        case 4355: /* module 17 call 3 */
             switch(itemIdx) {
                 case 0: return "Members";
                 default: return NULL;
             }
-        case ((17u << 8u) + 4):
+        case 4356: /* module 17 call 4 */
             switch(itemIdx) {
                 case 0: return "New";
                 default: return NULL;
             }
-        case ((17u << 8u) + 5):
+        case 4357: /* module 17 call 5 */
             switch(itemIdx) {
                 case 0: return "Who";
                 default: return NULL;
             }
-        case ((17u << 8u) + 6):
+        case 4358: /* module 17 call 6 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((18u << 8u) + 0):
+        case 4608: /* module 18 call 0 */
             switch(itemIdx) {
                 case 0: return "Value";
                 case 1: return "Beneficiary";
                 default: return NULL;
             }
-        case ((18u << 8u) + 1):
+        case 4609: /* module 18 call 1 */
             switch(itemIdx) {
                 case 0: return "Proposal id";
                 default: return NULL;
             }
-        case ((18u << 8u) + 2):
+        case 4610: /* module 18 call 2 */
             switch(itemIdx) {
                 case 0: return "Proposal id";
                 default: return NULL;
             }
-        case ((18u << 8u) + 3):
+        case 4611: /* module 18 call 3 */
             switch(itemIdx) {
                 case 0: return "Reason";
                 case 1: return "Who";
                 default: return NULL;
             }
-        case ((18u << 8u) + 4):
+        case 4612: /* module 18 call 4 */
             switch(itemIdx) {
                 case 0: return "Hash";
                 default: return NULL;
             }
-        case ((18u << 8u) + 5):
+        case 4613: /* module 18 call 5 */
             switch(itemIdx) {
                 case 0: return "Reason";
                 case 1: return "Who";
                 case 2: return "Tip value";
                 default: return NULL;
             }
-        case ((18u << 8u) + 6):
+        case 4614: /* module 18 call 6 */
             switch(itemIdx) {
                 case 0: return "Hash";
                 case 1: return "Tip value";
                 default: return NULL;
             }
-        case ((18u << 8u) + 7):
+        case 4615: /* module 18 call 7 */
             switch(itemIdx) {
                 case 0: return "Hash";
                 default: return NULL;
             }
-        case ((19u << 8u) + 0):
+        case 4864: /* module 19 call 0 */
             switch(itemIdx) {
                 case 0: return "Dest";
                 case 1: return "Ethereum signature";
                 default: return NULL;
             }
-        case ((19u << 8u) + 1):
+        case 4865: /* module 19 call 1 */
             switch(itemIdx) {
                 case 0: return "Who";
                 case 1: return "Value";
                 case 2: return "Vesting schedule";
                 default: return NULL;
             }
-        case ((20u << 8u) + 0):
+        case 5120: /* module 20 call 0 */
             switch(itemIdx) {
                 case 0: return "Heads";
                 default: return NULL;
             }
-        case ((20u << 8u) + 1):
+        case 5121: /* module 20 call 1 */
             switch(itemIdx) {
                 case 0: return "Report";
                 default: return NULL;
             }
-        case ((21u << 8u) + 0):
+        case 5376: /* module 21 call 0 */
             switch(itemIdx) {
                 case 0: return "More";
                 default: return NULL;
             }
-        case ((22u << 8u) + 0):
+        case 5632: /* module 22 call 0 */
             switch(itemIdx) {
                 case 0: return "Duration";
                 case 1: return "Lease period index";
                 default: return NULL;
             }
-        case ((22u << 8u) + 1):
+        case 5633: /* module 22 call 1 */
             switch(itemIdx) {
                 case 0: return "Sub";
                 case 1: return "Auction index";
@@ -3148,7 +3148,7 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 4: return "Amount";
                 default: return NULL;
             }
-        case ((22u << 8u) + 2):
+        case 5634: /* module 22 call 2 */
             switch(itemIdx) {
                 case 0: return "Auction index";
                 case 1: return "First slot";
@@ -3156,12 +3156,12 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 3: return "Amount";
                 default: return NULL;
             }
-        case ((22u << 8u) + 3):
+        case 5635: /* module 22 call 3 */
             switch(itemIdx) {
                 case 0: return "Dest";
                 default: return NULL;
             }
-        case ((22u << 8u) + 4):
+        case 5636: /* module 22 call 4 */
             switch(itemIdx) {
                 case 0: return "Sub";
                 case 1: return "Para id";
@@ -3170,13 +3170,13 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 4: return "Initial head data";
                 default: return NULL;
             }
-        case ((22u << 8u) + 5):
+        case 5637: /* module 22 call 5 */
             switch(itemIdx) {
                 case 0: return "Para id";
                 case 1: return "Code";
                 default: return NULL;
             }
-        case ((23u << 8u) + 0):
+        case 5888: /* module 23 call 0 */
             switch(itemIdx) {
                 case 0: return "Id";
                 case 1: return "Info";
@@ -3184,50 +3184,50 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 3: return "Initial head data";
                 default: return NULL;
             }
-        case ((23u << 8u) + 1):
+        case 5889: /* module 23 call 1 */
             switch(itemIdx) {
                 case 0: return "Id";
                 default: return NULL;
             }
-        case ((23u << 8u) + 2):
+        case 5890: /* module 23 call 2 */
             switch(itemIdx) {
                 case 0: return "Count";
                 default: return NULL;
             }
-        case ((23u << 8u) + 3):
+        case 5891: /* module 23 call 3 */
             switch(itemIdx) {
                 case 0: return "Code";
                 case 1: return "Initial head data";
                 default: return NULL;
             }
-        case ((23u << 8u) + 4):
+        case 5892: /* module 23 call 4 */
             switch(itemIdx) {
                 case 0: return "Id";
                 case 1: return "Collator";
                 case 2: return "Head hash";
                 default: return NULL;
             }
-        case ((23u << 8u) + 5):
+        case 5893: /* module 23 call 5 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((23u << 8u) + 6):
+        case 5894: /* module 23 call 6 */
             switch(itemIdx) {
                 case 0: return "Other";
                 default: return NULL;
             }
-        case ((24u << 8u) + 0):
+        case 6144: /* module 24 call 0 */
             switch(itemIdx) {
                 case 0: return "Calls";
                 default: return NULL;
             }
-        case ((24u << 8u) + 1):
+        case 6145: /* module 24 call 1 */
             switch(itemIdx) {
                 case 0: return "Index";
                 case 1: return "Call";
                 default: return NULL;
             }
-        case ((24u << 8u) + 2):
+        case 6146: /* module 24 call 2 */
             switch(itemIdx) {
                 case 0: return "Threshold";
                 case 1: return "Other signatories";
@@ -3235,7 +3235,7 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 3: return "Call";
                 default: return NULL;
             }
-        case ((24u << 8u) + 3):
+        case 6147: /* module 24 call 3 */
             switch(itemIdx) {
                 case 0: return "Threshold";
                 case 1: return "Other signatories";
@@ -3243,7 +3243,7 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 3: return "Call hash";
                 default: return NULL;
             }
-        case ((24u << 8u) + 4):
+        case 6148: /* module 24 call 4 */
             switch(itemIdx) {
                 case 0: return "Threshold";
                 case 1: return "Other signatories";
@@ -3251,190 +3251,190 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 3: return "Call hash";
                 default: return NULL;
             }
-        case ((25u << 8u) + 0):
+        case 6400: /* module 25 call 0 */
             switch(itemIdx) {
                 case 0: return "Account";
                 default: return NULL;
             }
-        case ((25u << 8u) + 1):
+        case 6401: /* module 25 call 1 */
             switch(itemIdx) {
                 case 0: return "Info";
                 default: return NULL;
             }
-        case ((25u << 8u) + 2):
+        case 6402: /* module 25 call 2 */
             switch(itemIdx) {
                 case 0: return "Subs";
                 default: return NULL;
             }
-        case ((25u << 8u) + 3):
+        case 6403: /* module 25 call 3 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((25u << 8u) + 4):
+        case 6404: /* module 25 call 4 */
             switch(itemIdx) {
                 case 0: return "Reg index";
                 case 1: return "Max fee";
                 default: return NULL;
             }
-        case ((25u << 8u) + 5):
+        case 6405: /* module 25 call 5 */
             switch(itemIdx) {
                 case 0: return "Reg index";
                 default: return NULL;
             }
-        case ((25u << 8u) + 6):
+        case 6406: /* module 25 call 6 */
             switch(itemIdx) {
                 case 0: return "Index";
                 case 1: return "Fee";
                 default: return NULL;
             }
-        case ((25u << 8u) + 7):
+        case 6407: /* module 25 call 7 */
             switch(itemIdx) {
                 case 0: return "Index";
                 case 1: return "New";
                 default: return NULL;
             }
-        case ((25u << 8u) + 8):
+        case 6408: /* module 25 call 8 */
             switch(itemIdx) {
                 case 0: return "Index";
                 case 1: return "Fields";
                 default: return NULL;
             }
-        case ((25u << 8u) + 9):
+        case 6409: /* module 25 call 9 */
             switch(itemIdx) {
                 case 0: return "Reg index";
                 case 1: return "Target";
                 case 2: return "Judgement";
                 default: return NULL;
             }
-        case ((25u << 8u) + 10):
+        case 6410: /* module 25 call 10 */
             switch(itemIdx) {
                 case 0: return "Target";
                 default: return NULL;
             }
-        case ((26u << 8u) + 0):
+        case 6656: /* module 26 call 0 */
             switch(itemIdx) {
                 case 0: return "Value";
                 default: return NULL;
             }
-        case ((26u << 8u) + 1):
+        case 6657: /* module 26 call 1 */
             switch(itemIdx) {
                 case 0: return "Pos";
                 default: return NULL;
             }
-        case ((26u << 8u) + 2):
+        case 6658: /* module 26 call 2 */
             switch(itemIdx) {
                 case 0: return "Who";
                 case 1: return "Value";
                 case 2: return "Tip";
                 default: return NULL;
             }
-        case ((26u << 8u) + 3):
+        case 6659: /* module 26 call 3 */
             switch(itemIdx) {
                 case 0: return "Pos";
                 default: return NULL;
             }
-        case ((26u << 8u) + 4):
+        case 6660: /* module 26 call 4 */
             switch(itemIdx) {
                 case 0: return "Candidate";
                 case 1: return "Approve";
                 default: return NULL;
             }
-        case ((26u << 8u) + 5):
+        case 6661: /* module 26 call 5 */
             switch(itemIdx) {
                 case 0: return "Approve";
                 default: return NULL;
             }
-        case ((26u << 8u) + 6):
+        case 6662: /* module 26 call 6 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((26u << 8u) + 7):
+        case 6663: /* module 26 call 7 */
             switch(itemIdx) {
                 case 0: return "Founder";
                 case 1: return "Max members";
                 case 2: return "Rules";
                 default: return NULL;
             }
-        case ((26u << 8u) + 8):
+        case 6664: /* module 26 call 8 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((26u << 8u) + 9):
+        case 6665: /* module 26 call 9 */
             switch(itemIdx) {
                 case 0: return "Who";
                 case 1: return "Forgive";
                 default: return NULL;
             }
-        case ((26u << 8u) + 10):
+        case 6666: /* module 26 call 10 */
             switch(itemIdx) {
                 case 0: return "Who";
                 case 1: return "Judgement";
                 default: return NULL;
             }
-        case ((26u << 8u) + 11):
+        case 6667: /* module 26 call 11 */
             switch(itemIdx) {
                 case 0: return "Max";
                 default: return NULL;
             }
-        case ((27u << 8u) + 0):
+        case 6912: /* module 27 call 0 */
             switch(itemIdx) {
                 case 0: return "Account";
                 case 1: return "Call";
                 default: return NULL;
             }
-        case ((27u << 8u) + 1):
+        case 6913: /* module 27 call 1 */
             switch(itemIdx) {
                 case 0: return "Lost";
                 case 1: return "Rescuer";
                 default: return NULL;
             }
-        case ((27u << 8u) + 2):
+        case 6914: /* module 27 call 2 */
             switch(itemIdx) {
                 case 0: return "Friends";
                 case 1: return "Threshold";
                 case 2: return "Delay period";
                 default: return NULL;
             }
-        case ((27u << 8u) + 3):
+        case 6915: /* module 27 call 3 */
             switch(itemIdx) {
                 case 0: return "Account";
                 default: return NULL;
             }
-        case ((27u << 8u) + 4):
+        case 6916: /* module 27 call 4 */
             switch(itemIdx) {
                 case 0: return "Lost";
                 case 1: return "Rescuer";
                 default: return NULL;
             }
-        case ((27u << 8u) + 5):
+        case 6917: /* module 27 call 5 */
             switch(itemIdx) {
                 case 0: return "Account";
                 default: return NULL;
             }
-        case ((27u << 8u) + 6):
+        case 6918: /* module 27 call 6 */
             switch(itemIdx) {
                 case 0: return "Rescuer";
                 default: return NULL;
             }
-        case ((27u << 8u) + 7):
+        case 6919: /* module 27 call 7 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((27u << 8u) + 8):
+        case 6920: /* module 27 call 8 */
             switch(itemIdx) {
                 case 0: return "Account";
                 default: return NULL;
             }
-        case ((28u << 8u) + 0):
+        case 7168: /* module 28 call 0 */
             switch(itemIdx) {
                 default: return NULL;
             }
-        case ((28u << 8u) + 1):
+        case 7169: /* module 28 call 1 */
             switch(itemIdx) {
                 case 0: return "Target";
                 default: return NULL;
             }
-        case ((28u << 8u) + 2):
+        case 7170: /* module 28 call 2 */
             switch(itemIdx) {
                 case 0: return "Target";
                 case 1: return "Schedule";
@@ -3452,10 +3452,10 @@ parser_error_t _getMethod_ItemValue(
     uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx,
     char *outValue, uint16_t outValueLen,
     uint8_t pageIdx, uint8_t *pageCount) {
-    uint16_t callPrivIdx = (moduleIdx << 8u) + callIdx;
+    uint16_t callPrivIdx = ( (uint16_t) moduleIdx << 8u) + callIdx;
 
     switch(callPrivIdx) {
-        case ((0u << 8u) + 0):
+        case 0: /* module 0 call 0 */
         switch(itemIdx) {
             case 0: /* system_fill_block - _ratio */;
                 return _toStringPerbill(
@@ -3465,7 +3465,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((0u << 8u) + 1):
+        case 1: /* module 0 call 1 */
         switch(itemIdx) {
             case 0: /* system_remark - _remark */;
                 return _toStringBytes(
@@ -3475,7 +3475,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((0u << 8u) + 2):
+        case 2: /* module 0 call 2 */
         switch(itemIdx) {
             case 0: /* system_set_heap_pages - pages */;
                 return _toStringu64(
@@ -3485,7 +3485,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((0u << 8u) + 3):
+        case 3: /* module 0 call 3 */
         switch(itemIdx) {
             case 0: /* system_set_code - code */;
                 return _toStringBytes(
@@ -3495,7 +3495,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((0u << 8u) + 4):
+        case 4: /* module 0 call 4 */
         switch(itemIdx) {
             case 0: /* system_set_code_without_checks - code */;
                 return _toStringBytes(
@@ -3505,7 +3505,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((0u << 8u) + 5):
+        case 5: /* module 0 call 5 */
         switch(itemIdx) {
             case 0: /* system_set_changes_trie_config - changes_trie_config */;
                 return _toStringOptionChangesTrieConfiguration(
@@ -3515,7 +3515,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((0u << 8u) + 6):
+        case 6: /* module 0 call 6 */
         switch(itemIdx) {
             case 0: /* system_set_storage - items */;
                 return _toStringVecKeyValue(
@@ -3525,7 +3525,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((0u << 8u) + 7):
+        case 7: /* module 0 call 7 */
         switch(itemIdx) {
             case 0: /* system_kill_storage - keys */;
                 return _toStringVecKey(
@@ -3535,7 +3535,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((0u << 8u) + 8):
+        case 8: /* module 0 call 8 */
         switch(itemIdx) {
             case 0: /* system_kill_prefix - prefix */;
                 return _toStringKey(
@@ -3545,12 +3545,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((0u << 8u) + 9):
+        case 9: /* module 0 call 9 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((2u << 8u) + 0):
+        case 512: /* module 2 call 0 */
         switch(itemIdx) {
             case 0: /* timestamp_set - now */;
                 return _toStringCompactMoment(
@@ -3560,7 +3560,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((3u << 8u) + 0):
+        case 768: /* module 3 call 0 */
         switch(itemIdx) {
             case 0: /* indices_claim - index */;
                 return _toStringAccountIndex(
@@ -3570,7 +3570,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((3u << 8u) + 1):
+        case 769: /* module 3 call 1 */
         switch(itemIdx) {
             case 0: /* indices_transfer - new_ */;
                 return _toStringAccountId(
@@ -3585,7 +3585,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((3u << 8u) + 2):
+        case 770: /* module 3 call 2 */
         switch(itemIdx) {
             case 0: /* indices_free - index */;
                 return _toStringAccountIndex(
@@ -3595,7 +3595,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((3u << 8u) + 3):
+        case 771: /* module 3 call 3 */
         switch(itemIdx) {
             case 0: /* indices_force_transfer - new_ */;
                 return _toStringAccountId(
@@ -3610,7 +3610,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((4u << 8u) + 0):
+        case 1024: /* module 4 call 0 */
         switch(itemIdx) {
             case 0: /* balances_transfer - dest */;
                 return _toStringLookupSource(
@@ -3625,7 +3625,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((4u << 8u) + 1):
+        case 1025: /* module 4 call 1 */
         switch(itemIdx) {
             case 0: /* balances_set_balance - who */;
                 return _toStringLookupSource(
@@ -3645,7 +3645,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((4u << 8u) + 2):
+        case 1026: /* module 4 call 2 */
         switch(itemIdx) {
             case 0: /* balances_force_transfer - source */;
                 return _toStringLookupSource(
@@ -3665,7 +3665,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((4u << 8u) + 3):
+        case 1027: /* module 4 call 3 */
         switch(itemIdx) {
             case 0: /* balances_transfer_keep_alive - dest */;
                 return _toStringLookupSource(
@@ -3680,7 +3680,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((5u << 8u) + 0):
+        case 1280: /* module 5 call 0 */
         switch(itemIdx) {
             case 0: /* authorship_set_uncles - new_uncles */;
                 return _toStringVecHeader(
@@ -3690,7 +3690,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 0):
+        case 1536: /* module 6 call 0 */
         switch(itemIdx) {
             case 0: /* staking_bond - controller */;
                 return _toStringLookupSource(
@@ -3710,7 +3710,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 1):
+        case 1537: /* module 6 call 1 */
         switch(itemIdx) {
             case 0: /* staking_bond_extra - max_additional */;
                 return _toStringCompactBalanceOf(
@@ -3720,7 +3720,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 2):
+        case 1538: /* module 6 call 2 */
         switch(itemIdx) {
             case 0: /* staking_unbond - value */;
                 return _toStringCompactBalanceOf(
@@ -3730,12 +3730,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 3):
+        case 1539: /* module 6 call 3 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 4):
+        case 1540: /* module 6 call 4 */
         switch(itemIdx) {
             case 0: /* staking_validate - prefs */;
                 return _toStringValidatorPrefs(
@@ -3745,7 +3745,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 5):
+        case 1541: /* module 6 call 5 */
         switch(itemIdx) {
             case 0: /* staking_nominate - targets */;
                 return _toStringVecLookupSource(
@@ -3755,12 +3755,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 6):
+        case 1542: /* module 6 call 6 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 7):
+        case 1543: /* module 6 call 7 */
         switch(itemIdx) {
             case 0: /* staking_set_payee - payee */;
                 return _toStringRewardDestination(
@@ -3770,7 +3770,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 8):
+        case 1544: /* module 6 call 8 */
         switch(itemIdx) {
             case 0: /* staking_set_controller - controller */;
                 return _toStringLookupSource(
@@ -3780,7 +3780,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 9):
+        case 1545: /* module 6 call 9 */
         switch(itemIdx) {
             case 0: /* staking_set_validator_count - new_ */;
                 return _toStringCompactu32(
@@ -3790,17 +3790,17 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 10):
+        case 1546: /* module 6 call 10 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 11):
+        case 1547: /* module 6 call 11 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 12):
+        case 1548: /* module 6 call 12 */
         switch(itemIdx) {
             case 0: /* staking_set_invulnerables - validators */;
                 return _toStringVecAccountId(
@@ -3810,7 +3810,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 13):
+        case 1549: /* module 6 call 13 */
         switch(itemIdx) {
             case 0: /* staking_force_unstake - stash */;
                 return _toStringAccountId(
@@ -3820,12 +3820,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 14):
+        case 1550: /* module 6 call 14 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 15):
+        case 1551: /* module 6 call 15 */
         switch(itemIdx) {
             case 0: /* staking_cancel_deferred_slash - era */;
                 return _toStringEraIndex(
@@ -3840,7 +3840,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 16):
+        case 1552: /* module 6 call 16 */
         switch(itemIdx) {
             case 0: /* staking_payout_nominator - era */;
                 return _toStringEraIndex(
@@ -3855,7 +3855,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 17):
+        case 1553: /* module 6 call 17 */
         switch(itemIdx) {
             case 0: /* staking_payout_validator - era */;
                 return _toStringEraIndex(
@@ -3865,7 +3865,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 18):
+        case 1554: /* module 6 call 18 */
         switch(itemIdx) {
             case 0: /* staking_payout_stakers - validator_stash */;
                 return _toStringAccountId(
@@ -3880,7 +3880,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 19):
+        case 1555: /* module 6 call 19 */
         switch(itemIdx) {
             case 0: /* staking_rebond - value */;
                 return _toStringCompactBalanceOf(
@@ -3890,7 +3890,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 20):
+        case 1556: /* module 6 call 20 */
         switch(itemIdx) {
             case 0: /* staking_set_history_depth - new_history_depth */;
                 return _toStringCompactEraIndex(
@@ -3900,7 +3900,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 21):
+        case 1557: /* module 6 call 21 */
         switch(itemIdx) {
             case 0: /* staking_reap_stash - stash */;
                 return _toStringAccountId(
@@ -3910,7 +3910,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 22):
+        case 1558: /* module 6 call 22 */
         switch(itemIdx) {
             case 0: /* staking_submit_election_solution - winners */;
                 return _toStringVecValidatorIndex(
@@ -3935,7 +3935,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((6u << 8u) + 23):
+        case 1559: /* module 6 call 23 */
         switch(itemIdx) {
             case 0: /* staking_submit_election_solution_unsigned - winners */;
                 return _toStringVecValidatorIndex(
@@ -3960,7 +3960,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((8u << 8u) + 0):
+        case 2048: /* module 8 call 0 */
         switch(itemIdx) {
             case 0: /* session_set_keys - keys */;
                 return _toStringKeys(
@@ -3975,12 +3975,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((8u << 8u) + 1):
+        case 2049: /* module 8 call 1 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((9u << 8u) + 0):
+        case 2304: /* module 9 call 0 */
         switch(itemIdx) {
             case 0: /* finalitytracker_final_hint - hint */;
                 return _toStringCompactBlockNumber(
@@ -3990,7 +3990,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((10u << 8u) + 0):
+        case 2560: /* module 10 call 0 */
         switch(itemIdx) {
             case 0: /* grandpa_report_misbehavior - _report */;
                 return _toStringBytes(
@@ -4000,7 +4000,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((11u << 8u) + 0):
+        case 2816: /* module 11 call 0 */
         switch(itemIdx) {
             case 0: /* imonline_heartbeat - heartbeat */;
                 return _toStringHeartbeat(
@@ -4015,7 +4015,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 0):
+        case 3328: /* module 13 call 0 */
         switch(itemIdx) {
             case 0: /* democracy_propose - proposal_hash */;
                 return _toStringHash(
@@ -4030,7 +4030,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 1):
+        case 3329: /* module 13 call 1 */
         switch(itemIdx) {
             case 0: /* democracy_second - proposal */;
                 return _toStringCompactPropIndex(
@@ -4040,7 +4040,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 2):
+        case 3330: /* module 13 call 2 */
         switch(itemIdx) {
             case 0: /* democracy_vote - ref_index */;
                 return _toStringCompactReferendumIndex(
@@ -4055,7 +4055,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 3):
+        case 3331: /* module 13 call 3 */
         switch(itemIdx) {
             case 0: /* democracy_proxy_vote - ref_index */;
                 return _toStringCompactReferendumIndex(
@@ -4070,7 +4070,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 4):
+        case 3332: /* module 13 call 4 */
         switch(itemIdx) {
             case 0: /* democracy_emergency_cancel - ref_index */;
                 return _toStringReferendumIndex(
@@ -4080,7 +4080,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 5):
+        case 3333: /* module 13 call 5 */
         switch(itemIdx) {
             case 0: /* democracy_external_propose - proposal_hash */;
                 return _toStringHash(
@@ -4090,7 +4090,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 6):
+        case 3334: /* module 13 call 6 */
         switch(itemIdx) {
             case 0: /* democracy_external_propose_majority - proposal_hash */;
                 return _toStringHash(
@@ -4100,7 +4100,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 7):
+        case 3335: /* module 13 call 7 */
         switch(itemIdx) {
             case 0: /* democracy_external_propose_default - proposal_hash */;
                 return _toStringHash(
@@ -4110,7 +4110,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 8):
+        case 3336: /* module 13 call 8 */
         switch(itemIdx) {
             case 0: /* democracy_fast_track - proposal_hash */;
                 return _toStringHash(
@@ -4130,7 +4130,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 9):
+        case 3337: /* module 13 call 9 */
         switch(itemIdx) {
             case 0: /* democracy_veto_external - proposal_hash */;
                 return _toStringHash(
@@ -4140,7 +4140,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 10):
+        case 3338: /* module 13 call 10 */
         switch(itemIdx) {
             case 0: /* democracy_cancel_referendum - ref_index */;
                 return _toStringCompactReferendumIndex(
@@ -4150,7 +4150,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 11):
+        case 3339: /* module 13 call 11 */
         switch(itemIdx) {
             case 0: /* democracy_cancel_queued - which */;
                 return _toStringReferendumIndex(
@@ -4160,7 +4160,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 12):
+        case 3340: /* module 13 call 12 */
         switch(itemIdx) {
             case 0: /* democracy_activate_proxy - proxy */;
                 return _toStringAccountId(
@@ -4170,12 +4170,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 13):
+        case 3341: /* module 13 call 13 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 14):
+        case 3342: /* module 13 call 14 */
         switch(itemIdx) {
             case 0: /* democracy_deactivate_proxy - proxy */;
                 return _toStringAccountId(
@@ -4185,7 +4185,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 15):
+        case 3343: /* module 13 call 15 */
         switch(itemIdx) {
             case 0: /* democracy_delegate - to */;
                 return _toStringAccountId(
@@ -4205,17 +4205,17 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 16):
+        case 3344: /* module 13 call 16 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 17):
+        case 3345: /* module 13 call 17 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 18):
+        case 3346: /* module 13 call 18 */
         switch(itemIdx) {
             case 0: /* democracy_note_preimage - encoded_proposal */;
                 return _toStringBytes(
@@ -4225,7 +4225,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 19):
+        case 3347: /* module 13 call 19 */
         switch(itemIdx) {
             case 0: /* democracy_note_imminent_preimage - encoded_proposal */;
                 return _toStringBytes(
@@ -4235,7 +4235,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 20):
+        case 3348: /* module 13 call 20 */
         switch(itemIdx) {
             case 0: /* democracy_reap_preimage - proposal_hash */;
                 return _toStringHash(
@@ -4245,7 +4245,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 21):
+        case 3349: /* module 13 call 21 */
         switch(itemIdx) {
             case 0: /* democracy_unlock - target */;
                 return _toStringAccountId(
@@ -4255,7 +4255,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 22):
+        case 3350: /* module 13 call 22 */
         switch(itemIdx) {
             case 0: /* democracy_open_proxy - target */;
                 return _toStringAccountId(
@@ -4265,7 +4265,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 23):
+        case 3351: /* module 13 call 23 */
         switch(itemIdx) {
             case 0: /* democracy_remove_vote - index */;
                 return _toStringReferendumIndex(
@@ -4275,7 +4275,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 24):
+        case 3352: /* module 13 call 24 */
         switch(itemIdx) {
             case 0: /* democracy_remove_other_vote - target */;
                 return _toStringAccountId(
@@ -4290,7 +4290,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 25):
+        case 3353: /* module 13 call 25 */
         switch(itemIdx) {
             case 0: /* democracy_proxy_delegate - to */;
                 return _toStringAccountId(
@@ -4310,12 +4310,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 26):
+        case 3354: /* module 13 call 26 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 27):
+        case 3355: /* module 13 call 27 */
         switch(itemIdx) {
             case 0: /* democracy_proxy_remove_vote - index */;
                 return _toStringReferendumIndex(
@@ -4325,7 +4325,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((13u << 8u) + 28):
+        case 3356: /* module 13 call 28 */
         switch(itemIdx) {
             case 0: /* democracy_enact_proposal - proposal_hash */;
                 return _toStringHash(
@@ -4340,7 +4340,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((14u << 8u) + 0):
+        case 3584: /* module 14 call 0 */
         switch(itemIdx) {
             case 0: /* council_set_members - new_members */;
                 return _toStringVecAccountId(
@@ -4355,7 +4355,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((14u << 8u) + 1):
+        case 3585: /* module 14 call 1 */
         switch(itemIdx) {
             case 0: /* council_execute - proposal */;
                 return _toStringProposal(
@@ -4365,7 +4365,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((14u << 8u) + 2):
+        case 3586: /* module 14 call 2 */
         switch(itemIdx) {
             case 0: /* council_propose - threshold */;
                 return _toStringCompactMemberCount(
@@ -4380,7 +4380,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((14u << 8u) + 3):
+        case 3587: /* module 14 call 3 */
         switch(itemIdx) {
             case 0: /* council_vote - proposal */;
                 return _toStringHash(
@@ -4400,7 +4400,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((14u << 8u) + 4):
+        case 3588: /* module 14 call 4 */
         switch(itemIdx) {
             case 0: /* council_close - proposal */;
                 return _toStringHash(
@@ -4415,7 +4415,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((15u << 8u) + 0):
+        case 3840: /* module 15 call 0 */
         switch(itemIdx) {
             case 0: /* technicalcommittee_set_members - new_members */;
                 return _toStringVecAccountId(
@@ -4430,7 +4430,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((15u << 8u) + 1):
+        case 3841: /* module 15 call 1 */
         switch(itemIdx) {
             case 0: /* technicalcommittee_execute - proposal */;
                 return _toStringProposal(
@@ -4440,7 +4440,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((15u << 8u) + 2):
+        case 3842: /* module 15 call 2 */
         switch(itemIdx) {
             case 0: /* technicalcommittee_propose - threshold */;
                 return _toStringCompactMemberCount(
@@ -4455,7 +4455,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((15u << 8u) + 3):
+        case 3843: /* module 15 call 3 */
         switch(itemIdx) {
             case 0: /* technicalcommittee_vote - proposal */;
                 return _toStringHash(
@@ -4475,7 +4475,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((15u << 8u) + 4):
+        case 3844: /* module 15 call 4 */
         switch(itemIdx) {
             case 0: /* technicalcommittee_close - proposal */;
                 return _toStringHash(
@@ -4490,7 +4490,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((16u << 8u) + 0):
+        case 4096: /* module 16 call 0 */
         switch(itemIdx) {
             case 0: /* electionsphragmen_vote - votes */;
                 return _toStringVecAccountId(
@@ -4505,12 +4505,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((16u << 8u) + 1):
+        case 4097: /* module 16 call 1 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((16u << 8u) + 2):
+        case 4098: /* module 16 call 2 */
         switch(itemIdx) {
             case 0: /* electionsphragmen_report_defunct_voter - target */;
                 return _toStringLookupSource(
@@ -4520,17 +4520,17 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((16u << 8u) + 3):
+        case 4099: /* module 16 call 3 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((16u << 8u) + 4):
+        case 4100: /* module 16 call 4 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((16u << 8u) + 5):
+        case 4101: /* module 16 call 5 */
         switch(itemIdx) {
             case 0: /* electionsphragmen_remove_member - who */;
                 return _toStringLookupSource(
@@ -4540,7 +4540,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((17u << 8u) + 0):
+        case 4352: /* module 17 call 0 */
         switch(itemIdx) {
             case 0: /* technicalmembership_add_member - who */;
                 return _toStringAccountId(
@@ -4550,7 +4550,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((17u << 8u) + 1):
+        case 4353: /* module 17 call 1 */
         switch(itemIdx) {
             case 0: /* technicalmembership_remove_member - who */;
                 return _toStringAccountId(
@@ -4560,7 +4560,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((17u << 8u) + 2):
+        case 4354: /* module 17 call 2 */
         switch(itemIdx) {
             case 0: /* technicalmembership_swap_member - remove */;
                 return _toStringAccountId(
@@ -4575,7 +4575,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((17u << 8u) + 3):
+        case 4355: /* module 17 call 3 */
         switch(itemIdx) {
             case 0: /* technicalmembership_reset_members - members */;
                 return _toStringVecAccountId(
@@ -4585,7 +4585,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((17u << 8u) + 4):
+        case 4356: /* module 17 call 4 */
         switch(itemIdx) {
             case 0: /* technicalmembership_change_key - new_ */;
                 return _toStringAccountId(
@@ -4595,7 +4595,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((17u << 8u) + 5):
+        case 4357: /* module 17 call 5 */
         switch(itemIdx) {
             case 0: /* technicalmembership_set_prime - who */;
                 return _toStringAccountId(
@@ -4605,12 +4605,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((17u << 8u) + 6):
+        case 4358: /* module 17 call 6 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((18u << 8u) + 0):
+        case 4608: /* module 18 call 0 */
         switch(itemIdx) {
             case 0: /* treasury_propose_spend - value */;
                 return _toStringCompactBalanceOf(
@@ -4625,7 +4625,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((18u << 8u) + 1):
+        case 4609: /* module 18 call 1 */
         switch(itemIdx) {
             case 0: /* treasury_reject_proposal - proposal_id */;
                 return _toStringCompactProposalIndex(
@@ -4635,7 +4635,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((18u << 8u) + 2):
+        case 4610: /* module 18 call 2 */
         switch(itemIdx) {
             case 0: /* treasury_approve_proposal - proposal_id */;
                 return _toStringCompactProposalIndex(
@@ -4645,7 +4645,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((18u << 8u) + 3):
+        case 4611: /* module 18 call 3 */
         switch(itemIdx) {
             case 0: /* treasury_report_awesome - reason */;
                 return _toStringBytes(
@@ -4660,7 +4660,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((18u << 8u) + 4):
+        case 4612: /* module 18 call 4 */
         switch(itemIdx) {
             case 0: /* treasury_retract_tip - hash */;
                 return _toStringHash(
@@ -4670,7 +4670,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((18u << 8u) + 5):
+        case 4613: /* module 18 call 5 */
         switch(itemIdx) {
             case 0: /* treasury_tip_new - reason */;
                 return _toStringBytes(
@@ -4690,7 +4690,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((18u << 8u) + 6):
+        case 4614: /* module 18 call 6 */
         switch(itemIdx) {
             case 0: /* treasury_tip - hash */;
                 return _toStringHash(
@@ -4705,7 +4705,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((18u << 8u) + 7):
+        case 4615: /* module 18 call 7 */
         switch(itemIdx) {
             case 0: /* treasury_close_tip - hash */;
                 return _toStringHash(
@@ -4715,7 +4715,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((19u << 8u) + 0):
+        case 4864: /* module 19 call 0 */
         switch(itemIdx) {
             case 0: /* claims_claim - dest */;
                 return _toStringAccountId(
@@ -4730,7 +4730,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((19u << 8u) + 1):
+        case 4865: /* module 19 call 1 */
         switch(itemIdx) {
             case 0: /* claims_mint_claim - who */;
                 return _toStringEthereumAddress(
@@ -4750,7 +4750,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((20u << 8u) + 0):
+        case 5120: /* module 20 call 0 */
         switch(itemIdx) {
             case 0: /* parachains_set_heads - heads */;
                 return _toStringVecAttestedCandidate(
@@ -4760,7 +4760,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((20u << 8u) + 1):
+        case 5121: /* module 20 call 1 */
         switch(itemIdx) {
             case 0: /* parachains_report_double_vote - report */;
                 return _toStringDoubleVoteReport(
@@ -4770,7 +4770,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((21u << 8u) + 0):
+        case 5376: /* module 21 call 0 */
         switch(itemIdx) {
             case 0: /* attestations_more_attestations - _more */;
                 return _toStringMoreAttestations(
@@ -4780,7 +4780,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((22u << 8u) + 0):
+        case 5632: /* module 22 call 0 */
         switch(itemIdx) {
             case 0: /* slots_new_auction - duration */;
                 return _toStringCompactBlockNumber(
@@ -4795,7 +4795,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((22u << 8u) + 1):
+        case 5633: /* module 22 call 1 */
         switch(itemIdx) {
             case 0: /* slots_bid - sub */;
                 return _toStringCompactSubId(
@@ -4825,7 +4825,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((22u << 8u) + 2):
+        case 5634: /* module 22 call 2 */
         switch(itemIdx) {
             case 0: /* slots_bid_renew - auction_index */;
                 return _toStringCompactAuctionIndex(
@@ -4850,7 +4850,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((22u << 8u) + 3):
+        case 5635: /* module 22 call 3 */
         switch(itemIdx) {
             case 0: /* slots_set_offboarding - dest */;
                 return _toStringLookupSource(
@@ -4860,7 +4860,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((22u << 8u) + 4):
+        case 5636: /* module 22 call 4 */
         switch(itemIdx) {
             case 0: /* slots_fix_deploy_data - sub */;
                 return _toStringCompactSubId(
@@ -4890,7 +4890,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((22u << 8u) + 5):
+        case 5637: /* module 22 call 5 */
         switch(itemIdx) {
             case 0: /* slots_elaborate_deploy_data - para_id */;
                 return _toStringCompactParaId(
@@ -4905,7 +4905,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((23u << 8u) + 0):
+        case 5888: /* module 23 call 0 */
         switch(itemIdx) {
             case 0: /* registrar_register_para - id */;
                 return _toStringCompactParaId(
@@ -4930,7 +4930,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((23u << 8u) + 1):
+        case 5889: /* module 23 call 1 */
         switch(itemIdx) {
             case 0: /* registrar_deregister_para - id */;
                 return _toStringCompactParaId(
@@ -4940,7 +4940,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((23u << 8u) + 2):
+        case 5890: /* module 23 call 2 */
         switch(itemIdx) {
             case 0: /* registrar_set_thread_count - count */;
                 return _toStringu32(
@@ -4950,7 +4950,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((23u << 8u) + 3):
+        case 5891: /* module 23 call 3 */
         switch(itemIdx) {
             case 0: /* registrar_register_parathread - code */;
                 return _toStringValidationCode(
@@ -4965,7 +4965,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((23u << 8u) + 4):
+        case 5892: /* module 23 call 4 */
         switch(itemIdx) {
             case 0: /* registrar_select_parathread - _id */;
                 return _toStringCompactParaId(
@@ -4985,12 +4985,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((23u << 8u) + 5):
+        case 5893: /* module 23 call 5 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((23u << 8u) + 6):
+        case 5894: /* module 23 call 6 */
         switch(itemIdx) {
             case 0: /* registrar_swap - other */;
                 return _toStringCompactParaId(
@@ -5000,7 +5000,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((24u << 8u) + 0):
+        case 6144: /* module 24 call 0 */
         switch(itemIdx) {
             case 0: /* utility_batch - calls */;
                 return _toStringVecCall(
@@ -5010,7 +5010,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((24u << 8u) + 1):
+        case 6145: /* module 24 call 1 */
         switch(itemIdx) {
             case 0: /* utility_as_sub - index */;
                 return _toStringu16(
@@ -5025,7 +5025,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((24u << 8u) + 2):
+        case 6146: /* module 24 call 2 */
         switch(itemIdx) {
             case 0: /* utility_as_multi - threshold */;
                 return _toStringu16(
@@ -5050,7 +5050,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((24u << 8u) + 3):
+        case 6147: /* module 24 call 3 */
         switch(itemIdx) {
             case 0: /* utility_approve_as_multi - threshold */;
                 return _toStringu16(
@@ -5075,7 +5075,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((24u << 8u) + 4):
+        case 6148: /* module 24 call 4 */
         switch(itemIdx) {
             case 0: /* utility_cancel_as_multi - threshold */;
                 return _toStringu16(
@@ -5100,7 +5100,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 0):
+        case 6400: /* module 25 call 0 */
         switch(itemIdx) {
             case 0: /* identity_add_registrar - account */;
                 return _toStringAccountId(
@@ -5110,7 +5110,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 1):
+        case 6401: /* module 25 call 1 */
         switch(itemIdx) {
             case 0: /* identity_set_identity - info */;
                 return _toStringIdentityInfo(
@@ -5120,7 +5120,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 2):
+        case 6402: /* module 25 call 2 */
         switch(itemIdx) {
             case 0: /* identity_set_subs - subs */;
                 return _toStringVecTupleAccountIdData(
@@ -5130,12 +5130,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 3):
+        case 6403: /* module 25 call 3 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 4):
+        case 6404: /* module 25 call 4 */
         switch(itemIdx) {
             case 0: /* identity_request_judgement - reg_index */;
                 return _toStringCompactRegistrarIndex(
@@ -5150,7 +5150,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 5):
+        case 6405: /* module 25 call 5 */
         switch(itemIdx) {
             case 0: /* identity_cancel_request - reg_index */;
                 return _toStringRegistrarIndex(
@@ -5160,7 +5160,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 6):
+        case 6406: /* module 25 call 6 */
         switch(itemIdx) {
             case 0: /* identity_set_fee - index */;
                 return _toStringCompactRegistrarIndex(
@@ -5175,7 +5175,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 7):
+        case 6407: /* module 25 call 7 */
         switch(itemIdx) {
             case 0: /* identity_set_account_id - index */;
                 return _toStringCompactRegistrarIndex(
@@ -5190,7 +5190,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 8):
+        case 6408: /* module 25 call 8 */
         switch(itemIdx) {
             case 0: /* identity_set_fields - index */;
                 return _toStringCompactRegistrarIndex(
@@ -5205,7 +5205,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 9):
+        case 6409: /* module 25 call 9 */
         switch(itemIdx) {
             case 0: /* identity_provide_judgement - reg_index */;
                 return _toStringCompactRegistrarIndex(
@@ -5225,7 +5225,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((25u << 8u) + 10):
+        case 6410: /* module 25 call 10 */
         switch(itemIdx) {
             case 0: /* identity_kill_identity - target */;
                 return _toStringLookupSource(
@@ -5235,7 +5235,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 0):
+        case 6656: /* module 26 call 0 */
         switch(itemIdx) {
             case 0: /* society_bid - value */;
                 return _toStringBalanceOf(
@@ -5245,7 +5245,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 1):
+        case 6657: /* module 26 call 1 */
         switch(itemIdx) {
             case 0: /* society_unbid - pos */;
                 return _toStringu32(
@@ -5255,7 +5255,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 2):
+        case 6658: /* module 26 call 2 */
         switch(itemIdx) {
             case 0: /* society_vouch - who */;
                 return _toStringAccountId(
@@ -5275,7 +5275,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 3):
+        case 6659: /* module 26 call 3 */
         switch(itemIdx) {
             case 0: /* society_unvouch - pos */;
                 return _toStringu32(
@@ -5285,7 +5285,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 4):
+        case 6660: /* module 26 call 4 */
         switch(itemIdx) {
             case 0: /* society_vote - candidate */;
                 return _toStringLookupSource(
@@ -5300,7 +5300,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 5):
+        case 6661: /* module 26 call 5 */
         switch(itemIdx) {
             case 0: /* society_defender_vote - approve */;
                 return _toStringbool(
@@ -5310,12 +5310,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 6):
+        case 6662: /* module 26 call 6 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 7):
+        case 6663: /* module 26 call 7 */
         switch(itemIdx) {
             case 0: /* society_found - founder */;
                 return _toStringAccountId(
@@ -5335,12 +5335,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 8):
+        case 6664: /* module 26 call 8 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 9):
+        case 6665: /* module 26 call 9 */
         switch(itemIdx) {
             case 0: /* society_judge_suspended_member - who */;
                 return _toStringAccountId(
@@ -5355,7 +5355,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 10):
+        case 6666: /* module 26 call 10 */
         switch(itemIdx) {
             case 0: /* society_judge_suspended_candidate - who */;
                 return _toStringAccountId(
@@ -5370,7 +5370,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((26u << 8u) + 11):
+        case 6667: /* module 26 call 11 */
         switch(itemIdx) {
             case 0: /* society_set_max_members - max */;
                 return _toStringu32(
@@ -5380,7 +5380,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((27u << 8u) + 0):
+        case 6912: /* module 27 call 0 */
         switch(itemIdx) {
             case 0: /* recovery_as_recovered - account */;
                 return _toStringAccountId(
@@ -5395,7 +5395,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((27u << 8u) + 1):
+        case 6913: /* module 27 call 1 */
         switch(itemIdx) {
             case 0: /* recovery_set_recovered - lost */;
                 return _toStringAccountId(
@@ -5410,7 +5410,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((27u << 8u) + 2):
+        case 6914: /* module 27 call 2 */
         switch(itemIdx) {
             case 0: /* recovery_create_recovery - friends */;
                 return _toStringVecAccountId(
@@ -5430,7 +5430,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((27u << 8u) + 3):
+        case 6915: /* module 27 call 3 */
         switch(itemIdx) {
             case 0: /* recovery_initiate_recovery - account */;
                 return _toStringAccountId(
@@ -5440,7 +5440,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((27u << 8u) + 4):
+        case 6916: /* module 27 call 4 */
         switch(itemIdx) {
             case 0: /* recovery_vouch_recovery - lost */;
                 return _toStringAccountId(
@@ -5455,7 +5455,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((27u << 8u) + 5):
+        case 6917: /* module 27 call 5 */
         switch(itemIdx) {
             case 0: /* recovery_claim_recovery - account */;
                 return _toStringAccountId(
@@ -5465,7 +5465,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((27u << 8u) + 6):
+        case 6918: /* module 27 call 6 */
         switch(itemIdx) {
             case 0: /* recovery_close_recovery - rescuer */;
                 return _toStringAccountId(
@@ -5475,12 +5475,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((27u << 8u) + 7):
+        case 6919: /* module 27 call 7 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((27u << 8u) + 8):
+        case 6920: /* module 27 call 8 */
         switch(itemIdx) {
             case 0: /* recovery_cancel_recovered - account */;
                 return _toStringAccountId(
@@ -5490,12 +5490,12 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((28u << 8u) + 0):
+        case 7168: /* module 28 call 0 */
         switch(itemIdx) {
             default:
                 return parser_no_data;
         }
-        case ((28u << 8u) + 1):
+        case 7169: /* module 28 call 1 */
         switch(itemIdx) {
             case 0: /* vesting_vest_other - target */;
                 return _toStringLookupSource(
@@ -5505,7 +5505,7 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
-        case ((28u << 8u) + 2):
+        case 7170: /* module 28 call 2 */
         switch(itemIdx) {
             case 0: /* vesting_vested_transfer - target */;
                 return _toStringLookupSource(

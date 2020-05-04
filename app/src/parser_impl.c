@@ -336,8 +336,14 @@ parser_error_t _checkSpecVersion(parser_context_t *c) {
         return parser_unexpected_buffer_end;
     }
 
-    const uint32_t *const p = (uint32_t *) (c->buffer + c->bufferLen - specOffsetFromBack);
-    if (*p != SUPPORTED_SPEC_VERSION) {
+    uint8_t *p = (uint8_t *) (c->buffer + c->bufferLen - specOffsetFromBack);
+    uint32_t tmp = 0;
+    tmp += p[0] << 0u;
+    tmp += p[1] << 8u;
+    tmp += p[2] << 16u;
+    tmp += p[3] << 24u;
+
+    if (tmp != (SUPPORTED_SPEC_VERSION)) {
         return parser_spec_not_supported;
     }
 
