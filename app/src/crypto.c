@@ -35,7 +35,7 @@ void crypto_extractPublicKey(const uint32_t path[HDPATH_LEN_DEFAULT], uint8_t *p
     cx_ecfp_private_key_t cx_privateKey;
     uint8_t privateKeyData[32];
 
-    if (pubKeyLen < ED25519_PK_LEN) {
+    if (pubKeyLen < PK_LEN_ED25519) {
         return;
     }
 
@@ -207,15 +207,15 @@ uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
 }
 
 uint16_t crypto_fillAddress(uint8_t *buffer, uint16_t bufferLen) {
-    if (bufferLen < ED25519_PK_LEN + SS58_ADDRESS_MAX_LEN) {
+    if (bufferLen < PK_LEN_ED25519 + SS58_ADDRESS_MAX_LEN) {
         return 0;
     }
     MEMZERO(buffer, bufferLen);
     crypto_extractPublicKey(hdPath, buffer, bufferLen);
 
-    size_t outLen = crypto_SS58EncodePubkey(buffer + ED25519_PK_LEN,
-                                            bufferLen - ED25519_PK_LEN,
+    size_t outLen = crypto_SS58EncodePubkey(buffer + PK_LEN_ED25519,
+                                            bufferLen - PK_LEN_ED25519,
                                             PK_ADDRESS_TYPE, buffer);
 
-    return ED25519_PK_LEN + outLen;
+    return PK_LEN_ED25519 + outLen;
 }

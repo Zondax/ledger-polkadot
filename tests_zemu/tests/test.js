@@ -1,6 +1,6 @@
 import { expect, test } from "jest";
 import Zemu from "@zondax/zemu";
-import LedgerApp from "ledger-polkadot";
+import LedgerApp from "@zondax/ledger-polkadot";
 import { blake2bInit, blake2bUpdate, blake2bFinal } from "blakejs";
 const ed25519 = require("ed25519-supercop");
 

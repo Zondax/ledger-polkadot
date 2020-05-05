@@ -1,5 +1,5 @@
 import Zemu from "@zondax/zemu";
-import LedgerApp from "ledger-polkadot";
+import LedgerApp from "@zondax/ledger-polkadot";
 import path from "path";
 
 const APP_PATH = path.resolve(`./../../app/bin/app.elf`);

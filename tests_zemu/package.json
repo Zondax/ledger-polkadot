@@ -16,7 +16,7 @@
     "zondax"
   ],
   "dependencies": {
-    "ledger-polkadot": "^0.7.0",
+    "@zondax/ledger-polkadot": "^0.9.0",
     "@zondax/zemu": "^0.2"
   },
   "devDependencies": {
