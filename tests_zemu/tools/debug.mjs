@@ -31,11 +31,37 @@ async function debugScenario(sim, app) {
     const pathChange = 0x80000000;
     const pathIndex = 0x80000000;
 
-    let txBlobStr = "0400ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae4202286beed502000022040000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe280b332587f46c556aa806781884284f50d90b8c1b02488a059700673c93f41c";
+    let txBlobStr = "04002756865871cd8e8c2e27b5c5254a8ab6933a5c3081bdcbdc78751fb9c8af12f200d503008ed73e0d26040000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
     const txBlob = Buffer.from(txBlobStr, "hex");
 
+    const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
+    await Zemu.default.sleep(1000);
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickBoth();
+    let addr = await respRequest;
+
     // do not wait here.. we need to navigate
-    const signature = await app.sign(pathAccount, pathChange, pathIndex, txBlob);
+    const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob);
+    await Zemu.default.sleep(1000);
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickRight();
+    await sim.clickBoth();
+
+    let signature = await signatureRequest;
     console.log(signature);
 }
 

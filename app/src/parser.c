@@ -40,7 +40,7 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
     return parser_ok;
 }
 
-parser_error_t parser_getNumItems(const parser_context_t *ctx, uint16_t *num_items) {
+parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_items) {
     uint8_t methodArgCount = _getMethod_NumItems(parser_tx_obj.callIndex.moduleIdx,
                                                  parser_tx_obj.callIndex.idx,
                                                  &parser_tx_obj.method);
@@ -57,7 +57,7 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
     MEMZERO(outKey, outKeyLen);
     MEMZERO(outValue, outValueLen);
 
-    uint16_t numItems;
+    uint8_t numItems;
 
     CHECK_PARSER_ERR(parser_getNumItems(ctx, &numItems));
     *pageCount = 1;

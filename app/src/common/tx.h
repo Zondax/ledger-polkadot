@@ -49,7 +49,7 @@ uint8_t *tx_get_buffer();
 const char *tx_parse();
 
 /// Return the number of items in the transaction
-tx_error_t tx_getNumItems(uint16_t *num_items);
+tx_error_t tx_getNumItems(uint8_t *num_items);
 
 /// Gets an specific item from the transaction (including paging)
 tx_error_t tx_getItem(int8_t displayIdx,
