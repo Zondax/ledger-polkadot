@@ -60,7 +60,7 @@ define run_docker
 	-u $(USERID) \
 	-v $(shell pwd):/project \
 	$(DOCKER_IMAGE) \
-	"$(2)"
+	"COIN=$(COIN) $(2)"
 endef
 
 all: build
@@ -98,6 +98,10 @@ buildX: build_rust
 .PHONY: clean
 clean:
 	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) clean)
+
+.PHONY: listvariants
+listvariants:
+	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) listvariants)
 
 .PHONY: shell
 shell:
@@ -174,6 +178,10 @@ zemu_install: zemu_install_js_link
 .PHONY: zemu
 zemu:
 	cd $(TESTS_ZEMU_DIR)/tools && node debug.mjs
+
+.PHONY: zemu_val
+zemu_val:
+	cd $(TESTS_ZEMU_DIR)/tools && node debug_val.mjs
 
 .PHONY: zemu_debug
 zemu_debug:

@@ -69,8 +69,8 @@ describe('Basic checks', function () {
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
 
-            const expected_address = "CaKWz5omakTK7ovp4m3koXrHyHb7NG3Nt7GENHbviByZpKp";
-            const expected_pk = "0000000000000000000000000000000000000000000000000000000000000000";
+            const expected_address = "JMdbWK5cy3Bm4oCyhWNLQJoC4cczNgJsyk7nLZHMqFT7z7R";
+            const expected_pk = "ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42";
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
@@ -93,7 +93,7 @@ describe('Basic checks', function () {
             const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
 
             // We need to wait until the app responds to the APDU
-            await Zemu.sleep(2000);
+            await Zemu.sleep(3500);
 
             // Now navigate the address / path
             await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
@@ -112,8 +112,8 @@ describe('Basic checks', function () {
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
 
-            const expected_address = "CaKWz5omakTK7ovp4m3koXrHyHb7NG3Nt7GENHbviByZpKp";
-            const expected_pk = "0000000000000000000000000000000000000000000000000000000000000000";
+            const expected_address = "JMdbWK5cy3Bm4oCyhWNLQJoC4cczNgJsyk7nLZHMqFT7z7R";
+            const expected_pk = "ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42";
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
@@ -225,8 +225,7 @@ describe('Basic checks', function () {
                 prehash = Buffer.from(blake2bFinal(context));
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
-            // FIXME: Zemu/Speculos cannot yet emulate Ed25519 HD
-//            expect(valid).toEqual(true);
+           expect(valid).toEqual(true);
         } finally {
             await sim.close();
         }

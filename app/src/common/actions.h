@@ -17,7 +17,7 @@
 
 #include <stdint.h>
 
-uint8_t app_sign();
+void app_sign();
 
 uint8_t app_fill_address();
 

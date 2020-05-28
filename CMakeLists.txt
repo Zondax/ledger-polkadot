@@ -25,6 +25,7 @@ add_subdirectory(cmake/gtest)
 
 string(APPEND CMAKE_CXX_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
 string(APPEND CMAKE_LINKER_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
+add_definitions(-DAPP_STANDARD)
 
 set (RETRIEVE_LEDGER_MINOR_CMD
         "cat ${CMAKE_CURRENT_SOURCE_DIR}/app/Makefile.version | grep APPVERSION_N | cut -b 14-"

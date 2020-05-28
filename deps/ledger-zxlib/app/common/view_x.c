@@ -106,7 +106,7 @@ void h_review_loop_start() {
     if (flow_inside_loop) {
         // coming from right
         h_paging_decrease();
-        if (viewdata.idx<0) {
+        if (viewdata.itemIdx<0) {
             // exit to the left
             flow_inside_loop = 0;
             ux_flow_prev();

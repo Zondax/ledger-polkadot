@@ -1,5 +1,5 @@
 /*******************************************************************************
-*  (c) 2020 Zondax GmbH
+*  (c) 2019 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
 ********************************************************************************/
 #pragma once
 
-#if defined(APP_STANDARD)
-#include "coin_standard.h"
-#elif defined(APP_VARIANT1)
-#include "coin_variant1.h"
-#else
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #error "APP MODE IS NOT SUPPORTED"
+
+#ifdef __cplusplus
+}
 #endif

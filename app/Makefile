@@ -24,12 +24,32 @@ MY_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
 include $(BOLOS_SDK)/Makefile.defines
 
-# Main app configuration
-APPNAME = "Kusama"
+ifndef COIN
+COIN=kusama
+endif
+
 include $(CURDIR)/Makefile.version
 
+$(info COIN  = [$(COIN)])
+ifeq ($(COIN),kusama)
+# Main app configuration
+DEFINES += APP_STANDARD
+APPNAME = "Kusama"
 APPPATH = "44'/434'"
-APP_LOAD_PARAMS = --appFlags 0x200 --delete $(COMMON_LOAD_PARAMS) --path ${APPPATH}
+
+else ifeq ($(COIN),kusama_variant1)
+else
+define error_message
+
+
+COIN value not supported: [$(COIN)]
+
+
+endef
+$(error "$(error_message)")
+endif
+
+APP_LOAD_PARAMS = --appFlags 0x200 --delete $(COMMON_LOAD_PARAMS) --path $(APPPATH)
 
 ifeq ($(TARGET_NAME),TARGET_NANOS)
 SCRIPT_LD:=$(CURDIR)/script.ld
@@ -91,7 +111,7 @@ DEFINES       += HAVE_BAGL_FONT_OPEN_SANS_REGULAR_11PX
 DEFINES       += HAVE_BAGL_FONT_OPEN_SANS_EXTRABOLD_11PX
 DEFINES       += HAVE_BAGL_FONT_OPEN_SANS_LIGHT_16PX
 
-DEFINES          += HAVE_UX_FLOW
+DEFINES       += HAVE_UX_FLOW
 
 #SDK_SOURCE_PATH  += lib_blewbxx lib_blewbxx_impl
 SDK_SOURCE_PATH  += lib_ux
@@ -134,7 +154,8 @@ AFLAGS +=
 
 LD       := $(GCCPATH)arm-none-eabi-gcc
 LDFLAGS  += -O3 -Os
-LDLIBS   += -Lrust/target/thumbv6m-none-eabi/release -lrslib -lm -lgcc -lc
+LDLIBS   += -lm -lgcc -lc
+LDLIBS   += -Lrust/target/thumbv6m-none-eabi/release -lrslib
 
 ##########################
 include $(BOLOS_SDK)/Makefile.glyphs

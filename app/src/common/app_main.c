@@ -204,7 +204,10 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                     if (!process_chunk(tx, rx))
                         THROW(APDU_CODE_OK);
 
+                    CHECK_APP_CANARY()
+
                     const char *error_msg = tx_parse();
+                    CHECK_APP_CANARY()
 
                     if (error_msg != NULL) {
                         int error_msg_length = strlen(error_msg);
@@ -213,6 +216,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                         THROW(APDU_CODE_DATA_INVALID);
                     }
 
+                    CHECK_APP_CANARY()
                     view_sign_show();
                     *flags |= IO_ASYNCH_REPLY;
                     break;
@@ -295,15 +299,19 @@ void app_main() {
             {
                 rx = tx;
                 tx = 0;
+
                 rx = io_exchange(CHANNEL_APDU | flags, rx);
                 flags = 0;
+                CHECK_APP_CANARY()
 
                 if (rx == 0)
                     THROW(APDU_CODE_EMPTY_BUFFER);
 
                 handle_generic_apdu(&flags, &tx, rx);
+                CHECK_APP_CANARY()
 
                 handleApdu(&flags, &tx, rx);
+                CHECK_APP_CANARY()
             }
             CATCH_OTHER(e);
             {
