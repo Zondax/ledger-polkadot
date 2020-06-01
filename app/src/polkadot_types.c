@@ -599,22 +599,47 @@ parser_error_t _toStringAccountVoteSplit(
         uint16_t outValueLen,
         uint8_t pageIdx,
         uint8_t *pageCount) {
-       switch (pageIdx) {
-        case 0:
-            snprintf(outValue, outValueLen, "Split");
-            break;
-        case 1:
-            _toStringBalanceOf(&v->aye, outValue, outValueLen, 0, pageCount);
-            break;
-        case 2:
-            _toStringBalanceOf(&v->nay, outValue, outValueLen, 0, pageCount);
-            break;
-        default:
-            return parser_unexpected_value;
+
+    *pageCount = 0;
+    // First measure number of pages
+    uint8_t pages[3];
+
+    pages[0] = 1;
+    CHECK_ERROR(_toStringBalanceOf(&v->aye, outValue, outValueLen, 0, &pages[1]))
+    CHECK_ERROR(_toStringBalanceOf(&v->nay, outValue, outValueLen, 0, &pages[2]));
+
+    for (uint8_t i = 0; i < (uint8_t) sizeof(pages); i++) {
+        *pageCount += pages[i];
     }
 
-    *pageCount = 3;
-    return parser_ok;
+    if (pageIdx < pages[0]) {
+        snprintf(outValue, outValueLen, "Split");
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    /////////
+    /////////
+
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringBalanceOf(&v->aye, outValue, outValueLen, 0, &pages[1]));
+        return parser_ok;
+    }
+    pageIdx -= pages[1];
+
+    /////////
+    /////////
+
+    if (pageIdx < pages[2]) {
+        CHECK_ERROR(_toStringBalanceOf(&v->nay, outValue, outValueLen, 0, &pages[2]));
+        return parser_ok;
+    }
+    pageIdx -= pages[2];
+
+    /////////
+    /////////
+
+    return parser_display_idx_out_of_range;
 }
 
 parser_error_t _toStringAccountVoteStandard(
@@ -623,22 +648,51 @@ parser_error_t _toStringAccountVoteStandard(
         uint16_t outValueLen,
         uint8_t pageIdx,
         uint8_t *pageCount) {
-        switch (pageIdx) {
-        case 0:
-            snprintf(outValue, outValueLen, "Standard");
-            break;
-        case 1:
-            CHECK_ERROR(_toStringVote(&v->vote, outValue, outValueLen, 0, pageCount));
-            break;
-        case 2:
-            CHECK_ERROR(_toStringBalanceOf(&v->balance, outValue, outValueLen, 0, pageCount));
-            break;
-        default:
-            return parser_unexpected_value;
+
+    *pageCount = 0;
+    // First measure number of pages
+    uint8_t pages[3];
+
+    pages[0] = 1;
+    CHECK_ERROR(_toStringVote(&v->vote, outValue, outValueLen, 0, &pages[1]))
+    CHECK_ERROR(_toStringBalanceOf(&v->balance, outValue, outValueLen, 0, &pages[2]));
+
+    for (uint8_t i = 0; i < (uint8_t) sizeof(pages); i++) {
+        *pageCount += pages[i];
     }
 
-    *pageCount = 3;
-    return parser_ok;
+    if (pageIdx > *pageCount) {
+        return parser_display_idx_out_of_range;
+    }
+
+    if (pageIdx < pages[0]) {
+        snprintf(outValue, outValueLen, "Standard");
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    /////////
+    /////////
+
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringVote(&v->vote, outValue, outValueLen, 0, &pages[1]));
+        return parser_ok;
+    }
+    pageIdx -= pages[1];
+
+    /////////
+    /////////
+
+    if (pageIdx < pages[2]) {
+        CHECK_ERROR(_toStringBalanceOf(&v->balance, outValue, outValueLen, 0, &pages[2]));
+        return parser_ok;
+    }
+    pageIdx -= pages[2];
+
+    /////////
+    /////////
+
+    return parser_display_idx_out_of_range;
 }
 
 parser_error_t _toStringAccountVote(
