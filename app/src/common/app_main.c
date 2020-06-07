@@ -178,7 +178,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                     G_io_apdu_buffer[10] = (TARGET_ID >> 8) & 0xFF;
                     G_io_apdu_buffer[11] = (TARGET_ID >> 0) & 0xFF;
 
-                    *tx += 9;
+                    *tx += 12;
                     THROW(APDU_CODE_OK);
                     break;
                 }
