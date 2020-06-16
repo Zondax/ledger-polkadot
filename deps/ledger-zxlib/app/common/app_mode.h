@@ -1,4 +1,5 @@
 /*******************************************************************************
+*   (c) 2016 Ledger
 *   (c) 2018 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,19 @@
 *  limitations under the License.
 ********************************************************************************/
 #pragma once
+#include "zxmacros.h"
+#include "stdbool.h"
 
-#define ZXLIB_MAJOR     2
-#define ZXLIB_MINOR     3
-#define ZXLIB_PATCH     0
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void app_mode_reset();
+
+bool app_mode_expert();
+
+void app_mode_set_expert(uint8_t val);
+
+#ifdef __cplusplus
+}
+#endif

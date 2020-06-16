@@ -31,6 +31,11 @@ extern "C" {
 #define    Data_e_KECCAK256_U8_32   36
 #define    Data_e_SHATHREE256_U8_32 37
 
+typedef uint8_t pd_bool_t;
+typedef uint16_t pd_u16_t;
+typedef uint32_t pd_u32_t;
+typedef uint64_t pd_u64_t;
+
 typedef struct {
     uint8_t moduleIdx;
     uint8_t idx;
@@ -60,7 +65,7 @@ typedef struct {
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextern-c-compat"
-// NOTE: These are large types that cannot be reviewed in the device. 
+// NOTE: These are large types that cannot be reviewed in the device.
 // They will be marked as not supported
 typedef struct {} pd_AttestedCandidate_t;
 typedef struct {} pd_Header_t;
@@ -68,8 +73,7 @@ typedef struct {} pd_Heartbeat_t;
 #pragma clang diagnostic pop
 
 ////////////////////////
-////////////////////////
-////////////////////////
+// Types that require out of order declaration
 ////////////////////////
 
 typedef enum {
@@ -94,6 +98,19 @@ typedef struct {
 typedef struct {
     const uint8_t *_ptr;
 } pd_Hash_t;
+
+typedef struct {
+    const uint8_t *_ptr;
+} pd_BalanceOf_t;
+
+typedef struct {
+    uint8_t value;
+} pd_Conviction_t;
+
+typedef struct {
+    pd_bool_t aye;
+    pd_Conviction_t conviction;
+} pd_Vote_t;
 
 parser_error_t _readAddress(parser_context_t *c, pd_Address_t *v);
 
@@ -133,11 +150,6 @@ typedef struct {
 ////////////////////////
 ////////////////////////
 
-typedef uint8_t pd_bool_t;
-typedef uint16_t pd_u16_t;
-typedef uint32_t pd_u32_t;
-typedef uint64_t pd_u64_t;
-
 typedef compactInt_t pd_Compactu32_t;               // u32
 typedef compactInt_t pd_Compactu64_t;               // u64
 typedef pd_CompactBalance_t pd_CompactBalanceOf_t;
@@ -172,39 +184,28 @@ typedef compactInt_t pd_CompactRegistrarIndex_t;
 
 typedef compactInt_t pd_CompactSubId_t;
 
+typedef compactInt_t pd_CompactWeight_t;
 
-typedef struct { 
+
+typedef struct {
     const uint8_t *_ptr;
 } pd_AccountId_t;
 
-typedef struct { 
+typedef struct {
     uint32_t value;
 } pd_AccountIndex_t;
 
 typedef struct {
-    const uint8_t *_ptr;
-} pd_BalanceOf_t;
-
-typedef struct { 
     pd_BalanceOf_t aye;
     pd_BalanceOf_t nay;
 } pd_AccountVoteSplit_t;
 
 typedef struct {
-    uint8_t value;
-} pd_Conviction_t;
-
-typedef struct {
-    pd_bool_t aye;
-    pd_Conviction_t conviction;
-} pd_Vote_t;
-
-typedef struct { 
     pd_Vote_t vote;
     pd_BalanceOf_t balance;
 } pd_AccountVoteStandard_t;
 
-typedef struct { 
+typedef struct {
     uint8_t value;
      union {
         pd_AccountVoteStandard_t voteStandard;
@@ -212,59 +213,79 @@ typedef struct {
     };
 } pd_AccountVote_t;
 
-typedef struct { 
+typedef struct {
     uint64_t _len;
     const uint8_t *_ptr;
 } pd_Bytes_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Call_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ChangesTrieConfiguration_t;
 
-typedef struct { 
+typedef struct {
     pd_Hash_t value;
 } pd_CollatorId_t;
 
-typedef struct { 
+typedef struct {
     uint8_t type;
     const uint8_t *_ptr;
     uint8_t _len;
 } pd_Data_t;
 
-typedef struct { 
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_DefunctVoter_t;
+
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_DoubleVoteReport_t;
 
-typedef struct { 
+typedef struct {
     const uint8_t *_ptr;
 } pd_EcdsaSignature_t;
 
-typedef struct { 
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_ElectionScore_t;
+
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_ElectionSize_t;
+
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_EquivocationProof_t;
+
+typedef struct {
     uint32_t value;
 } pd_EraIndex_t;
 
-typedef struct { 
+typedef struct {
     const uint8_t *_ptr;
 } pd_EthereumAddress_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_HeadData_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_IdentityFields_t;
 
-typedef struct { 
+typedef struct {
     // https://github.com/paritytech/substrate/blob/effe489951d1edab9d34846b1eefdfaf9511dab9/frame/identity/src/lib.rs#L276
     pd_VecTupleDataData_t additional;
     pd_Data_t display;
@@ -277,107 +298,131 @@ typedef struct {
     pd_Data_t twitter;
 } pd_IdentityInfo_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_IdentityJudgement_t;
 
-typedef struct { 
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_KeyOwnerProof_t;
+
+typedef struct {
     const uint8_t *_ptr;
 } pd_Key_t;
 
-typedef struct { 
+typedef struct {
   	const uint8_t *_ptr;
 } pd_LookupSource_t;
 
-typedef struct { 
+typedef struct {
+    uint32_t value;
+} pd_MemberCount_t;
+
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_MoreAttestations_t;
 
-typedef struct { 
+typedef struct {
     uint8_t scheduling;     //pd_ParaScheduling_t
     // 0 - Always
     // 1 - Dynamic
 } pd_ParaInfo_t;
 
-typedef struct { 
+typedef struct {
     uint32_t value;
 } pd_Perbill_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_PhragmenScore_t;
+} pd_Period_t;
 
-typedef struct { 
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_Priority_t;
+
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_ProxyType_t;
+
+typedef struct {
     uint32_t value;
 } pd_ReferendumIndex_t;
 
-typedef struct { 
+typedef struct {
     uint32_t value;
 } pd_RegistrarIndex_t;
 
-typedef struct { 
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_Renouncing_t;
+
+typedef struct {
     uint8_t value;
 } pd_RewardDestination_t;
 
-typedef struct { 
+typedef struct {
     const uint8_t *_ptr;
 } pd_Signature_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_SocietyJudgement_t;
 
-typedef struct { 
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_StatementKind_t;
+
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Timepoint_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_TupleAccountIdData_t;
 
-typedef struct { 
-  	pd_AccountId_t accountId;
-    pd_u32_t num;
-} pd_TupleAccountIdu32_t;
-
-typedef struct { 
+typedef struct {
     pd_BalanceOf_t balance1;
     pd_BalanceOf_t balance2;
     pd_BlockNumber_t blockNumber;
 } pd_TupleBalanceOfBalanceOfBlockNumber_t;
 
-typedef struct { 
+typedef struct {
     pd_Data_t data1;
     pd_Data_t data2;
 } pd_TupleDataData_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ValidationCode_t;
 
-typedef struct { 
+typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ValidatorIndex_t;
 
-typedef struct { 
+typedef struct {
     pd_CompactBalance_t balance;
 } pd_ValidatorPrefs_t;
 
-typedef struct { 
+typedef struct {
     pd_BalanceOf_t locked;
     pd_BalanceOf_t per_block;
     pd_BlockNumber_t starting_block;
 } pd_VestingInfo_t;
 
-typedef struct { 
+typedef struct {
     const uint8_t *_ptr;
 } pd_u8_array_32_t;
 
@@ -433,12 +478,6 @@ typedef struct {
     uint64_t _len;
     const uint8_t *_ptr;
     uint64_t _lenBuffer;
-} pd_VecTupleAccountIdu32_t;
-
-typedef struct {
-    uint64_t _len;
-    const uint8_t *_ptr;
-    uint64_t _lenBuffer;
 } pd_VecValidatorIndex_t;
 
 typedef struct {
@@ -456,6 +495,21 @@ typedef struct {
     uint8_t some;
     pd_ChangesTrieConfiguration_t contained;
 } pd_OptionChangesTrieConfiguration_t;
+
+typedef struct {
+    uint8_t some;
+    pd_Period_t contained;
+} pd_OptionPeriod_t;
+
+typedef struct {
+    uint8_t some;
+    pd_ProxyType_t contained;
+} pd_OptionProxyType_t;
+
+typedef struct {
+    uint8_t some;
+    pd_StatementKind_t contained;
+} pd_OptionStatementKind_t;
 
 typedef struct {
     uint8_t some;
@@ -500,11 +554,16 @@ parser_error_t _readCompactProposalIndex(parser_context_t *c, pd_CompactProposal
 parser_error_t _readCompactReferendumIndex(parser_context_t *c, pd_CompactReferendumIndex_t *v);
 parser_error_t _readCompactRegistrarIndex(parser_context_t *c, pd_CompactRegistrarIndex_t *v);
 parser_error_t _readCompactSubId(parser_context_t *c, pd_CompactSubId_t *v);
+parser_error_t _readCompactWeight(parser_context_t *c, pd_CompactWeight_t *v);
 parser_error_t _readCompactu32(parser_context_t *c, pd_Compactu32_t *v);
 parser_error_t _readConviction(parser_context_t *c, pd_Conviction_t *v);
 parser_error_t _readData(parser_context_t *c, pd_Data_t *v);
+parser_error_t _readDefunctVoter(parser_context_t *c, pd_DefunctVoter_t *v);
 parser_error_t _readDoubleVoteReport(parser_context_t *c, pd_DoubleVoteReport_t *v);
 parser_error_t _readEcdsaSignature(parser_context_t *c, pd_EcdsaSignature_t *v);
+parser_error_t _readElectionScore(parser_context_t *c, pd_ElectionScore_t *v);
+parser_error_t _readElectionSize(parser_context_t *c, pd_ElectionSize_t *v);
+parser_error_t _readEquivocationProof(parser_context_t *c, pd_EquivocationProof_t *v);
 parser_error_t _readEraIndex(parser_context_t *c, pd_EraIndex_t *v);
 parser_error_t _readEthereumAddress(parser_context_t *c, pd_EthereumAddress_t *v);
 parser_error_t _readHeadData(parser_context_t *c, pd_HeadData_t *v);
@@ -513,27 +572,35 @@ parser_error_t _readHeartbeat(parser_context_t *c, pd_Heartbeat_t *v);
 parser_error_t _readIdentityFields(parser_context_t *c, pd_IdentityFields_t *v);
 parser_error_t _readIdentityInfo(parser_context_t *c, pd_IdentityInfo_t *v);
 parser_error_t _readIdentityJudgement(parser_context_t *c, pd_IdentityJudgement_t *v);
+parser_error_t _readKeyOwnerProof(parser_context_t *c, pd_KeyOwnerProof_t *v);
 parser_error_t _readKeyValue(parser_context_t *c, pd_KeyValue_t *v);
 parser_error_t _readKey(parser_context_t *c, pd_Key_t *v);
 parser_error_t _readKeys(parser_context_t *c, pd_Keys_t *v);
 parser_error_t _readLookupSource(parser_context_t *c, pd_LookupSource_t *v);
+parser_error_t _readMemberCount(parser_context_t *c, pd_MemberCount_t *v);
 parser_error_t _readMoreAttestations(parser_context_t *c, pd_MoreAttestations_t *v);
 parser_error_t _readOptionAccountId(parser_context_t *c, pd_OptionAccountId_t *v);
 parser_error_t _readOptionChangesTrieConfiguration(parser_context_t *c, pd_OptionChangesTrieConfiguration_t *v);
+parser_error_t _readOptionPeriod(parser_context_t *c, pd_OptionPeriod_t *v);
+parser_error_t _readOptionProxyType(parser_context_t *c, pd_OptionProxyType_t *v);
+parser_error_t _readOptionStatementKind(parser_context_t *c, pd_OptionStatementKind_t *v);
 parser_error_t _readOptionTimepoint(parser_context_t *c, pd_OptionTimepoint_t *v);
 parser_error_t _readOptionTupleBalanceOfBalanceOfBlockNumber(parser_context_t *c, pd_OptionTupleBalanceOfBalanceOfBlockNumber_t *v);
 parser_error_t _readOptionu8_array_20(parser_context_t *c, pd_Optionu8_array_20_t *v);
 parser_error_t _readParaInfo(parser_context_t *c, pd_ParaInfo_t *v);
 parser_error_t _readPerbill(parser_context_t *c, pd_Perbill_t *v);
-parser_error_t _readPhragmenScore(parser_context_t *c, pd_PhragmenScore_t *v);
+parser_error_t _readPeriod(parser_context_t *c, pd_Period_t *v);
+parser_error_t _readPriority(parser_context_t *c, pd_Priority_t *v);
+parser_error_t _readProxyType(parser_context_t *c, pd_ProxyType_t *v);
 parser_error_t _readReferendumIndex(parser_context_t *c, pd_ReferendumIndex_t *v);
 parser_error_t _readRegistrarIndex(parser_context_t *c, pd_RegistrarIndex_t *v);
+parser_error_t _readRenouncing(parser_context_t *c, pd_Renouncing_t *v);
 parser_error_t _readRewardDestination(parser_context_t *c, pd_RewardDestination_t *v);
 parser_error_t _readSignature(parser_context_t *c, pd_Signature_t *v);
 parser_error_t _readSocietyJudgement(parser_context_t *c, pd_SocietyJudgement_t *v);
+parser_error_t _readStatementKind(parser_context_t *c, pd_StatementKind_t *v);
 parser_error_t _readTimepoint(parser_context_t *c, pd_Timepoint_t *v);
 parser_error_t _readTupleAccountIdData(parser_context_t *c, pd_TupleAccountIdData_t *v);
-parser_error_t _readTupleAccountIdu32(parser_context_t *c, pd_TupleAccountIdu32_t *v);
 parser_error_t _readTupleBalanceOfBalanceOfBlockNumber(parser_context_t *c, pd_TupleBalanceOfBalanceOfBlockNumber_t *v);
 parser_error_t _readTupleDataData(parser_context_t *c, pd_TupleDataData_t *v);
 parser_error_t _readValidationCode(parser_context_t *c, pd_ValidationCode_t *v);
@@ -547,7 +614,6 @@ parser_error_t _readVecKeyValue(parser_context_t *c, pd_VecKeyValue_t *v);
 parser_error_t _readVecKey(parser_context_t *c, pd_VecKey_t *v);
 parser_error_t _readVecLookupSource(parser_context_t *c, pd_VecLookupSource_t *v);
 parser_error_t _readVecTupleAccountIdData(parser_context_t *c, pd_VecTupleAccountIdData_t *v);
-parser_error_t _readVecTupleAccountIdu32(parser_context_t *c, pd_VecTupleAccountIdu32_t *v);
 parser_error_t _readVecTupleDataData(parser_context_t *c, pd_VecTupleDataData_t *v);
 parser_error_t _readVecValidatorIndex(parser_context_t *c, pd_VecValidatorIndex_t *v);
 parser_error_t _readVecu32(parser_context_t *c, pd_Vecu32_t *v);
@@ -744,6 +810,13 @@ parser_error_t _toStringCompactSubId(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringCompactWeight(
+    const pd_CompactWeight_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringCompactu32(
     const pd_Compactu32_t *v,
     char *outValue,
@@ -765,6 +838,13 @@ parser_error_t _toStringData(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringDefunctVoter(
+    const pd_DefunctVoter_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringDoubleVoteReport(
     const pd_DoubleVoteReport_t *v,
     char *outValue,
@@ -774,6 +854,27 @@ parser_error_t _toStringDoubleVoteReport(
 
 parser_error_t _toStringEcdsaSignature(
     const pd_EcdsaSignature_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringElectionScore(
+    const pd_ElectionScore_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringElectionSize(
+    const pd_ElectionSize_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringEquivocationProof(
+    const pd_EquivocationProof_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -835,6 +936,13 @@ parser_error_t _toStringIdentityJudgement(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringKeyOwnerProof(
+    const pd_KeyOwnerProof_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringKeyValue(
     const pd_KeyValue_t *v,
     char *outValue,
@@ -863,6 +971,13 @@ parser_error_t _toStringLookupSource(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringMemberCount(
+    const pd_MemberCount_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringMoreAttestations(
     const pd_MoreAttestations_t *v,
     char *outValue,
@@ -879,6 +994,27 @@ parser_error_t _toStringOptionAccountId(
 
 parser_error_t _toStringOptionChangesTrieConfiguration(
     const pd_OptionChangesTrieConfiguration_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringOptionPeriod(
+    const pd_OptionPeriod_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringOptionProxyType(
+    const pd_OptionProxyType_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringOptionStatementKind(
+    const pd_OptionStatementKind_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -919,8 +1055,22 @@ parser_error_t _toStringPerbill(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
-parser_error_t _toStringPhragmenScore(
-    const pd_PhragmenScore_t *v,
+parser_error_t _toStringPeriod(
+    const pd_Period_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringPriority(
+    const pd_Priority_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringProxyType(
+    const pd_ProxyType_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -935,6 +1085,13 @@ parser_error_t _toStringReferendumIndex(
 
 parser_error_t _toStringRegistrarIndex(
     const pd_RegistrarIndex_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringRenouncing(
+    const pd_Renouncing_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -961,6 +1118,13 @@ parser_error_t _toStringSocietyJudgement(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringStatementKind(
+    const pd_StatementKind_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringTimepoint(
     const pd_Timepoint_t *v,
     char *outValue,
@@ -970,13 +1134,6 @@ parser_error_t _toStringTimepoint(
 
 parser_error_t _toStringTupleAccountIdData(
     const pd_TupleAccountIdData_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringTupleAccountIdu32(
-    const pd_TupleAccountIdu32_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -1068,13 +1225,6 @@ parser_error_t _toStringVecLookupSource(
 
 parser_error_t _toStringVecTupleAccountIdData(
     const pd_VecTupleAccountIdData_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringVecTupleAccountIdu32(
-    const pd_VecTupleAccountIdu32_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

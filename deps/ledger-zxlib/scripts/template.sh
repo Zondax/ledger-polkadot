@@ -31,7 +31,7 @@ python3 -m ledgerblue.loadApp -h &>/dev/null;
 if [ $? -ne 0 ]; then
     echo
     echo "ERR: ledgerblue pip package not found."
-    echo "please install using 'pip3 install ledgerblue'"
+    echo "please install using 'pip install ledgerblue'"
     echo
     exit
 fi

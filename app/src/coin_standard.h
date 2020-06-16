@@ -41,17 +41,21 @@ typedef enum {
 #define VIEW_ADDRESS_ITEM_COUNT             2
 #define VIEW_ADDRESS_LAST_PAGE_DEFAULT      0
 
-#define MENU_MAIN_APP_LINE1 "Kusama"
-#define MENU_MAIN_APP_LINE2 "Web3"
-#define APPVERSION_LINE1 "Kusama"
-#define APPVERSION_LINE2 "v"APPVERSION
+#define MENU_MAIN_APP_LINE1                 "Kusama"
+#define MENU_MAIN_APP_LINE2                 "Ready"
+#define APPVERSION_LINE1                    "Kusama"
+#define APPVERSION_LINE2                    "v" APPVERSION
 
 // Specific to Kusama
-#define PK_ADDRESS_TYPE     02
-#define SUPPORTED_SPEC_VERSION LEDGER_MINOR_VERSION
+#define PK_ADDRESS_TYPE                     02
+#define SUPPORTED_TX_VERSION                LEDGER_MAJOR_VERSION
+#define SUPPORTED_SPEC_VERSION              LEDGER_MINOR_VERSION
+#define SUPPORTED_MINIMUM_SPEC_VERSION      1000
 
-#define COIN_AMOUNT_DECIMAL_PLACES      12
-#define CRYPTO_BLOB_SKIP_BYTES          0
+#define COIN_AMOUNT_DECIMAL_PLACES          12
+#define CRYPTO_BLOB_SKIP_BYTES              0
+
+#define COIN_KUSAMA_CC3_GENESIS_HASH        "B0A8D493285C2DF73290DFB7E61F870F17B41801197A149CA93654499EA3DAFE"
 
 #ifdef __cplusplus
 }

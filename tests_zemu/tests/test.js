@@ -135,7 +135,7 @@ describe('Basic checks', function () {
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "04002756865871cd8e8c2e27b5c5254a8ab6933a5c3081bdcbdc78751fb9c8af12f200d503008ed73e0d26040000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
+            let txBlobStr = "0400f68ad810c8070fdacded5e85661439ab61010c2da28b645797d45d22a2af837800d503008ed73e0dd807000001000000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -149,7 +149,7 @@ describe('Basic checks', function () {
 
             // Reference window
             await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < 11; i++) {
                 await sim.clickRight(Resolve(`${snapshotPrefixTmp}${snapshotCount++}.png`));
             }
             await sim.clickBoth();
@@ -177,57 +177,4 @@ describe('Basic checks', function () {
         }
     });
 
-    test('sign basic issue', async function () {
-        const snapshotPrefixGolden = "snapshots/sign-basic-issue/";
-        const snapshotPrefixTmp = "snapshots-tmp/sign-basic-issue/";
-        let snapshotCount = 0;
-
-        const sim = new Zemu(APP_PATH);
-        try {
-            await sim.start(sim_options);
-            const app = new LedgerApp(sim.getTransport());
-            const pathAccount = 0x80000000;
-            const pathChange = 0x80000000;
-            const pathIndex = 0x80000000;
-
-            let txBlobStr = "04002756865871cd8e8c2e27b5c5254a8ab6933a5c3081bdcbdc78751fb9c8af12f200d503008ed73e0d26040000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
-
-            const txBlob = Buffer.from(txBlobStr, "hex");
-
-            const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex);
-            const pubKey = Buffer.from(responseAddr.pubKey, "hex");
-
-            // do not wait here.. we need to navigate
-            const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob);
-
-            await Zemu.sleep(2000);
-
-            // Reference window
-            await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
-            for (let i = 0; i < 12; i++) {
-                await sim.clickRight(Resolve(`${snapshotPrefixTmp}${snapshotCount++}.png`));
-            }
-            await sim.clickBoth();
-
-            let signatureResponse = await signatureRequest;
-            console.log(signatureResponse);
-
-            compareSnapshots(snapshotPrefixTmp, snapshotPrefixGolden, snapshotCount);
-
-            expect(signatureResponse.return_code).toEqual(0x9000);
-            expect(signatureResponse.error_message).toEqual("No errors");
-
-            // Now verify the signature
-            let prehash = txBlob;
-            if (txBlob.length > 256) {
-                const context = blake2bInit(64, null);
-                blake2bUpdate(context, txBlob);
-                prehash = Buffer.from(blake2bFinal(context));
-            }
-            const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
-           expect(valid).toEqual(true);
-        } finally {
-            await sim.close();
-        }
-    });
 });

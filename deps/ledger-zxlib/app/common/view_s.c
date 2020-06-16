@@ -15,6 +15,7 @@
 *  limitations under the License.
 ********************************************************************************/
 
+#include "app_mode.h"
 #include "view.h"
 #include "view_internal.h"
 #include "actions.h"
@@ -30,6 +31,8 @@
 
 #if defined(TARGET_NANOS)
 
+void h_expert_toggle();
+void h_expert_update();
 void h_review_button_left();
 void h_review_button_right();
 void view_review_show();
@@ -43,9 +46,10 @@ void os_exit(uint32_t id) {
 
 const ux_menu_entry_t menu_main[] = {
     {NULL, NULL, 0, &C_icon_app, MENU_MAIN_APP_LINE1, MENU_MAIN_APP_LINE2, 33, 12},
+    {NULL, h_expert_toggle, 0, &C_icon_app, "Expert mode:", viewdata.value, 33, 12},
     {NULL, NULL, 0, &C_icon_app, APPVERSION_LINE1, APPVERSION_LINE2, 33, 12},
-    {NULL, NULL, 0, &C_icon_app, "Developed by", "Zondax.ch", 33, 12},
-    {NULL, NULL, 0, &C_icon_app, "under Apache", "License 2.0", 33, 12},
+    {NULL, NULL, 0, &C_icon_app, "Developed by:", "Zondax.ch", 33, 12},
+    {NULL, NULL, 0, &C_icon_app, "License: ", "Apache 2.0", 33, 12},
     {NULL, os_exit, 0, &C_icon_dashboard, "Quit", NULL, 50, 29},
     UX_MENU_END
 };
@@ -72,19 +76,23 @@ UX_STEP_NOCB_INIT(ux_addr_flow_2_step, paging,
 UX_STEP_VALID(ux_addr_flow_3_step, pb, h_address_accept(0), { &C_icon_validate_14, "Ok"});
 
 UX_FLOW(
-    ux_addr_flow,
+    ux_addr_flow_no_path,
+    &ux_addr_flow_1_step,
+    &ux_addr_flow_3_step
+);
+
+UX_FLOW(
+    ux_addr_flow_with_path,
     &ux_addr_flow_1_step,
     &ux_addr_flow_2_step,
     &ux_addr_flow_3_step
 );
-
 #endif
 
 void h_review(unsigned int _) { UNUSED(_); view_sign_show_impl(); }
 
 const ux_menu_entry_t menu_sign[] = {
-    {NULL, h_review, 0, NULL, "View transaction", NULL, 0, 0},
-    {NULL, h_sign_accept, 0, NULL, "Sign transaction", NULL, 0, 0},
+    {NULL, h_sign_accept, 0, NULL, "Approve", NULL, 0, 0},
     {NULL, h_sign_reject, 0, NULL, "Reject", NULL, 0, 0},
     UX_MENU_END
 };
@@ -160,7 +168,15 @@ static unsigned int view_review_button(unsigned int button_mask, unsigned int bu
 const bagl_element_t *view_prepro(const bagl_element_t *element) {
     switch (element->component.userid) {
         case UIID_ICONLEFT:
+            if (!h_paging_can_decrease()){
+                return NULL;
+            }
+            UX_CALLBACK_SET_INTERVAL(2000);
+            break;
         case UIID_ICONRIGHT:
+            if (!h_paging_can_increase()){
+                return NULL;
+            }
             UX_CALLBACK_SET_INTERVAL(2000);
             break;
         case UIID_LABELSCROLL:
@@ -228,8 +244,9 @@ void splitValueField() {
 //////////////////////////
 //////////////////////////
 
-void view_idle_show_impl() {
-    UX_MENU_DISPLAY(0, menu_main, NULL);
+void view_idle_show_impl(uint8_t item_idx) {
+    h_expert_update();
+    UX_MENU_DISPLAY(item_idx, menu_main, NULL);
 }
 
 void view_address_show_impl() {
@@ -251,7 +268,12 @@ void view_address_show_impl() {
     if(G_ux.stack_count == 0) {
         ux_stack_push();
     }
-    ux_flow_init(0, ux_addr_flow, NULL);
+
+    if (app_mode_expert()) {
+        ux_flow_init(0, ux_addr_flow_with_path, NULL);
+    } else {
+        ux_flow_init(0, ux_addr_flow_no_path, NULL);
+    }
 #endif
 }
 
@@ -283,6 +305,18 @@ void view_sign_show_s(void){
 
 void view_review_show() {
     UX_DISPLAY(view_review, view_prepro);
+}
+
+void h_expert_toggle() {
+    app_mode_set_expert(!app_mode_expert());
+    view_idle_show(1);
+}
+
+void h_expert_update() {
+    strcpy(viewdata.value, "disabled");
+    if (app_mode_expert()) {
+        strcpy(viewdata.value, "enabled");
+    }
 }
 
 #if !defined(HAVE_UX_FLOW)

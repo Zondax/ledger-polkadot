@@ -30,26 +30,22 @@ parser_error_t parser_init_context(parser_context_t *ctx,
                                    const uint8_t *buffer,
                                    uint16_t bufferSize) {
     ctx->offset = 0;
+    ctx->buffer = NULL;
+    ctx->bufferLen = 0;
 
     if (bufferSize == 0 || buffer == NULL) {
         // Not available, use defaults
-        ctx->buffer = NULL;
-        ctx->bufferLen = 0;
         return parser_init_context_empty;
     }
 
     ctx->buffer = buffer;
     ctx->bufferLen = bufferSize;
-
     return parser_ok;
 }
 
 parser_error_t parser_init(parser_context_t *ctx, const uint8_t *buffer, uint16_t bufferSize) {
-    parser_error_t err = parser_init_context(ctx, buffer, bufferSize);
-    if (err != parser_ok)
-        return err;
-
-    return err;
+    CHECK_PARSER_ERR(parser_init_context(ctx, buffer, bufferSize))
+    return parser_ok;
 }
 
 const char *parser_getErrorDescription(parser_error_t err) {
@@ -102,14 +98,15 @@ GEN_DEF_READFIX_UNSIGNED(64)
 parser_error_t _readBool(parser_context_t *c, pd_bool_t *v) {
     CHECK_INPUT();
 
-    switch (*(c->buffer + c->offset)) {
+    const uint8_t p = *(c->buffer + c->offset);
+    CTX_CHECK_AND_ADVANCE(c, 1)
+
+    switch (p) {
         case 0x00:
             *v = bool_false;
-            c->offset++;
             break;
         case 0x01:
             *v = bool_true;
-            c->offset++;
             break;
         default:
             return parser_unexpected_value;
@@ -120,44 +117,38 @@ parser_error_t _readBool(parser_context_t *c, pd_bool_t *v) {
 parser_error_t _readCompactInt(parser_context_t *c, compactInt_t *v) {
     CHECK_INPUT();
 
-    // get mode from two least significant bits
     v->ptr = c->buffer + c->offset;
-    const uint8_t mode = *v->ptr & 0x03u;
-    uint64_t tmp;
+    const uint8_t mode = *v->ptr & 0x03u;      // get mode from two least significant bits
 
+    uint64_t tmp;
     switch (mode) {
         case 0:         // single byte
             v->len = 1;
-            c->offset += v->len;
+            CTX_CHECK_AND_ADVANCE(c, v->len)
             break;
         case 1:         // 2-byte
             v->len = 2;
-            c->offset += v->len;
+            CTX_CHECK_AND_ADVANCE(c, v->len)
             _getValue(v, &tmp);
             break;
         case 2:         // 4-byte
             v->len = 4;
-            c->offset += v->len;
+            CTX_CHECK_AND_ADVANCE(c, v->len)
             _getValue(v, &tmp);
             break;
         case 3:         // bitint
             v->len = (*v->ptr >> 2u) + 4 + 1;
-            c->offset += v->len;
+            CTX_CHECK_AND_ADVANCE(c, v->len)
             break;
         default:
             // this is actually impossible
             return parser_unexpected_value;
     }
 
-    if (c->bufferLen < c->offset) {
-        return parser_unexpected_buffer_end;
-    }
-
     return parser_ok;
 }
 
 parser_error_t _getValue(const compactInt_t *c, uint64_t *v) {
-    if (v == NULL) { return parser_no_data; }
     *v = 0;
 
     switch (c->len) {
@@ -192,9 +183,8 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
                                    char *outValue, uint16_t outValueLen,
                                    uint8_t pageIdx, uint8_t *pageCount) {
     MEMZERO(outValue, outValueLen);
-    *pageCount = 1;
-
     MEMZERO(bufferUI, sizeof(bufferUI));
+    *pageCount = 1;
 
     if (c->len <= 4) {
         uint64_t v;
@@ -324,26 +314,38 @@ parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 
-parser_error_t _checkSpecVersion(parser_context_t *c) {
+parser_error_t _checkVersions(parser_context_t *c) {
     // Methods are not length delimited so in order to retrieve the specVersion
     // it is necessary to parse from the back.
     // The transaction is expect to end in
     // [4 bytes] specVersion
+    // [4 bytes] transactionVersion
     // [32 bytes] genesisHash
     // [32 bytes] blockHash
-    const uint16_t specOffsetFromBack = 4 + 32 + 32;
+    const uint16_t specOffsetFromBack = 4 + 4 + 32 + 32;
     if (c->bufferLen < specOffsetFromBack) {
         return parser_unexpected_buffer_end;
     }
 
     uint8_t *p = (uint8_t *) (c->buffer + c->bufferLen - specOffsetFromBack);
-    uint32_t tmp = 0;
-    tmp += p[0] << 0u;
-    tmp += p[1] << 8u;
-    tmp += p[2] << 16u;
-    tmp += p[3] << 24u;
+    uint32_t specVersion = 0;
+    specVersion += p[0] << 0u;
+    specVersion += p[1] << 8u;
+    specVersion += p[2] << 16u;
+    specVersion += p[3] << 24u;
 
-    if (tmp != (SUPPORTED_SPEC_VERSION)) {
+    p += 4;
+    uint32_t transactionVersion = 0;
+    transactionVersion += p[0] << 0u;
+    transactionVersion += p[1] << 8u;
+    transactionVersion += p[2] << 16u;
+    transactionVersion += p[3] << 24u;
+
+    if (specVersion < SUPPORTED_MINIMUM_SPEC_VERSION) {
+        return parser_spec_not_supported;
+    }
+
+    if (transactionVersion != (SUPPORTED_TX_VERSION)) {
         return parser_spec_not_supported;
     }
 
@@ -354,7 +356,7 @@ parser_error_t _readTx(parser_context_t *c, parser_tx_t *v) {
     CHECK_INPUT();
 
     // Reverse parse to retrieve spec before forward parsing
-    CHECK_ERROR(_checkSpecVersion(c));
+    CHECK_ERROR(_checkVersions(c));
 
     // Now forward parse
     CHECK_ERROR(_readCallIndex(c, &v->callIndex));
@@ -363,6 +365,7 @@ parser_error_t _readTx(parser_context_t *c, parser_tx_t *v) {
     CHECK_ERROR(_readCompactIndex(c, &v->nonce));
     CHECK_ERROR(_readCompactBalance(c, &v->tip));
     CHECK_ERROR(_readUInt32(c, &v->specVersion));
+    CHECK_ERROR(_readUInt32(c, &v->transactionVersion));
     CHECK_ERROR(_readHash(c, &v->genesisHash));
     CHECK_ERROR(_readHash(c, &v->blockHash));
 
@@ -395,8 +398,8 @@ parser_error_t _readAddress(parser_context_t *c, pd_Address_t *v) {
     switch (tmp) {
         case 0xFF: {
             v->type = eAddressId;
-            v->idPtr = (c->buffer + c->offset);
-            c->offset += 32;
+            v->idPtr = c->buffer + c->offset;
+            CTX_CHECK_AND_ADVANCE(c, 32);
             break;
         }
         case 0xFE: {
@@ -457,7 +460,7 @@ uint8_t _detectAddressType() {
 
         // Compare with known genesis hashes
         // KUSAMA
-        if (strcmp(hashstr, "B0A8D493285C2DF73290DFB7E61F870F17B41801197A149CA93654499EA3DAFE") == 0) {
+        if (strcmp(hashstr, COIN_KUSAMA_CC3_GENESIS_HASH) == 0) {
             return 2;
         }
     }
@@ -469,7 +472,11 @@ parser_error_t _toStringPubkeyAsAddress(const uint8_t *pubkey,
                                         char *outValue, uint16_t outValueLen,
                                         uint8_t pageIdx, uint8_t *pageCount) {
     uint8_t addressType = _detectAddressType();
-    crypto_SS58EncodePubkey((uint8_t *) bufferUI, sizeof(bufferUI), addressType, pubkey);
+
+    if (crypto_SS58EncodePubkey((uint8_t *) bufferUI, sizeof(bufferUI), addressType, pubkey) == 0) {
+        return parser_no_data;
+    }
+
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     if (pageIdx >= *pageCount) {
         return parser_no_data;
@@ -481,8 +488,9 @@ parser_error_t _toStringAddress(const pd_Address_t *v,
                                 char *outValue, uint16_t outValueLen,
                                 uint8_t pageIdx, uint8_t *pageCount) {
     MEMZERO(outValue, outValueLen);
-    if (v == NULL)
+    if (v == NULL) {
         return parser_ok;
+    }
 
     *pageCount = 1;
     switch (v->type) {

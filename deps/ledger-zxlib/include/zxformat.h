@@ -217,7 +217,7 @@ __Z_INLINE uint32_t array_to_hexstr(char *dst, uint16_t dstLen, const uint8_t *s
         return 0;
     }
 
-    const char hexchars[] = "0123456789ABCDEF";
+    const char hexchars[] = "0123456789abcdef";
     for (uint8_t i = 0; i < count; i++, src++) {
         *dst++ = hexchars[*src >> 4u];
         *dst++ = hexchars[*src & 0x0Fu];

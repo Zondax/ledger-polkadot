@@ -53,6 +53,16 @@ void handle_stack_overflow();
 
 #if defined (TARGET_NANOS) || defined(TARGET_NANOX)
 
+__Z_INLINE void debug_log(char *buf)
+{
+    asm volatile (
+    "movs r0, #0x04\n"
+    "movs r1, %0\n"
+    "svc      0xab\n"
+    :: "r"(buf) : "r0", "r1"
+    );
+}
+
 #include "bolos_target.h"
 #include "os.h"
 #include "cx.h"

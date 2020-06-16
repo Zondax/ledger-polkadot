@@ -33,7 +33,7 @@ TEST(CRYPTO, fillAddress) {
 //    Public key (hex): 0x7419797202bb88ddc319a5eaebb3dcd8115352eabee7b5dbc2f402da7c8efea7
 //    Address (SS58): 5EgvykVVtK94Rbr2A29tscrbYqA6PH21p9CCR5jNZn3Jhd9D
 
-    crypto_testPubKey = "7419797202BB88DDC319A5EAEBB3DCD8115352EABEE7B5DBC2F402DA7C8EFEA7";
+    crypto_testPubKey = "7419797202bb88ddc319a5eaebb3dcd8115352eabee7b5dbc2f402da7c8efea7";
 
     uint16_t addrLen = crypto_fillAddress(buffer, 100);
 
@@ -46,7 +46,7 @@ TEST(CRYPTO, fillAddress) {
     char *addr = (char *) (buffer + 32);
 
     EXPECT_THAT(std::string(pk),
-        ::testing::Eq("7419797202BB88DDC319A5EAEBB3DCD8115352EABEE7B5DBC2F402DA7C8EFEA7"));
+        ::testing::Eq(crypto_testPubKey));
 
     EXPECT_THAT(std::string(addr),
                 ::testing::Eq("FCYe4qNWg9zBFfTvixwmaDbhRSLBwqCGX2wok1L3aFoSaJ5"));
@@ -72,7 +72,7 @@ TEST(CRYPTO, fillAddressTestMnemonic) {
     char *addr = (char *) (buffer + 32);
 
     EXPECT_THAT(std::string(pk),
-                ::testing::Eq("8D16D62802CA55326EC52BF76A8543B90E2ABA5BCF6CD195C0D6FC1EF38FA1B3"));
+                ::testing::Eq("8d16d62802ca55326ec52bf76a8543b90e2aba5bcf6cd195c0d6fc1ef38fa1b3"));
 
     EXPECT_THAT(std::string(addr),
                 ::testing::Eq("FmK43tjzFGT9F68Sj9EvW6rwBQUAVuA9wNQaYxGLvfcCAxS"));

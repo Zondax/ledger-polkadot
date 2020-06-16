@@ -83,7 +83,7 @@ void splitValueField();
 ///////////////////////////////////////////////
 ///////////////////////////////////////////////
 
-void view_idle_show_impl();
+void view_idle_show_impl(uint8_t item_idx);
 
 void view_address_show_impl();
 
@@ -101,7 +101,11 @@ void h_sign_reject(unsigned int _);
 
 void h_paging_init();
 
+uint8_t h_paging_can_increase();
+
 void h_paging_increase();
+
+uint8_t h_paging_can_decrease();
 
 void h_paging_decrease();
 

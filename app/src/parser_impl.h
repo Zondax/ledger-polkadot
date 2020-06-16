@@ -51,16 +51,25 @@ GEN_DEC_READFIX_UNSIGNED(16);
 GEN_DEC_READFIX_UNSIGNED(32);
 GEN_DEC_READFIX_UNSIGNED(64);
 
+// Checks that there are at least SIZE bytes available in the buffer
+#define CTX_CHECK_AVAIL(CTX, SIZE) \
+    if ( (CTX) == NULL || ((CTX)->offset + SIZE) > (CTX)->bufferLen) { return parser_unexpected_buffer_end; }
+
+#define CTX_CHECK_AND_ADVANCE(CTX, SIZE) \
+    CTX_CHECK_AVAIL((CTX), (SIZE))   \
+    (CTX)->offset += (SIZE);
+
+// Checks function input is valid
 #define CHECK_INPUT() \
     if (v == NULL) { return parser_no_data; } \
-    if (c == NULL || c->offset > c->bufferLen) { return parser_unexpected_buffer_end; }
+    CTX_CHECK_AVAIL(c, 1) // Checks that there is something available in the buffer
 
 #define CLEAN_AND_CHECK() MEMZERO(outValue, outValueLen);  \
     if (v == NULL) { *pageCount = 0; return parser_no_data; }
 
 #define GEN_DEF_READARRAY(SIZE) \
     v->_ptr = c->buffer + c->offset; \
-    c->offset += SIZE;  \
+    CTX_CHECK_AND_ADVANCE(c, SIZE) \
     return parser_ok;
 
 #define GEN_DEF_TOSTRING_ARRAY(SIZE) \
@@ -82,7 +91,6 @@ GEN_DEC_READFIX_UNSIGNED(64);
         "%02X", *(v->_ptr + pageOffset + i));\
     }\
     return parser_ok;
-
 
 #define GEN_DEF_READVECTOR(TYPE) \
     pd_##TYPE##_t dummy;                                            \
@@ -152,6 +160,7 @@ parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
 parser_error_t _toStringPubkeyAsAddress(const uint8_t *pubkey,
                                         char *outValue, uint16_t outValueLen,
                                         uint8_t pageIdx, uint8_t *pageCount);
+
 #ifdef __cplusplus
 }
 #endif

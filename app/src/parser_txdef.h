@@ -31,6 +31,7 @@ typedef struct {
     pd_CompactIndex_t nonce;
     pd_CompactBalance_t tip;
     uint32_t specVersion;
+    uint32_t transactionVersion;
 
     pd_Hash_t genesisHash;
     pd_Hash_t blockHash;

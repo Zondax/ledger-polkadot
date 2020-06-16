@@ -31,7 +31,7 @@
 void view_init();
 
 /// view_idle_show (idle view - main menu + status)
-void view_idle_show(unsigned int ignored);
+void view_idle_show(uint8_t item_idx);
 
 /// view_error (error view)
 void view_error_show();

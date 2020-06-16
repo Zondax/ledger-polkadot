@@ -31,7 +31,8 @@ zxerr_t bech32EncodeFromBytes(char *out,
                               size_t out_len,
                               const char *hrp,
                               const uint8_t *in,
-                              size_t in_len);
+                              size_t in_len,
+                              uint8_t pad);
 
 #ifdef __cplusplus
 }

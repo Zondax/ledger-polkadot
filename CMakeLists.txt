@@ -23,20 +23,35 @@ set(CMAKE_CXX_STANDARD 11)
 include(cmake/conan/CMakeLists.txt)
 add_subdirectory(cmake/gtest)
 
-string(APPEND CMAKE_CXX_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
+string(APPEND CMAKE_C_FLAGS " -fsanitize=address -fno-omit-frame-pointer -Wno-extern-c-compat")
+string(APPEND CMAKE_CXX_FLAGS " -fsanitize=address -fno-omit-frame-pointer -Wno-extern-c-compat")
 string(APPEND CMAKE_LINKER_FLAGS " -fsanitize=address -fno-omit-frame-pointer")
-add_definitions(-DAPP_STANDARD)
 
-set (RETRIEVE_LEDGER_MINOR_CMD
-        "cat ${CMAKE_CURRENT_SOURCE_DIR}/app/Makefile.version | grep APPVERSION_N | cut -b 14-"
+set (RETRIEVE_MAJOR_CMD
+        "cat ${CMAKE_CURRENT_SOURCE_DIR}/app/Makefile.version | grep APPVERSION_M | cut -b 14- | tr -d '\n'"
+)
+set (RETRIEVE_MINOR_CMD
+        "cat ${CMAKE_CURRENT_SOURCE_DIR}/app/Makefile.version | grep APPVERSION_N | cut -b 14- | tr -d '\n'"
 )
 execute_process(
-        COMMAND bash "-c" ${RETRIEVE_LEDGER_MINOR_CMD}
-        RESULT_VARIABLE LEDGER_MINOR_RESULT
-        OUTPUT_VARIABLE LEDGER_MINOR_VERSION
+        COMMAND bash "-c" ${RETRIEVE_MAJOR_CMD}
+        RESULT_VARIABLE MAJOR_RESULT
+        OUTPUT_VARIABLE MAJOR_VERSION
 )
-message(STATUS "LEDGER_MINOR_VERSION [${LEDGER_MINOR_RESULT}]: ${LEDGER_MINOR_VERSION}" )
-add_definitions(-DLEDGER_MINOR_VERSION=${LEDGER_MINOR_VERSION})
+execute_process(
+        COMMAND bash "-c" ${RETRIEVE_MINOR_CMD}
+        RESULT_VARIABLE MINOR_RESULT
+        OUTPUT_VARIABLE MINOR_VERSION
+)
+
+message(STATUS "LEDGER_MAJOR_VERSION [${MAJOR_RESULT}]: ${MAJOR_VERSION}" )
+message(STATUS "LEDGER_MINOR_VERSION [${MINOR_RESULT}]: ${MINOR_VERSION}" )
+
+add_definitions(
+    -DAPP_STANDARD
+    -DLEDGER_MAJOR_VERSION=${MAJOR_VERSION}
+    -DLEDGER_MINOR_VERSION=${MINOR_VERSION}
+)
 
 ##############################################################
 ##############################################################
