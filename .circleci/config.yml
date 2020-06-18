@@ -73,8 +73,38 @@ jobs:
             source /home/zondax/.cargo/env
             cd /home/zondax/project
             make
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/zxtool.sh
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app.elf
+      - run:
+          name: Rename installer
+          command: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_KSM_app.sh
+      - run:
+          name: Rename elf
+          command: cp /home/zondax/project/app/bin/app.elf /home/zondax/project/app/bin/app_KSM.elf
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_KSM_app.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app_KSM.elf
+
+  build_package_ledgeracio:
+    docker:
+      - image: zondax/builder-bolos:latest
+    environment:
+      - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
+      - BOLOS_ENV=/opt/bolos
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - run:
+          name: Build
+          command: |
+            source /home/zondax/.cargo/env
+            cd /home/zondax/project
+            make build2
+      - run:
+          name: Rename installer
+          command: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_KSM_ledgeracio_app.sh
+      - run:
+          name: Rename elf
+          command: cp /home/zondax/project/app/bin/app.elf /home/zondax/project/app/bin/app_KSM.elf
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_KSM_ledgeracio_app.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app_KSM_ledgeracio.elf
 
 workflows:
   version: 2
@@ -85,6 +115,15 @@ workflows:
       - build_ledger
       - test_zemu
       - build_package:
+          requires:
+            - build
+            - build_ledger
+            - test_zemu
+          filters:
+            branches:
+              only:
+                - master
+      - build_package_ledgeracio:
           requires:
             - build
             - build_ledger

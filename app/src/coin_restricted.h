@@ -28,9 +28,10 @@ extern "C" {
 
 #define HDPATH_0_DEFAULT     (0x80000000 | 0x2c)
 #define HDPATH_1_DEFAULT     (0x80000000 | 0x1b2)       // 434
-#define HDPATH_2_DEFAULT     (0x80000000u | 0u)
-#define HDPATH_3_DEFAULT     (0u)
-#define HDPATH_4_DEFAULT     (0u)
+#define HDPATH_2_STASH       (0x80000000u | 0u)
+#define HDPATH_2_VALIDATOR   (0x80000000u | 1u)
+#define HDPATH_3_DEFAULT     (0x80000000u)
+#define HDPATH_4_DEFAULT     (0x80000000u)
 
 #define PK_LEN_ED25519       32u
 
@@ -43,9 +44,9 @@ typedef enum {
 #define VIEW_ADDRESS_ITEM_COUNT             2
 #define VIEW_ADDRESS_LAST_PAGE_DEFAULT      0
 
-#define MENU_MAIN_APP_LINE1                 "Kusama"
-#define MENU_MAIN_APP_LINE2                 "Ready"
-#define APPVERSION_LINE1                    "Kusama"
+#define MENU_MAIN_APP_LINE1                 "Kusama | sec"
+#define MENU_MAIN_APP_LINE2                 "Ledgeracio"
+#define APPVERSION_LINE1                    "Kusama | sec"
 #define APPVERSION_LINE2                    "v" APPVERSION
 
 // Specific to Kusama

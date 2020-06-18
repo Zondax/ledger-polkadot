@@ -103,6 +103,19 @@ void extractHDPath(uint32_t rx, uint32_t offset) {
     if (!mainnet) {
         THROW(APDU_CODE_DATA_INVALID);
     }
+
+#if defined(APP_RESTRICTED)
+    if (hdPath[2] != HDPATH_2_STASH && hdPath[2] != HDPATH_2_VALIDATOR ) {
+        THROW(APDU_CODE_DATA_INVALID);
+    }
+    if (hdPath[3] != HDPATH_3_DEFAULT ) {
+        THROW(APDU_CODE_DATA_INVALID);
+    }
+    if (hdPath[4] < 0x80000000 ) {
+        THROW(APDU_CODE_DATA_INVALID);
+    }
+#endif
+
 }
 
 bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
@@ -138,118 +151,6 @@ bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
     }
 
     THROW(APDU_CODE_INVALIDP1P2);
-}
-
-void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    uint16_t sw = 0;
-
-    BEGIN_TRY
-    {
-        TRY
-        {
-            if (G_io_apdu_buffer[OFFSET_CLA] != CLA) {
-                THROW(APDU_CODE_CLA_NOT_SUPPORTED);
-            }
-
-            if (rx < APDU_MIN_LENGTH) {
-                THROW(APDU_CODE_WRONG_LENGTH);
-            }
-
-            switch (G_io_apdu_buffer[OFFSET_INS]) {
-                case INS_GET_VERSION: {
-#ifdef TESTING_ENABLED
-                    G_io_apdu_buffer[0] = 0xFF;
-#else
-                    G_io_apdu_buffer[0] = 0;
-#endif
-                    G_io_apdu_buffer[1] = (LEDGER_MAJOR_VERSION >> 8) & 0xFF;;
-                    G_io_apdu_buffer[2] = (LEDGER_MAJOR_VERSION >> 0) & 0xFF;;
-
-                    G_io_apdu_buffer[3] = (LEDGER_MINOR_VERSION >> 8) & 0xFF;;
-                    G_io_apdu_buffer[4] = (LEDGER_MINOR_VERSION >> 0) & 0xFF;;
-
-                    G_io_apdu_buffer[5] = (LEDGER_PATCH_VERSION >> 8) & 0xFF;;
-                    G_io_apdu_buffer[6] = (LEDGER_PATCH_VERSION >> 0) & 0xFF;;
-
-                    G_io_apdu_buffer[7] = !IS_UX_ALLOWED;
-
-                    G_io_apdu_buffer[8] = (TARGET_ID >> 24) & 0xFF;
-                    G_io_apdu_buffer[9] = (TARGET_ID >> 16) & 0xFF;
-                    G_io_apdu_buffer[10] = (TARGET_ID >> 8) & 0xFF;
-                    G_io_apdu_buffer[11] = (TARGET_ID >> 0) & 0xFF;
-
-                    *tx += 12;
-                    THROW(APDU_CODE_OK);
-                    break;
-                }
-
-                case INS_GET_ADDR_ED25519: {
-                    extractHDPath(rx, OFFSET_DATA);
-
-                    uint8_t requireConfirmation = G_io_apdu_buffer[OFFSET_P1];
-
-                    if (requireConfirmation) {
-                        app_fill_address();
-                        view_address_show(addr_ed22519);
-                        *flags |= IO_ASYNCH_REPLY;
-                        break;
-                    }
-
-                    *tx = app_fill_address();
-                    THROW(APDU_CODE_OK);
-                    break;
-                }
-
-                case INS_SIGN_ED25519: {
-                    if (!process_chunk(tx, rx))
-                        THROW(APDU_CODE_OK);
-
-                    CHECK_APP_CANARY()
-
-                    const char *error_msg = tx_parse();
-                    CHECK_APP_CANARY()
-
-                    if (error_msg != NULL) {
-                        int error_msg_length = strlen(error_msg);
-                        MEMCPY(G_io_apdu_buffer, error_msg, error_msg_length);
-                        *tx += (error_msg_length);
-                        THROW(APDU_CODE_DATA_INVALID);
-                    }
-
-                    CHECK_APP_CANARY()
-                    view_sign_show();
-                    *flags |= IO_ASYNCH_REPLY;
-                    break;
-                }
-
-                default:
-                    THROW(APDU_CODE_INS_NOT_SUPPORTED);
-            }
-        }
-        CATCH(EXCEPTION_IO_RESET)
-        {
-            THROW(EXCEPTION_IO_RESET);
-        }
-        CATCH_OTHER(e)
-        {
-            switch (e & 0xF000) {
-                case 0x6000:
-                case APDU_CODE_OK:
-                    sw = e;
-                    break;
-                default:
-                    sw = 0x6800 | (e & 0x7FF);
-                    break;
-            }
-            G_io_apdu_buffer[*tx] = sw >> 8;
-            G_io_apdu_buffer[*tx + 1] = sw;
-            *tx += 2;
-        }
-        FINALLY
-        {
-        }
-    }
-    END_TRY;
 }
 
 void handle_generic_apdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {

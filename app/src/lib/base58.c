@@ -1,6 +1,6 @@
 /*******************************************************************************
 *   Adapted from Ledger App - Bitcoin Wallet
-*   (c) 2019 ZondaX GmbH
+*   (c) 2019 Zondax GmbH
 *
 *   Ledger App - Bitcoin Wallet
 *   (c) 2016-2019 Ledger

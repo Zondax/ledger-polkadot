@@ -25,5 +25,8 @@ default:
 	$(MAKE) -C app
 %:
 	$(info "Calling app Makefile for target $@")
-	$(MAKE) -C app $@
+	COIN=$(COIN) $(MAKE) -C app $@
 endif
+
+build2: COIN=KSM_restricted		# Alternative app purpose
+build2: build

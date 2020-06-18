@@ -19,8 +19,6 @@
 #include <stdbool.h>
 #include "apdu_codes.h"
 
-#define CLA                             0x99
-
 #define OFFSET_CLA                      0
 #define OFFSET_INS                      1  //< Instruction offset
 #define OFFSET_P1                       2  //< P1
@@ -32,10 +30,12 @@
 
 #define OFFSET_PAYLOAD_TYPE             OFFSET_P1
 
-#define INS_GET_VERSION                 0
-#define INS_GET_ADDR_ED25519            1
-#define INS_SIGN_ED25519                2
+#define INS_GET_VERSION                 0x00
+#define INS_GET_ADDR_ED25519            0x01
+#define INS_SIGN_ED25519                0x02
 
 void app_init();
 
 void app_main();
+
+void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx);

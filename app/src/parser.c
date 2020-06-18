@@ -1,5 +1,5 @@
 /*******************************************************************************
-*   (c) 2019 ZondaX GmbH
+*   (c) 2019 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -19,6 +19,12 @@
 #include "parser.h"
 #include "polkadot_dispatch.h"
 
+#if defined(APP_RESTRICTED)
+#include "coin.h"
+#include "crypto.h"
+#include "polkadot_methods.h"
+#endif
+
 #define FIELD_FIXED_TOTAL_COUNT 7
 
 #define FIELD_METHOD        0
@@ -37,6 +43,35 @@ parser_error_t parser_parse(parser_context_t *ctx,
 }
 
 parser_error_t parser_validate(const parser_context_t *ctx) {
+#if defined(APP_RESTRICTED)
+    if (hdPath[2] == HDPATH_2_STASH) {
+        if (parser_tx_obj.callIndex.moduleIdx == PD_CALL_STAKING) {
+            if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_SET_PAYEE) {
+                return parser_ok;
+            }
+            if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_NOMINATE) {
+                // FIXME: Check whitelist
+                return parser_ok;
+            }
+        }
+    }
+    if (hdPath[2] == HDPATH_2_VALIDATOR) {
+        if (parser_tx_obj.callIndex.moduleIdx == PD_CALL_STAKING) {
+            if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_VALIDATE) {
+                return parser_ok;
+            }
+        }
+        if (parser_tx_obj.callIndex.moduleIdx == PD_CALL_SESSION) {
+            if (parser_tx_obj.callIndex.idx==PD_CALL_SESSION_SET_KEYS) {
+                return parser_ok;
+            }
+            if (parser_tx_obj.callIndex.idx==PD_CALL_SESSION_PURGE_KEYS) {
+                return parser_ok;
+            }
+        }
+    }
+    return parser_not_supported;
+#endif
     return parser_ok;
 }
 

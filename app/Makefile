@@ -25,19 +25,23 @@ MY_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 include $(BOLOS_SDK)/Makefile.defines
 
 ifndef COIN
-COIN=kusama
+COIN=KSM
 endif
 
 include $(CURDIR)/Makefile.version
 
 $(info COIN  = [$(COIN)])
-ifeq ($(COIN),kusama)
+ifeq ($(COIN),KSM)
 # Main app configuration
 DEFINES += APP_STANDARD
 APPNAME = "Kusama"
 APPPATH = "44'/434'"
 
-else ifeq ($(COIN),kusama_variant1)
+else ifeq ($(COIN),KSM_restricted)
+DEFINES += APP_RESTRICTED
+APPNAME = "Kusama_sec"
+APPPATH = "44'/434'"
+
 else
 define error_message
 
@@ -195,3 +199,4 @@ dep/%.d: %.c Makefile
 
 listvariants:
 	@echo VARIANTS COIN KSM
+	@echo VARIANTS COIN KSM_restricted
