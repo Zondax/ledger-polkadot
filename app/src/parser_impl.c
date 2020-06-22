@@ -18,9 +18,10 @@
 #include "parser_impl.h"
 #include "parser_txdef.h"
 #include "coin.h"
-#include "polkadot_dispatch.h"
+#include "substrate_dispatch.h"
 #include "crypto.h"
 #include "bignum.h"
+#include "coin_ss58.h"
 
 char bufferUI[300];
 
@@ -459,9 +460,8 @@ uint8_t _detectAddressType() {
         _toStringHash(&parser_tx_obj.genesisHash, hashstr, 65, 0, &pc);
 
         // Compare with known genesis hashes
-        // KUSAMA
-        if (strcmp(hashstr, COIN_KUSAMA_CC3_GENESIS_HASH) == 0) {
-            return 2;
+        if (strcmp(hashstr, COIN_GENESIS_HASH) == 0) {
+            return PK_ADDRESS_TYPE;
         }
     }
 

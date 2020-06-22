@@ -25,21 +25,21 @@ MY_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 include $(BOLOS_SDK)/Makefile.defines
 
 ifndef COIN
-COIN=KSM
+COIN=DOT
 endif
 
 include $(CURDIR)/Makefile.version
 
 $(info COIN  = [$(COIN)])
-ifeq ($(COIN),KSM)
+ifeq ($(COIN),DOT)
 # Main app configuration
 DEFINES += APP_STANDARD
-APPNAME = "Kusama"
+APPNAME = "Polkadot"
 APPPATH = "44'/434'"
 
-else ifeq ($(COIN),KSM_restricted)
+else ifeq ($(COIN),Ledgeracio)
 DEFINES += APP_RESTRICTED
-APPNAME = "Kusama_sec"
+APPNAME = "Polkadot_sec"
 APPPATH = "44'/434'"
 
 else
@@ -96,10 +96,7 @@ DEFINES       += HAVE_IO_USB HAVE_L4_USBLIB IO_USB_MAX_ENDPOINTS=7 IO_HID_EP_LEN
 
 DEFINES       += LEDGER_MAJOR_VERSION=$(APPVERSION_M) LEDGER_MINOR_VERSION=$(APPVERSION_N) LEDGER_PATCH_VERSION=$(APPVERSION_P)
 
-DEFINES   += HAVE_U2F HAVE_IO_U2F
-DEFINES   += U2F_PROXY_MAGIC=\"KSM\"
 DEFINES   += USB_SEGMENT_SIZE=64
-DEFINES   += U2F_MAX_MESSAGE_SIZE=264 #257+5+2
 DEFINES   += HAVE_BOLOS_APP_STACK_CANARY
 
 DEFINES       += HAVE_WEBUSB WEBUSB_URL_SIZE_B=0 WEBUSB_URL=""
@@ -117,7 +114,6 @@ DEFINES       += HAVE_BAGL_FONT_OPEN_SANS_LIGHT_16PX
 DEFINES       += HAVE_UX_FLOW
 
 #SDK_SOURCE_PATH  += lib_blewbxx lib_blewbxx_impl
-SDK_SOURCE_PATH  += lib_ux
 else
 # Assume Nano S
 DEFINES       += IO_SEPROXYHAL_BUFFER_SIZE_B=128
@@ -198,5 +194,5 @@ include $(BOLOS_SDK)/Makefile.rules
 dep/%.d: %.c Makefile
 
 listvariants:
-	@echo VARIANTS COIN KSM
-	@echo VARIANTS COIN KSM_restricted
+	@echo VARIANTS COIN DOT
+	@echo VARIANTS COIN Ledgeracio

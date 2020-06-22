@@ -1,8 +1,9 @@
-import { expect, test } from "jest";
+import {expect, test} from "jest";
 import Zemu from "@zondax/zemu";
-import LedgerApp from "@zondax/ledger-polkadot";
-import { blake2bInit, blake2bUpdate, blake2bFinal } from "blakejs";
+import {blake2bInit, blake2bUpdate, blake2bFinal} from "blakejs";
+
 const ed25519 = require("ed25519-supercop");
+const {newPolkadotApp} = require("@zondax/ledger-polkadot");
 
 const Resolve = require("path").resolve;
 const APP_PATH = Resolve("../app/bin/app.elf");
@@ -12,7 +13,7 @@ const sim_options = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`
-//    ,X11: true
+    ,X11: true
 };
 
 jest.setTimeout(30000)
@@ -39,7 +40,7 @@ describe('Basic checks', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(sim_options);
-            const app = new LedgerApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
             const resp = await app.getVersion();
 
             console.log(resp);
@@ -59,7 +60,7 @@ describe('Basic checks', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(sim_options);
-            const app = new LedgerApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
 
             // FIXME: Zemu/Speculos are enforcing fully hardened paths
             const resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000);
@@ -69,8 +70,8 @@ describe('Basic checks', function () {
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
 
-            const expected_address = "JMdbWK5cy3Bm4oCyhWNLQJoC4cczNgJsyk7nLZHMqFT7z7R";
-            const expected_pk = "ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42";
+            const expected_address = "166wVhuQsKFeb7bd1faydHgVvX1bZU2rUuY7FJmWApNz2fQY";
+            const expected_pk = "e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419";
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
@@ -88,7 +89,7 @@ describe('Basic checks', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(sim_options);
-            const app = new LedgerApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
 
             const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
 
@@ -112,8 +113,8 @@ describe('Basic checks', function () {
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
 
-            const expected_address = "JMdbWK5cy3Bm4oCyhWNLQJoC4cczNgJsyk7nLZHMqFT7z7R";
-            const expected_pk = "ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42";
+            const expected_address = "166wVhuQsKFeb7bd1faydHgVvX1bZU2rUuY7FJmWApNz2fQY";
+            const expected_pk = "e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419";
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
@@ -130,12 +131,12 @@ describe('Basic checks', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(sim_options);
-            const app = new LedgerApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "0400f68ad810c8070fdacded5e85661439ab61010c2da28b645797d45d22a2af837800d503008ed73e0dd807000001000000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
+            let txBlobStr = "05004086c098111c170dbad4a1d9ea60cdc57f17dc6fc7ad5aefbb3d8ca21ed0fbf400d5038d248ed73e0d0b0000000000000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 

@@ -17,12 +17,14 @@
 #include <stdio.h>
 #include <zxmacros.h>
 #include "parser.h"
-#include "polkadot_dispatch.h"
+#include "substrate_dispatch.h"
+#include "coin.h"
+#include "coin_ss58.h"
 
 #if defined(APP_RESTRICTED)
 #include "coin.h"
 #include "crypto.h"
-#include "polkadot_methods.h"
+#include "substrate_methods.h"
 #endif
 
 #define FIELD_FIXED_TOTAL_COUNT 7
@@ -50,13 +52,16 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
                 return parser_ok;
             }
             if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_NOMINATE) {
-                // FIXME: Check whitelist
+                // FIXME: Check allowlist
                 return parser_ok;
             }
         }
     }
     if (hdPath[2] == HDPATH_2_VALIDATOR) {
         if (parser_tx_obj.callIndex.moduleIdx == PD_CALL_STAKING) {
+            if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_SET_PAYEE) {
+                return parser_ok;
+            }
             if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_VALIDATE) {
                 return parser_ok;
             }
@@ -135,9 +140,9 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
         displayIdx -= methodArgCount;
         switch (displayIdx) {
             case FIELD_NETWORK:
-                if (_detectAddressType() == 2) {
+                if (_detectAddressType() == PK_ADDRESS_TYPE) {
                     snprintf(outKey, outKeyLen, "Chain");
-                    snprintf(outValue, outValueLen, "KUSAMA CC3");
+                    snprintf(outValue, outValueLen, COIN_NAME);
                     break;
                 }
                 snprintf(outKey, outKeyLen, "Genesis Hash");

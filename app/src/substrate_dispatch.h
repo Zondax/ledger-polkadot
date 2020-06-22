@@ -22,7 +22,7 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 #include "parser_common.h"
-#include "polkadot_types.h"
+#include "substrate_types.h"
 
 #define CHECK_ERROR(FUNC_CALL) { parser_error_t err = FUNC_CALL;  if (err != parser_ok) return err; }
 

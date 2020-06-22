@@ -29,15 +29,11 @@ extern const char *crypto_testPubKey;
 TEST(CRYPTO, fillAddress) {
     uint8_t buffer[100];
 
-//    wage retreat alpha skull cactus inform device despair finish enforce chief young
-//    Public key (hex): 0x7419797202bb88ddc319a5eaebb3dcd8115352eabee7b5dbc2f402da7c8efea7
-//    Address (SS58): 5EgvykVVtK94Rbr2A29tscrbYqA6PH21p9CCR5jNZn3Jhd9D
-
     crypto_testPubKey = "7419797202bb88ddc319a5eaebb3dcd8115352eabee7b5dbc2f402da7c8efea7";
 
     uint16_t addrLen = crypto_fillAddress(buffer, 100);
 
-    EXPECT_THAT(addrLen, ::testing::Eq(79));
+    EXPECT_THAT(addrLen, ::testing::Eq(80));
 
     std::cout << std::endl;
 
@@ -49,7 +45,7 @@ TEST(CRYPTO, fillAddress) {
         ::testing::Eq(crypto_testPubKey));
 
     EXPECT_THAT(std::string(addr),
-                ::testing::Eq("FCYe4qNWg9zBFfTvixwmaDbhRSLBwqCGX2wok1L3aFoSaJ5"));
+                ::testing::Eq("13dE85kZk6QXs8rY7fCu1mgkQT9k5aa9tdvgaNij7s4pt91H"));
 
     std::cout << pk << std::endl;
     std::cout << addr << std::endl;
@@ -63,7 +59,7 @@ TEST(CRYPTO, fillAddressTestMnemonic) {
 
     uint16_t addrLen = crypto_fillAddress(buffer, 100);
 
-    EXPECT_THAT(addrLen, ::testing::Eq(79));
+    EXPECT_THAT(addrLen, ::testing::Eq(80));
 
     std::cout << std::endl;
 
@@ -75,7 +71,7 @@ TEST(CRYPTO, fillAddressTestMnemonic) {
                 ::testing::Eq("8d16d62802ca55326ec52bf76a8543b90e2aba5bcf6cd195c0d6fc1ef38fa1b3"));
 
     EXPECT_THAT(std::string(addr),
-                ::testing::Eq("FmK43tjzFGT9F68Sj9EvW6rwBQUAVuA9wNQaYxGLvfcCAxS"));
+                ::testing::Eq("14BzY4owDfWzq8HCdfPCAha1eD7t48e7n4G9MBffRDUdda6Y"));
 
     std::cout << pk << std::endl;
     std::cout << addr << std::endl;
