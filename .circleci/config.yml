@@ -38,7 +38,7 @@ jobs:
           command: |
             source /home/zondax/.cargo/env
             cd /home/zondax/project
-            COIN=KSM_restricted make
+            COIN=Ledgeracio make
 
   test_zemu:
     machine:
@@ -87,12 +87,9 @@ jobs:
             make
       - run:
           name: Rename installer
-          command: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_KSM_app.sh
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_KSM_app.sh
-      - run:
-          name: Rename elf
-          command: cp /home/zondax/project/app/bin/app.elf /home/zondax/project/app/bin/app_KSM.elf
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app_KSM.elf
+          command: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_app.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_app.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app.elf
 
   build_package_ledgeracio:
     docker:
@@ -108,15 +105,15 @@ jobs:
           command: |
             source /home/zondax/.cargo/env
             cd /home/zondax/project
-            COIN=KSM_restricted make
+            COIN=Ledgeracio make
       - run:
           name: Rename installer
-          command: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_KSM_ledgeracio_app.sh
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_KSM_ledgeracio_app.sh
+          command: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_ledgeracio_app.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_ledgeracio_app.sh
       - run:
           name: Rename elf
-          command: cp /home/zondax/project/app/bin/app.elf /home/zondax/project/app/bin/app_KSM_ledgeracio.elf
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app_KSM_ledgeracio.elf
+          command: cp /home/zondax/project/app/bin/app.elf /home/zondax/project/app/bin/app_ledgeracio.elf
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app_ledgeracio.elf
 
 workflows:
   version: 2

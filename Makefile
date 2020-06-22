@@ -28,5 +28,5 @@ default:
 	COIN=$(COIN) $(MAKE) -C app $@
 endif
 
-build2: COIN=KSM_restricted		# Alternative app purpose
+build2: COIN=Ledgeracio		# Alternative app purpose
 build2: build

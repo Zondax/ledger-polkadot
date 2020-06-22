@@ -1,5 +1,5 @@
 /*******************************************************************************
-*  (c) 2019 Zondax GmbH
+*  (c) 2020 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -19,19 +19,11 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
-#include <stddef.h>
-#include "coin_ss58.h"
-
-#define HDPATH_2_STASH       (0x80000000u | 0u)
-#define HDPATH_2_VALIDATOR   (0x80000000u | 1u)
-#define HDPATH_3_DEFAULT     (0x80000000u)
-#define HDPATH_4_DEFAULT     (0x80000000u)
-
-#define MENU_MAIN_APP_LINE1                 "Polkadot | sec"
-#define MENU_MAIN_APP_LINE2                 "Ledgeracio"
-#define APPVERSION_LINE1                    "Polkadot | sec"
-#define APPVERSION_LINE2                    "v" APPVERSION
+#define COIN_ADDR_TYPE_POLKADOT         0
+#define COIN_ADDR_TYPE_KUSAMA           2
+#define COIN_ADDR_TYPE_EDGEWARE         7
+#define COIN_ADDR_TYPE_KULUPU           16
+#define COIN_ADDR_TYPE_DOTHEREUM        20
 
 #ifdef __cplusplus
 }

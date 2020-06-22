@@ -1,6 +1,7 @@
 import Zemu from "@zondax/zemu";
-import LedgerApp from "@zondax/ledger-polkadot";
 import path from "path";
+
+const {newPolkadotApp} = require("@zondax/ledger-polkadot");
 
 const APP_PATH = path.resolve(`./../../app/bin/app.elf`);
 
@@ -31,7 +32,7 @@ async function debugScenario(sim, app) {
     const pathChange = 0x80000000;
     const pathIndex = 0x80000000;
 
-    let txBlobStr = "04002756865871cd8e8c2e27b5c5254a8ab6933a5c3081bdcbdc78751fb9c8af12f200d503008ed73e0d26040000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
+    let txBlobStr = "05004086c098111c170dbad4a1d9ea60cdc57f17dc6fc7ad5aefbb3d8ca21ed0fbf400d5038d248ed73e0d0b0000000000000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
     const txBlob = Buffer.from(txBlobStr, "hex");
 
     const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
@@ -76,7 +77,7 @@ async function main() {
 
     try {
         await sim.start(SIM_OPTIONS);
-        const app = new LedgerApp.default(sim.getTransport());
+        const app = newPolkadotApp(sim.getTransport());
 
         ////////////
         /// TIP you can use zemu commands here to take the app to the point where you trigger a breakpoint

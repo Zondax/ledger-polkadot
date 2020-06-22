@@ -187,25 +187,25 @@ typedef compactInt_t pd_CompactSubId_t;
 typedef compactInt_t pd_CompactWeight_t;
 
 
-typedef struct {
+typedef struct { 
     const uint8_t *_ptr;
 } pd_AccountId_t;
 
-typedef struct {
+typedef struct { 
     uint32_t value;
 } pd_AccountIndex_t;
 
-typedef struct {
+typedef struct { 
     pd_BalanceOf_t aye;
     pd_BalanceOf_t nay;
 } pd_AccountVoteSplit_t;
 
-typedef struct {
+typedef struct { 
     pd_Vote_t vote;
     pd_BalanceOf_t balance;
 } pd_AccountVoteStandard_t;
 
-typedef struct {
+typedef struct { 
     uint8_t value;
      union {
         pd_AccountVoteStandard_t voteStandard;
@@ -213,79 +213,79 @@ typedef struct {
     };
 } pd_AccountVote_t;
 
-typedef struct {
+typedef struct { 
     uint64_t _len;
     const uint8_t *_ptr;
 } pd_Bytes_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Call_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ChangesTrieConfiguration_t;
 
-typedef struct {
+typedef struct { 
     pd_Hash_t value;
 } pd_CollatorId_t;
 
-typedef struct {
+typedef struct { 
     uint8_t type;
     const uint8_t *_ptr;
     uint8_t _len;
 } pd_Data_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_DefunctVoter_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_DoubleVoteReport_t;
 
-typedef struct {
+typedef struct { 
     const uint8_t *_ptr;
 } pd_EcdsaSignature_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ElectionScore_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ElectionSize_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_EquivocationProof_t;
 
-typedef struct {
+typedef struct { 
     uint32_t value;
 } pd_EraIndex_t;
 
-typedef struct {
+typedef struct { 
     const uint8_t *_ptr;
 } pd_EthereumAddress_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_HeadData_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_IdentityFields_t;
 
-typedef struct {
+typedef struct { 
     // https://github.com/paritytech/substrate/blob/effe489951d1edab9d34846b1eefdfaf9511dab9/frame/identity/src/lib.rs#L276
     pd_VecTupleDataData_t additional;
     pd_Data_t display;
@@ -298,131 +298,136 @@ typedef struct {
     pd_Data_t twitter;
 } pd_IdentityInfo_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_IdentityJudgement_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_KeyOwnerProof_t;
 
-typedef struct {
+typedef struct { 
     const uint8_t *_ptr;
 } pd_Key_t;
 
-typedef struct {
+typedef struct { 
   	const uint8_t *_ptr;
 } pd_LookupSource_t;
 
-typedef struct {
+typedef struct { 
     uint32_t value;
 } pd_MemberCount_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_MoreAttestations_t;
 
-typedef struct {
+typedef struct { 
     uint8_t scheduling;     //pd_ParaScheduling_t
     // 0 - Always
     // 1 - Dynamic
 } pd_ParaInfo_t;
 
-typedef struct {
+typedef struct { 
     uint32_t value;
 } pd_Perbill_t;
 
-typedef struct {
+typedef struct { 
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_Percent_t;
+
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Period_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Priority_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ProxyType_t;
 
-typedef struct {
+typedef struct { 
     uint32_t value;
 } pd_ReferendumIndex_t;
 
-typedef struct {
+typedef struct { 
     uint32_t value;
 } pd_RegistrarIndex_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Renouncing_t;
 
-typedef struct {
+typedef struct { 
     uint8_t value;
 } pd_RewardDestination_t;
 
-typedef struct {
+typedef struct { 
     const uint8_t *_ptr;
 } pd_Signature_t;
 
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_SocietyJudgement_t;
-
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_StatementKind_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Timepoint_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_TupleAccountIdData_t;
 
-typedef struct {
+typedef struct { 
     pd_BalanceOf_t balance1;
     pd_BalanceOf_t balance2;
     pd_BlockNumber_t blockNumber;
 } pd_TupleBalanceOfBalanceOfBlockNumber_t;
 
-typedef struct {
+typedef struct { 
     pd_Data_t data1;
     pd_Data_t data2;
 } pd_TupleDataData_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ValidationCode_t;
 
-typedef struct {
+typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ValidatorIndex_t;
 
-typedef struct {
+typedef struct { 
     pd_CompactBalance_t balance;
 } pd_ValidatorPrefs_t;
 
-typedef struct {
+typedef struct { 
     pd_BalanceOf_t locked;
     pd_BalanceOf_t per_block;
     pd_BlockNumber_t starting_block;
 } pd_VestingInfo_t;
 
-typedef struct {
+typedef struct { 
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_Weight_t;
+
+typedef struct { 
     const uint8_t *_ptr;
 } pd_u8_array_32_t;
 
@@ -589,6 +594,7 @@ parser_error_t _readOptionTupleBalanceOfBalanceOfBlockNumber(parser_context_t *c
 parser_error_t _readOptionu8_array_20(parser_context_t *c, pd_Optionu8_array_20_t *v);
 parser_error_t _readParaInfo(parser_context_t *c, pd_ParaInfo_t *v);
 parser_error_t _readPerbill(parser_context_t *c, pd_Perbill_t *v);
+parser_error_t _readPercent(parser_context_t *c, pd_Percent_t *v);
 parser_error_t _readPeriod(parser_context_t *c, pd_Period_t *v);
 parser_error_t _readPriority(parser_context_t *c, pd_Priority_t *v);
 parser_error_t _readProxyType(parser_context_t *c, pd_ProxyType_t *v);
@@ -597,7 +603,6 @@ parser_error_t _readRegistrarIndex(parser_context_t *c, pd_RegistrarIndex_t *v);
 parser_error_t _readRenouncing(parser_context_t *c, pd_Renouncing_t *v);
 parser_error_t _readRewardDestination(parser_context_t *c, pd_RewardDestination_t *v);
 parser_error_t _readSignature(parser_context_t *c, pd_Signature_t *v);
-parser_error_t _readSocietyJudgement(parser_context_t *c, pd_SocietyJudgement_t *v);
 parser_error_t _readStatementKind(parser_context_t *c, pd_StatementKind_t *v);
 parser_error_t _readTimepoint(parser_context_t *c, pd_Timepoint_t *v);
 parser_error_t _readTupleAccountIdData(parser_context_t *c, pd_TupleAccountIdData_t *v);
@@ -619,6 +624,7 @@ parser_error_t _readVecValidatorIndex(parser_context_t *c, pd_VecValidatorIndex_
 parser_error_t _readVecu32(parser_context_t *c, pd_Vecu32_t *v);
 parser_error_t _readVestingInfo(parser_context_t *c, pd_VestingInfo_t *v);
 parser_error_t _readVote(parser_context_t *c, pd_Vote_t *v);
+parser_error_t _readWeight(parser_context_t *c, pd_Weight_t *v);
 parser_error_t _readbool(parser_context_t *c, pd_bool_t *v);
 parser_error_t _readu16(parser_context_t *c, pd_u16_t *v);
 parser_error_t _readu32(parser_context_t *c, pd_u32_t *v);
@@ -1055,6 +1061,13 @@ parser_error_t _toStringPerbill(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringPercent(
+    const pd_Percent_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringPeriod(
     const pd_Period_t *v,
     char *outValue,
@@ -1106,13 +1119,6 @@ parser_error_t _toStringRewardDestination(
 
 parser_error_t _toStringSignature(
     const pd_Signature_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringSocietyJudgement(
-    const pd_SocietyJudgement_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -1265,6 +1271,13 @@ parser_error_t _toStringVote(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringWeight(
+    const pd_Weight_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringbool(
     const pd_bool_t *v,
     char *outValue,
@@ -1308,7 +1321,7 @@ parser_error_t _toStringu8_array_32(
     uint8_t *pageCount);
 
 
-#include "polkadot_methods.h"
+#include "substrate_methods.h"
 
 #ifdef __cplusplus
 }

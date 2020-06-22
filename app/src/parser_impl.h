@@ -88,7 +88,7 @@ GEN_DEC_READFIX_UNSIGNED(64);
         const uint16_t offset = i << 1u;\
         snprintf(outValue + offset,\
         outValueLen - offset,\
-        "%02X", *(v->_ptr + pageOffset + i));\
+        "%02x", *(v->_ptr + pageOffset + i));\
     }\
     return parser_ok;
 

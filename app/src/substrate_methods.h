@@ -23,37 +23,36 @@ extern "C" {
 #include <stddef.h>
 
 #define PD_CALL_SYSTEM 0
-#define PD_CALL_BABE 1
-#define PD_CALL_TIMESTAMP 2
-#define PD_CALL_INDICES 3
-#define PD_CALL_BALANCES 4
-#define PD_CALL_AUTHORSHIP 5
-#define PD_CALL_STAKING 6
-#define PD_CALL_OFFENCES 7
-#define PD_CALL_SESSION 8
-#define PD_CALL_FINALITYTRACKER 9
-#define PD_CALL_GRANDPA 10
-#define PD_CALL_IMONLINE 11
-#define PD_CALL_AUTHORITYDISCOVERY 12
-#define PD_CALL_DEMOCRACY 13
-#define PD_CALL_COUNCIL 14
-#define PD_CALL_TECHNICALCOMMITTEE 15
-#define PD_CALL_ELECTIONSPHRAGMEN 16
-#define PD_CALL_TECHNICALMEMBERSHIP 17
-#define PD_CALL_TREASURY 18
-#define PD_CALL_CLAIMS 19
+#define PD_CALL_SCHEDULER 1
+#define PD_CALL_BABE 2
+#define PD_CALL_TIMESTAMP 3
+#define PD_CALL_INDICES 4
+#define PD_CALL_BALANCES 5
+#define PD_CALL_AUTHORSHIP 6
+#define PD_CALL_STAKING 7
+#define PD_CALL_OFFENCES 8
+#define PD_CALL_SESSION 9
+#define PD_CALL_FINALITYTRACKER 10
+#define PD_CALL_GRANDPA 11
+#define PD_CALL_IMONLINE 12
+#define PD_CALL_AUTHORITYDISCOVERY 13
+#define PD_CALL_DEMOCRACY 14
+#define PD_CALL_COUNCIL 15
+#define PD_CALL_TECHNICALCOMMITTEE 16
+#define PD_CALL_ELECTIONSPHRAGMEN 17
+#define PD_CALL_TECHNICALMEMBERSHIP 18
+#define PD_CALL_TREASURY 19
 #define PD_CALL_PARACHAINS 20
 #define PD_CALL_ATTESTATIONS 21
 #define PD_CALL_SLOTS 22
 #define PD_CALL_REGISTRAR 23
-#define PD_CALL_UTILITY 24
-#define PD_CALL_IDENTITY 25
-#define PD_CALL_SOCIETY 26
-#define PD_CALL_RECOVERY 27
-#define PD_CALL_VESTING 28
-#define PD_CALL_SCHEDULER 29
-#define PD_CALL_PROXY 30
-#define PD_CALL_MULTISIG 31
+#define PD_CALL_CLAIMS 24
+#define PD_CALL_VESTING 25
+#define PD_CALL_UTILITY 26
+#define PD_CALL_SUDO 27
+#define PD_CALL_IDENTITY 28
+#define PD_CALL_PROXY 29
+#define PD_CALL_MULTISIG 30
 
 
 #define PD_CALL_SYSTEM_FILL_BLOCK 0
@@ -105,6 +104,34 @@ typedef struct {
 #define PD_CALL_SYSTEM_SUICIDE 9
 typedef struct {
 } pd_system_suicide_t;
+
+#define PD_CALL_SCHEDULER_SCHEDULE 0
+typedef struct {
+    pd_BlockNumber_t when;
+    pd_OptionPeriod_t maybe_periodic;
+    pd_Priority_t priority;
+    pd_Call_t call;
+} pd_scheduler_schedule_t;
+
+#define PD_CALL_SCHEDULER_CANCEL 1
+typedef struct {
+    pd_BlockNumber_t when;
+    pd_u32_t index;
+} pd_scheduler_cancel_t;
+
+#define PD_CALL_SCHEDULER_SCHEDULE_NAMED 2
+typedef struct {
+    pd_Bytes_t id;
+    pd_BlockNumber_t when;
+    pd_OptionPeriod_t maybe_periodic;
+    pd_Priority_t priority;
+    pd_Call_t call;
+} pd_scheduler_schedule_named_t;
+
+#define PD_CALL_SCHEDULER_CANCEL_NAMED 3
+typedef struct {
+    pd_Bytes_t id;
+} pd_scheduler_cancel_named_t;
 
 #define PD_CALL_TIMESTAMP_SET 0
 typedef struct {
@@ -221,59 +248,69 @@ typedef struct {
     pd_Compactu32_t new_;
 } pd_staking_set_validator_count_t;
 
-#define PD_CALL_STAKING_FORCE_NO_ERAS 10
+#define PD_CALL_STAKING_INCREASE_VALIDATOR_COUNT 10
+typedef struct {
+    pd_Compactu32_t additional;
+} pd_staking_increase_validator_count_t;
+
+#define PD_CALL_STAKING_SCALE_VALIDATOR_COUNT 11
+typedef struct {
+    pd_Percent_t factor;
+} pd_staking_scale_validator_count_t;
+
+#define PD_CALL_STAKING_FORCE_NO_ERAS 12
 typedef struct {
 } pd_staking_force_no_eras_t;
 
-#define PD_CALL_STAKING_FORCE_NEW_ERA 11
+#define PD_CALL_STAKING_FORCE_NEW_ERA 13
 typedef struct {
 } pd_staking_force_new_era_t;
 
-#define PD_CALL_STAKING_SET_INVULNERABLES 12
+#define PD_CALL_STAKING_SET_INVULNERABLES 14
 typedef struct {
     pd_VecAccountId_t validators;
 } pd_staking_set_invulnerables_t;
 
-#define PD_CALL_STAKING_FORCE_UNSTAKE 13
+#define PD_CALL_STAKING_FORCE_UNSTAKE 15
 typedef struct {
     pd_AccountId_t stash;
     pd_u32_t num_slashing_spans;
 } pd_staking_force_unstake_t;
 
-#define PD_CALL_STAKING_FORCE_NEW_ERA_ALWAYS 14
+#define PD_CALL_STAKING_FORCE_NEW_ERA_ALWAYS 16
 typedef struct {
 } pd_staking_force_new_era_always_t;
 
-#define PD_CALL_STAKING_CANCEL_DEFERRED_SLASH 15
+#define PD_CALL_STAKING_CANCEL_DEFERRED_SLASH 17
 typedef struct {
     pd_EraIndex_t era;
     pd_Vecu32_t slash_indices;
 } pd_staking_cancel_deferred_slash_t;
 
-#define PD_CALL_STAKING_PAYOUT_STAKERS 16
+#define PD_CALL_STAKING_PAYOUT_STAKERS 18
 typedef struct {
     pd_AccountId_t validator_stash;
     pd_EraIndex_t era;
 } pd_staking_payout_stakers_t;
 
-#define PD_CALL_STAKING_REBOND 17
+#define PD_CALL_STAKING_REBOND 19
 typedef struct {
     pd_CompactBalanceOf_t value;
 } pd_staking_rebond_t;
 
-#define PD_CALL_STAKING_SET_HISTORY_DEPTH 18
+#define PD_CALL_STAKING_SET_HISTORY_DEPTH 20
 typedef struct {
     pd_CompactEraIndex_t new_history_depth;
     pd_Compactu32_t _era_items_deleted;
 } pd_staking_set_history_depth_t;
 
-#define PD_CALL_STAKING_REAP_STASH 19
+#define PD_CALL_STAKING_REAP_STASH 21
 typedef struct {
     pd_AccountId_t stash;
     pd_u32_t num_slashing_spans;
 } pd_staking_reap_stash_t;
 
-#define PD_CALL_STAKING_SUBMIT_ELECTION_SOLUTION 20
+#define PD_CALL_STAKING_SUBMIT_ELECTION_SOLUTION 22
 typedef struct {
     pd_VecValidatorIndex_t winners;
     pd_CompactAssignments_t compact;
@@ -282,7 +319,7 @@ typedef struct {
     pd_ElectionSize_t size;
 } pd_staking_submit_election_solution_t;
 
-#define PD_CALL_STAKING_SUBMIT_ELECTION_SOLUTION_UNSIGNED 21
+#define PD_CALL_STAKING_SUBMIT_ELECTION_SOLUTION_UNSIGNED 23
 typedef struct {
     pd_VecValidatorIndex_t winners;
     pd_CompactAssignments_t compact;
@@ -606,39 +643,6 @@ typedef struct {
     pd_Hash_t hash;
 } pd_treasury_close_tip_t;
 
-#define PD_CALL_CLAIMS_CLAIM 0
-typedef struct {
-    pd_AccountId_t dest;
-    pd_EcdsaSignature_t ethereum_signature;
-} pd_claims_claim_t;
-
-#define PD_CALL_CLAIMS_MINT_CLAIM 1
-typedef struct {
-    pd_EthereumAddress_t who;
-    pd_BalanceOf_t value;
-    pd_OptionTupleBalanceOfBalanceOfBlockNumber_t vesting_schedule;
-    pd_OptionStatementKind_t statement;
-} pd_claims_mint_claim_t;
-
-#define PD_CALL_CLAIMS_CLAIM_ATTEST 2
-typedef struct {
-    pd_AccountId_t dest;
-    pd_EcdsaSignature_t ethereum_signature;
-    pd_Bytes_t statement;
-} pd_claims_claim_attest_t;
-
-#define PD_CALL_CLAIMS_ATTEST 3
-typedef struct {
-    pd_Bytes_t statement;
-} pd_claims_attest_t;
-
-#define PD_CALL_CLAIMS_MOVE_CLAIM 4
-typedef struct {
-    pd_EthereumAddress_t old;
-    pd_EthereumAddress_t new_;
-    pd_OptionAccountId_t maybe_preclaim;
-} pd_claims_move_claim_t;
-
 #define PD_CALL_PARACHAINS_SET_HEADS 0
 typedef struct {
     pd_VecAttestedCandidate_t heads;
@@ -737,6 +741,61 @@ typedef struct {
     pd_CompactParaId_t other;
 } pd_registrar_swap_t;
 
+#define PD_CALL_CLAIMS_CLAIM 0
+typedef struct {
+    pd_AccountId_t dest;
+    pd_EcdsaSignature_t ethereum_signature;
+} pd_claims_claim_t;
+
+#define PD_CALL_CLAIMS_MINT_CLAIM 1
+typedef struct {
+    pd_EthereumAddress_t who;
+    pd_BalanceOf_t value;
+    pd_OptionTupleBalanceOfBalanceOfBlockNumber_t vesting_schedule;
+    pd_OptionStatementKind_t statement;
+} pd_claims_mint_claim_t;
+
+#define PD_CALL_CLAIMS_CLAIM_ATTEST 2
+typedef struct {
+    pd_AccountId_t dest;
+    pd_EcdsaSignature_t ethereum_signature;
+    pd_Bytes_t statement;
+} pd_claims_claim_attest_t;
+
+#define PD_CALL_CLAIMS_ATTEST 3
+typedef struct {
+    pd_Bytes_t statement;
+} pd_claims_attest_t;
+
+#define PD_CALL_CLAIMS_MOVE_CLAIM 4
+typedef struct {
+    pd_EthereumAddress_t old;
+    pd_EthereumAddress_t new_;
+    pd_OptionAccountId_t maybe_preclaim;
+} pd_claims_move_claim_t;
+
+#define PD_CALL_VESTING_VEST 0
+typedef struct {
+} pd_vesting_vest_t;
+
+#define PD_CALL_VESTING_VEST_OTHER 1
+typedef struct {
+    pd_LookupSource_t target;
+} pd_vesting_vest_other_t;
+
+#define PD_CALL_VESTING_VESTED_TRANSFER 2
+typedef struct {
+    pd_LookupSource_t target;
+    pd_VestingInfo_t schedule;
+} pd_vesting_vested_transfer_t;
+
+#define PD_CALL_VESTING_FORCE_VESTED_TRANSFER 3
+typedef struct {
+    pd_LookupSource_t source;
+    pd_LookupSource_t target;
+    pd_VestingInfo_t schedule;
+} pd_vesting_force_vested_transfer_t;
+
 #define PD_CALL_UTILITY_BATCH 0
 typedef struct {
     pd_VecCall_t calls;
@@ -753,6 +812,28 @@ typedef struct {
     pd_u16_t index;
     pd_Call_t call;
 } pd_utility_as_limited_sub_t;
+
+#define PD_CALL_SUDO_SUDO 0
+typedef struct {
+    pd_Call_t call;
+} pd_sudo_sudo_t;
+
+#define PD_CALL_SUDO_SUDO_UNCHECKED_WEIGHT 1
+typedef struct {
+    pd_Call_t call;
+    pd_Weight_t _weight;
+} pd_sudo_sudo_unchecked_weight_t;
+
+#define PD_CALL_SUDO_SET_KEY 2
+typedef struct {
+    pd_LookupSource_t new_;
+} pd_sudo_set_key_t;
+
+#define PD_CALL_SUDO_SUDO_AS 3
+typedef struct {
+    pd_LookupSource_t who;
+    pd_Call_t call;
+} pd_sudo_sudo_as_t;
 
 #define PD_CALL_IDENTITY_ADD_REGISTRAR 0
 typedef struct {
@@ -814,163 +895,6 @@ typedef struct {
     pd_LookupSource_t target;
 } pd_identity_kill_identity_t;
 
-#define PD_CALL_SOCIETY_BID 0
-typedef struct {
-    pd_BalanceOf_t value;
-} pd_society_bid_t;
-
-#define PD_CALL_SOCIETY_UNBID 1
-typedef struct {
-    pd_u32_t pos;
-} pd_society_unbid_t;
-
-#define PD_CALL_SOCIETY_VOUCH 2
-typedef struct {
-    pd_AccountId_t who;
-    pd_BalanceOf_t value;
-    pd_BalanceOf_t tip;
-} pd_society_vouch_t;
-
-#define PD_CALL_SOCIETY_UNVOUCH 3
-typedef struct {
-    pd_u32_t pos;
-} pd_society_unvouch_t;
-
-#define PD_CALL_SOCIETY_VOTE 4
-typedef struct {
-    pd_LookupSource_t candidate;
-    pd_bool_t approve;
-} pd_society_vote_t;
-
-#define PD_CALL_SOCIETY_DEFENDER_VOTE 5
-typedef struct {
-    pd_bool_t approve;
-} pd_society_defender_vote_t;
-
-#define PD_CALL_SOCIETY_PAYOUT 6
-typedef struct {
-} pd_society_payout_t;
-
-#define PD_CALL_SOCIETY_FOUND 7
-typedef struct {
-    pd_AccountId_t founder;
-    pd_u32_t max_members;
-    pd_Bytes_t rules;
-} pd_society_found_t;
-
-#define PD_CALL_SOCIETY_UNFOUND 8
-typedef struct {
-} pd_society_unfound_t;
-
-#define PD_CALL_SOCIETY_JUDGE_SUSPENDED_MEMBER 9
-typedef struct {
-    pd_AccountId_t who;
-    pd_bool_t forgive;
-} pd_society_judge_suspended_member_t;
-
-#define PD_CALL_SOCIETY_JUDGE_SUSPENDED_CANDIDATE 10
-typedef struct {
-    pd_AccountId_t who;
-    pd_SocietyJudgement_t judgement;
-} pd_society_judge_suspended_candidate_t;
-
-#define PD_CALL_SOCIETY_SET_MAX_MEMBERS 11
-typedef struct {
-    pd_u32_t max;
-} pd_society_set_max_members_t;
-
-#define PD_CALL_RECOVERY_AS_RECOVERED 0
-typedef struct {
-    pd_AccountId_t account;
-    pd_Call_t call;
-} pd_recovery_as_recovered_t;
-
-#define PD_CALL_RECOVERY_SET_RECOVERED 1
-typedef struct {
-    pd_AccountId_t lost;
-    pd_AccountId_t rescuer;
-} pd_recovery_set_recovered_t;
-
-#define PD_CALL_RECOVERY_CREATE_RECOVERY 2
-typedef struct {
-    pd_VecAccountId_t friends;
-    pd_u16_t threshold;
-    pd_BlockNumber_t delay_period;
-} pd_recovery_create_recovery_t;
-
-#define PD_CALL_RECOVERY_INITIATE_RECOVERY 3
-typedef struct {
-    pd_AccountId_t account;
-} pd_recovery_initiate_recovery_t;
-
-#define PD_CALL_RECOVERY_VOUCH_RECOVERY 4
-typedef struct {
-    pd_AccountId_t lost;
-    pd_AccountId_t rescuer;
-} pd_recovery_vouch_recovery_t;
-
-#define PD_CALL_RECOVERY_CLAIM_RECOVERY 5
-typedef struct {
-    pd_AccountId_t account;
-} pd_recovery_claim_recovery_t;
-
-#define PD_CALL_RECOVERY_CLOSE_RECOVERY 6
-typedef struct {
-    pd_AccountId_t rescuer;
-} pd_recovery_close_recovery_t;
-
-#define PD_CALL_RECOVERY_REMOVE_RECOVERY 7
-typedef struct {
-} pd_recovery_remove_recovery_t;
-
-#define PD_CALL_RECOVERY_CANCEL_RECOVERED 8
-typedef struct {
-    pd_AccountId_t account;
-} pd_recovery_cancel_recovered_t;
-
-#define PD_CALL_VESTING_VEST 0
-typedef struct {
-} pd_vesting_vest_t;
-
-#define PD_CALL_VESTING_VEST_OTHER 1
-typedef struct {
-    pd_LookupSource_t target;
-} pd_vesting_vest_other_t;
-
-#define PD_CALL_VESTING_VESTED_TRANSFER 2
-typedef struct {
-    pd_LookupSource_t target;
-    pd_VestingInfo_t schedule;
-} pd_vesting_vested_transfer_t;
-
-#define PD_CALL_SCHEDULER_SCHEDULE 0
-typedef struct {
-    pd_BlockNumber_t when;
-    pd_OptionPeriod_t maybe_periodic;
-    pd_Priority_t priority;
-    pd_Call_t call;
-} pd_scheduler_schedule_t;
-
-#define PD_CALL_SCHEDULER_CANCEL 1
-typedef struct {
-    pd_BlockNumber_t when;
-    pd_u32_t index;
-} pd_scheduler_cancel_t;
-
-#define PD_CALL_SCHEDULER_SCHEDULE_NAMED 2
-typedef struct {
-    pd_Bytes_t id;
-    pd_BlockNumber_t when;
-    pd_OptionPeriod_t maybe_periodic;
-    pd_Priority_t priority;
-    pd_Call_t call;
-} pd_scheduler_schedule_named_t;
-
-#define PD_CALL_SCHEDULER_CANCEL_NAMED 3
-typedef struct {
-    pd_Bytes_t id;
-} pd_scheduler_cancel_named_t;
-
 #define PD_CALL_PROXY_PROXY 0
 typedef struct {
     pd_AccountId_t real;
@@ -1009,23 +933,32 @@ typedef struct {
     pd_Compactu32_t ext_index;
 } pd_proxy_kill_anonymous_t;
 
-#define PD_CALL_MULTISIG_AS_MULTI 0
+#define PD_CALL_MULTISIG_AS_MULTI_THRESHOLD_1 0
+typedef struct {
+    pd_VecAccountId_t other_signatories;
+    pd_Call_t call;
+} pd_multisig_as_multi_threshold_1_t;
+
+#define PD_CALL_MULTISIG_AS_MULTI 1
 typedef struct {
     pd_u16_t threshold;
     pd_VecAccountId_t other_signatories;
     pd_OptionTimepoint_t maybe_timepoint;
-    pd_Call_t call;
+    pd_Bytes_t call;
+    pd_bool_t store_call;
+    pd_Weight_t max_weight;
 } pd_multisig_as_multi_t;
 
-#define PD_CALL_MULTISIG_APPROVE_AS_MULTI 1
+#define PD_CALL_MULTISIG_APPROVE_AS_MULTI 2
 typedef struct {
     pd_u16_t threshold;
     pd_VecAccountId_t other_signatories;
     pd_OptionTimepoint_t maybe_timepoint;
     pd_u8_array_32_t call_hash;
+    pd_Weight_t max_weight;
 } pd_multisig_approve_as_multi_t;
 
-#define PD_CALL_MULTISIG_CANCEL_AS_MULTI 2
+#define PD_CALL_MULTISIG_CANCEL_AS_MULTI 3
 typedef struct {
     pd_u16_t threshold;
     pd_VecAccountId_t other_signatories;
@@ -1045,6 +978,10 @@ typedef union {
     pd_system_kill_storage_t system_kill_storage;
     pd_system_kill_prefix_t system_kill_prefix;
     pd_system_suicide_t system_suicide;
+    pd_scheduler_schedule_t scheduler_schedule;
+    pd_scheduler_cancel_t scheduler_cancel;
+    pd_scheduler_schedule_named_t scheduler_schedule_named;
+    pd_scheduler_cancel_named_t scheduler_cancel_named;
     pd_timestamp_set_t timestamp_set;
     pd_indices_claim_t indices_claim;
     pd_indices_transfer_t indices_transfer;
@@ -1066,6 +1003,8 @@ typedef union {
     pd_staking_set_payee_t staking_set_payee;
     pd_staking_set_controller_t staking_set_controller;
     pd_staking_set_validator_count_t staking_set_validator_count;
+    pd_staking_increase_validator_count_t staking_increase_validator_count;
+    pd_staking_scale_validator_count_t staking_scale_validator_count;
     pd_staking_force_no_eras_t staking_force_no_eras;
     pd_staking_force_new_era_t staking_force_new_era;
     pd_staking_set_invulnerables_t staking_set_invulnerables;
@@ -1135,11 +1074,6 @@ typedef union {
     pd_treasury_tip_new_t treasury_tip_new;
     pd_treasury_tip_t treasury_tip;
     pd_treasury_close_tip_t treasury_close_tip;
-    pd_claims_claim_t claims_claim;
-    pd_claims_mint_claim_t claims_mint_claim;
-    pd_claims_claim_attest_t claims_claim_attest;
-    pd_claims_attest_t claims_attest;
-    pd_claims_move_claim_t claims_move_claim;
     pd_parachains_set_heads_t parachains_set_heads;
     pd_parachains_report_double_vote_t parachains_report_double_vote;
     pd_attestations_more_attestations_t attestations_more_attestations;
@@ -1156,9 +1090,22 @@ typedef union {
     pd_registrar_select_parathread_t registrar_select_parathread;
     pd_registrar_deregister_parathread_t registrar_deregister_parathread;
     pd_registrar_swap_t registrar_swap;
+    pd_claims_claim_t claims_claim;
+    pd_claims_mint_claim_t claims_mint_claim;
+    pd_claims_claim_attest_t claims_claim_attest;
+    pd_claims_attest_t claims_attest;
+    pd_claims_move_claim_t claims_move_claim;
+    pd_vesting_vest_t vesting_vest;
+    pd_vesting_vest_other_t vesting_vest_other;
+    pd_vesting_vested_transfer_t vesting_vested_transfer;
+    pd_vesting_force_vested_transfer_t vesting_force_vested_transfer;
     pd_utility_batch_t utility_batch;
     pd_utility_as_sub_t utility_as_sub;
     pd_utility_as_limited_sub_t utility_as_limited_sub;
+    pd_sudo_sudo_t sudo_sudo;
+    pd_sudo_sudo_unchecked_weight_t sudo_sudo_unchecked_weight;
+    pd_sudo_set_key_t sudo_set_key;
+    pd_sudo_sudo_as_t sudo_sudo_as;
     pd_identity_add_registrar_t identity_add_registrar;
     pd_identity_set_identity_t identity_set_identity;
     pd_identity_set_subs_t identity_set_subs;
@@ -1170,40 +1117,13 @@ typedef union {
     pd_identity_set_fields_t identity_set_fields;
     pd_identity_provide_judgement_t identity_provide_judgement;
     pd_identity_kill_identity_t identity_kill_identity;
-    pd_society_bid_t society_bid;
-    pd_society_unbid_t society_unbid;
-    pd_society_vouch_t society_vouch;
-    pd_society_unvouch_t society_unvouch;
-    pd_society_vote_t society_vote;
-    pd_society_defender_vote_t society_defender_vote;
-    pd_society_payout_t society_payout;
-    pd_society_found_t society_found;
-    pd_society_unfound_t society_unfound;
-    pd_society_judge_suspended_member_t society_judge_suspended_member;
-    pd_society_judge_suspended_candidate_t society_judge_suspended_candidate;
-    pd_society_set_max_members_t society_set_max_members;
-    pd_recovery_as_recovered_t recovery_as_recovered;
-    pd_recovery_set_recovered_t recovery_set_recovered;
-    pd_recovery_create_recovery_t recovery_create_recovery;
-    pd_recovery_initiate_recovery_t recovery_initiate_recovery;
-    pd_recovery_vouch_recovery_t recovery_vouch_recovery;
-    pd_recovery_claim_recovery_t recovery_claim_recovery;
-    pd_recovery_close_recovery_t recovery_close_recovery;
-    pd_recovery_remove_recovery_t recovery_remove_recovery;
-    pd_recovery_cancel_recovered_t recovery_cancel_recovered;
-    pd_vesting_vest_t vesting_vest;
-    pd_vesting_vest_other_t vesting_vest_other;
-    pd_vesting_vested_transfer_t vesting_vested_transfer;
-    pd_scheduler_schedule_t scheduler_schedule;
-    pd_scheduler_cancel_t scheduler_cancel;
-    pd_scheduler_schedule_named_t scheduler_schedule_named;
-    pd_scheduler_cancel_named_t scheduler_cancel_named;
     pd_proxy_proxy_t proxy_proxy;
     pd_proxy_add_proxy_t proxy_add_proxy;
     pd_proxy_remove_proxy_t proxy_remove_proxy;
     pd_proxy_remove_proxies_t proxy_remove_proxies;
     pd_proxy_anonymous_t proxy_anonymous;
     pd_proxy_kill_anonymous_t proxy_kill_anonymous;
+    pd_multisig_as_multi_threshold_1_t multisig_as_multi_threshold_1;
     pd_multisig_as_multi_t multisig_as_multi;
     pd_multisig_approve_as_multi_t multisig_approve_as_multi;
     pd_multisig_cancel_as_multi_t multisig_cancel_as_multi;
