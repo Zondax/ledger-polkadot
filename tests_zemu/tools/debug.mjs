@@ -1,7 +1,6 @@
 import Zemu from "@zondax/zemu";
 import path from "path";
-
-const {newPolkadotApp} = require("@zondax/ledger-polkadot");
+import LedgerPolkadot from "@zondax/ledger-polkadot";
 
 const APP_PATH = path.resolve(`./../../app/bin/app.elf`);
 
@@ -59,7 +58,6 @@ async function debugScenario(sim, app) {
     await sim.clickRight();
     await sim.clickRight();
     await sim.clickRight();
-    await sim.clickRight();
     await sim.clickBoth();
 
     let signature = await signatureRequest;
@@ -77,7 +75,7 @@ async function main() {
 
     try {
         await sim.start(SIM_OPTIONS);
-        const app = newPolkadotApp(sim.getTransport());
+        const app = LedgerPolkadot.newPolkadotApp(sim.getTransport());
 
         ////////////
         /// TIP you can use zemu commands here to take the app to the point where you trigger a breakpoint
