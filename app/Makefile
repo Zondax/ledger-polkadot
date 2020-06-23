@@ -35,12 +35,12 @@ ifeq ($(COIN),DOT)
 # Main app configuration
 DEFINES += APP_STANDARD
 APPNAME = "Polkadot"
-APPPATH = "44'/434'"
+APPPATH = "44'/354'"
 
 else ifeq ($(COIN),Ledgeracio)
 DEFINES += APP_RESTRICTED
 APPNAME = "Polkadot_sec"
-APPPATH = "44'/434'"
+APPPATH = "44'/354'"
 
 else
 define error_message
