@@ -452,7 +452,7 @@ parser_error_t _readHash(parser_context_t *c, pd_Hash_t *v) {
     GEN_DEF_READARRAY(32);
 }
 
-uint8_t _detectAddressType() {
+parser_error_t _detectAddressType(uint8_t *addr_type) {
     char hashstr[65];
     uint8_t pc;
 
@@ -461,19 +461,21 @@ uint8_t _detectAddressType() {
 
         // Compare with known genesis hashes
         if (strcmp(hashstr, COIN_GENESIS_HASH) == 0) {
-            return PK_ADDRESS_TYPE;
+            *addr_type = PK_ADDRESS_TYPE;
+            return parser_ok;
         }
     }
 
-    return 42;
+    return parser_unexpected_address_type;
 }
 
 parser_error_t _toStringPubkeyAsAddress(const uint8_t *pubkey,
                                         char *outValue, uint16_t outValueLen,
                                         uint8_t pageIdx, uint8_t *pageCount) {
-    uint8_t addressType = _detectAddressType();
+    uint8_t addr_type;
+    CHECK_PARSER_ERR(_detectAddressType(&addr_type));
 
-    if (crypto_SS58EncodePubkey((uint8_t *) bufferUI, sizeof(bufferUI), addressType, pubkey) == 0) {
+    if (crypto_SS58EncodePubkey((uint8_t *) bufferUI, sizeof(bufferUI), addr_type, pubkey) == 0) {
         return parser_no_data;
     }
 

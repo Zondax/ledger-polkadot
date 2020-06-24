@@ -71,7 +71,13 @@ UX_STEP_NOCB_INIT(ux_addr_flow_2_step, bnnn_paging,
 UX_STEP_VALID(ux_addr_flow_3_step, pb, h_address_accept(0), { &C_icon_validate_14, "Ok"});
 
 UX_FLOW(
-    ux_addr_flow,
+    ux_addr_flow_no_path,
+    &ux_addr_flow_1_step,
+    &ux_addr_flow_3_step
+);
+
+UX_FLOW(
+    ux_addr_flow_with_path,
     &ux_addr_flow_1_step,
     &ux_addr_flow_2_step,
     &ux_addr_flow_3_step
@@ -225,7 +231,11 @@ void view_address_show_impl() {
     if(G_ux.stack_count == 0) {
         ux_stack_push();
     }
-    ux_flow_init(0, ux_addr_flow, NULL);
+    if (app_mode_expert()) {
+        ux_flow_init(0, ux_addr_flow_with_path, NULL);
+    } else {
+        ux_flow_init(0, ux_addr_flow_no_path, NULL);
+    }
 }
 
 void view_error_show_impl() {

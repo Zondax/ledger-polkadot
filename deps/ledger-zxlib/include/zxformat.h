@@ -195,11 +195,34 @@ __Z_INLINE uint8_t fpstr_to_str(char *out, uint16_t outLen, const char *number, 
     return 0;
 }
 
-__Z_INLINE void fpuint64_to_str(char *out, uint16_t outLen, const uint64_t value, uint8_t decimals) {
+__Z_INLINE uint16_t fpuint64_to_str(char *out, uint16_t outLen, const uint64_t value, uint8_t decimals) {
     char buffer[30];
     MEMZERO(buffer, sizeof(buffer));
     int64_to_str(buffer, sizeof(buffer), value);
     fpstr_to_str(out, outLen, buffer, decimals);
+    uint16_t len = strlen(out);
+    return len;
+}
+
+__Z_INLINE void number_inplace_trimming(char *s) {
+    const size_t len = strlen(s);
+    if (len == 0 || len == 1 || len > 1024) {
+        return;
+    }
+
+    int16_t dec_point = -1;
+    for (int16_t i = 0; i < (int16_t) len && dec_point < 0; i++) {
+        if (s[i] == '.') {
+            dec_point = i;
+        }
+    }
+    if (dec_point < 0) {
+        return;
+    }
+
+    for (int16_t i = (int16_t) len - 1; i > (dec_point + 1) && s[i] == '0'; i--) {
+        s[i] = 0;
+    }
 }
 
 __Z_INLINE uint64_t uint64_from_BEarray(const uint8_t data[8]) {

@@ -139,8 +139,10 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
         // CONTINUE WITH FIXED ARGUMENTS
         displayIdx -= methodArgCount;
         switch (displayIdx) {
-            case FIELD_NETWORK:
-                if (_detectAddressType() == PK_ADDRESS_TYPE) {
+            case FIELD_NETWORK: {
+                uint8_t addr_type;
+                CHECK_PARSER_ERR(_detectAddressType(&addr_type));
+                if (addr_type == PK_ADDRESS_TYPE) {
                     snprintf(outKey, outKeyLen, "Chain");
                     snprintf(outValue, outValueLen, COIN_NAME);
                     break;
@@ -150,6 +152,7 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                               outValue, outValueLen,
                               pageIdx, pageCount);
                 break;
+            }
             case FIELD_ONCE:
                 snprintf(outKey, outKeyLen, "Nonce");
                 _toStringCompactIndex(&parser_tx_obj.nonce,
