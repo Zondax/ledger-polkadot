@@ -60,7 +60,7 @@ define run_docker
 	-u $(USERID) \
 	-v $(shell pwd):/project \
 	$(DOCKER_IMAGE) \
-	"COIN=$(COIN) $(2)"
+	"COIN=$(COIN) APP_TESTING=$(APP_TESTING) $(2)"
 endef
 
 all: build
@@ -82,8 +82,12 @@ pull:
 build_rust:
 	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) rust)
 
+.PHONY: convert_icon
+	@convert $(LEDGER_SRC)/tmp.gif -monochrome -size 16x16 -depth 1 $(LEDGER_SRC)/nanos_icon.gif
+	@convert $(LEDGER_SRC)/nanos_icon.gif -crop 14x14+1+1 +repage -negate $(LEDGER_SRC)/nanox_icon.gif
+
 .PHONY: build
-build: build_rust
+build:
 	$(info Replacing app icon)
 	@cp $(LEDGER_SRC)/nanos_icon.gif $(LEDGER_SRC)/glyphs/icon_app.gif
 	$(info calling make inside docker)
@@ -98,6 +102,10 @@ buildX: build_rust
 .PHONY: clean
 clean:
 	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) clean)
+
+.PHONY: clean_rust
+clean_rust:
+	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) rust_clean)
 
 .PHONY: listvariants
 listvariants:
@@ -139,6 +147,11 @@ dev_init_secondary: check_python show_info_recovery_mode
 .PHONY: dev_ca
 dev_ca: check_python
 	@python -m ledgerblue.setupCustomCA --targetId 0x31100004 --public $(SCP_PUBKEY) --name zondax
+
+# This target will setup a custom developer certificate
+.PHONY: dev_caX
+dev_caX: check_python
+	@python -m ledgerblue.setupCustomCA --targetId 0x33000004 --public $(SCP_PUBKEY) --name zondax
 
 .PHONY: dev_ca_delete
 dev_ca_delete: check_python

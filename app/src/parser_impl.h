@@ -146,7 +146,7 @@ parser_error_t _readEra(parser_context_t *c, pd_ExtrinsicEra_t *v);
 
 parser_error_t _readTx(parser_context_t *c, parser_tx_t *v);
 
-uint8_t _detectAddressType();
+parser_error_t _detectAddressType(uint8_t *addr_type);
 
 parser_error_t _toStringCompactInt(const compactInt_t *c,
                                    uint8_t decimalPlaces,

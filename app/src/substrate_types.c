@@ -372,7 +372,7 @@ parser_error_t _readValidatorIndex(parser_context_t *c, pd_ValidatorIndex_t *v) 
 
 parser_error_t _readValidatorPrefs(parser_context_t *c, pd_ValidatorPrefs_t *v) {
     CHECK_INPUT();
-    return _readCompactBalance(c, &v->balance);
+    return _readCompactPerBill(c, &v->commission);
 }
 
 parser_error_t _readVestingInfo(parser_context_t *c, pd_VestingInfo_t *v) {
@@ -1521,7 +1521,7 @@ parser_error_t _toStringValidatorPrefs(
         uint16_t outValueLen,
         uint8_t pageIdx,
         uint8_t *pageCount) {
-    return _toStringCompactBalance(&v->balance, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactPerBill(&v->commission, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringVestingInfo(
@@ -1918,6 +1918,10 @@ parser_error_t _readCompactBalanceOf(parser_context_t *c, pd_CompactBalanceOf_t 
     return _readCompactBalance(c, v);
 }
 
+parser_error_t _readCompactPerBill(parser_context_t *c, pd_CompactPerBill_t *v) {
+    return _readCompactInt(c, v);
+}
+
 parser_error_t _readKeys(parser_context_t *c, pd_Keys_t *v) {
     GEN_DEF_READARRAY(5 * 32);
 }
@@ -2002,6 +2006,15 @@ parser_error_t _toStringCompactBalanceOf(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     return _toStringCompactBalance(v, outValue, outValueLen, pageIdx, pageCount);
+}
+
+parser_error_t _toStringCompactPerBill(
+        const pd_CompactPerBill_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    return _toStringCompactInt(v, 9, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringCompactu32(

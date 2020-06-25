@@ -149,8 +149,10 @@ static unsigned int view_error_button(unsigned int button_mask, unsigned int but
 static unsigned int view_review_button(unsigned int button_mask, unsigned int button_mask_counter) {
     switch (button_mask) {
         case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
-            // Press both left and right buttons to quit
-            view_sign_show_s();
+            if (app_mode_expert()) {
+                // Press both left and right buttons to quit
+                view_sign_show_s();
+            }
             break;
         case BUTTON_EVT_RELEASED | BUTTON_LEFT:
             // Press left to progress to the previous element

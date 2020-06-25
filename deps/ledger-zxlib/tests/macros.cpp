@@ -198,6 +198,42 @@ namespace {
         EXPECT_EQ(std::string(output), "1.0");
     }
 
+    TEST(FORMAT, number_trimming) {
+        char output[100];
+
+        strcpy(output, "0");
+        number_inplace_trimming(output);
+        EXPECT_EQ(std::string(output), "0");
+
+        strcpy(output, "10");
+        number_inplace_trimming(output);
+        EXPECT_EQ(std::string(output), "10");
+
+        strcpy(output, "10.10");
+        number_inplace_trimming(output);
+        EXPECT_EQ(std::string(output), "10.1");
+
+        strcpy(output, "0.0");
+        number_inplace_trimming(output);
+        EXPECT_EQ(std::string(output), "0.0");
+
+        strcpy(output, "0.00");
+        number_inplace_trimming(output);
+        EXPECT_EQ(std::string(output), "0.0");
+
+        strcpy(output, "0.01");
+        number_inplace_trimming(output);
+        EXPECT_EQ(std::string(output), "0.01");
+
+        strcpy(output, "0.010");
+        number_inplace_trimming(output);
+        EXPECT_EQ(std::string(output), "0.01");
+
+        strcpy(output, "0.010000");
+        number_inplace_trimming(output);
+        EXPECT_EQ(std::string(output), "0.01");
+    }
+
     TEST(INT64_TO_STR, Zero) {
         char temp[10];
         const char *error = int64_to_str(temp, sizeof(temp), int64_t(0));
@@ -305,7 +341,6 @@ namespace {
         int8_t number = str_to_int8(numberStr, numberStr + strlen(numberStr), &error);
         EXPECT_EQ(1, error);
     }
-
 
     TEST(STR_TO_INT8, DummyData_Positive) {
         char numberStr[] = "100b0";

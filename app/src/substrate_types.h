@@ -174,6 +174,8 @@ typedef compactInt_t pd_CompactMoment_t;
 
 typedef compactInt_t pd_CompactParaId_t;
 
+typedef compactInt_t pd_CompactPerBill_t;
+
 typedef compactInt_t pd_CompactPropIndex_t;
 
 typedef compactInt_t pd_CompactProposalIndex_t;
@@ -413,7 +415,7 @@ typedef struct {
 } pd_ValidatorIndex_t;
 
 typedef struct { 
-    pd_CompactBalance_t balance;
+    pd_CompactPerBill_t commission;
 } pd_ValidatorPrefs_t;
 
 typedef struct { 
@@ -554,6 +556,7 @@ parser_error_t _readCompactLeasePeriodOf(parser_context_t *c, pd_CompactLeasePer
 parser_error_t _readCompactMemberCount(parser_context_t *c, pd_CompactMemberCount_t *v);
 parser_error_t _readCompactMoment(parser_context_t *c, pd_CompactMoment_t *v);
 parser_error_t _readCompactParaId(parser_context_t *c, pd_CompactParaId_t *v);
+parser_error_t _readCompactPerBill(parser_context_t *c, pd_CompactPerBill_t *v);
 parser_error_t _readCompactPropIndex(parser_context_t *c, pd_CompactPropIndex_t *v);
 parser_error_t _readCompactProposalIndex(parser_context_t *c, pd_CompactProposalIndex_t *v);
 parser_error_t _readCompactReferendumIndex(parser_context_t *c, pd_CompactReferendumIndex_t *v);
@@ -776,6 +779,13 @@ parser_error_t _toStringCompactMoment(
 
 parser_error_t _toStringCompactParaId(
     const pd_CompactParaId_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringCompactPerBill(
+    const pd_CompactPerBill_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
