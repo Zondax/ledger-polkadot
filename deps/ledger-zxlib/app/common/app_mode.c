@@ -17,8 +17,18 @@
 #include "app_mode.h"
 
 typedef struct {
-    uint32_t expert;
+    uint8_t expert;
 } app_mode_t;
+
+#if defined(TARGET_NANOS)
+app_mode_t N_appmode_impl __attribute__ ((aligned(64)));
+#define N_appmode (*(app_mode_t *)PIC(&N_appmode_impl))
+
+#elif defined(TARGET_NANOX)
+app_mode_t const N_appmode_impl __attribute__ ((aligned(64)));
+#define N_appmode (*(volatile app_mode_t *)PIC(&N_appmode_impl))
+#endif
+
 
 #if defined(TARGET_NANOS) || defined(TARGET_NANOX)
 //////////////////////////////////////////////////////////////
@@ -26,27 +36,17 @@ typedef struct {
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
-//NV_CONST app_mode_t N_appmode NV_ALIGN;
-//#define N_APPMODE_PTR  ((NV_VOL app_mode_t *)PIC(&N_appmode))
-app_mode_t app_mode;
-
 void app_mode_reset(){
-    app_mode.expert = 0;
 }
 
 bool app_mode_expert() {
-//    TODO: read from NVRAM
-//    app_mode_t *p = N_APPMODE_PTR;
-//    uint8_t expert = p->expert;
-//    return expert;
-//    app_mode_t* p =(NV_VOL app_mode_t *)PIC(&N_appmode_impl);
-//    return p->expert;
-    return app_mode.expert;
+    return N_appmode.expert;
 }
 
 void app_mode_set_expert(uint8_t val) {
-//    TODO: write to NVRAM
-    app_mode.expert = val;
+    app_mode_t mode;
+    mode.expert = val;
+    MEMCPY_NV( (void*) PIC(&N_appmode_impl), (void*) &mode, sizeof(app_mode_t));
 }
 
 #else

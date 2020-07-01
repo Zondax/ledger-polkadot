@@ -214,16 +214,16 @@ parser_error_t _readElectionSize(parser_context_t *c, pd_ElectionSize_t *v) {
     return parser_not_supported;
 }
 
-parser_error_t _readEquivocationProof(parser_context_t *c, pd_EquivocationProof_t *v) {
-    return parser_not_supported;
-}
-
 parser_error_t _readEraIndex(parser_context_t *c, pd_EraIndex_t *v) {
     return _readUInt32(c, &v->value);
 }
 
 parser_error_t _readEthereumAddress(parser_context_t *c, pd_EthereumAddress_t *v) {
     GEN_DEF_READARRAY(20)
+}
+
+parser_error_t _readGrandpaEquivocationProof(parser_context_t *c, pd_GrandpaEquivocationProof_t *v) {
+    return parser_not_supported;
 }
 
 parser_error_t _readHeadData(parser_context_t *c, pd_HeadData_t *v) {
@@ -984,17 +984,6 @@ parser_error_t _toStringElectionSize(
     return parser_print_not_supported;
 }
 
-parser_error_t _toStringEquivocationProof(
-        const pd_EquivocationProof_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-    
-    return parser_print_not_supported;
-}
-
 parser_error_t _toStringEraIndex(
         const pd_EraIndex_t *v,
         char *outValue,
@@ -1011,6 +1000,17 @@ parser_error_t _toStringEthereumAddress(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     GEN_DEF_TOSTRING_ARRAY(20)
+}
+
+parser_error_t _toStringGrandpaEquivocationProof(
+        const pd_GrandpaEquivocationProof_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    
+    return parser_print_not_supported;
 }
 
 parser_error_t _toStringHeadData(
