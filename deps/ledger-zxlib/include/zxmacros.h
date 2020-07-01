@@ -27,7 +27,11 @@ extern "C" {
 
 void check_app_canary();
 
+#include <inttypes.h>
+#include <stdint.h>
+#include <stdio.h>
 #include "string.h"
+
 #ifndef __APPLE__
 extern void explicit_bzero(void *__s, size_t __n) __THROW __nonnull ((1));
 #endif
@@ -37,18 +41,6 @@ void handle_stack_overflow();
 
 #if defined(LEDGER_SPECIFIC)
 #include "bolos_target.h"
-#endif
-
-#if defined(TARGET_NANOX)
-#define NV_CONST const
-#define NV_VOL volatile
-#else
-#define NV_CONST
-#define NV_VOL
-#endif
-
-#ifndef PIC
-#define PIC(x) (x)
 #endif
 
 #define NV_ALIGN __attribute__ ((aligned(64)))
@@ -61,8 +53,14 @@ void handle_stack_overflow();
 
 #if defined(TARGET_NANOX)
 #include "ux.h"
+#define NV_CONST const
+#define NV_VOL volatile
+#define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
 #else
 #include "os_io_seproxyhal.h"
+#define NV_CONST
+#define NV_VOL
+#define IS_UX_ALLOWED (ux.params.len != BOLOS_UX_IGNORE && ux.params.len != BOLOS_UX_CONTINUE)
 #endif
 
 #define CHECK_APP_CANARY() check_app_canary();
@@ -77,12 +75,6 @@ extern unsigned int app_stack_canary;
     io_seproxyhal_general_status(); \
     WAIT_EVENT()
 
-#if defined(TARGET_NANOX)
-#define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
-#else
-#define IS_UX_ALLOWED (ux.params.len != BOLOS_UX_IGNORE && ux.params.len != BOLOS_UX_CONTINUE)
-#endif
-
 #define MEMMOVE os_memmove
 #define MEMSET os_memset
 #define MEMCPY os_memcpy
@@ -91,6 +83,10 @@ extern unsigned int app_stack_canary;
 #define MEMZERO explicit_bzero
 
 #else
+
+#ifndef PIC
+#define PIC(x) (x)
+#endif
 
 #define CHECK_APP_CANARY() {}
 
@@ -110,10 +106,6 @@ __Z_INLINE void __memzero(void *buffer, size_t s) { memset(buffer, 0, s); }
 #define MEMZERO __memzero
 #endif
 #endif
-
-#include <inttypes.h>
-#include <stdint.h>
-#include <stdio.h>
 
 #define SET_NV(DST, TYPE, VAL) { \
     TYPE nvset_tmp=(VAL); \

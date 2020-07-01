@@ -43,12 +43,12 @@ zbuffer_error_e zb_init() {
 
 zbuffer_error_e zb_allocate(uint16_t size) {
     if (size % 4 != 0) {
-        return zb_misaligned_buffer;
+        size += size % 4;
     }
     _internal.size = size;
-    _internal.ptr = (uint8_t *) (&app_stack_canary + 4);
+    _internal.ptr = (uint8_t * )(&app_stack_canary + 4);
 
-    uint32_t *zb_canary = (uint32_t *) (_internal.ptr + _internal.size + 4);
+    uint32_t *zb_canary = (uint32_t * )(_internal.ptr + _internal.size + 4);
     *zb_canary = CANARY_EXPECTED;
 
     return zb_no_error;
@@ -70,7 +70,7 @@ zbuffer_error_e zb_check_canary() {
     CHECK_APP_CANARY();
     if (_internal.size != 0) {
         // allocated
-        uint32_t *zb_canary = (uint32_t *) (_internal.ptr + _internal.size + 4);
+        uint32_t *zb_canary = (uint32_t * )(_internal.ptr + _internal.size + 4);
         if (*zb_canary != CANARY_EXPECTED) {
             handle_stack_overflow();
         }
