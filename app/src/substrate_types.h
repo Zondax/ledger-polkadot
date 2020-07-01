@@ -265,17 +265,17 @@ typedef struct {
 } pd_ElectionSize_t;
 
 typedef struct { 
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_EquivocationProof_t;
-
-typedef struct { 
     uint32_t value;
 } pd_EraIndex_t;
 
 typedef struct { 
     const uint8_t *_ptr;
 } pd_EthereumAddress_t;
+
+typedef struct { 
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_GrandpaEquivocationProof_t;
 
 typedef struct { 
     // TODO: Not implemented
@@ -571,9 +571,9 @@ parser_error_t _readDoubleVoteReport(parser_context_t *c, pd_DoubleVoteReport_t 
 parser_error_t _readEcdsaSignature(parser_context_t *c, pd_EcdsaSignature_t *v);
 parser_error_t _readElectionScore(parser_context_t *c, pd_ElectionScore_t *v);
 parser_error_t _readElectionSize(parser_context_t *c, pd_ElectionSize_t *v);
-parser_error_t _readEquivocationProof(parser_context_t *c, pd_EquivocationProof_t *v);
 parser_error_t _readEraIndex(parser_context_t *c, pd_EraIndex_t *v);
 parser_error_t _readEthereumAddress(parser_context_t *c, pd_EthereumAddress_t *v);
+parser_error_t _readGrandpaEquivocationProof(parser_context_t *c, pd_GrandpaEquivocationProof_t *v);
 parser_error_t _readHeadData(parser_context_t *c, pd_HeadData_t *v);
 parser_error_t _readHeader(parser_context_t *c, pd_Header_t *v);
 parser_error_t _readHeartbeat(parser_context_t *c, pd_Heartbeat_t *v);
@@ -889,13 +889,6 @@ parser_error_t _toStringElectionSize(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
-parser_error_t _toStringEquivocationProof(
-    const pd_EquivocationProof_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
 parser_error_t _toStringEraIndex(
     const pd_EraIndex_t *v,
     char *outValue,
@@ -905,6 +898,13 @@ parser_error_t _toStringEraIndex(
 
 parser_error_t _toStringEthereumAddress(
     const pd_EthereumAddress_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringGrandpaEquivocationProof(
+    const pd_GrandpaEquivocationProof_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

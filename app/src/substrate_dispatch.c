@@ -360,7 +360,7 @@ __Z_INLINE parser_error_t _readMethod_finalitytracker_final_hint(
 
 __Z_INLINE parser_error_t _readMethod_grandpa_report_equivocation(
     parser_context_t *c, pd_grandpa_report_equivocation_t *m) {
-    CHECK_ERROR(_readEquivocationProof(c, &m->equivocation_proof))
+    CHECK_ERROR(_readGrandpaEquivocationProof(c, &m->equivocation_proof))
     CHECK_ERROR(_readKeyOwnerProof(c, &m->key_owner_proof))
     return parser_ok;
 }
@@ -4129,7 +4129,7 @@ parser_error_t _getMethod_ItemValue(
         case 2816: /* module 11 call 0 */
         switch(itemIdx) {
             case 0: /* grandpa_report_equivocation - equivocation_proof */;
-                return _toStringEquivocationProof(
+                return _toStringGrandpaEquivocationProof(
                     &m->basic.grandpa_report_equivocation.equivocation_proof,
                     outValue, outValueLen,
                     pageIdx, pageCount);

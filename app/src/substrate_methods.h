@@ -345,7 +345,7 @@ typedef struct {
 
 #define PD_CALL_GRANDPA_REPORT_EQUIVOCATION 0
 typedef struct {
-    pd_EquivocationProof_t equivocation_proof;
+    pd_GrandpaEquivocationProof_t equivocation_proof;
     pd_KeyOwnerProof_t key_owner_proof;
 } pd_grandpa_report_equivocation_t;
 
