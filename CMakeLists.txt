@@ -60,9 +60,11 @@ add_definitions(
 #  static libs
 file(GLOB_RECURSE LIB_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/deps/BLAKE2/ref/blake2b-ref.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/src/base58.c
         ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/src/bignum.c
         ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/src/hexutils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/src/zxmacros.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/ledger-zxlib/app/common/zbuffer.c
         ####
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/crypto.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser.c
@@ -70,8 +72,6 @@ file(GLOB_RECURSE LIB_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_txdef.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate_types.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate_dispatch.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/base58.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/lib/uint256.c
         )
 
 add_library(app_lib STATIC ${LIB_SRC})
