@@ -125,6 +125,10 @@ parser_error_t _readBalanceOf(parser_context_t *c, pd_BalanceOf_t *v) {
     GEN_DEF_READARRAY(16)
 }
 
+parser_error_t _readBalance(parser_context_t *c, pd_Balance_t *v) {
+    return parser_not_supported;
+}
+
 parser_error_t _readBytes(parser_context_t *c, pd_Bytes_t *v) {
     CHECK_INPUT()
 
@@ -283,6 +287,10 @@ parser_error_t _readMoreAttestations(parser_context_t *c, pd_MoreAttestations_t 
     return parser_not_supported;
 }
 
+parser_error_t _readParaId(parser_context_t *c, pd_ParaId_t *v) {
+    return parser_not_supported;
+}
+
 parser_error_t _readParaInfo(parser_context_t *c, pd_ParaInfo_t *v) {
     CHECK_INPUT();
     CHECK_ERROR(_readUInt8(c, &v->scheduling))
@@ -315,6 +323,10 @@ parser_error_t _readReferendumIndex(parser_context_t *c, pd_ReferendumIndex_t *v
 
 parser_error_t _readRegistrarIndex(parser_context_t *c, pd_RegistrarIndex_t *v) {
     return _readUInt32(c, &v->value);
+}
+
+parser_error_t _readRemark(parser_context_t *c, pd_Remark_t *v) {
+    return parser_not_supported;
 }
 
 parser_error_t _readRenouncing(parser_context_t *c, pd_Renouncing_t *v) {
@@ -807,6 +819,7 @@ parser_error_t _toStringBalanceOf(
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
 
+    char bufferUI[200];
     MEMSET(outValue, 0, outValueLen);
     MEMSET(bufferUI, 0, sizeof(bufferUI));
     *pageCount = 1;
@@ -821,6 +834,17 @@ parser_error_t _toStringBalanceOf(
 
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
+}
+
+parser_error_t _toStringBalance(
+        const pd_Balance_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    
+    return parser_print_not_supported;
 }
 
 parser_error_t _toStringBytes(
@@ -1240,6 +1264,17 @@ parser_error_t _toStringMoreAttestations(
     return parser_print_not_supported;
 }
 
+parser_error_t _toStringParaId(
+        const pd_ParaId_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    
+    return parser_print_not_supported;
+}
+
 parser_error_t _toStringParaInfo(
         const pd_ParaInfo_t *v,
         char *outValue,
@@ -1332,6 +1367,17 @@ parser_error_t _toStringRegistrarIndex(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     return _toStringu32(&v->value, outValue, outValueLen, pageIdx, pageCount);
+}
+
+parser_error_t _toStringRemark(
+        const pd_Remark_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+    
+    return parser_print_not_supported;
 }
 
 parser_error_t _toStringRenouncing(
@@ -1958,6 +2004,7 @@ parser_error_t _toStringu16(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
+    char bufferUI[50];
 
     uint64_to_str(bufferUI, sizeof(bufferUI), *v);
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
@@ -1971,6 +2018,7 @@ parser_error_t _toStringu32(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
+    char bufferUI[100];
 
     uint64_to_str(bufferUI, sizeof(bufferUI), *v);
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
@@ -1984,6 +2032,7 @@ parser_error_t _toStringu64(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
+    char bufferUI[100];
 
     uint64_to_str(bufferUI, sizeof(bufferUI), *v);
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
