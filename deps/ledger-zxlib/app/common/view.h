@@ -37,7 +37,7 @@ void view_idle_show(uint8_t item_idx);
 void view_error_show();
 
 // shows address in the screen
-void view_address_show(address_kind_e addressKind);
+void view_address_show();
 
 // Shows review screen + later sign menu
 void view_sign_show();

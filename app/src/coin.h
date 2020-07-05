@@ -33,8 +33,6 @@ typedef enum {
 } address_kind_e;
 
 #define VIEW_ADDRESS_OFFSET_ED25519         (PK_LEN_ED25519)
-#define VIEW_ADDRESS_ITEM_COUNT             2
-#define VIEW_ADDRESS_LAST_PAGE_DEFAULT      0
 
 // Coin Specific
 #define PK_ADDRESS_TYPE                     COIN_ADDR_TYPE_POLKADOT

@@ -25,9 +25,7 @@ extern "C" {
 const char *parser_getErrorDescription(parser_error_t err);
 
 //// parses a tx buffer
-parser_error_t parser_parse(parser_context_t *ctx,
-                            const uint8_t *data,
-                            size_t dataLen);
+parser_error_t parser_parse(parser_context_t *ctx, const uint8_t *data, size_t dataLen, parser_tx_t *tx_obj);
 
 //// verifies tx fields
 parser_error_t parser_validate(const parser_context_t *ctx);
@@ -37,9 +35,9 @@ parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_item
 
 // retrieves a readable output for each field / page
 parser_error_t parser_getItem(const parser_context_t *ctx,
-                              uint16_t displayIdx,
+                              uint8_t displayIdx,
                               char *outKey, uint16_t outKeyLen,
-                              char *outValue, uint16_t outValueLen,
+                              char *outVal, uint16_t outValLen,
                               uint8_t pageIdx, uint8_t *pageCount);
 
 #ifdef __cplusplus

@@ -20,11 +20,17 @@
 extern "C" {
 #endif
 
+#define CHECK_ZXERR(CALL) { \
+    zxerr_t err = CALL;  \
+    if (err!=zxerr_ok) return err;}
+
 typedef enum {
     zxerr_ok,
+    zxerr_no_data,
     zxerr_buffer_too_small,
     zxerr_out_of_bounds,
     zxerr_encoding_failed,
+    zxerr_unknown
 } zxerr_t;
 
 #ifdef __cplusplus

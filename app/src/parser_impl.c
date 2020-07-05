@@ -23,10 +23,6 @@
 #include "bignum.h"
 #include "coin_ss58.h"
 
-char bufferUI[300];
-
-parser_tx_t parser_tx_obj;
-
 parser_error_t parser_init_context(parser_context_t *ctx,
                                    const uint8_t *buffer,
                                    uint16_t bufferSize) {
@@ -51,6 +47,7 @@ parser_error_t parser_init(parser_context_t *ctx, const uint8_t *buffer, uint16_
 
 const char *parser_getErrorDescription(parser_error_t err) {
     switch (err) {
+        // General errors
         case parser_ok:
             return "No error";
         case parser_no_data:
@@ -61,10 +58,11 @@ const char *parser_getErrorDescription(parser_error_t err) {
             return "display_idx_out_of_range";
         case parser_display_page_out_of_range:
             return "display_page_out_of_range";
-
-            // Coin specific
+        // Coin specific
         case parser_spec_not_supported:
             return "Spec version not supported";
+        case parser_not_allowed:
+            return "Not allowed";
         case parser_not_supported:
             return "Not supported";
         case parser_unexpected_buffer_end:
@@ -183,6 +181,7 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
                                    uint8_t decimalPlaces,
                                    char *outValue, uint16_t outValueLen,
                                    uint8_t pageIdx, uint8_t *pageCount) {
+    char bufferUI[200];
     MEMZERO(outValue, outValueLen);
     MEMZERO(bufferUI, sizeof(bufferUI));
     *pageCount = 1;
@@ -353,6 +352,27 @@ parser_error_t _checkVersions(parser_context_t *c) {
     return parser_ok;
 }
 
+uint8_t __address_type;
+uint8_t _getAddressType() {
+    return __address_type;
+}
+
+uint8_t _detectAddressType(const parser_context_t *c) {
+    char hashstr[65];
+    uint8_t pc;
+
+    if (c->tx_obj->genesisHash._ptr != NULL) {
+        _toStringHash(&c->tx_obj->genesisHash, hashstr, 65, 0, &pc);
+
+        // Compare with known genesis hashes
+        if (strcmp(hashstr, COIN_GENESIS_HASH) == 0) {
+            return PK_ADDRESS_TYPE;
+        }
+    }
+
+    return 42;
+}
+
 parser_error_t _readTx(parser_context_t *c, parser_tx_t *v) {
     CHECK_INPUT();
 
@@ -377,6 +397,8 @@ parser_error_t _readTx(parser_context_t *c, parser_tx_t *v) {
     if (c->offset > c->bufferLen) {
         return parser_unexpected_buffer_end;
     }
+
+    __address_type = _detectAddressType(c);
 
     return parser_ok;
 }
@@ -452,30 +474,12 @@ parser_error_t _readHash(parser_context_t *c, pd_Hash_t *v) {
     GEN_DEF_READARRAY(32);
 }
 
-parser_error_t _detectAddressType(uint8_t *addr_type) {
-    char hashstr[65];
-    uint8_t pc;
-
-    if (parser_tx_obj.genesisHash._ptr != NULL) {
-        _toStringHash(&parser_tx_obj.genesisHash, hashstr, 65, 0, &pc);
-
-        // Compare with known genesis hashes
-        if (strcmp(hashstr, COIN_GENESIS_HASH) == 0) {
-            *addr_type = PK_ADDRESS_TYPE;
-            return parser_ok;
-        }
-    }
-
-    return parser_unexpected_address_type;
-}
-
 parser_error_t _toStringPubkeyAsAddress(const uint8_t *pubkey,
                                         char *outValue, uint16_t outValueLen,
                                         uint8_t pageIdx, uint8_t *pageCount) {
-    uint8_t addr_type;
-    CHECK_PARSER_ERR(_detectAddressType(&addr_type));
+    char bufferUI[200];
 
-    if (crypto_SS58EncodePubkey((uint8_t *) bufferUI, sizeof(bufferUI), addr_type, pubkey) == 0) {
+    if (crypto_SS58EncodePubkey((uint8_t *) bufferUI, sizeof(bufferUI), __address_type, pubkey) == 0) {
         return parser_no_data;
     }
 

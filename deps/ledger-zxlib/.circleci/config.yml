@@ -9,7 +9,7 @@ jobs:
           command: apt update && apt-get -y install build-essential git sudo wget cmake libssl-dev libgmp-dev autoconf libtool
       - checkout
       - run: git submodule update --init --recursive
-      - run: cmake -DDISABLE_DOCKER_BUILDS=ON . && make
+      - run: cmake . && make
       - run: export GTEST_COLOR=1 && ctest -VV
 
 workflows:

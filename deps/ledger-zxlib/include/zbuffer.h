@@ -1,6 +1,5 @@
 /*******************************************************************************
-*   (c) 2018, 2019 Zondax GmbH
-*   (c) 2016 Ledger
+*   (c) 2020 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -14,24 +13,26 @@
 *  See the License for the specific language governing permissions and
 *  limitations under the License.
 ********************************************************************************/
+#pragma once
 
-#include "view.h"
-#include "coin.h"
-#include "crypto.h"
-#include "view_internal.h"
-#include <os_io_seproxyhal.h>
+#include <inttypes.h>
+#include <stdint.h>
 
-#include <string.h>
-#include <stdio.h>
+typedef enum {
+    zb_no_error,
+    zb_misaligned_buffer,
+    zb_not_allocated
+} zbuffer_error_e;
 
-view_error_t view_printAddr() {
-    snprintf(viewdata.addr, MAX_CHARS_ADDR, "%s", (char *) (G_io_apdu_buffer + VIEW_ADDRESS_OFFSET_ED25519));
-    splitValueField();
-    return view_no_error;
-}
+// allocate a block at the end of the stack
+// maximum size will not be checked
+zbuffer_error_e zb_allocate(uint16_t size);
 
-view_error_t view_printPath() {
-    bip32_to_str(viewdata.addr, MAX_CHARS_ADDR, hdPath, HDPATH_LEN_DEFAULT);
-    splitValueField();
-    return view_no_error;
-}
+// deallocate memory block as the end of the stack
+zbuffer_error_e zb_deallocate();
+
+// obtain a pointer to the allocated block
+zbuffer_error_e zb_get(uint8_t **buffer);
+
+// check that the block boundary has not been corrupted
+zbuffer_error_e zb_check_canary();

@@ -16,11 +16,43 @@
 #pragma once
 
 #include <stdint.h>
+#include "crypto.h"
+#include "tx.h"
+#include "apdu_codes.h"
+#include <os_io_seproxyhal.h>
+#include "coin.h"
 
-void app_sign();
+extern uint8_t action_addr_len;
 
-uint8_t app_fill_address();
+__Z_INLINE void app_sign() {
+    uint8_t *signature = G_io_apdu_buffer;
 
-void app_reply_address();
+    const uint8_t *message = tx_get_buffer() + CRYPTO_BLOB_SKIP_BYTES;
+    const uint16_t messageLength = tx_get_buffer_length() - CRYPTO_BLOB_SKIP_BYTES;
 
-void app_reply_error();
+    const uint8_t replyLen = crypto_sign(signature, IO_APDU_BUFFER_SIZE - 3, message, messageLength);
+    if (replyLen > 0) {
+        set_code(G_io_apdu_buffer, replyLen, APDU_CODE_OK);
+        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, replyLen + 2);
+    } else {
+        set_code(G_io_apdu_buffer, 0, APDU_CODE_SIGN_VERIFY_ERROR);
+        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
+    }
+}
+
+__Z_INLINE uint8_t app_fill_address() {
+    // Put data directly in the apdu buffer
+    MEMZERO(G_io_apdu_buffer, IO_APDU_BUFFER_SIZE);
+    action_addr_len = crypto_fillAddress(G_io_apdu_buffer, IO_APDU_BUFFER_SIZE - 2);
+    return action_addr_len;
+}
+
+__Z_INLINE void app_reply_address() {
+    set_code(G_io_apdu_buffer, action_addr_len, APDU_CODE_OK);
+    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, action_addr_len + 2);
+}
+
+__Z_INLINE void app_reply_error() {
+    set_code(G_io_apdu_buffer, 0, APDU_CODE_DATA_INVALID);
+    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
+}

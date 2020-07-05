@@ -18,6 +18,7 @@
 
 #include <stdint.h>
 #include "coin.h"
+#include "zxerror.h"
 
 #define CUR_FLOW G_ux.flow_stack[G_ux.stack_count-1]
 
@@ -36,6 +37,11 @@
 
 // This takes data from G_io_apdu_buffer that is prefilled with the address
 
+typedef enum  {
+    review_tx = 0,
+    review_address = 1
+} review_mode_e;
+
 typedef struct {
     union {
         struct {
@@ -49,7 +55,7 @@ typedef struct {
             char addr[MAX_CHARS_ADDR];
         };
     };
-    address_kind_e addrKind;
+    review_mode_e mode;
     uint8_t itemIdx;
     uint8_t itemCount;
     uint8_t pageIdx;
@@ -57,12 +63,6 @@ typedef struct {
 } view_t;
 
 extern view_t viewdata;
-
-typedef enum {
-    view_no_error = 0,
-    view_no_data = 1,
-    view_error_detected = 2
-} view_error_t;
 
 #define print_title(...) snprintf(viewdata.title, sizeof(viewdata.title), __VA_ARGS__)
 #define print_key(...) snprintf(viewdata.key, sizeof(viewdata.key), __VA_ARGS__);
@@ -111,10 +111,4 @@ void h_paging_decrease();
 
 void h_paging_set_page_count(uint8_t pageCount);
 
-view_error_t h_review_update_data();
-
-view_error_t h_addr_update_item(uint8_t idx);
-
-view_error_t view_printAddr();
-
-view_error_t view_printPath();
+zxerr_t h_review_update_data();

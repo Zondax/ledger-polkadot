@@ -20,6 +20,7 @@
 #include <hexutils.h>
 #include <parser_txdef.h>
 #include <parser.h>
+#include <substrate_functions.h>
 #include "parser_impl.h"
 
 using ::testing::TestWithParam;

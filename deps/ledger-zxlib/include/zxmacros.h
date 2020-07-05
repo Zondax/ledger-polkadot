@@ -54,12 +54,12 @@ void handle_stack_overflow();
 #if defined(TARGET_NANOX)
 #include "ux.h"
 #define NV_CONST const
-#define NV_VOL volatile
+#define NV_VOLATILE volatile
 #define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
 #else
 #include "os_io_seproxyhal.h"
 #define NV_CONST
-#define NV_VOL
+#define NV_VOLATILE
 #define IS_UX_ALLOWED (ux.params.len != BOLOS_UX_IGNORE && ux.params.len != BOLOS_UX_CONTINUE)
 #endif
 

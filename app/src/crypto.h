@@ -16,14 +16,14 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <zxmacros.h>
 #include "coin.h"
 #include <stdbool.h>
 #include <sigutils.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #define SS58_ADDRESS_MAX_LEN 60u
 

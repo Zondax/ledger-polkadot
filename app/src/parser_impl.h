@@ -28,8 +28,6 @@ extern "C" {
 #include "zxtypes.h"
 #include "parser_txdef.h"
 
-extern parser_tx_t parser_tx_obj;
-
 parser_error_t parser_init(parser_context_t *ctx,
                            const uint8_t *buffer,
                            uint16_t bufferSize);
@@ -146,7 +144,7 @@ parser_error_t _readEra(parser_context_t *c, pd_ExtrinsicEra_t *v);
 
 parser_error_t _readTx(parser_context_t *c, parser_tx_t *v);
 
-parser_error_t _detectAddressType(uint8_t *addr_type);
+uint8_t _getAddressType();
 
 parser_error_t _toStringCompactInt(const compactInt_t *c,
                                    uint8_t decimalPlaces,

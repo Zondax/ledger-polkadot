@@ -20,21 +20,13 @@ typedef struct {
     uint8_t expert;
 } app_mode_t;
 
-#if defined(TARGET_NANOS)
-app_mode_t N_appmode_impl __attribute__ ((aligned(64)));
-#define N_appmode (*(app_mode_t *)PIC(&N_appmode_impl))
-
-#elif defined(TARGET_NANOX)
-app_mode_t const N_appmode_impl __attribute__ ((aligned(64)));
-#define N_appmode (*(volatile app_mode_t *)PIC(&N_appmode_impl))
-#endif
-
-
 #if defined(TARGET_NANOS) || defined(TARGET_NANOX)
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+app_mode_t NV_CONST N_appmode_impl __attribute__ ((aligned(64)));
+#define N_appmode (*(NV_VOLATILE app_mode_t *)PIC(&N_appmode_impl))
 
 void app_mode_reset(){
 }

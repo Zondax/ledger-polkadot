@@ -19,6 +19,7 @@
 extern "C" {
 #endif
 
+#include "parser_txdef.h"
 #include <stdint.h>
 #include <stddef.h>
 
@@ -38,6 +39,7 @@ typedef enum {
     // Coin specific
     parser_unexpected_address_type,
     parser_spec_not_supported,
+    parser_not_allowed,
     parser_not_supported,
     parser_unexpected_buffer_end,
     parser_unexpected_value,
@@ -53,9 +55,8 @@ typedef struct {
     const uint8_t *buffer;
     uint16_t bufferLen;
     uint16_t offset;
+    parser_tx_t *tx_obj;
 } parser_context_t;
-
-extern char bufferUI[300];
 
 #ifdef __cplusplus
 }

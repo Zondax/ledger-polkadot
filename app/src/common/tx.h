@@ -17,11 +17,7 @@
 
 #include "os.h"
 #include "coin.h"
-
-typedef enum {
-    tx_no_error = 0,
-    tx_no_data = 1,
-} tx_error_t;
+#include "zxerror.h"
 
 void tx_initialize();
 
@@ -45,14 +41,14 @@ uint8_t *tx_get_buffer();
 
 /// Parse message stored in transaction buffer
 /// This function should be called as soon as full buffer data is loaded.
-/// \return It returns NULL if json is valid or error message otherwise.
+/// \return It returns NULL if data is valid or error message otherwise.
 const char *tx_parse();
 
 /// Return the number of items in the transaction
-tx_error_t tx_getNumItems(uint8_t *num_items);
+zxerr_t tx_getNumItems(uint8_t *num_items);
 
 /// Gets an specific item from the transaction (including paging)
-tx_error_t tx_getItem(int8_t displayIdx,
-                           char *outKey, uint16_t outKeyLen,
-                           char *outValue, uint16_t outValueLen,
-                           uint8_t pageIdx, uint8_t *pageCount);
+zxerr_t tx_getItem(int8_t displayIdx,
+                   char *outKey, uint16_t outKeyLen,
+                   char *outValue, uint16_t outValueLen,
+                   uint8_t pageIdx, uint8_t *pageCount);
