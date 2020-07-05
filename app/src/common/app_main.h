@@ -38,4 +38,8 @@ void app_init();
 
 void app_main();
 
+void extractHDPath(uint32_t rx, uint32_t offset);
+
+bool process_chunk(volatile uint32_t *tx, uint32_t rx);
+
 void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx);

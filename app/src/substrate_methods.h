@@ -653,6 +653,19 @@ typedef struct {
     pd_DoubleVoteReport_t report;
 } pd_parachains_report_double_vote_t;
 
+#define PD_CALL_PARACHAINS_TRANSFER_TO_PARACHAIN 2
+typedef struct {
+    pd_ParaId_t to;
+    pd_Balance_t amount;
+    pd_Remark_t remark;
+} pd_parachains_transfer_to_parachain_t;
+
+#define PD_CALL_PARACHAINS_SEND_XCMP_MESSAGE 3
+typedef struct {
+    pd_ParaId_t to;
+    pd_Bytes_t msg;
+} pd_parachains_send_xcmp_message_t;
+
 #define PD_CALL_ATTESTATIONS_MORE_ATTESTATIONS 0
 typedef struct {
     pd_MoreAttestations_t _more;
@@ -801,17 +814,11 @@ typedef struct {
     pd_VecCall_t calls;
 } pd_utility_batch_t;
 
-#define PD_CALL_UTILITY_AS_SUB 1
+#define PD_CALL_UTILITY_AS_DERIVATIVE 1
 typedef struct {
     pd_u16_t index;
     pd_Call_t call;
-} pd_utility_as_sub_t;
-
-#define PD_CALL_UTILITY_AS_LIMITED_SUB 2
-typedef struct {
-    pd_u16_t index;
-    pd_Call_t call;
-} pd_utility_as_limited_sub_t;
+} pd_utility_as_derivative_t;
 
 #define PD_CALL_SUDO_SUDO 0
 typedef struct {
@@ -1076,6 +1083,8 @@ typedef union {
     pd_treasury_close_tip_t treasury_close_tip;
     pd_parachains_set_heads_t parachains_set_heads;
     pd_parachains_report_double_vote_t parachains_report_double_vote;
+    pd_parachains_transfer_to_parachain_t parachains_transfer_to_parachain;
+    pd_parachains_send_xcmp_message_t parachains_send_xcmp_message;
     pd_attestations_more_attestations_t attestations_more_attestations;
     pd_slots_new_auction_t slots_new_auction;
     pd_slots_bid_t slots_bid;
@@ -1100,8 +1109,7 @@ typedef union {
     pd_vesting_vested_transfer_t vesting_vested_transfer;
     pd_vesting_force_vested_transfer_t vesting_force_vested_transfer;
     pd_utility_batch_t utility_batch;
-    pd_utility_as_sub_t utility_as_sub;
-    pd_utility_as_limited_sub_t utility_as_limited_sub;
+    pd_utility_as_derivative_t utility_as_derivative;
     pd_sudo_sudo_t sudo_sudo;
     pd_sudo_sudo_unchecked_weight_t sudo_sudo_unchecked_weight;
     pd_sudo_set_key_t sudo_set_key;
@@ -1136,14 +1144,6 @@ typedef struct {
     const uint8_t *_ptr;
     uint16_t _len;
 } pd_Proposal_t;
-
-parser_error_t _readProposal(parser_context_t *c, pd_Proposal_t *v);
-parser_error_t _toStringProposal(
-    const pd_Proposal_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
 
 #define PD_CALL_COUNCIL_EXECUTE 1
 typedef struct {

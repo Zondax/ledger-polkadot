@@ -26,18 +26,6 @@ main(void) {
 
     view_init();
     os_boot();
-
-    BEGIN_TRY
-    {
-        TRY
-        {
-            app_init();
-            app_main();
-        }
-        CATCH_OTHER(e)
-        {}
-        FINALLY
-        {}
-    }
-    END_TRY;
+    app_init();
+    app_main();
 }

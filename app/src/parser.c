@@ -16,15 +16,23 @@
 
 #include <stdio.h>
 #include <zxmacros.h>
+#include "zbuffer.h"
 #include "parser.h"
-#include "substrate_dispatch.h"
 #include "coin.h"
 #include "coin_ss58.h"
+#include "substrate_dispatch.h"
 
 #if defined(APP_RESTRICTED)
 #include "coin.h"
 #include "crypto.h"
 #include "substrate_methods.h"
+#endif
+
+#if defined(TARGET_NANOX)
+// For some reason NanoX requires this function
+void __assert_fail(const char * assertion, const char * file, unsigned int line, const char * function){
+    while(1) {};
+}
 #endif
 
 #define FIELD_FIXED_TOTAL_COUNT 7
@@ -37,40 +45,66 @@
 #define FIELD_ERA_PERIOD    5
 #define FIELD_BLOCK_HASH    6
 
-parser_error_t parser_parse(parser_context_t *ctx,
-                            const uint8_t *data,
-                            size_t dataLen) {
-    parser_init(ctx, data, dataLen);
-    return _readTx(ctx, &parser_tx_obj);
+parser_error_t parser_parse(parser_context_t *ctx, const uint8_t *data, size_t dataLen, parser_tx_t *tx_obj) {
+    CHECK_PARSER_ERR(parser_init(ctx, data, dataLen))
+    ctx->tx_obj = tx_obj;
+    parser_error_t err = _readTx(ctx, ctx->tx_obj);
+    CTX_CHECK_AVAIL(ctx, 0)
+    zb_check_canary();
+
+    return err;
 }
+
+#if defined(APP_RESTRICTED)
+// FIXME: Re-enable
+//parser_error_t parser_validate_vecLookupSource(pd_VecLookupSource_t *targets) {
+//    if (!allowlist_is_active()) {
+//        return parser_not_allowed;
+//    }
+//
+//    parser_context_t ctx;
+//    // each look up source is 32 bytes
+//    pd_LookupSource_t lookupSource;
+//
+//    parser_init(&ctx, targets->_ptr, targets->_lenBuffer);
+//    for (uint16_t i = 0; i < targets->_len; i++) {
+//        CHECK_ERROR(_readLookupSource(&ctx, &lookupSource));
+//        allowlist_validate(lookupSource->_ptr);
+//    }
+//
+//    return parser_ok;
+//}
+#endif
 
 parser_error_t parser_validate(const parser_context_t *ctx) {
 #if defined(APP_RESTRICTED)
     if (hdPath[2] == HDPATH_2_STASH) {
-        if (parser_tx_obj.callIndex.moduleIdx == PD_CALL_STAKING) {
-            if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_SET_PAYEE) {
+        if (ctx->tx_obj->callIndex.moduleIdx == PD_CALL_STAKING) {
+            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_SET_PAYEE) {
                 return parser_ok;
             }
-            if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_NOMINATE) {
-                // FIXME: Check allowlist
+            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_NOMINATE) {
+// FIXME: Reenable
+//                pd_VecLookupSource_t *targets = ctx->tx_obj->method.basic.staking_nominate.targets;
+//                CHECK_PARSER_ERR(parser_validate_vecLookupSource(targets))
                 return parser_ok;
             }
         }
     }
     if (hdPath[2] == HDPATH_2_VALIDATOR) {
-        if (parser_tx_obj.callIndex.moduleIdx == PD_CALL_STAKING) {
-            if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_SET_PAYEE) {
+        if (ctx->tx_obj->callIndex.moduleIdx == PD_CALL_STAKING) {
+            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_SET_PAYEE) {
                 return parser_ok;
             }
-            if (parser_tx_obj.callIndex.idx==PD_CALL_STAKING_VALIDATE) {
+            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_VALIDATE) {
                 return parser_ok;
             }
         }
-        if (parser_tx_obj.callIndex.moduleIdx == PD_CALL_SESSION) {
-            if (parser_tx_obj.callIndex.idx==PD_CALL_SESSION_SET_KEYS) {
+        if (ctx->tx_obj->callIndex.moduleIdx == PD_CALL_SESSION) {
+            if (ctx->tx_obj->callIndex.idx==PD_CALL_SESSION_SET_KEYS) {
                 return parser_ok;
             }
-            if (parser_tx_obj.callIndex.idx==PD_CALL_SESSION_PURGE_KEYS) {
+            if (ctx->tx_obj->callIndex.idx==PD_CALL_SESSION_PURGE_KEYS) {
                 return parser_ok;
             }
         }
@@ -81,114 +115,99 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
 }
 
 parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_items) {
-    uint8_t methodArgCount = _getMethod_NumItems(parser_tx_obj.callIndex.moduleIdx,
-                                                 parser_tx_obj.callIndex.idx,
-                                                 &parser_tx_obj.method);
+    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->callIndex.moduleIdx,
+                                                 ctx->tx_obj->callIndex.idx,
+                                                 &ctx->tx_obj->method);
 
     *num_items = FIELD_FIXED_TOTAL_COUNT + methodArgCount;
     return parser_ok;
 }
 
 parser_error_t parser_getItem(const parser_context_t *ctx,
-                              uint16_t displayIdx,
+                              uint8_t displayIdx,
                               char *outKey, uint16_t outKeyLen,
-                              char *outValue, uint16_t outValueLen,
+                              char *outVal, uint16_t outValLen,
                               uint8_t pageIdx, uint8_t *pageCount) {
     MEMZERO(outKey, outKeyLen);
-    MEMZERO(outValue, outValueLen);
-
-    uint8_t numItems;
-
-    CHECK_PARSER_ERR(parser_getNumItems(ctx, &numItems));
+    MEMZERO(outVal, outValLen);
+    snprintf(outKey, outKeyLen, "?");
+    snprintf(outVal, outValLen, "?");
     *pageCount = 1;
 
+    uint8_t numItems;
+    CHECK_PARSER_ERR(parser_getNumItems(ctx, &numItems))
+    CHECK_APP_CANARY()
+
     if (displayIdx < 0 || displayIdx >= numItems) {
-        *pageCount = 0;
         return parser_no_data;
     }
 
-    snprintf(outKey, outKeyLen, "? %d/%d", displayIdx + 1, numItems);
-    snprintf(outValue, outValueLen, "? %d", pageIdx);
-
     parser_error_t err = parser_ok;
     if (displayIdx == FIELD_METHOD) {
-        snprintf(outKey, outKeyLen, "%s",
-                 _getMethod_ModuleName(parser_tx_obj.callIndex.moduleIdx));
-        snprintf(outValue, outValueLen, "%s",
-                 _getMethod_Name(parser_tx_obj.callIndex.moduleIdx,
-                                 parser_tx_obj.callIndex.idx));
+        snprintf(outKey, outKeyLen, "%s", _getMethod_ModuleName(ctx->tx_obj->callIndex.moduleIdx));
+        snprintf(outVal, outValLen, "%s", _getMethod_Name(ctx->tx_obj->callIndex.moduleIdx,
+                                                          ctx->tx_obj->callIndex.idx));
         return err;
     }
 
     // VARIABLE ARGUMENTS
-    uint8_t methodArgCount = _getMethod_NumItems(parser_tx_obj.callIndex.moduleIdx,
-                                                 parser_tx_obj.callIndex.idx,
-                                                 &parser_tx_obj.method);
+    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->callIndex.moduleIdx,
+                                                 ctx->tx_obj->callIndex.idx,
+                                                 &ctx->tx_obj->method);
     uint8_t argIdx = displayIdx - 1;
     if (argIdx < methodArgCount) {
         snprintf(outKey, outKeyLen, "%s",
-                 _getMethod_ItemName(parser_tx_obj.callIndex.moduleIdx,
-                                     parser_tx_obj.callIndex.idx,
+                 _getMethod_ItemName(ctx->tx_obj->callIndex.moduleIdx,
+                                     ctx->tx_obj->callIndex.idx,
                                      argIdx));
 
-        err = _getMethod_ItemValue(&parser_tx_obj.method,
-                                   parser_tx_obj.callIndex.moduleIdx, parser_tx_obj.callIndex.idx, argIdx,
-                                   outValue, outValueLen,
+        err = _getMethod_ItemValue(&ctx->tx_obj->method,
+                                   ctx->tx_obj->callIndex.moduleIdx, ctx->tx_obj->callIndex.idx, argIdx,
+                                   outVal, outValLen,
                                    pageIdx, pageCount);
     } else {
         // CONTINUE WITH FIXED ARGUMENTS
         displayIdx -= methodArgCount;
         switch (displayIdx) {
-            case FIELD_NETWORK: {
-                uint8_t addr_type;
-                CHECK_PARSER_ERR(_detectAddressType(&addr_type));
-                if (addr_type == PK_ADDRESS_TYPE) {
+            case FIELD_NETWORK:
+                if (_getAddressType() == PK_ADDRESS_TYPE) {
                     snprintf(outKey, outKeyLen, "Chain");
-                    snprintf(outValue, outValueLen, COIN_NAME);
+                    snprintf(outVal, outValLen, COIN_NAME);
                     break;
                 }
                 snprintf(outKey, outKeyLen, "Genesis Hash");
-                _toStringHash(&parser_tx_obj.genesisHash,
-                              outValue, outValueLen,
+                _toStringHash(&ctx->tx_obj->genesisHash,
+                              outVal, outValLen,
                               pageIdx, pageCount);
                 break;
-            }
             case FIELD_ONCE:
                 snprintf(outKey, outKeyLen, "Nonce");
-                _toStringCompactIndex(&parser_tx_obj.nonce,
-                                      outValue, outValueLen,
+                _toStringCompactIndex(&ctx->tx_obj->nonce,
+                                      outVal, outValLen,
                                       pageIdx, pageCount);
                 break;
             case FIELD_TIP:
                 snprintf(outKey, outKeyLen, "Tip");
-                _toStringCompactBalance(&parser_tx_obj.tip,
-                                        outValue, outValueLen,
+                _toStringCompactBalance(&ctx->tx_obj->tip,
+                                        outVal, outValLen,
                                         pageIdx, pageCount);
                 break;
             case FIELD_ERA_PHASE:
                 snprintf(outKey, outKeyLen, "Era Phase");
-                uint64_to_str(outValue, outValueLen, parser_tx_obj.era.phase);
+                uint64_to_str(outVal, outValLen, ctx->tx_obj->era.phase);
                 break;
             case FIELD_ERA_PERIOD:
                 snprintf(outKey, outKeyLen, "Era Period");
-                uint64_to_str(outValue, outValueLen, parser_tx_obj.era.period);
+                uint64_to_str(outVal, outValLen, ctx->tx_obj->era.period);
                 break;
             case FIELD_BLOCK_HASH:
                 snprintf(outKey, outKeyLen, "Block");
-                _toStringHash(&parser_tx_obj.blockHash,
-                              outValue, outValueLen,
+                _toStringHash(&ctx->tx_obj->blockHash,
+                              outVal, outValLen,
                               pageIdx, pageCount);
                 break;
             default:
-                *pageCount = 0;
                 return parser_no_data;
-        }
-    }
-
-    if (*pageCount > 1) {
-        uint8_t keyLen = strlen(outKey);
-        if (keyLen < outKeyLen) {
-            snprintf(outKey + keyLen, outKeyLen - keyLen, " [%d/%d]", pageIdx + 1, *pageCount);
         }
     }
 

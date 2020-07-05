@@ -213,5 +213,5 @@ rust_test:
 
 .PHONY: cpp_test
 cpp_test:
-	mkdir -p build && cd build && cmake -DDISABLE_DOCKER_BUILDS=ON -DCMAKE_BUILD_TYPE=Debug .. && make
+	mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make
 	cd build && GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV

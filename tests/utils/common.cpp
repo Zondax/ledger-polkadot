@@ -13,28 +13,22 @@
 *  See the License for the specific language governing permissions and
 *  limitations under the License.
 ********************************************************************************/
-
-#include <iostream>
-#include <string>
+#include <parser.h>
 #include <sstream>
-#include <vector>
-#include <hexutils.h>
-#include <parser_txdef.h>
-#include "common/parser.h"
+#include <string>
 #include "common.h"
 
 std::vector<std::string> dumpUI(parser_context_t *ctx,
                                 uint16_t maxKeyLen,
                                 uint16_t maxValueLen) {
     uint8_t numItems;
-
-    parser_getNumItems(ctx, &numItems);
+    parser_error_t err = parser_getNumItems(ctx, &numItems);
 
     auto answer = std::vector<std::string>();
 
-    char keyBuffer[40];
-    char valueBuffer[40];
     for (uint16_t idx = 0; idx < numItems; idx++) {
+        char keyBuffer[1000];
+        char valueBuffer[1000];
         uint8_t pageIdx = 0;
         uint8_t pageCount = 1;
 
@@ -47,7 +41,11 @@ std::vector<std::string> dumpUI(parser_context_t *ctx,
                                       valueBuffer, maxValueLen,
                                       pageIdx, &pageCount);
 
-            ss << idx << " | " << keyBuffer << " : ";
+            ss << idx << " | " << keyBuffer;
+            if (pageCount > 1) {
+                ss << " [" << (int) pageIdx+1 << "/" << (int) pageCount << "]";
+            }
+            ss << " : ";
 
             if (err == parser_ok) {
                 ss << valueBuffer;
@@ -63,4 +61,3 @@ std::vector<std::string> dumpUI(parser_context_t *ctx,
 
     return answer;
 }
-
