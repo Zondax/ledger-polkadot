@@ -100,7 +100,6 @@ describe('Basic checks', function () {
             await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
             await sim.clickRight(`${snapshotPrefixTmp}${snapshotCount++}.png`);
             await sim.clickRight(`${snapshotPrefixTmp}${snapshotCount++}.png`);
-            await sim.clickRight(`${snapshotPrefixTmp}${snapshotCount++}.png`);
             await sim.clickBoth(`${snapshotPrefixTmp}${snapshotCount++}.png`);
 
             const resp = await respRequest;
@@ -134,7 +133,7 @@ describe('Basic checks', function () {
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "05004086c098111c170dbad4a1d9ea60cdc57f17dc6fc7ad5aefbb3d8ca21ed0fbf400d5038d248ed73e0d0b0000000000000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            let txBlobStr = "0500ef54a1c5df113b916a27f37f2c27a170f573dc947eb8c8ceac83732b05d4e9be33158139ae28a3dfaac5fe1560a5e9e05cd503ae1103000b63ce64c10c050d0000000200000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -148,7 +147,7 @@ describe('Basic checks', function () {
 
             // Reference window
             await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
-            for (let i = 0; i < 11; i++) {
+            for (let i = 0; i < 12; i++) {
                 await sim.clickRight(Resolve(`${snapshotPrefixTmp}${snapshotCount++}.png`));
             }
             await sim.clickBoth();
