@@ -3,12 +3,17 @@ import path from "path";
 import LedgerPolkadot from "@zondax/ledger-polkadot";
 
 const APP_PATH = path.resolve(`./../../app/bin/app.elf`);
+import pkg from 'blakejs';
+
+const {blake2bInit, blake2bUpdate, blake2bFinal} = pkg;
+
+import ed25519 from "ed25519-supercop";
 
 const seed = "equip will roof matter pink blind book anxiety banner elbow sun young"
 const SIM_OPTIONS = {
     logging: true,
     start_delay: 4000,
-    X11: true,
+//    X11: true,
     custom: `-s "${seed}" --color LAGOON_BLUE`
 };
 
@@ -25,43 +30,57 @@ async function beforeEnd() {
     await Zemu.default.stopAllEmuContainers();
 }
 
+const TESTING_ALLOWLIST_SEED = "0000000000000000000000000000000000000000000000000000000000000000"
+
+function dummyAllowlist() {
+    const addresses = [
+        "HFfvSuhgKycuYVk5YnxdDTmpDnjWsnT76nks8fryfSLaD96",
+        "FQr6vFmm8zNFV9m4ZMxKzMdUVUbPtrhxxaVkAybHxsDYMCY",
+        "HXAjzUP15goNbAkujFgnNcioHhUGMDMSRdfbSxi11GsCBV6"
+    ]
+
+    // Prepare len field
+    const allowlist_len = Buffer.alloc(4);
+    allowlist_len.writeUInt32LE(addresses.length);
+
+    // Prepare items field
+    const addressBuffer = Buffer.alloc(64 * addresses.length, 0);
+    for(let i=0; i<addresses.length; i++) {
+        const tmp = Buffer.from( addresses[i] )
+        tmp.copy(addressBuffer, i*64)
+    }
+
+    // calculate digest
+    const context = blake2bInit(32, null);
+    blake2bUpdate(context, allowlist_len);
+    blake2bUpdate(context, addressBuffer);
+    const digest = Buffer.from(blake2bFinal(context));
+    console.log(`-------------------- ${digest.toString("hex")}`)
+
+    // sign
+    const keypair = ed25519.createKeyPair(TESTING_ALLOWLIST_SEED)
+    console.log(`PK : ${keypair.publicKey.toString("hex")}`)
+    console.log(`SK : ${keypair.secretKey.toString("hex")}`)
+
+    const allowlist_signature = ed25519.sign(digest, keypair.publicKey, keypair.secretKey)
+    console.log(`SIG: ${allowlist_signature.toString("hex")}`)
+
+    return Buffer.concat([allowlist_len, allowlist_signature, addressBuffer])
+}
+
 async function debugScenario(sim, app) {
-    // Here you can customize what you want to do :)
-    const pathAccount = 0x80000000;
-    const pathChange = 0x80000000;
-    const pathIndex = 0x80000000;
+    const keypair = ed25519.createKeyPair(TESTING_ALLOWLIST_SEED)
+    let resp = await app.setAllowlistPubKey(keypair.publicKey);
+    console.log(resp)
 
-    let txBlobStr = "05004086c098111c170dbad4a1d9ea60cdc57f17dc6fc7ad5aefbb3d8ca21ed0fbf400d5038d248ed73e0d0b0000000000000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
-    const txBlob = Buffer.from(txBlobStr, "hex");
+    const allowlist = dummyAllowlist(0);
+    console.log(`\n\n------------ Upload allowlist : ${allowlist.length} bytes`)
+    resp = await app.uploadAllowlist(allowlist);
+    console.log(resp);
 
-    const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
-    await Zemu.default.sleep(1000);
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickBoth();
-    let addr = await respRequest;
-
-    // do not wait here.. we need to navigate
-    const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob);
-    await Zemu.default.sleep(1000);
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickRight();
-    await sim.clickBoth();
-
-    let signature = await signatureRequest;
-    console.log(signature);
+    console.log("\n\n------------ Get allowlist hash")
+    resp = await app.getAllowlistHash();
+    console.log(resp.hash.toString("hex"));
 }
 
 async function main() {
