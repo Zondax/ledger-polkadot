@@ -52,18 +52,16 @@ void h_error_accept(unsigned int _) {
 
 void h_sign_accept(unsigned int _) {
     UNUSED(_);
-    app_sign();
     view_idle_show(0);
     UX_WAIT();
+    app_sign();
 }
 
 void h_sign_reject(unsigned int _) {
     UNUSED(_);
     view_idle_show(0);
     UX_WAIT();
-
-    set_code(G_io_apdu_buffer, 0, APDU_CODE_COMMAND_NOT_ALLOWED);
-    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
+    app_reject();
 }
 
 ///////////////////////////////////
@@ -139,37 +137,39 @@ zxerr_t h_review_update_data() {
         switch (viewdata.mode) {
             case review_tx: {
                 CHECK_ZXERR(tx_getNumItems(&viewdata.itemCount))
+
+                // be sure we are not out of bounds
+                CHECK_ZXERR(tx_getItem(viewdata.itemIdx,
+                                       viewdata.key, MAX_CHARS_PER_KEY_LINE,
+                                       viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
+                                       0, &viewdata.pageCount))
+                if (viewdata.pageCount != 0 && viewdata.pageIdx > viewdata.pageCount) {
+                    // try again and get last page
+                    viewdata.pageIdx = viewdata.pageCount - 1;
+                }
                 CHECK_ZXERR(
                         tx_getItem(viewdata.itemIdx,
                                    viewdata.key, MAX_CHARS_PER_KEY_LINE,
                                    viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
                                    viewdata.pageIdx, &viewdata.pageCount))
-                if (viewdata.pageIdx > viewdata.pageCount) {
-                    // try again and get last page
-                    viewdata.pageIdx = viewdata.pageCount - 1;
-                    CHECK_ZXERR(
-                            tx_getItem(viewdata.itemIdx,
-                                       viewdata.key, MAX_CHARS_PER_KEY_LINE,
-                                       viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
-                                       viewdata.pageIdx, &viewdata.pageCount))
-                }
                 break;
             }
             case review_address: {
                 CHECK_ZXERR(addr_getNumItems(&viewdata.itemCount))
+                // be sure we are not out of bounds
                 CHECK_ZXERR(addr_getItem(viewdata.itemIdx,
                                          viewdata.key, MAX_CHARS_PER_KEY_LINE,
                                          viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
-                                         viewdata.pageIdx, &viewdata.pageCount))
-                if (viewdata.pageIdx > viewdata.pageCount) {
+                                         0, &viewdata.pageCount))
+                if (viewdata.pageCount != 0 && viewdata.pageIdx > viewdata.pageCount) {
                     // try again and get last page
                     viewdata.pageIdx = viewdata.pageCount - 1;
-                    CHECK_ZXERR(
-                            addr_getItem(viewdata.itemIdx,
-                                         viewdata.key, MAX_CHARS_PER_KEY_LINE,
-                                         viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
-                                         viewdata.pageIdx, &viewdata.pageCount))
                 }
+                CHECK_ZXERR(
+                        addr_getItem(viewdata.itemIdx,
+                                     viewdata.key, MAX_CHARS_PER_KEY_LINE,
+                                     viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
+                                     viewdata.pageIdx, &viewdata.pageCount))
                 break;
             }
             default:
@@ -180,7 +180,8 @@ zxerr_t h_review_update_data() {
         if (viewdata.pageCount > 1) {
             uint8_t keyLen = strlen(viewdata.key);
             if (keyLen < MAX_CHARS_PER_KEY_LINE) {
-                snprintf(viewdata.key + keyLen, MAX_CHARS_PER_KEY_LINE - keyLen, " [%d/%d]", viewdata.pageIdx + 1, viewdata.pageCount);
+                snprintf(viewdata.key + keyLen, MAX_CHARS_PER_KEY_LINE - keyLen, " [%d/%d]", viewdata.pageIdx + 1,
+                         viewdata.pageCount);
             }
         }
 

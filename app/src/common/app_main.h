@@ -34,12 +34,13 @@
 #define INS_GET_ADDR_ED25519            0x01
 #define INS_SIGN_ED25519                0x02
 
+#define INS_ALLOWLIST_GET_PUBKEY        0x90
+#define INS_ALLOWLIST_SET_PUBKEY        0x91
+#define INS_ALLOWLIST_GET_HASH          0x92
+#define INS_ALLOWLIST_UPLOAD            0x93
+
 void app_init();
 
 void app_main();
-
-void extractHDPath(uint32_t rx, uint32_t offset);
-
-bool process_chunk(volatile uint32_t *tx, uint32_t rx);
 
 void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx);

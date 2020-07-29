@@ -19,7 +19,6 @@
 namespace {
     TEST(ASCIIFY, pure) {
         char input[] = "This is only ascii";
-        char *want = input;
         char have[50];
 
         asciify_ext(input, have);

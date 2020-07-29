@@ -39,7 +39,6 @@ set(BUILD_TESTS OFF CACHE BOOL "Enables tests")
 
 add_library(zxlib STATIC ${ZXLIB_SRC})
 target_include_directories(zxlib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-#target_link_libraries(zxlib)
 
 enable_testing()
 

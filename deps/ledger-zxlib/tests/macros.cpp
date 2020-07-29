@@ -331,28 +331,28 @@ namespace {
     TEST(STR_TO_INT8, OutsideBoundsPositive) {
         char numberStr[] = "128";
         char error = 0;
-        int8_t number = str_to_int8(numberStr, numberStr + strlen(numberStr), &error);
+        str_to_int8(numberStr, numberStr + strlen(numberStr), &error);
         EXPECT_EQ(1, error);
     }
 
     TEST(STR_TO_INT8, OutsideBoundsNegative) {
         char numberStr[] = "-129";
         char error = 0;
-        int8_t number = str_to_int8(numberStr, numberStr + strlen(numberStr), &error);
+        str_to_int8(numberStr, numberStr + strlen(numberStr), &error);
         EXPECT_EQ(1, error);
     }
 
     TEST(STR_TO_INT8, DummyData_Positive) {
         char numberStr[] = "100b0";
         char error = 0;
-        int8_t number = str_to_int8(numberStr, numberStr + strlen(numberStr), &error);
+        str_to_int8(numberStr, numberStr + strlen(numberStr), &error);
         EXPECT_EQ(1, error);
     }
 
     TEST(STR_TO_INT8, DummyData_Negative) {
         char numberStr[] = "-1002xx";
         char error = 0;
-        int8_t number = str_to_int8(numberStr, numberStr + strlen(numberStr), &error);
+        str_to_int8(numberStr, numberStr + strlen(numberStr), &error);
         EXPECT_EQ(1, error);
     }
 
@@ -399,14 +399,14 @@ namespace {
     TEST(STR_TO_INT64, DummyData_Positive) {
         char numberStr[] = "100b0";
         char error = 0;
-        int64_t number = str_to_int64(numberStr, numberStr + strlen(numberStr), &error);
+        str_to_int64(numberStr, numberStr + strlen(numberStr), &error);
         EXPECT_EQ(1, error);
     }
 
     TEST(STR_TO_INT64, DummyData_Negative) {
         char numberStr[] = "-1002xx";
         char error = 0;
-        int64_t number = str_to_int64(numberStr, numberStr + strlen(numberStr), &error);
+        str_to_int64(numberStr, numberStr + strlen(numberStr), &error);
         EXPECT_EQ(1, error);
     }
 }

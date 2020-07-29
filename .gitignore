@@ -78,3 +78,4 @@ cmake-build-fuzz/
 /app/obj/
 
 tests_zemu/yarn.lock
+/tests_zemu/snapshots-tmp/

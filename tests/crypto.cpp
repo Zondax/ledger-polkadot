@@ -29,6 +29,10 @@ extern const char *crypto_testPubKey;
 TEST(CRYPTO, fillAddress) {
     uint8_t buffer[100];
 
+//    wage retreat alpha skull cactus inform device despair finish enforce chief young
+//    Public key (hex): 0x7419797202bb88ddc319a5eaebb3dcd8115352eabee7b5dbc2f402da7c8efea7
+//    Address (SS58): 5EgvykVVtK94Rbr2A29tscrbYqA6PH21p9CCR5jNZn3Jhd9D
+
     crypto_testPubKey = "7419797202bb88ddc319a5eaebb3dcd8115352eabee7b5dbc2f402da7c8efea7";
 
     uint16_t addrLen = crypto_fillAddress(buffer, 100);

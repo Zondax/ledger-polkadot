@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run: git submodule update --init --recursive
-      - run: cmake -DDISABLE_DOCKER_BUILDS=ON -DCMAKE_BUILD_TYPE=Debug . && make
+      - run: cmake -DCMAKE_BUILD_TYPE=Debug . && make
       # Unfortunately need to disable leak sanitizer https://github.com/google/sanitizers/issues/916
       # Still run all other ASAN components
       - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
@@ -22,17 +22,22 @@ jobs:
       # Docker entrypoint is not considered
       - run: git submodule update --init --recursive
       - run:
-          name: Build
+          name: Build Standard app
           command: |
             source /home/zondax/.cargo/env
             cd /home/zondax/project
             make
-      - run:
-          name: Clean
-          command: |
-            source /home/zondax/.cargo/env
-            cd /home/zondax/project
-            make clean
+
+  build_ledger_ledgeracio:
+    docker:
+      - image: zondax/builder-bolos:latest
+    environment:
+      - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
+      - BOLOS_ENV=/opt/bolos
+    steps:
+      - checkout
+      # Docker entrypoint is not considered
+      - run: git submodule update --init --recursive
       - run:
           name: Build Ledgeracio
           command: |
@@ -56,19 +61,50 @@ jobs:
       - run:
           name: Install node + yarn
           command: |
-            nvm install 13.12.0
-            nvm use 13.12.0
+            nvm install 14.4.0
+            nvm use 14.4.0
             npm install -g yarn
       - run:
           name: Build/Install build js deps
           command: |
-            nvm use 13.12.0
+            nvm use 14.4.0
             make zemu_install
       - run:
           name: Run zemu tests
           command: |
-            nvm use 13.12.0
+            nvm use 14.4.0
             make zemu_test
+
+  test_zemu_ledgeracio:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/repo
+    environment:
+      BASH_ENV: "/opt/circleci/.nvm/nvm.sh"
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - run:
+          name: Install node + yarn
+          command: |
+            nvm install 14.4.0
+            nvm use 14.4.0
+            npm install -g yarn
+      - run:
+          name: Build/Install build js deps
+          command: |
+            nvm use 14.4.0
+            make zemu_install
+      - run:
+          name: Build Ledger app
+          command: |
+            COIN=Ledgeracio make
+            cp /home/circleci/repo/app/bin/app.elf /home/circleci/repo/app/bin/app_ledgeracio.elf
+      - run:
+          name: Run zemu tests for Ledgeracio app
+          command: |
+            nvm use 14.4.0
+            COIN=Ledgeracio make zemu_test
 
   build_package:
     docker:
@@ -122,12 +158,16 @@ workflows:
     jobs:
       - build
       - build_ledger
+      - build_ledger_ledgeracio
       - test_zemu
+      - test_zemu_ledgeracio
       - build_package:
           requires:
             - build
             - build_ledger
+            - build_ledger_ledgeracio
             - test_zemu
+            - test_zemu_ledgeracio
           filters:
             branches:
               only:
@@ -136,7 +176,9 @@ workflows:
           requires:
             - build
             - build_ledger
+            - build_ledger_ledgeracio
             - test_zemu
+            - test_zemu_ledgeracio
           filters:
             branches:
               only:

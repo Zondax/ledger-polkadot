@@ -25,13 +25,13 @@
 #include "segwit_addr.h"
 
 uint32_t bech32_polymod_step(uint32_t pre) {
-    uint8_t b = pre >> 25;
-    return ((pre & 0x1FFFFFF) << 5) ^
-           (-((b >> 0) & 1) & 0x3b6a57b2UL) ^
-           (-((b >> 1) & 1) & 0x26508e6dUL) ^
-           (-((b >> 2) & 1) & 0x1ea119faUL) ^
-           (-((b >> 3) & 1) & 0x3d4233ddUL) ^
-           (-((b >> 4) & 1) & 0x2a1462b3UL);
+    uint8_t b = pre >> 25u;
+    return ((pre & 0x1FFFFFFu) << 5u) ^
+           (-((b >> 0u) & 1u) & 0x3b6a57b2UL) ^
+           (-((b >> 1u) & 1u) & 0x26508e6dUL) ^
+           (-((b >> 2u) & 1u) & 0x1ea119faUL) ^
+           (-((b >> 3u) & 1u) & 0x3d4233ddUL) ^
+           (-((b >> 4u) & 1u) & 0x2a1462b3UL);
 }
 
 static const char* charset = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
@@ -51,24 +51,24 @@ int bech32_encode(char *output, const char *hrp, const uint8_t *data, size_t dat
     uint32_t chk = 1;
     size_t i = 0;
     while (hrp[i] != 0) {
-        int ch = hrp[i];
+        char ch = hrp[i];
         if (ch < 33 || ch > 126) {
             return 0;
         }
 
         if (ch >= 'A' && ch <= 'Z') return 0;
-        chk = bech32_polymod_step(chk) ^ (ch >> 5);
+        chk = bech32_polymod_step(chk) ^ (ch >> 5u);
         ++i;
     }
     if (i + 7 + data_len > 90) return 0;
     chk = bech32_polymod_step(chk);
     while (*hrp != 0) {
-        chk = bech32_polymod_step(chk) ^ (*hrp & 0x1f);
+        chk = bech32_polymod_step(chk) ^ (*hrp & 0x1fu);
         *(output++) = *(hrp++);
     }
     *(output++) = '1';
     for (i = 0; i < data_len; ++i) {
-        if (*data >> 5) return 0;
+        if (*data >> 5u) return 0;
         chk = bech32_polymod_step(chk) ^ (*data);
         *(output++) = charset[*(data++)];
     }
@@ -77,7 +77,7 @@ int bech32_encode(char *output, const char *hrp, const uint8_t *data, size_t dat
     }
     chk ^= 1;
     for (i = 0; i < 6; ++i) {
-        *(output++) = charset[(chk >> ((5 - i) * 5)) & 0x1f];
+        *(output++) = charset[(chk >> ((5u - i) * 5u)) & 0x1fu];
     }
     *output = 0;
     return 1;
@@ -102,7 +102,7 @@ int bech32_decode(char* hrp, uint8_t *data, size_t *data_len, const char *input)
     }
     *(data_len) -= 6;
     for (i = 0; i < hrp_len; ++i) {
-        int ch = input[i];
+        char ch = input[i];
         if (ch < 33 || ch > 126) {
             return 0;
         }
@@ -113,16 +113,16 @@ int bech32_decode(char* hrp, uint8_t *data, size_t *data_len, const char *input)
             ch = (ch - 'A') + 'a';
         }
         hrp[i] = ch;
-        chk = bech32_polymod_step(chk) ^ (ch >> 5);
+        chk = bech32_polymod_step(chk) ^ (ch >> 5u);
     }
     hrp[i] = 0;
     chk = bech32_polymod_step(chk);
     for (i = 0; i < hrp_len; ++i) {
-        chk = bech32_polymod_step(chk) ^ (input[i] & 0x1f);
+        chk = bech32_polymod_step(chk) ^ (input[i] & 0x1fu);
     }
     ++i;
     while (i < input_len) {
-        int v = (input[i] & 0x80) ? -1 : charset_rev[(int)input[i]];
+        int v = (input[i] & 0x80u) ? -1 : charset_rev[(int)input[i]];
         if (input[i] >= 'a' && input[i] <= 'z') have_lower = 1;
         if (input[i] >= 'A' && input[i] <= 'Z') have_upper = 1;
         if (v == -1) {
@@ -143,7 +143,7 @@ int bech32_decode(char* hrp, uint8_t *data, size_t *data_len, const char *input)
 int convert_bits(uint8_t* out, size_t* outlen, int outBits, const uint8_t* in, size_t inLen, int inBits, int pad) {
     uint32_t val = 0;
     int bits = 0;
-    uint32_t maxv = (((uint32_t)1) << outBits) - 1;
+    uint32_t maxv = (((uint32_t)1u) << outBits) - 1u;
     while (inLen--) {
         val = (val << inBits) | *(in++);
         bits += inBits;

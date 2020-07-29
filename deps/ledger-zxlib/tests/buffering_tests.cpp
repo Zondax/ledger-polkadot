@@ -206,6 +206,7 @@ namespace {
 
         uint8_t small2[70];
         num_bytes = buffering_append(small2, sizeof(small2));
+        EXPECT_EQ(70, num_bytes);
 
         state = buffering_get_buffer();
         EXPECT_EQ(100, state->pos) << "Invalid buffer size";

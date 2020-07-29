@@ -110,6 +110,39 @@ __Z_INLINE parser_error_t _readMethod_scheduler_cancel_named(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_scheduler_schedule_after(
+    parser_context_t *c, pd_scheduler_schedule_after_t *m) {
+    CHECK_ERROR(_readBlockNumber(c, &m->after))
+    CHECK_ERROR(_readOptionPeriod(c, &m->maybe_periodic))
+    CHECK_ERROR(_readPriority(c, &m->priority))
+    CHECK_ERROR(_readCall(c, &m->call))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_scheduler_schedule_named_after(
+    parser_context_t *c, pd_scheduler_schedule_named_after_t *m) {
+    CHECK_ERROR(_readBytes(c, &m->id))
+    CHECK_ERROR(_readBlockNumber(c, &m->after))
+    CHECK_ERROR(_readOptionPeriod(c, &m->maybe_periodic))
+    CHECK_ERROR(_readPriority(c, &m->priority))
+    CHECK_ERROR(_readCall(c, &m->call))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_babe_report_equivocation(
+    parser_context_t *c, pd_babe_report_equivocation_t *m) {
+    CHECK_ERROR(_readBabeEquivocationProof(c, &m->equivocation_proof))
+    CHECK_ERROR(_readKeyOwnerProof(c, &m->key_owner_proof))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_babe_report_equivocation_unsigned(
+    parser_context_t *c, pd_babe_report_equivocation_unsigned_t *m) {
+    CHECK_ERROR(_readBabeEquivocationProof(c, &m->equivocation_proof))
+    CHECK_ERROR(_readKeyOwnerProof(c, &m->key_owner_proof))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_timestamp_set(
     parser_context_t *c, pd_timestamp_set_t *m) {
     CHECK_ERROR(_readCompactMoment(c, &m->now))
@@ -360,6 +393,13 @@ __Z_INLINE parser_error_t _readMethod_finalitytracker_final_hint(
 
 __Z_INLINE parser_error_t _readMethod_grandpa_report_equivocation(
     parser_context_t *c, pd_grandpa_report_equivocation_t *m) {
+    CHECK_ERROR(_readGrandpaEquivocationProof(c, &m->equivocation_proof))
+    CHECK_ERROR(_readKeyOwnerProof(c, &m->key_owner_proof))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_grandpa_report_equivocation_unsigned(
+    parser_context_t *c, pd_grandpa_report_equivocation_unsigned_t *m) {
     CHECK_ERROR(_readGrandpaEquivocationProof(c, &m->equivocation_proof))
     CHECK_ERROR(_readKeyOwnerProof(c, &m->key_owner_proof))
     return parser_ok;
@@ -948,29 +988,50 @@ __Z_INLINE parser_error_t _readMethod_utility_as_derivative(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_sudo_sudo(
-    parser_context_t *c, pd_sudo_sudo_t *m) {
-    CHECK_ERROR(_readCall(c, &m->call))
+__Z_INLINE parser_error_t _readMethod_purchase_create_account(
+    parser_context_t *c, pd_purchase_create_account_t *m) {
+    CHECK_ERROR(_readAccountId(c, &m->who))
+    CHECK_ERROR(_readBytes(c, &m->signature))
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_sudo_sudo_unchecked_weight(
-    parser_context_t *c, pd_sudo_sudo_unchecked_weight_t *m) {
-    CHECK_ERROR(_readCall(c, &m->call))
-    CHECK_ERROR(_readWeight(c, &m->_weight))
+__Z_INLINE parser_error_t _readMethod_purchase_update_validity_status(
+    parser_context_t *c, pd_purchase_update_validity_status_t *m) {
+    CHECK_ERROR(_readAccountId(c, &m->who))
+    CHECK_ERROR(_readAccountValidity(c, &m->validity))
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_sudo_set_key(
-    parser_context_t *c, pd_sudo_set_key_t *m) {
-    CHECK_ERROR(_readLookupSource(c, &m->new_))
+__Z_INLINE parser_error_t _readMethod_purchase_update_balance(
+    parser_context_t *c, pd_purchase_update_balance_t *m) {
+    CHECK_ERROR(_readAccountId(c, &m->who))
+    CHECK_ERROR(_readBalanceOf(c, &m->free_balance))
+    CHECK_ERROR(_readBalanceOf(c, &m->locked_balance))
+    CHECK_ERROR(_readPermill(c, &m->vat))
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_sudo_sudo_as(
-    parser_context_t *c, pd_sudo_sudo_as_t *m) {
-    CHECK_ERROR(_readLookupSource(c, &m->who))
-    CHECK_ERROR(_readCall(c, &m->call))
+__Z_INLINE parser_error_t _readMethod_purchase_payout(
+    parser_context_t *c, pd_purchase_payout_t *m) {
+    CHECK_ERROR(_readAccountId(c, &m->who))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_purchase_set_payment_account(
+    parser_context_t *c, pd_purchase_set_payment_account_t *m) {
+    CHECK_ERROR(_readAccountId(c, &m->who))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_purchase_set_statement(
+    parser_context_t *c, pd_purchase_set_statement_t *m) {
+    CHECK_ERROR(_readBytes(c, &m->statement))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_purchase_set_unlock_block(
+    parser_context_t *c, pd_purchase_set_unlock_block_t *m) {
+    CHECK_ERROR(_readBlockNumber(c, &m->unlock_block))
     return parser_ok;
 }
 
@@ -1045,6 +1106,31 @@ __Z_INLINE parser_error_t _readMethod_identity_kill_identity(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_identity_add_sub(
+    parser_context_t *c, pd_identity_add_sub_t *m) {
+    CHECK_ERROR(_readLookupSource(c, &m->sub))
+    CHECK_ERROR(_readData(c, &m->data))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_identity_rename_sub(
+    parser_context_t *c, pd_identity_rename_sub_t *m) {
+    CHECK_ERROR(_readLookupSource(c, &m->sub))
+    CHECK_ERROR(_readData(c, &m->data))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_identity_remove_sub(
+    parser_context_t *c, pd_identity_remove_sub_t *m) {
+    CHECK_ERROR(_readLookupSource(c, &m->sub))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_identity_quit_sub(
+    parser_context_t *c, pd_identity_quit_sub_t *m) {
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_proxy_proxy(
     parser_context_t *c, pd_proxy_proxy_t *m) {
     CHECK_ERROR(_readAccountId(c, &m->real))
@@ -1101,7 +1187,7 @@ __Z_INLINE parser_error_t _readMethod_multisig_as_multi(
     CHECK_ERROR(_readu16(c, &m->threshold))
     CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
     CHECK_ERROR(_readOptionTimepoint(c, &m->maybe_timepoint))
-    CHECK_ERROR(_readBytes(c, &m->call))
+    CHECK_ERROR(_readOpaqueCall(c, &m->call))
     CHECK_ERROR(_readbool(c, &m->store_call))
     CHECK_ERROR(_readWeight(c, &m->max_weight))
     return parser_ok;
@@ -1123,6 +1209,12 @@ __Z_INLINE parser_error_t _readMethod_multisig_cancel_as_multi(
     CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
     CHECK_ERROR(_readTimepoint(c, &m->timepoint))
     CHECK_ERROR(_readu8_array_32(c, &m->call_hash))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_poll_vote(
+    parser_context_t *c, pd_poll_vote_t *m) {
+    CHECK_ERROR(_readApprovals(c, &m->approvals))
     return parser_ok;
 }
 
@@ -1176,6 +1268,18 @@ parser_error_t _readMethodBasic(
             break;
         case 259: /* module 1 call 3 */
             CHECK_ERROR(_readMethod_scheduler_cancel_named(c, &method->scheduler_cancel_named))
+            break;
+        case 260: /* module 1 call 4 */
+            CHECK_ERROR(_readMethod_scheduler_schedule_after(c, &method->scheduler_schedule_after))
+            break;
+        case 261: /* module 1 call 5 */
+            CHECK_ERROR(_readMethod_scheduler_schedule_named_after(c, &method->scheduler_schedule_named_after))
+            break;
+        case 512: /* module 2 call 0 */
+            CHECK_ERROR(_readMethod_babe_report_equivocation(c, &method->babe_report_equivocation))
+            break;
+        case 513: /* module 2 call 1 */
+            CHECK_ERROR(_readMethod_babe_report_equivocation_unsigned(c, &method->babe_report_equivocation_unsigned))
             break;
         case 768: /* module 3 call 0 */
             CHECK_ERROR(_readMethod_timestamp_set(c, &method->timestamp_set))
@@ -1293,6 +1397,9 @@ parser_error_t _readMethodBasic(
             break;
         case 2816: /* module 11 call 0 */
             CHECK_ERROR(_readMethod_grandpa_report_equivocation(c, &method->grandpa_report_equivocation))
+            break;
+        case 2817: /* module 11 call 1 */
+            CHECK_ERROR(_readMethod_grandpa_report_equivocation_unsigned(c, &method->grandpa_report_equivocation_unsigned))
             break;
         case 3072: /* module 12 call 0 */
             CHECK_ERROR(_readMethod_imonline_heartbeat(c, &method->imonline_heartbeat))
@@ -1541,16 +1648,25 @@ parser_error_t _readMethodBasic(
             CHECK_ERROR(_readMethod_utility_as_derivative(c, &method->utility_as_derivative))
             break;
         case 6912: /* module 27 call 0 */
-            CHECK_ERROR(_readMethod_sudo_sudo(c, &method->sudo_sudo))
+            CHECK_ERROR(_readMethod_purchase_create_account(c, &method->purchase_create_account))
             break;
         case 6913: /* module 27 call 1 */
-            CHECK_ERROR(_readMethod_sudo_sudo_unchecked_weight(c, &method->sudo_sudo_unchecked_weight))
+            CHECK_ERROR(_readMethod_purchase_update_validity_status(c, &method->purchase_update_validity_status))
             break;
         case 6914: /* module 27 call 2 */
-            CHECK_ERROR(_readMethod_sudo_set_key(c, &method->sudo_set_key))
+            CHECK_ERROR(_readMethod_purchase_update_balance(c, &method->purchase_update_balance))
             break;
         case 6915: /* module 27 call 3 */
-            CHECK_ERROR(_readMethod_sudo_sudo_as(c, &method->sudo_sudo_as))
+            CHECK_ERROR(_readMethod_purchase_payout(c, &method->purchase_payout))
+            break;
+        case 6916: /* module 27 call 4 */
+            CHECK_ERROR(_readMethod_purchase_set_payment_account(c, &method->purchase_set_payment_account))
+            break;
+        case 6917: /* module 27 call 5 */
+            CHECK_ERROR(_readMethod_purchase_set_statement(c, &method->purchase_set_statement))
+            break;
+        case 6918: /* module 27 call 6 */
+            CHECK_ERROR(_readMethod_purchase_set_unlock_block(c, &method->purchase_set_unlock_block))
             break;
         case 7168: /* module 28 call 0 */
             CHECK_ERROR(_readMethod_identity_add_registrar(c, &method->identity_add_registrar))
@@ -1585,6 +1701,18 @@ parser_error_t _readMethodBasic(
         case 7178: /* module 28 call 10 */
             CHECK_ERROR(_readMethod_identity_kill_identity(c, &method->identity_kill_identity))
             break;
+        case 7179: /* module 28 call 11 */
+            CHECK_ERROR(_readMethod_identity_add_sub(c, &method->identity_add_sub))
+            break;
+        case 7180: /* module 28 call 12 */
+            CHECK_ERROR(_readMethod_identity_rename_sub(c, &method->identity_rename_sub))
+            break;
+        case 7181: /* module 28 call 13 */
+            CHECK_ERROR(_readMethod_identity_remove_sub(c, &method->identity_remove_sub))
+            break;
+        case 7182: /* module 28 call 14 */
+            CHECK_ERROR(_readMethod_identity_quit_sub(c, &method->identity_quit_sub))
+            break;
         case 7424: /* module 29 call 0 */
             CHECK_ERROR(_readMethod_proxy_proxy(c, &method->proxy_proxy))
             break;
@@ -1614,6 +1742,9 @@ parser_error_t _readMethodBasic(
             break;
         case 7683: /* module 30 call 3 */
             CHECK_ERROR(_readMethod_multisig_cancel_as_multi(c, &method->multisig_cancel_as_multi))
+            break;
+        case 7936: /* module 31 call 0 */
+            CHECK_ERROR(_readMethod_poll_vote(c, &method->poll_vote))
             break;
     default:
     return parser_unexpected_callIndex;
@@ -1671,6 +1802,18 @@ parser_error_t _readMethod(
             break;
         case 259: /* module 1 call 3 */
             CHECK_ERROR(_readMethod_scheduler_cancel_named(c, &method->basic.scheduler_cancel_named))
+            break;
+        case 260: /* module 1 call 4 */
+            CHECK_ERROR(_readMethod_scheduler_schedule_after(c, &method->basic.scheduler_schedule_after))
+            break;
+        case 261: /* module 1 call 5 */
+            CHECK_ERROR(_readMethod_scheduler_schedule_named_after(c, &method->basic.scheduler_schedule_named_after))
+            break;
+        case 512: /* module 2 call 0 */
+            CHECK_ERROR(_readMethod_babe_report_equivocation(c, &method->basic.babe_report_equivocation))
+            break;
+        case 513: /* module 2 call 1 */
+            CHECK_ERROR(_readMethod_babe_report_equivocation_unsigned(c, &method->basic.babe_report_equivocation_unsigned))
             break;
         case 768: /* module 3 call 0 */
             CHECK_ERROR(_readMethod_timestamp_set(c, &method->basic.timestamp_set))
@@ -1788,6 +1931,9 @@ parser_error_t _readMethod(
             break;
         case 2816: /* module 11 call 0 */
             CHECK_ERROR(_readMethod_grandpa_report_equivocation(c, &method->basic.grandpa_report_equivocation))
+            break;
+        case 2817: /* module 11 call 1 */
+            CHECK_ERROR(_readMethod_grandpa_report_equivocation_unsigned(c, &method->basic.grandpa_report_equivocation_unsigned))
             break;
         case 3072: /* module 12 call 0 */
             CHECK_ERROR(_readMethod_imonline_heartbeat(c, &method->basic.imonline_heartbeat))
@@ -2048,16 +2194,25 @@ parser_error_t _readMethod(
             CHECK_ERROR(_readMethod_utility_as_derivative(c, &method->basic.utility_as_derivative))
             break;
         case 6912: /* module 27 call 0 */
-            CHECK_ERROR(_readMethod_sudo_sudo(c, &method->basic.sudo_sudo))
+            CHECK_ERROR(_readMethod_purchase_create_account(c, &method->basic.purchase_create_account))
             break;
         case 6913: /* module 27 call 1 */
-            CHECK_ERROR(_readMethod_sudo_sudo_unchecked_weight(c, &method->basic.sudo_sudo_unchecked_weight))
+            CHECK_ERROR(_readMethod_purchase_update_validity_status(c, &method->basic.purchase_update_validity_status))
             break;
         case 6914: /* module 27 call 2 */
-            CHECK_ERROR(_readMethod_sudo_set_key(c, &method->basic.sudo_set_key))
+            CHECK_ERROR(_readMethod_purchase_update_balance(c, &method->basic.purchase_update_balance))
             break;
         case 6915: /* module 27 call 3 */
-            CHECK_ERROR(_readMethod_sudo_sudo_as(c, &method->basic.sudo_sudo_as))
+            CHECK_ERROR(_readMethod_purchase_payout(c, &method->basic.purchase_payout))
+            break;
+        case 6916: /* module 27 call 4 */
+            CHECK_ERROR(_readMethod_purchase_set_payment_account(c, &method->basic.purchase_set_payment_account))
+            break;
+        case 6917: /* module 27 call 5 */
+            CHECK_ERROR(_readMethod_purchase_set_statement(c, &method->basic.purchase_set_statement))
+            break;
+        case 6918: /* module 27 call 6 */
+            CHECK_ERROR(_readMethod_purchase_set_unlock_block(c, &method->basic.purchase_set_unlock_block))
             break;
         case 7168: /* module 28 call 0 */
             CHECK_ERROR(_readMethod_identity_add_registrar(c, &method->basic.identity_add_registrar))
@@ -2092,6 +2247,18 @@ parser_error_t _readMethod(
         case 7178: /* module 28 call 10 */
             CHECK_ERROR(_readMethod_identity_kill_identity(c, &method->basic.identity_kill_identity))
             break;
+        case 7179: /* module 28 call 11 */
+            CHECK_ERROR(_readMethod_identity_add_sub(c, &method->basic.identity_add_sub))
+            break;
+        case 7180: /* module 28 call 12 */
+            CHECK_ERROR(_readMethod_identity_rename_sub(c, &method->basic.identity_rename_sub))
+            break;
+        case 7181: /* module 28 call 13 */
+            CHECK_ERROR(_readMethod_identity_remove_sub(c, &method->basic.identity_remove_sub))
+            break;
+        case 7182: /* module 28 call 14 */
+            CHECK_ERROR(_readMethod_identity_quit_sub(c, &method->basic.identity_quit_sub))
+            break;
         case 7424: /* module 29 call 0 */
             CHECK_ERROR(_readMethod_proxy_proxy(c, &method->basic.proxy_proxy))
             break;
@@ -2121,6 +2288,9 @@ parser_error_t _readMethod(
             break;
         case 7683: /* module 30 call 3 */
             CHECK_ERROR(_readMethod_multisig_cancel_as_multi(c, &method->basic.multisig_cancel_as_multi))
+            break;
+        case 7936: /* module 31 call 0 */
+            CHECK_ERROR(_readMethod_poll_vote(c, &method->basic.poll_vote))
             break;
         default:
             return parser_unexpected_callIndex;
@@ -2163,10 +2333,11 @@ const char * _getMethod_ModuleName(uint8_t moduleIdx) {
         case 24:   return "Claims";
         case 25:   return "Vesting";
         case 26:   return "Utility";
-        case 27:   return "Sudo";
+        case 27:   return "Purchase";
         case 28:   return "Identity";
         case 29:   return "Proxy";
         case 30:   return "Multisig";
+        case 31:   return "Poll";
     default:
     return NULL;
     }
@@ -2193,6 +2364,10 @@ const char * _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx) {
         case 257: /* module 1 call 1 */   return "Cancel";
         case 258: /* module 1 call 2 */   return "Schedule named";
         case 259: /* module 1 call 3 */   return "Cancel named";
+        case 260: /* module 1 call 4 */   return "Schedule after";
+        case 261: /* module 1 call 5 */   return "Schedule named after";
+        case 512: /* module 2 call 0 */   return "Report equivocation";
+        case 513: /* module 2 call 1 */   return "Report equivocation unsigned";
         case 768: /* module 3 call 0 */   return "Set";
         case 1024: /* module 4 call 0 */   return "Claim";
         case 1025: /* module 4 call 1 */   return "Transfer";
@@ -2232,6 +2407,7 @@ const char * _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx) {
         case 2305: /* module 9 call 1 */   return "Purge keys";
         case 2560: /* module 10 call 0 */   return "Final hint";
         case 2816: /* module 11 call 0 */   return "Report equivocation";
+        case 2817: /* module 11 call 1 */   return "Report equivocation unsigned";
         case 3072: /* module 12 call 0 */   return "Heartbeat";
         case 3584: /* module 14 call 0 */   return "Propose";
         case 3585: /* module 14 call 1 */   return "Second";
@@ -2318,10 +2494,13 @@ const char * _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx) {
         case 6403: /* module 25 call 3 */   return "Force vested transfer";
         case 6656: /* module 26 call 0 */   return "Batch";
         case 6657: /* module 26 call 1 */   return "As derivative";
-        case 6912: /* module 27 call 0 */   return "Sudo";
-        case 6913: /* module 27 call 1 */   return "Sudo unchecked weight";
-        case 6914: /* module 27 call 2 */   return "Set key";
-        case 6915: /* module 27 call 3 */   return "Sudo as";
+        case 6912: /* module 27 call 0 */   return "Create account";
+        case 6913: /* module 27 call 1 */   return "Update validity status";
+        case 6914: /* module 27 call 2 */   return "Update balance";
+        case 6915: /* module 27 call 3 */   return "Payout";
+        case 6916: /* module 27 call 4 */   return "Set payment account";
+        case 6917: /* module 27 call 5 */   return "Set statement";
+        case 6918: /* module 27 call 6 */   return "Set unlock block";
         case 7168: /* module 28 call 0 */   return "Add registrar";
         case 7169: /* module 28 call 1 */   return "Set identity";
         case 7170: /* module 28 call 2 */   return "Set subs";
@@ -2333,6 +2512,10 @@ const char * _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx) {
         case 7176: /* module 28 call 8 */   return "Set fields";
         case 7177: /* module 28 call 9 */   return "Provide judgement";
         case 7178: /* module 28 call 10 */   return "Kill identity";
+        case 7179: /* module 28 call 11 */   return "Add sub";
+        case 7180: /* module 28 call 12 */   return "Rename sub";
+        case 7181: /* module 28 call 13 */   return "Remove sub";
+        case 7182: /* module 28 call 14 */   return "Quit sub";
         case 7424: /* module 29 call 0 */   return "Proxy";
         case 7425: /* module 29 call 1 */   return "Add proxy";
         case 7426: /* module 29 call 2 */   return "Remove proxy";
@@ -2343,6 +2526,7 @@ const char * _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx) {
         case 7681: /* module 30 call 1 */   return "As multi";
         case 7682: /* module 30 call 2 */   return "Approve as multi";
         case 7683: /* module 30 call 3 */   return "Cancel as multi";
+        case 7936: /* module 31 call 0 */   return "Vote";
     default:
         return NULL;
     }
@@ -2368,6 +2552,10 @@ uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *met
         case 257: /* module 1 call 1 */ return 2;
         case 258: /* module 1 call 2 */ return 5;
         case 259: /* module 1 call 3 */ return 1;
+        case 260: /* module 1 call 4 */ return 4;
+        case 261: /* module 1 call 5 */ return 5;
+        case 512: /* module 2 call 0 */ return 2;
+        case 513: /* module 2 call 1 */ return 2;
         case 768: /* module 3 call 0 */ return 1;
         case 1024: /* module 4 call 0 */ return 1;
         case 1025: /* module 4 call 1 */ return 2;
@@ -2407,6 +2595,7 @@ uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *met
         case 2305: /* module 9 call 1 */ return 0;
         case 2560: /* module 10 call 0 */ return 1;
         case 2816: /* module 11 call 0 */ return 2;
+        case 2817: /* module 11 call 1 */ return 2;
         case 3072: /* module 12 call 0 */ return 2;
         case 3584: /* module 14 call 0 */ return 2;
         case 3585: /* module 14 call 1 */ return 2;
@@ -2493,10 +2682,13 @@ uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *met
         case 6403: /* module 25 call 3 */ return 3;
         case 6656: /* module 26 call 0 */ return 1;
         case 6657: /* module 26 call 1 */ return 2;
-        case 6912: /* module 27 call 0 */ return 1;
+        case 6912: /* module 27 call 0 */ return 2;
         case 6913: /* module 27 call 1 */ return 2;
-        case 6914: /* module 27 call 2 */ return 1;
-        case 6915: /* module 27 call 3 */ return 2;
+        case 6914: /* module 27 call 2 */ return 4;
+        case 6915: /* module 27 call 3 */ return 1;
+        case 6916: /* module 27 call 4 */ return 1;
+        case 6917: /* module 27 call 5 */ return 1;
+        case 6918: /* module 27 call 6 */ return 1;
         case 7168: /* module 28 call 0 */ return 1;
         case 7169: /* module 28 call 1 */ return 1;
         case 7170: /* module 28 call 2 */ return 1;
@@ -2508,6 +2700,10 @@ uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *met
         case 7176: /* module 28 call 8 */ return 2;
         case 7177: /* module 28 call 9 */ return 3;
         case 7178: /* module 28 call 10 */ return 1;
+        case 7179: /* module 28 call 11 */ return 2;
+        case 7180: /* module 28 call 12 */ return 2;
+        case 7181: /* module 28 call 13 */ return 1;
+        case 7182: /* module 28 call 14 */ return 0;
         case 7424: /* module 29 call 0 */ return 3;
         case 7425: /* module 29 call 1 */ return 2;
         case 7426: /* module 29 call 2 */ return 2;
@@ -2518,6 +2714,7 @@ uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *met
         case 7681: /* module 30 call 1 */ return 6;
         case 7682: /* module 30 call 2 */ return 5;
         case 7683: /* module 30 call 3 */ return 4;
+        case 7936: /* module 31 call 0 */ return 1;
     default:
     return 0;
     }
@@ -2606,6 +2803,35 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
         case 259: /* module 1 call 3 */
             switch(itemIdx) {
                 case 0: return "Id";
+                default: return NULL;
+            }
+        case 260: /* module 1 call 4 */
+            switch(itemIdx) {
+                case 0: return "After";
+                case 1: return "Maybe periodic";
+                case 2: return "Priority";
+                case 3: return "Call";
+                default: return NULL;
+            }
+        case 261: /* module 1 call 5 */
+            switch(itemIdx) {
+                case 0: return "Id";
+                case 1: return "After";
+                case 2: return "Maybe periodic";
+                case 3: return "Priority";
+                case 4: return "Call";
+                default: return NULL;
+            }
+        case 512: /* module 2 call 0 */
+            switch(itemIdx) {
+                case 0: return "Equivocation proof";
+                case 1: return "Key owner proof";
+                default: return NULL;
+            }
+        case 513: /* module 2 call 1 */
+            switch(itemIdx) {
+                case 0: return "Equivocation proof";
+                case 1: return "Key owner proof";
                 default: return NULL;
             }
         case 768: /* module 3 call 0 */
@@ -2819,6 +3045,12 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 default: return NULL;
             }
         case 2816: /* module 11 call 0 */
+            switch(itemIdx) {
+                case 0: return "Equivocation proof";
+                case 1: return "Key owner proof";
+                default: return NULL;
+            }
+        case 2817: /* module 11 call 1 */
             switch(itemIdx) {
                 case 0: return "Equivocation proof";
                 case 1: return "Key owner proof";
@@ -3323,24 +3555,42 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
             }
         case 6912: /* module 27 call 0 */
             switch(itemIdx) {
-                case 0: return "Call";
+                case 0: return "Who";
+                case 1: return "Signature";
                 default: return NULL;
             }
         case 6913: /* module 27 call 1 */
             switch(itemIdx) {
-                case 0: return "Call";
-                case 1: return "Weight";
+                case 0: return "Who";
+                case 1: return "Validity";
                 default: return NULL;
             }
         case 6914: /* module 27 call 2 */
             switch(itemIdx) {
-                case 0: return "New";
+                case 0: return "Who";
+                case 1: return "Free balance";
+                case 2: return "Locked balance";
+                case 3: return "Vat";
                 default: return NULL;
             }
         case 6915: /* module 27 call 3 */
             switch(itemIdx) {
                 case 0: return "Who";
-                case 1: return "Call";
+                default: return NULL;
+            }
+        case 6916: /* module 27 call 4 */
+            switch(itemIdx) {
+                case 0: return "Who";
+                default: return NULL;
+            }
+        case 6917: /* module 27 call 5 */
+            switch(itemIdx) {
+                case 0: return "Statement";
+                default: return NULL;
+            }
+        case 6918: /* module 27 call 6 */
+            switch(itemIdx) {
+                case 0: return "Unlock block";
                 default: return NULL;
             }
         case 7168: /* module 28 call 0 */
@@ -3401,6 +3651,27 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
         case 7178: /* module 28 call 10 */
             switch(itemIdx) {
                 case 0: return "Target";
+                default: return NULL;
+            }
+        case 7179: /* module 28 call 11 */
+            switch(itemIdx) {
+                case 0: return "Sub";
+                case 1: return "Data";
+                default: return NULL;
+            }
+        case 7180: /* module 28 call 12 */
+            switch(itemIdx) {
+                case 0: return "Sub";
+                case 1: return "Data";
+                default: return NULL;
+            }
+        case 7181: /* module 28 call 13 */
+            switch(itemIdx) {
+                case 0: return "Sub";
+                default: return NULL;
+            }
+        case 7182: /* module 28 call 14 */
+            switch(itemIdx) {
                 default: return NULL;
             }
         case 7424: /* module 29 call 0 */
@@ -3472,6 +3743,11 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 1: return "Other signatories";
                 case 2: return "Timepoint";
                 case 3: return "Call hash";
+                default: return NULL;
+            }
+        case 7936: /* module 31 call 0 */
+            switch(itemIdx) {
+                case 0: return "Approvals";
                 default: return NULL;
             }
         default:
@@ -3664,6 +3940,91 @@ parser_error_t _getMethod_ItemValue(
             case 0: /* scheduler_cancel_named - id */;
                 return _toStringBytes(
                     &m->basic.scheduler_cancel_named.id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 260: /* module 1 call 4 */
+        switch(itemIdx) {
+            case 0: /* scheduler_schedule_after - after */;
+                return _toStringBlockNumber(
+                    &m->basic.scheduler_schedule_after.after,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 1: /* scheduler_schedule_after - maybe_periodic */;
+                return _toStringOptionPeriod(
+                    &m->basic.scheduler_schedule_after.maybe_periodic,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 2: /* scheduler_schedule_after - priority */;
+                return _toStringPriority(
+                    &m->basic.scheduler_schedule_after.priority,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 3: /* scheduler_schedule_after - call */;
+                return _toStringCall(
+                    &m->basic.scheduler_schedule_after.call,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 261: /* module 1 call 5 */
+        switch(itemIdx) {
+            case 0: /* scheduler_schedule_named_after - id */;
+                return _toStringBytes(
+                    &m->basic.scheduler_schedule_named_after.id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 1: /* scheduler_schedule_named_after - after */;
+                return _toStringBlockNumber(
+                    &m->basic.scheduler_schedule_named_after.after,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 2: /* scheduler_schedule_named_after - maybe_periodic */;
+                return _toStringOptionPeriod(
+                    &m->basic.scheduler_schedule_named_after.maybe_periodic,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 3: /* scheduler_schedule_named_after - priority */;
+                return _toStringPriority(
+                    &m->basic.scheduler_schedule_named_after.priority,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 4: /* scheduler_schedule_named_after - call */;
+                return _toStringCall(
+                    &m->basic.scheduler_schedule_named_after.call,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 512: /* module 2 call 0 */
+        switch(itemIdx) {
+            case 0: /* babe_report_equivocation - equivocation_proof */;
+                return _toStringBabeEquivocationProof(
+                    &m->basic.babe_report_equivocation.equivocation_proof,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 1: /* babe_report_equivocation - key_owner_proof */;
+                return _toStringKeyOwnerProof(
+                    &m->basic.babe_report_equivocation.key_owner_proof,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 513: /* module 2 call 1 */
+        switch(itemIdx) {
+            case 0: /* babe_report_equivocation_unsigned - equivocation_proof */;
+                return _toStringBabeEquivocationProof(
+                    &m->basic.babe_report_equivocation_unsigned.equivocation_proof,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 1: /* babe_report_equivocation_unsigned - key_owner_proof */;
+                return _toStringKeyOwnerProof(
+                    &m->basic.babe_report_equivocation_unsigned.key_owner_proof,
                     outValue, outValueLen,
                     pageIdx, pageCount);
             default:
@@ -4159,6 +4520,21 @@ parser_error_t _getMethod_ItemValue(
             case 1: /* grandpa_report_equivocation - key_owner_proof */;
                 return _toStringKeyOwnerProof(
                     &m->basic.grandpa_report_equivocation.key_owner_proof,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 2817: /* module 11 call 1 */
+        switch(itemIdx) {
+            case 0: /* grandpa_report_equivocation_unsigned - equivocation_proof */;
+                return _toStringGrandpaEquivocationProof(
+                    &m->basic.grandpa_report_equivocation_unsigned.equivocation_proof,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 1: /* grandpa_report_equivocation_unsigned - key_owner_proof */;
+                return _toStringKeyOwnerProof(
+                    &m->basic.grandpa_report_equivocation_unsigned.key_owner_proof,
                     outValue, outValueLen,
                     pageIdx, pageCount);
             default:
@@ -5361,9 +5737,14 @@ parser_error_t _getMethod_ItemValue(
         }
         case 6912: /* module 27 call 0 */
         switch(itemIdx) {
-            case 0: /* sudo_sudo - call */;
-                return _toStringCall(
-                    &m->basic.sudo_sudo.call,
+            case 0: /* purchase_create_account - who */;
+                return _toStringAccountId(
+                    &m->basic.purchase_create_account.who,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 1: /* purchase_create_account - signature */;
+                return _toStringBytes(
+                    &m->basic.purchase_create_account.signature,
                     outValue, outValueLen,
                     pageIdx, pageCount);
             default:
@@ -5371,14 +5752,14 @@ parser_error_t _getMethod_ItemValue(
         }
         case 6913: /* module 27 call 1 */
         switch(itemIdx) {
-            case 0: /* sudo_sudo_unchecked_weight - call */;
-                return _toStringCall(
-                    &m->basic.sudo_sudo_unchecked_weight.call,
+            case 0: /* purchase_update_validity_status - who */;
+                return _toStringAccountId(
+                    &m->basic.purchase_update_validity_status.who,
                     outValue, outValueLen,
                     pageIdx, pageCount);
-            case 1: /* sudo_sudo_unchecked_weight - _weight */;
-                return _toStringWeight(
-                    &m->basic.sudo_sudo_unchecked_weight._weight,
+            case 1: /* purchase_update_validity_status - validity */;
+                return _toStringAccountValidity(
+                    &m->basic.purchase_update_validity_status.validity,
                     outValue, outValueLen,
                     pageIdx, pageCount);
             default:
@@ -5386,9 +5767,24 @@ parser_error_t _getMethod_ItemValue(
         }
         case 6914: /* module 27 call 2 */
         switch(itemIdx) {
-            case 0: /* sudo_set_key - new_ */;
-                return _toStringLookupSource(
-                    &m->basic.sudo_set_key.new_,
+            case 0: /* purchase_update_balance - who */;
+                return _toStringAccountId(
+                    &m->basic.purchase_update_balance.who,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 1: /* purchase_update_balance - free_balance */;
+                return _toStringBalanceOf(
+                    &m->basic.purchase_update_balance.free_balance,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 2: /* purchase_update_balance - locked_balance */;
+                return _toStringBalanceOf(
+                    &m->basic.purchase_update_balance.locked_balance,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 3: /* purchase_update_balance - vat */;
+                return _toStringPermill(
+                    &m->basic.purchase_update_balance.vat,
                     outValue, outValueLen,
                     pageIdx, pageCount);
             default:
@@ -5396,14 +5792,39 @@ parser_error_t _getMethod_ItemValue(
         }
         case 6915: /* module 27 call 3 */
         switch(itemIdx) {
-            case 0: /* sudo_sudo_as - who */;
-                return _toStringLookupSource(
-                    &m->basic.sudo_sudo_as.who,
+            case 0: /* purchase_payout - who */;
+                return _toStringAccountId(
+                    &m->basic.purchase_payout.who,
                     outValue, outValueLen,
                     pageIdx, pageCount);
-            case 1: /* sudo_sudo_as - call */;
-                return _toStringCall(
-                    &m->basic.sudo_sudo_as.call,
+            default:
+                return parser_no_data;
+        }
+        case 6916: /* module 27 call 4 */
+        switch(itemIdx) {
+            case 0: /* purchase_set_payment_account - who */;
+                return _toStringAccountId(
+                    &m->basic.purchase_set_payment_account.who,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 6917: /* module 27 call 5 */
+        switch(itemIdx) {
+            case 0: /* purchase_set_statement - statement */;
+                return _toStringBytes(
+                    &m->basic.purchase_set_statement.statement,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 6918: /* module 27 call 6 */
+        switch(itemIdx) {
+            case 0: /* purchase_set_unlock_block - unlock_block */;
+                return _toStringBlockNumber(
+                    &m->basic.purchase_set_unlock_block.unlock_block,
                     outValue, outValueLen,
                     pageIdx, pageCount);
             default:
@@ -5544,6 +5965,51 @@ parser_error_t _getMethod_ItemValue(
             default:
                 return parser_no_data;
         }
+        case 7179: /* module 28 call 11 */
+        switch(itemIdx) {
+            case 0: /* identity_add_sub - sub */;
+                return _toStringLookupSource(
+                    &m->basic.identity_add_sub.sub,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 1: /* identity_add_sub - data */;
+                return _toStringData(
+                    &m->basic.identity_add_sub.data,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 7180: /* module 28 call 12 */
+        switch(itemIdx) {
+            case 0: /* identity_rename_sub - sub */;
+                return _toStringLookupSource(
+                    &m->basic.identity_rename_sub.sub,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            case 1: /* identity_rename_sub - data */;
+                return _toStringData(
+                    &m->basic.identity_rename_sub.data,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 7181: /* module 28 call 13 */
+        switch(itemIdx) {
+            case 0: /* identity_remove_sub - sub */;
+                return _toStringLookupSource(
+                    &m->basic.identity_remove_sub.sub,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 7182: /* module 28 call 14 */
+        switch(itemIdx) {
+            default:
+                return parser_no_data;
+        }
         case 7424: /* module 29 call 0 */
         switch(itemIdx) {
             case 0: /* proxy_proxy - real */;
@@ -5677,7 +6143,7 @@ parser_error_t _getMethod_ItemValue(
                     outValue, outValueLen,
                     pageIdx, pageCount);
             case 3: /* multisig_as_multi - call */;
-                return _toStringBytes(
+                return _toStringOpaqueCall(
                     &m->basic.multisig_as_multi.call,
                     outValue, outValueLen,
                     pageIdx, pageCount);
@@ -5744,6 +6210,16 @@ parser_error_t _getMethod_ItemValue(
             case 3: /* multisig_cancel_as_multi - call_hash */;
                 return _toStringu8_array_32(
                     &m->basic.multisig_cancel_as_multi.call_hash,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+            default:
+                return parser_no_data;
+        }
+        case 7936: /* module 31 call 0 */
+        switch(itemIdx) {
+            case 0: /* poll_vote - approvals */;
+                return _toStringApprovals(
+                    &m->basic.poll_vote.approvals,
                     outValue, outValueLen,
                     pageIdx, pageCount);
             default:

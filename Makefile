@@ -18,15 +18,23 @@
 # BOLOS_SDK IS  DEFINED	 	We use the plain Makefile for Ledger
 # BOLOS_SDK NOT DEFINED		We use a containerized build approach
 
+#TESTS_ZEMU_JS_PACKAGE = "@zondax/ledger-polkadot"
+#TESTS_ZEMU_JS_DIR = $(CURDIR)/../ledger-polkadot-js
+
 ifeq ($(BOLOS_SDK),)
+
 include $(CURDIR)/deps/ledger-zxlib/dockerized_build.mk
+
 else
+
 default:
 	$(MAKE) -C app
 %:
 	$(info "Calling app Makefile for target $@")
 	COIN=$(COIN) $(MAKE) -C app $@
+
 endif
 
-build2: COIN=Ledgeracio		# Alternative app purpose
-build2: build
+build_ledgeracio: COIN=Ledgeracio		# Alternative app purpose
+build_ledgeracio: build
+	cp $(CURDIR)/app/bin/app.elf $(CURDIR)/app/bin/app_ledgeracio.elf
