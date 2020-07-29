@@ -45,10 +45,13 @@ parser_error_t _toStringHash(const pd_Hash_t *v,
 
 parser_error_t _readAccountId(parser_context_t *c, pd_AccountId_t *v);
 parser_error_t _readAccountIndex(parser_context_t *c, pd_AccountIndex_t *v);
+parser_error_t _readAccountValidity(parser_context_t *c, pd_AccountValidity_t *v);
 parser_error_t _readAccountVoteSplit(parser_context_t *c, pd_AccountVoteSplit_t *v);
 parser_error_t _readAccountVoteStandard(parser_context_t *c, pd_AccountVoteStandard_t *v);
 parser_error_t _readAccountVote(parser_context_t *c, pd_AccountVote_t *v);
+parser_error_t _readApprovals(parser_context_t *c, pd_Approvals_t *v);
 parser_error_t _readAttestedCandidate(parser_context_t *c, pd_AttestedCandidate_t *v);
+parser_error_t _readBabeEquivocationProof(parser_context_t *c, pd_BabeEquivocationProof_t *v);
 parser_error_t _readBalanceOf(parser_context_t *c, pd_BalanceOf_t *v);
 parser_error_t _readBalance(parser_context_t *c, pd_Balance_t *v);
 parser_error_t _readBlockNumber(parser_context_t *c, pd_BlockNumber_t *v);
@@ -96,6 +99,7 @@ parser_error_t _readKeys(parser_context_t *c, pd_Keys_t *v);
 parser_error_t _readLookupSource(parser_context_t *c, pd_LookupSource_t *v);
 parser_error_t _readMemberCount(parser_context_t *c, pd_MemberCount_t *v);
 parser_error_t _readMoreAttestations(parser_context_t *c, pd_MoreAttestations_t *v);
+parser_error_t _readOpaqueCall(parser_context_t *c, pd_OpaqueCall_t *v);
 parser_error_t _readOptionAccountId(parser_context_t *c, pd_OptionAccountId_t *v);
 parser_error_t _readOptionChangesTrieConfiguration(parser_context_t *c, pd_OptionChangesTrieConfiguration_t *v);
 parser_error_t _readOptionPeriod(parser_context_t *c, pd_OptionPeriod_t *v);
@@ -109,6 +113,7 @@ parser_error_t _readParaInfo(parser_context_t *c, pd_ParaInfo_t *v);
 parser_error_t _readPerbill(parser_context_t *c, pd_Perbill_t *v);
 parser_error_t _readPercent(parser_context_t *c, pd_Percent_t *v);
 parser_error_t _readPeriod(parser_context_t *c, pd_Period_t *v);
+parser_error_t _readPermill(parser_context_t *c, pd_Permill_t *v);
 parser_error_t _readPriority(parser_context_t *c, pd_Priority_t *v);
 parser_error_t _readProxyType(parser_context_t *c, pd_ProxyType_t *v);
 parser_error_t _readReferendumIndex(parser_context_t *c, pd_ReferendumIndex_t *v);
@@ -162,6 +167,13 @@ parser_error_t _toStringAccountIndex(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringAccountValidity(
+    const pd_AccountValidity_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringAccountVoteSplit(
     const pd_AccountVoteSplit_t *v,
     char *outValue,
@@ -183,8 +195,22 @@ parser_error_t _toStringAccountVote(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringApprovals(
+    const pd_Approvals_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringAttestedCandidate(
     const pd_AttestedCandidate_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringBabeEquivocationProof(
+    const pd_BabeEquivocationProof_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -519,6 +545,13 @@ parser_error_t _toStringMoreAttestations(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringOpaqueCall(
+    const pd_OpaqueCall_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringOptionAccountId(
     const pd_OptionAccountId_t *v,
     char *outValue,
@@ -605,6 +638,13 @@ parser_error_t _toStringPercent(
 
 parser_error_t _toStringPeriod(
     const pd_Period_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
+parser_error_t _toStringPermill(
+    const pd_Permill_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

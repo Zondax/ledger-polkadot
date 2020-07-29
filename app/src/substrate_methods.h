@@ -49,10 +49,11 @@ extern "C" {
 #define PD_CALL_CLAIMS 24
 #define PD_CALL_VESTING 25
 #define PD_CALL_UTILITY 26
-#define PD_CALL_SUDO 27
+#define PD_CALL_PURCHASE 27
 #define PD_CALL_IDENTITY 28
 #define PD_CALL_PROXY 29
 #define PD_CALL_MULTISIG 30
+#define PD_CALL_POLL 31
 
 
 #define PD_CALL_SYSTEM_FILL_BLOCK 0
@@ -132,6 +133,35 @@ typedef struct {
 typedef struct {
     pd_Bytes_t id;
 } pd_scheduler_cancel_named_t;
+
+#define PD_CALL_SCHEDULER_SCHEDULE_AFTER 4
+typedef struct {
+    pd_BlockNumber_t after;
+    pd_OptionPeriod_t maybe_periodic;
+    pd_Priority_t priority;
+    pd_Call_t call;
+} pd_scheduler_schedule_after_t;
+
+#define PD_CALL_SCHEDULER_SCHEDULE_NAMED_AFTER 5
+typedef struct {
+    pd_Bytes_t id;
+    pd_BlockNumber_t after;
+    pd_OptionPeriod_t maybe_periodic;
+    pd_Priority_t priority;
+    pd_Call_t call;
+} pd_scheduler_schedule_named_after_t;
+
+#define PD_CALL_BABE_REPORT_EQUIVOCATION 0
+typedef struct {
+    pd_BabeEquivocationProof_t equivocation_proof;
+    pd_KeyOwnerProof_t key_owner_proof;
+} pd_babe_report_equivocation_t;
+
+#define PD_CALL_BABE_REPORT_EQUIVOCATION_UNSIGNED 1
+typedef struct {
+    pd_BabeEquivocationProof_t equivocation_proof;
+    pd_KeyOwnerProof_t key_owner_proof;
+} pd_babe_report_equivocation_unsigned_t;
 
 #define PD_CALL_TIMESTAMP_SET 0
 typedef struct {
@@ -348,6 +378,12 @@ typedef struct {
     pd_GrandpaEquivocationProof_t equivocation_proof;
     pd_KeyOwnerProof_t key_owner_proof;
 } pd_grandpa_report_equivocation_t;
+
+#define PD_CALL_GRANDPA_REPORT_EQUIVOCATION_UNSIGNED 1
+typedef struct {
+    pd_GrandpaEquivocationProof_t equivocation_proof;
+    pd_KeyOwnerProof_t key_owner_proof;
+} pd_grandpa_report_equivocation_unsigned_t;
 
 #define PD_CALL_IMONLINE_HEARTBEAT 0
 typedef struct {
@@ -820,27 +856,45 @@ typedef struct {
     pd_Call_t call;
 } pd_utility_as_derivative_t;
 
-#define PD_CALL_SUDO_SUDO 0
+#define PD_CALL_PURCHASE_CREATE_ACCOUNT 0
 typedef struct {
-    pd_Call_t call;
-} pd_sudo_sudo_t;
+    pd_AccountId_t who;
+    pd_Bytes_t signature;
+} pd_purchase_create_account_t;
 
-#define PD_CALL_SUDO_SUDO_UNCHECKED_WEIGHT 1
+#define PD_CALL_PURCHASE_UPDATE_VALIDITY_STATUS 1
 typedef struct {
-    pd_Call_t call;
-    pd_Weight_t _weight;
-} pd_sudo_sudo_unchecked_weight_t;
+    pd_AccountId_t who;
+    pd_AccountValidity_t validity;
+} pd_purchase_update_validity_status_t;
 
-#define PD_CALL_SUDO_SET_KEY 2
+#define PD_CALL_PURCHASE_UPDATE_BALANCE 2
 typedef struct {
-    pd_LookupSource_t new_;
-} pd_sudo_set_key_t;
+    pd_AccountId_t who;
+    pd_BalanceOf_t free_balance;
+    pd_BalanceOf_t locked_balance;
+    pd_Permill_t vat;
+} pd_purchase_update_balance_t;
 
-#define PD_CALL_SUDO_SUDO_AS 3
+#define PD_CALL_PURCHASE_PAYOUT 3
 typedef struct {
-    pd_LookupSource_t who;
-    pd_Call_t call;
-} pd_sudo_sudo_as_t;
+    pd_AccountId_t who;
+} pd_purchase_payout_t;
+
+#define PD_CALL_PURCHASE_SET_PAYMENT_ACCOUNT 4
+typedef struct {
+    pd_AccountId_t who;
+} pd_purchase_set_payment_account_t;
+
+#define PD_CALL_PURCHASE_SET_STATEMENT 5
+typedef struct {
+    pd_Bytes_t statement;
+} pd_purchase_set_statement_t;
+
+#define PD_CALL_PURCHASE_SET_UNLOCK_BLOCK 6
+typedef struct {
+    pd_BlockNumber_t unlock_block;
+} pd_purchase_set_unlock_block_t;
 
 #define PD_CALL_IDENTITY_ADD_REGISTRAR 0
 typedef struct {
@@ -902,6 +956,27 @@ typedef struct {
     pd_LookupSource_t target;
 } pd_identity_kill_identity_t;
 
+#define PD_CALL_IDENTITY_ADD_SUB 11
+typedef struct {
+    pd_LookupSource_t sub;
+    pd_Data_t data;
+} pd_identity_add_sub_t;
+
+#define PD_CALL_IDENTITY_RENAME_SUB 12
+typedef struct {
+    pd_LookupSource_t sub;
+    pd_Data_t data;
+} pd_identity_rename_sub_t;
+
+#define PD_CALL_IDENTITY_REMOVE_SUB 13
+typedef struct {
+    pd_LookupSource_t sub;
+} pd_identity_remove_sub_t;
+
+#define PD_CALL_IDENTITY_QUIT_SUB 14
+typedef struct {
+} pd_identity_quit_sub_t;
+
 #define PD_CALL_PROXY_PROXY 0
 typedef struct {
     pd_AccountId_t real;
@@ -951,7 +1026,7 @@ typedef struct {
     pd_u16_t threshold;
     pd_VecAccountId_t other_signatories;
     pd_OptionTimepoint_t maybe_timepoint;
-    pd_Bytes_t call;
+    pd_OpaqueCall_t call;
     pd_bool_t store_call;
     pd_Weight_t max_weight;
 } pd_multisig_as_multi_t;
@@ -973,6 +1048,11 @@ typedef struct {
     pd_u8_array_32_t call_hash;
 } pd_multisig_cancel_as_multi_t;
 
+#define PD_CALL_POLL_VOTE 0
+typedef struct {
+    pd_Approvals_t approvals;
+} pd_poll_vote_t;
+
 
 typedef union {
     pd_system_fill_block_t system_fill_block;
@@ -989,6 +1069,10 @@ typedef union {
     pd_scheduler_cancel_t scheduler_cancel;
     pd_scheduler_schedule_named_t scheduler_schedule_named;
     pd_scheduler_cancel_named_t scheduler_cancel_named;
+    pd_scheduler_schedule_after_t scheduler_schedule_after;
+    pd_scheduler_schedule_named_after_t scheduler_schedule_named_after;
+    pd_babe_report_equivocation_t babe_report_equivocation;
+    pd_babe_report_equivocation_unsigned_t babe_report_equivocation_unsigned;
     pd_timestamp_set_t timestamp_set;
     pd_indices_claim_t indices_claim;
     pd_indices_transfer_t indices_transfer;
@@ -1028,6 +1112,7 @@ typedef union {
     pd_session_purge_keys_t session_purge_keys;
     pd_finalitytracker_final_hint_t finalitytracker_final_hint;
     pd_grandpa_report_equivocation_t grandpa_report_equivocation;
+    pd_grandpa_report_equivocation_unsigned_t grandpa_report_equivocation_unsigned;
     pd_imonline_heartbeat_t imonline_heartbeat;
     pd_democracy_propose_t democracy_propose;
     pd_democracy_second_t democracy_second;
@@ -1110,10 +1195,13 @@ typedef union {
     pd_vesting_force_vested_transfer_t vesting_force_vested_transfer;
     pd_utility_batch_t utility_batch;
     pd_utility_as_derivative_t utility_as_derivative;
-    pd_sudo_sudo_t sudo_sudo;
-    pd_sudo_sudo_unchecked_weight_t sudo_sudo_unchecked_weight;
-    pd_sudo_set_key_t sudo_set_key;
-    pd_sudo_sudo_as_t sudo_sudo_as;
+    pd_purchase_create_account_t purchase_create_account;
+    pd_purchase_update_validity_status_t purchase_update_validity_status;
+    pd_purchase_update_balance_t purchase_update_balance;
+    pd_purchase_payout_t purchase_payout;
+    pd_purchase_set_payment_account_t purchase_set_payment_account;
+    pd_purchase_set_statement_t purchase_set_statement;
+    pd_purchase_set_unlock_block_t purchase_set_unlock_block;
     pd_identity_add_registrar_t identity_add_registrar;
     pd_identity_set_identity_t identity_set_identity;
     pd_identity_set_subs_t identity_set_subs;
@@ -1125,6 +1213,10 @@ typedef union {
     pd_identity_set_fields_t identity_set_fields;
     pd_identity_provide_judgement_t identity_provide_judgement;
     pd_identity_kill_identity_t identity_kill_identity;
+    pd_identity_add_sub_t identity_add_sub;
+    pd_identity_rename_sub_t identity_rename_sub;
+    pd_identity_remove_sub_t identity_remove_sub;
+    pd_identity_quit_sub_t identity_quit_sub;
     pd_proxy_proxy_t proxy_proxy;
     pd_proxy_add_proxy_t proxy_add_proxy;
     pd_proxy_remove_proxy_t proxy_remove_proxy;
@@ -1135,6 +1227,7 @@ typedef union {
     pd_multisig_as_multi_t multisig_as_multi;
     pd_multisig_approve_as_multi_t multisig_approve_as_multi;
     pd_multisig_cancel_as_multi_t multisig_cancel_as_multi;
+    pd_poll_vote_t poll_vote;
 } pd_MethodBasic_t;
 
 typedef struct {

@@ -179,6 +179,11 @@ typedef struct {
 } pd_AccountIndex_t;
 
 typedef struct { 
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_AccountValidity_t;
+
+typedef struct { 
     pd_BalanceOf_t aye;
     pd_BalanceOf_t nay;
 } pd_AccountVoteSplit_t;
@@ -195,6 +200,16 @@ typedef struct {
         pd_AccountVoteSplit_t voteSplit;
     };
 } pd_AccountVote_t;
+
+typedef struct { 
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_Approvals_t;
+
+typedef struct { 
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_BabeEquivocationProof_t;
 
 typedef struct { 
     // TODO: Not implemented
@@ -316,6 +331,11 @@ typedef struct {
 typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_OpaqueCall_t;
+
+typedef struct { 
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ParaId_t;
 
 typedef struct { 
@@ -337,6 +357,11 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Period_t;
+
+typedef struct { 
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_Permill_t;
 
 typedef struct { 
     // TODO: Not implemented
