@@ -25,13 +25,10 @@ namespace {
         zxerr_t err = printTime(output, sizeof(output), t);
 
         EXPECT_EQ(err, zxerr_ok);
-        EXPECT_STREQ(output, "05Jan2005 15:04:25");
+        EXPECT_STREQ(output, "05Jan2005 15:04:25UTC");
     }
 
     TEST(TIMEUTILS, yearlookup) {
-        char output[50];
-        char expected_output[50];
-
         struct tm t = {0};  // Initalize to all 0's
         for (uint64_t year = 70; year < 470; year++) {
             t.tm_year = year;  // This is year-1900, so 112 = 2012
@@ -59,7 +56,7 @@ namespace {
             EXPECT_EQ(err, zxerr_ok);
             time_t tmp = t;
             auto expected = gmtime(&tmp);
-            snprintf(expected_output, sizeof(expected_output), "%02d%s%d %02d:%02d:%02d",
+            snprintf(expected_output, sizeof(expected_output), "%02d%s%d %02d:%02d:%02dUTC",
                      expected->tm_mday,
                      getMonth(expected->tm_mon + 1),
                      expected->tm_year + 1900,
@@ -81,7 +78,7 @@ namespace {
         zxerr_t err = printTime(output, sizeof(output), t);
 
         EXPECT_EQ(err, zxerr_ok);
-        EXPECT_STREQ(output, "01Jan1970 00:00:00");
+        EXPECT_STREQ(output, "01Jan1970 00:00:00UTC");
     }
 
     TEST(TIMEUTILS, huge) {

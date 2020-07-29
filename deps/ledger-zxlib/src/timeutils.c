@@ -445,22 +445,22 @@ const uint32_t yearLookup[] = {
 // based on section 4.16
 // https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html
 zxerr_t printTime(char *out, uint16_t outLen, uint64_t t) {
-    uint8_t tm_sec = 0;
-    uint8_t tm_min = 0;
-    uint8_t tm_hour = 0;
-    uint16_t tm_day = 0;
-    uint8_t tm_mon = 0;
-    uint16_t tm_year = 0;
+    uint8_t tm_sec;
+    uint8_t tm_min;
+    uint8_t tm_hour;
+    uint16_t tm_day;
+    uint8_t tm_mon;
+    uint16_t tm_year;
 
-    tm_sec = t % 60;
+    tm_sec = (uint8_t) (t % 60);
     t -= tm_sec;
     t /= 60;
 
-    tm_min = t % 60;
+    tm_min = (uint8_t) (t % 60);
     t -= tm_min;
     t /= 60;
 
-    tm_hour = t % 24;
+    tm_hour = (uint8_t) (t % 24);
     t -= tm_hour;
     t /= 24;
 
@@ -474,11 +474,11 @@ zxerr_t printTime(char *out, uint16_t outLen, uint64_t t) {
     }
     tm_year--;
 
-    tm_day = t - yearLookup[tm_year] + 1;
-    tm_year = 1970 + tm_year;
+    tm_day = (uint16_t) (t - yearLookup[tm_year] + 1);
+    tm_year = (uint16_t) (1970 + tm_year);
 
     // Get day/month
-    uint8_t leap = (tm_year % 4 == 0 && (tm_year % 100 != 0 || tm_year % 400 == 0) ? 1 : 0);
+    uint8_t leap = (uint8_t) (tm_year % 4 == 0 && (tm_year % 100 != 0 || tm_year % 400 == 0) ? 1 : 0);
 
     for (tm_mon = 0; tm_mon < 12; tm_mon++) {
         uint8_t tmp = monthDays[tm_mon];
@@ -493,7 +493,7 @@ zxerr_t printTime(char *out, uint16_t outLen, uint64_t t) {
     const char *monthName = getMonth(tm_mon);
 
     // YYYYmmdd HH:MM:SS
-    snprintf(out, outLen, "%02d%s%04d %02d:%02d:%02d",
+    snprintf(out, outLen, "%02d%s%04d %02d:%02d:%02dUTC",
              tm_day,
              monthName,
              tm_year,

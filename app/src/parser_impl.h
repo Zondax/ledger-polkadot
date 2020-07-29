@@ -16,7 +16,9 @@
 #pragma once
 
 #include "parser_common.h"
+#include "parser_txdef.h"
 #include <zxmacros.h>
+#include "zxtypes.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,29 +27,7 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
-#include "zxtypes.h"
-#include "parser_txdef.h"
 
-parser_error_t parser_init(parser_context_t *ctx,
-                           const uint8_t *buffer,
-                           uint16_t bufferSize);
-
-#define GEN_DEC_READFIX_UNSIGNED(BITS) parser_error_t _readUInt ## BITS(parser_context_t *ctx, uint ## BITS ##_t *value)
-#define GEN_DEF_READFIX_UNSIGNED(BITS) parser_error_t _readUInt ## BITS(parser_context_t *ctx, uint ## BITS ##_t *value) \
-{                                                                                           \
-    if (value == NULL)  return parser_no_data;                                              \
-    *value = 0u;                                                                            \
-    for(uint8_t i=0u; i < (BITS##u>>3u); i++, ctx->offset++) {                              \
-        if (ctx->offset >= ctx->bufferLen) return parser_unexpected_buffer_end;             \
-        *value += *(ctx->buffer + ctx->offset) << (8u*i);                                   \
-    }                                                                                       \
-    return parser_ok;                                                                       \
-}
-
-GEN_DEC_READFIX_UNSIGNED(8);
-GEN_DEC_READFIX_UNSIGNED(16);
-GEN_DEC_READFIX_UNSIGNED(32);
-GEN_DEC_READFIX_UNSIGNED(64);
 
 // Checks that there are at least SIZE bytes available in the buffer
 #define CTX_CHECK_AVAIL(CTX, SIZE) \
@@ -89,16 +69,41 @@ GEN_DEC_READFIX_UNSIGNED(64);
         "%02x", *(v->_ptr + pageOffset + i));\
     }\
     return parser_ok;
+#define GEN_DEC_READFIX_UNSIGNED(BITS) parser_error_t _readUInt ## BITS(parser_context_t *ctx, uint ## BITS ##_t *value)
+#define GEN_DEF_READFIX_UNSIGNED(BITS) parser_error_t _readUInt ## BITS(parser_context_t *ctx, uint ## BITS ##_t *value) \
+{                                                                                           \
+    if (value == NULL)  return parser_no_data;                                              \
+    *value = 0u;                                                                            \
+    for(uint8_t i=0u; i < (BITS##u>>3u); i++, ctx->offset++) {                              \
+        if (ctx->offset >= ctx->bufferLen) return parser_unexpected_buffer_end;             \
+        *value += (uint ## BITS ##_t) *(ctx->buffer + ctx->offset) << (8u*i);               \
+    }                                                                                       \
+    return parser_ok;                                                                       \
+}
 
-#define GEN_DEF_READVECTOR(TYPE) \
+GEN_DEC_READFIX_UNSIGNED(8);
+GEN_DEC_READFIX_UNSIGNED(16);
+GEN_DEC_READFIX_UNSIGNED(32);
+GEN_DEC_READFIX_UNSIGNED(64);
+
+#define GEN_DEF_READVECTOR(TYPE)                                    \
     pd_##TYPE##_t dummy;                                            \
     compactInt_t clen;                                              \
-    CHECK_ERROR(_readCompactInt(c, &clen));                         \
-    CHECK_ERROR(_getValue(&clen, &v->_len));                        \
+    CHECK_PARSER_ERR(_readCompactInt(c, &clen));                    \
+    CHECK_PARSER_ERR(_getValue(&clen, &v->_len));                   \
     v->_ptr = c->buffer + c->offset;                                \
     v->_lenBuffer = c->offset;                                      \
     for (uint64_t i = 0; i < v->_len; i++ ) CHECK_ERROR(_read##TYPE(c, &dummy));  \
     v->_lenBuffer = c->offset - v->_lenBuffer;                      \
+    return parser_ok;
+
+#define GEN_DEF_READVECTOR_ITEM(VEC, TYPE, INDEX, VALUE)            \
+    parser_context_t ctx;                                           \
+    parser_init(&ctx, VEC._ptr, VEC._lenBuffer);                    \
+    compactInt_t clen;                                              \
+    CHECK_PARSER_ERR(_readCompactInt(&ctx, &clen));                 \
+    if ((INDEX) >= VEC._len) return parser_no_data;                 \
+    for (uint64_t i = 0; i < VEC._len; i++ ) CHECK_PARSER_ERR(_read_cro_##TYPE(&ctx, &VALUE));  \
     return parser_ok;
 
 #define GEN_DEF_TOSTRING_VECTOR(TYPE) \
@@ -132,6 +137,8 @@ GEN_DEC_READFIX_UNSIGNED(64);
     };\
     return parser_print_not_supported;
 
+parser_error_t parser_init(parser_context_t *ctx, const uint8_t *buffer, uint16_t bufferSize);
+
 parser_error_t _readBool(parser_context_t *c, pd_bool_t *value);
 
 parser_error_t _readCompactInt(parser_context_t *c, compactInt_t *v);
@@ -146,8 +153,8 @@ parser_error_t _readTx(parser_context_t *c, parser_tx_t *v);
 
 uint8_t _getAddressType();
 
-parser_error_t _toStringCompactInt(const compactInt_t *c,
-                                   uint8_t decimalPlaces,
+parser_error_t _toStringCompactInt(const compactInt_t *c, uint8_t decimalPlaces,
+                                   char postfix,
                                    char *outValue, uint16_t outValueLen,
                                    uint8_t pageIdx, uint8_t *pageCount);
 

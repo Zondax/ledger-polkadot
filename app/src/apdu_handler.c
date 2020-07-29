@@ -28,6 +28,10 @@
 #include "coin.h"
 #include "zxmacros.h"
 
+#if defined(APP_RESTRICTED)
+#include "allowlist.h"
+#endif
+
 void extractHDPath(uint32_t rx, uint32_t offset) {
     if ((rx - offset) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT) {
         THROW(APDU_CODE_WRONG_LENGTH);
@@ -56,12 +60,85 @@ void extractHDPath(uint32_t rx, uint32_t offset) {
 
 }
 
+__Z_INLINE bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
+    zemu_log("-- process_chunk\n");
+    const uint8_t payloadType = G_io_apdu_buffer[OFFSET_PAYLOAD_TYPE];
+
+    if (G_io_apdu_buffer[OFFSET_P2] != 0) {
+        THROW(APDU_CODE_INVALIDP1P2);
+    }
+
+    if (rx < OFFSET_DATA) {
+        THROW(APDU_CODE_WRONG_LENGTH);
+    }
+
+    uint32_t added;
+    switch (payloadType) {
+        case 0:
+            zemu_log("-- process_chunk - init\n");
+            tx_initialize();
+            tx_reset();
+            extractHDPath(rx, OFFSET_DATA);
+            return false;
+        case 1:
+            zemu_log("-- process_chunk - add \n");
+            added = tx_append(&(G_io_apdu_buffer[OFFSET_DATA]), rx - OFFSET_DATA);
+            if (added != rx - OFFSET_DATA) {
+                THROW(APDU_CODE_OUTPUT_BUFFER_TOO_SMALL);
+            }
+            return false;
+        case 2:
+            zemu_log("-- process_chunk - end \n");
+            added = tx_append(&(G_io_apdu_buffer[OFFSET_DATA]), rx - OFFSET_DATA);
+            if (added != rx - OFFSET_DATA) {
+                THROW(APDU_CODE_OUTPUT_BUFFER_TOO_SMALL);
+            }
+            return true;
+    }
+
+    THROW(APDU_CODE_INVALIDP1P2);
+}
+
+__Z_INLINE bool process_chunk_update(volatile uint32_t *tx, uint32_t rx) {
+    const uint8_t payloadType = G_io_apdu_buffer[OFFSET_PAYLOAD_TYPE];
+
+    if (G_io_apdu_buffer[OFFSET_P2] != 0) {
+        THROW(APDU_CODE_INVALIDP1P2);
+    }
+
+    if (rx < OFFSET_DATA) {
+        THROW(APDU_CODE_WRONG_LENGTH);
+    }
+
+    if (payloadType > 2) {
+        THROW(APDU_CODE_INVALIDP1P2);
+    }
+
+    if (payloadType == 0) {
+        tx_initialize();
+        tx_reset();
+        return false;
+    }
+
+    uint32_t added = tx_append(&(G_io_apdu_buffer[OFFSET_DATA]), rx - OFFSET_DATA);
+    if (added != rx - OFFSET_DATA) {
+        THROW(APDU_CODE_OUTPUT_BUFFER_TOO_SMALL);
+    }
+
+    return payloadType == 2;
+}
+
 __Z_INLINE void handle_getversion(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-#ifdef TESTING_ENABLED
-    G_io_apdu_buffer[0] = 0xFF;
-#else
     G_io_apdu_buffer[0] = 0;
+
+#if defined(APP_TESTING)
+    G_io_apdu_buffer[0] = 0x01;
 #endif
+
+    #if defined(APP_RESTRICTED)
+    G_io_apdu_buffer[0] = 0x02;
+#endif
+
     G_io_apdu_buffer[1] = (LEDGER_MAJOR_VERSION >> 8) & 0xFF;;
     G_io_apdu_buffer[2] = (LEDGER_MAJOR_VERSION >> 0) & 0xFF;;
 
@@ -99,6 +176,7 @@ __Z_INLINE void handleGetAddr(volatile uint32_t *flags, volatile uint32_t *tx, u
 }
 
 __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
+    zemu_log("-- handleSign\n");
     if (!process_chunk(tx, rx)) {
         THROW(APDU_CODE_OK);
     }
@@ -119,6 +197,73 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
     view_sign_show();
     *flags |= IO_ASYNCH_REPLY;
 }
+
+#if defined(APP_RESTRICTED)
+__Z_INLINE void handleAllowlistGetMasterkey(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
+    if (!allowlist_pubkey_is_set()) {
+        // has not been set yet
+        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
+    }
+
+    if (!allowlist_pubkey_get(G_io_apdu_buffer, 32)) {
+        THROW(APDU_CODE_EXECUTION_ERROR);
+    }
+
+    *tx = 32;
+    THROW(APDU_CODE_OK);
+}
+
+__Z_INLINE void handleAllowlistSetMasterkey(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
+    if (allowlist_pubkey_is_set()) {
+        // Can only be set once
+        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);  // 0x6986
+    }
+
+    if (rx != OFFSET_DATA + 32) {
+        THROW(APDU_CODE_WRONG_LENGTH);  // 0x6700
+    }
+
+    zemu_log_stack("allowlist: try update pubkey");
+
+    if (!allowlist_pubkey_set(G_io_apdu_buffer + OFFSET_DATA, 32)) {
+        THROW(APDU_CODE_EXECUTION_ERROR);    // 6400
+    }
+
+    zemu_log_stack("allowlist: pubkey updated");
+    THROW(APDU_CODE_OK);
+}
+
+__Z_INLINE void handleAllowlistGetHash(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
+    if (!allowlist_is_active()) {
+        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
+    }
+
+    allowlist_hash(G_io_apdu_buffer);
+    *tx = 32;
+    THROW(APDU_CODE_OK);
+}
+
+__Z_INLINE void handleAllowlistUpload(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
+    if (!allowlist_pubkey_is_set()) {
+        zemu_log_stack("allowlist: pubkey has not been set");
+        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
+    }
+
+    zemu_log_stack("allowlist: update chunk");
+    if (!process_chunk_update(tx, rx)) {
+        THROW(APDU_CODE_OK);
+    }
+    CHECK_APP_CANARY()
+
+    zemu_log_stack("allowlist: try update");
+    if (!allowlist_upgrade(tx_get_buffer(), tx_get_buffer_length())) {
+        THROW(APDU_CODE_EXECUTION_ERROR);
+    }
+
+    zemu_log_stack("allowlist: updated");
+    THROW(APDU_CODE_OK);
+}
+#endif
 
 void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
     uint16_t sw = 0;
@@ -150,6 +295,29 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                     handleSign(flags, tx, rx);
                     break;
                 }
+
+#if defined(APP_RESTRICTED)
+                    // Allow list commands
+                    case INS_ALLOWLIST_GET_PUBKEY: {
+                        handleAllowlistGetMasterkey(flags, tx, rx);
+                        break;
+                    }
+
+                    case INS_ALLOWLIST_SET_PUBKEY: {
+                        handleAllowlistSetMasterkey(flags, tx, rx);
+                        break;
+                    }
+
+                    case INS_ALLOWLIST_GET_HASH: {
+                        handleAllowlistGetHash(flags, tx, rx);
+                        break;
+                    }
+
+                    case INS_ALLOWLIST_UPLOAD: {
+                        handleAllowlistUpload(flags, tx, rx);
+                        break;
+                    }
+#endif
 
                 default:
                     THROW(APDU_CODE_INS_NOT_SUPPORTED);

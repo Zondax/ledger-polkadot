@@ -18,11 +18,11 @@
 #include <string.h>
 #include "hexutils.h"
 
-uint8_t hex2dec(char c, char *out) {
+uint8_t hex2dec(char c, uint8_t *out) {
     c = (char) tolower((int) c);
 
     if (!isxdigit((int) c)) {
-        return -1;
+        return 1;
     }
 
     if (isdigit((int) c)) {
@@ -35,7 +35,7 @@ uint8_t hex2dec(char c, char *out) {
 }
 
 size_t parseHexString(uint8_t *out, uint16_t outLen, const char *input) {
-    size_t len = strnlen(input, outLen * 2 + 1);
+    size_t len = strnlen(input, outLen * 2u + 1u);
     if ( (len / 2) > outLen) {
         return 0;
     }
@@ -44,7 +44,7 @@ size_t parseHexString(uint8_t *out, uint16_t outLen, const char *input) {
     }
 
     for (size_t i = 0; i < len; i += 2) {
-        char tmp1, tmp2;
+        uint8_t tmp1, tmp2;
         if (hex2dec(input[i], &tmp1))
             return 0;
         if (hex2dec(input[i + 1], &tmp2))

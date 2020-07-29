@@ -36,7 +36,7 @@ bool_t bignumLittleEndian_bcdprint(char *outBuffer, uint16_t outBufferLen,
             if (started || (*inBCD >> 4u) != 0) {
                 *outBuffer = hexchars[*inBCD >> 4u];
                 outBuffer++;
-            };
+            }
             *outBuffer = hexchars[*inBCD & 0x0Fu];
             outBuffer++;
             started = 1;
@@ -54,7 +54,7 @@ void bignumLittleEndian_to_bcd(uint8_t *bcdOut, uint16_t bcdOutLen,
                                const uint8_t *binValue, uint16_t binValueLen) {
     MEMZERO(bcdOut, bcdOutLen);
 
-    uint8_t carry = 0;
+    uint8_t carry;
     for (uint16_t bitIdx = 0; bitIdx < binValueLen * 8; bitIdx++) {
         // Fix bcd
         for (uint16_t j = 0; j < bcdOutLen; j++) {
@@ -69,11 +69,11 @@ void bignumLittleEndian_to_bcd(uint8_t *bcdOut, uint16_t bcdOutLen,
         // get bit
         const uint16_t byteIdx = bitIdx >> 3u;
         const uint8_t mask = 0x80u >> (bitIdx & 0x7u);
-        carry = (binValue[binValueLen - byteIdx - 1] & mask) > 0;
+        carry = (uint8_t) ((binValue[binValueLen - byteIdx - 1] & mask) > 0);
 
         // Shift bcd
         for (uint16_t j = 0; j < bcdOutLen; j++) {
-            uint8_t carry2 = bcdOut[bcdOutLen - j - 1] > 127u;
+            uint8_t carry2 = (uint8_t) (bcdOut[bcdOutLen - j - 1] > 127u);
             bcdOut[bcdOutLen - j - 1] <<= 1u;
             bcdOut[bcdOutLen - j - 1] += carry;
             carry = carry2;
@@ -96,13 +96,13 @@ bool_t bignumBigEndian_bcdprint(char *outBuffer, uint16_t outBufferLen,
         return bool_false;
     }
 
-    for (uint8_t i = 0; i < bcdInLen; i++) {
+    for (uint16_t i = 0; i < bcdInLen; i++) {
         uint8_t v = bcdIn[bcdInLen - i - 1];
         if (started || v != 0) {
             if (started || (v >> 4u) != 0) {
                 *outBuffer = hexchars[v >> 4u];
                 outBuffer++;
-            };
+            }
             *outBuffer = hexchars[v & 0x0Fu];
             outBuffer++;
             started = 1;
@@ -120,7 +120,7 @@ void bignumBigEndian_to_bcd(uint8_t *bcdOut, uint16_t bcdOutLen,
                             const uint8_t *binValue, uint16_t binValueLen) {
     MEMZERO(bcdOut, bcdOutLen);
 
-    uint8_t carry = 0;
+    uint8_t carry;
     for (uint16_t bitIdx = 0; bitIdx < binValueLen * 8; bitIdx++) {
         // Fix bcd
         for (uint16_t j = 0; j < bcdOutLen; j++) {
@@ -135,11 +135,11 @@ void bignumBigEndian_to_bcd(uint8_t *bcdOut, uint16_t bcdOutLen,
         // get bit
         const uint16_t byteIdx = bitIdx >> 3u;
         const uint8_t mask = 0x80u >> (bitIdx & 0x7u);
-        carry = (binValue[byteIdx] & mask) > 0;
+        carry = (uint8_t) ((binValue[byteIdx] & mask) > 0);
 
         // Shift bcd
         for (uint16_t j = 0; j < bcdOutLen; j++) {
-            uint8_t carry2 = bcdOut[j] > 127u;
+            uint8_t carry2 = (uint8_t) (bcdOut[j] > 127u);
             bcdOut[j] <<= 1u;
             bcdOut[j] += carry;
             carry = carry2;

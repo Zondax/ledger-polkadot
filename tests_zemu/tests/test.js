@@ -1,9 +1,25 @@
-import {expect, test} from "jest";
+/** ******************************************************************************
+ *  (c) 2020 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ******************************************************************************* */
+
+import jest, {expect} from "jest";
 import Zemu from "@zondax/zemu";
-import {blake2bInit, blake2bUpdate, blake2bFinal} from "blakejs";
+const {newPolkadotApp} = require("@zondax/ledger-polkadot");
 
 const ed25519 = require("ed25519-supercop");
-const {newPolkadotApp} = require("@zondax/ledger-polkadot");
+import {blake2bFinal, blake2bInit, blake2bUpdate} from "blakejs";
 
 const Resolve = require("path").resolve;
 const APP_PATH = Resolve("../app/bin/app.elf");
@@ -13,18 +29,10 @@ const sim_options = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`
-    ,X11: true
+    , X11: true
 };
 
-jest.setTimeout(30000)
-
-function compareSnapshots(snapshotPrefixTmp, snapshotPrefixGolden, snapshotCount) {
-    for (let i = 0; i < snapshotCount; i++) {
-        const img1 = Zemu.LoadPng2RGB(`${snapshotPrefixTmp}${i}.png`);
-        const img2 = Zemu.LoadPng2RGB(`${snapshotPrefixGolden}${i}.png`);
-        expect(img1).toEqual(img2);
-    }
-}
+jest.setTimeout(60000)
 
 describe('Basic checks', function () {
     test('can start and stop container', async function () {
@@ -62,7 +70,6 @@ describe('Basic checks', function () {
             await sim.start(sim_options);
             const app = newPolkadotApp(sim.getTransport());
 
-            // FIXME: Zemu/Speculos are enforcing fully hardened paths
             const resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000);
 
             console.log(resp)
@@ -82,30 +89,19 @@ describe('Basic checks', function () {
     });
 
     test('show address', async function () {
-        const snapshotPrefixGolden = "snapshots/show-address/";
-        const snapshotPrefixTmp = "snapshots-tmp/show-address/";
-        let snapshotCount = 0;
-
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(sim_options);
             const app = newPolkadotApp(sim.getTransport());
 
             const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
+            // Wait until we are not in the main menu
+            await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            // We need to wait until the app responds to the APDU
-            await Zemu.sleep(3500);
-
-            // Now navigate the address / path
-            await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
-            await sim.clickRight(`${snapshotPrefixTmp}${snapshotCount++}.png`);
-            await sim.clickRight(`${snapshotPrefixTmp}${snapshotCount++}.png`);
-            await sim.clickBoth(`${snapshotPrefixTmp}${snapshotCount++}.png`);
+            await sim.compareSnapshotsAndAccept(".", "show_address", 3);
 
             const resp = await respRequest;
             console.log(resp);
-
-            compareSnapshots(snapshotPrefixTmp, snapshotPrefixGolden, snapshotCount);
 
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
@@ -121,10 +117,6 @@ describe('Basic checks', function () {
     });
 
     test('sign basic', async function () {
-        const snapshotPrefixGolden = "snapshots/sign-basic/";
-        const snapshotPrefixTmp = "snapshots-tmp/sign-basic/";
-        let snapshotCount = 0;
-
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(sim_options);
@@ -142,20 +134,13 @@ describe('Basic checks', function () {
 
             // do not wait here.. we need to navigate
             const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob);
+            // Wait until we are not in the main menu
+            await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await Zemu.sleep(2000);
-
-            // Reference window
-            await sim.snapshot(`${snapshotPrefixTmp}${snapshotCount++}.png`);
-            for (let i = 0; i < 12; i++) {
-                await sim.clickRight(Resolve(`${snapshotPrefixTmp}${snapshotCount++}.png`));
-            }
-            await sim.clickBoth();
+            await sim.compareSnapshotsAndAccept(".", "sign_basic", 12);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
-
-            compareSnapshots(snapshotPrefixTmp, snapshotPrefixGolden, snapshotCount);
 
             expect(signatureResponse.return_code).toEqual(0x9000);
             expect(signatureResponse.error_message).toEqual("No errors");
@@ -168,8 +153,7 @@ describe('Basic checks', function () {
                 prehash = Buffer.from(blake2bFinal(context));
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
-            // FIXME: Zemu/Speculos cannot yet emulate Ed25519 HD
-//            expect(valid).toEqual(true);
+           expect(valid).toEqual(true);
         } finally {
             await sim.close();
         }

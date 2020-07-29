@@ -59,7 +59,7 @@ TEST(SCALE, UIntX) {
     uint64_t v64 = 0;
     err = _readUInt64(&ctx, &v64);
     EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
-    EXPECT_EQ(v64, 4037830692);
+    EXPECT_EQ(v64, 8671175386481439762);
 }
 
 // Parse SCALE-encoded booleans

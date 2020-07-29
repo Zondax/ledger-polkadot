@@ -33,7 +33,7 @@ void check_app_canary();
 #include "string.h"
 
 #ifndef __APPLE__
-extern void explicit_bzero(void *__s, size_t __n) __THROW __nonnull ((1));
+extern void explicit_bzero(void *s, size_t n) __THROW __nonnull ((1));
 #endif
 #define __Z_INLINE inline __attribute__((always_inline)) static
 
@@ -113,16 +113,16 @@ __Z_INLINE void __memzero(void *buffer, size_t s) { memset(buffer, 0, s); }
 }
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#define __SWAP(v) (((v) & 0x000000FFu) << 24u | ((v) & 0x0000FF00u) << 8u | ((v) & 0x00FF0000u) >> 8u | ((v) & 0xFF000000u) >> 24u)
-#define HtoNL(v) __SWAP( v )
-#define NtoHL(v) __SWAP( v )
+#define ZX_SWAP(v) (((v) & 0x000000FFu) << 24u | ((v) & 0x0000FF00u) << 8u | ((v) & 0x00FF0000u) >> 8u | ((v) & 0xFF000000u) >> 24u)
+#define HtoNL(v) ZX_SWAP( v )
+#define NtoHL(v) ZX_SWAP( v )
 #else
 #define HtoNL(x) (x)
 #define NtoHL(x) (x)
 #endif
 
 #define sizeof_field(type, member) sizeof(((type *)0)->member)
-#define array_length(array) (sizeof(array) / sizeof(array[0]))
+#define array_length(array) (sizeof(array) / sizeof((array)[0]))
 
 __Z_INLINE void strncpy_s(char *dst, const char *src, size_t dstSize) {
     MEMZERO(dst, dstSize);

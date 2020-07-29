@@ -31,7 +31,7 @@ int decode_base58(const char *in, size_t length,
 int encode_base58(const unsigned char *in, size_t length,
                   unsigned char *out, size_t *outlen);
 
-char encode_base58_clip(const unsigned char v);
+char encode_base58_clip(unsigned char v);
 
 #ifdef __cplusplus
 }

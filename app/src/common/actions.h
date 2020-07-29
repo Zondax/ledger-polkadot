@@ -25,12 +25,10 @@
 extern uint8_t action_addr_len;
 
 __Z_INLINE void app_sign() {
-    uint8_t *signature = G_io_apdu_buffer;
+    const uint8_t *message = tx_get_buffer();
+    const uint16_t messageLength = tx_get_buffer_length();
+    const uint8_t replyLen = crypto_sign(G_io_apdu_buffer, IO_APDU_BUFFER_SIZE - 3, message, messageLength);
 
-    const uint8_t *message = tx_get_buffer() + CRYPTO_BLOB_SKIP_BYTES;
-    const uint16_t messageLength = tx_get_buffer_length() - CRYPTO_BLOB_SKIP_BYTES;
-
-    const uint8_t replyLen = crypto_sign(signature, IO_APDU_BUFFER_SIZE - 3, message, messageLength);
     if (replyLen > 0) {
         set_code(G_io_apdu_buffer, replyLen, APDU_CODE_OK);
         io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, replyLen + 2);
@@ -38,6 +36,11 @@ __Z_INLINE void app_sign() {
         set_code(G_io_apdu_buffer, 0, APDU_CODE_SIGN_VERIFY_ERROR);
         io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
     }
+}
+
+__Z_INLINE void app_reject() {
+    set_code(G_io_apdu_buffer, 0, APDU_CODE_COMMAND_NOT_ALLOWED);
+    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
 }
 
 __Z_INLINE uint8_t app_fill_address() {
