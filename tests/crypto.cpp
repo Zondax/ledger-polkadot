@@ -37,7 +37,7 @@ TEST(CRYPTO, fillAddress) {
 
     uint16_t addrLen = crypto_fillAddress(buffer, 100);
 
-    EXPECT_THAT(addrLen, ::testing::Eq(79));
+    EXPECT_THAT(addrLen, ::testing::Eq(80));
 
     std::cout << std::endl;
 
