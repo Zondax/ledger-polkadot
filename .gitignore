@@ -79,3 +79,6 @@ cmake-build-fuzz/
 
 tests_zemu/yarn.lock
 /tests_zemu/snapshots-tmp/
+/build
+/fuzz-*.log
+/fuzz/corpora

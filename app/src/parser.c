@@ -83,6 +83,18 @@ parser_error_t parser_validate_vecLookupSource(pd_VecLookupSource_t *targets) {
 #endif
 
 parser_error_t parser_validate(const parser_context_t *ctx) {
+    // Iterate through all items to check that all can be shown and are valid
+    uint8_t numItems = 0;
+    CHECK_PARSER_ERR(parser_getNumItems(ctx, &numItems));
+
+    char tmpKey[40];
+    char tmpVal[40];
+
+    for (uint8_t idx = 0; idx < numItems; idx++) {
+        uint8_t pageCount = 0;
+        CHECK_PARSER_ERR(parser_getItem(ctx, idx, tmpKey, sizeof(tmpKey), tmpVal, sizeof(tmpVal), 0, &pageCount))
+    }
+
 #if defined(APP_RESTRICTED)
     if (hdPath[2] == HDPATH_2_STASH) {
         if (ctx->tx_obj->callIndex.moduleIdx == PD_CALL_STAKING) {

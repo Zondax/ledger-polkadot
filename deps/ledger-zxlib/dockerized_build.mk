@@ -191,8 +191,8 @@ vue_install_js_link:
 	@echo
 endif
 
-.PHONY: zemu
-vue:
+.PHONY: vue
+vue: vue_install_js_link
 	cd $(EXAMPLE_VUE_DIR) && yarn install && yarn serve
 
 ########################## VUE Section ###############################
@@ -247,3 +247,18 @@ rust_test:
 cpp_test:
 	mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make
 	cd build && GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
+
+########################## FUZZING Section ###############################
+
+.PHONY: fuzz_build
+fuzz_build:
+	cmake -B build -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DENABLE_FUZZING=1 -DENABLE_SANITIZERS=1 .
+	make -C build
+
+.PHONY: fuzz
+fuzz: fuzz_build
+	./fuzz/run-fuzzers.py
+
+.PHONY: fuzz_crash
+fuzz_crash: fuzz_build
+	./fuzz/run-fuzz-crashes.py

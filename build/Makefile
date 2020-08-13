@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lenij/zondax/ledger-kusama
+CMAKE_SOURCE_DIR = /home/lenij/zondax/ledger-polkadot
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lenij/zondax/ledger-kusama/build
+CMAKE_BINARY_DIR = /home/lenij/zondax/ledger-polkadot/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -67,40 +67,6 @@ install/strip/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-
-.PHONY : test/fast
 
 # Special rule for the target install
 install: preinstall
@@ -135,11 +101,45 @@ rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
 
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lenij/zondax/ledger-kusama/build/CMakeFiles /home/lenij/zondax/ledger-kusama/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lenij/zondax/ledger-polkadot/build/CMakeFiles /home/lenij/zondax/ledger-polkadot/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lenij/zondax/ledger-kusama/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lenij/zondax/ledger-polkadot/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -168,30 +168,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named app_lib32
+# Target rules for targets named fuzz-parser_parse
 
 # Build rule for target.
-app_lib32: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 app_lib32
-.PHONY : app_lib32
+fuzz-parser_parse: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 fuzz-parser_parse
+.PHONY : fuzz-parser_parse
 
 # fast build rule for target.
-app_lib32/fast:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/build
-.PHONY : app_lib32/fast
-
-#=============================================================================
-# Target rules for targets named fuzzing_stub
-
-# Build rule for target.
-fuzzing_stub: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 fuzzing_stub
-.PHONY : fuzzing_stub
-
-# fast build rule for target.
-fuzzing_stub/fast:
-	$(MAKE) -f CMakeFiles/fuzzing_stub.dir/build.make CMakeFiles/fuzzing_stub.dir/build
-.PHONY : fuzzing_stub/fast
+fuzz-parser_parse/fast:
+	$(MAKE) -f CMakeFiles/fuzz-parser_parse.dir/build.make CMakeFiles/fuzz-parser_parse.dir/build
+.PHONY : fuzz-parser_parse/fast
 
 #=============================================================================
 # Target rules for targets named unittests
@@ -277,7 +264,6 @@ app/src/crypto.o: app/src/crypto.c.o
 
 # target to build an object file
 app/src/crypto.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/crypto.c.o
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/crypto.c.o
 .PHONY : app/src/crypto.c.o
 
@@ -287,7 +273,6 @@ app/src/crypto.i: app/src/crypto.c.i
 
 # target to preprocess a source file
 app/src/crypto.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/crypto.c.i
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/crypto.c.i
 .PHONY : app/src/crypto.c.i
 
@@ -297,39 +282,8 @@ app/src/crypto.s: app/src/crypto.c.s
 
 # target to generate assembly for a file
 app/src/crypto.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/crypto.c.s
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/crypto.c.s
 .PHONY : app/src/crypto.c.s
-
-app/src/lib/base58.o: app/src/lib/base58.c.o
-
-.PHONY : app/src/lib/base58.o
-
-# target to build an object file
-app/src/lib/base58.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/lib/base58.c.o
-	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/lib/base58.c.o
-.PHONY : app/src/lib/base58.c.o
-
-app/src/lib/base58.i: app/src/lib/base58.c.i
-
-.PHONY : app/src/lib/base58.i
-
-# target to preprocess a source file
-app/src/lib/base58.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/lib/base58.c.i
-	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/lib/base58.c.i
-.PHONY : app/src/lib/base58.c.i
-
-app/src/lib/base58.s: app/src/lib/base58.c.s
-
-.PHONY : app/src/lib/base58.s
-
-# target to generate assembly for a file
-app/src/lib/base58.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/lib/base58.c.s
-	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/lib/base58.c.s
-.PHONY : app/src/lib/base58.c.s
 
 app/src/parser.o: app/src/parser.c.o
 
@@ -337,7 +291,6 @@ app/src/parser.o: app/src/parser.c.o
 
 # target to build an object file
 app/src/parser.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/parser.c.o
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/parser.c.o
 .PHONY : app/src/parser.c.o
 
@@ -347,7 +300,6 @@ app/src/parser.i: app/src/parser.c.i
 
 # target to preprocess a source file
 app/src/parser.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/parser.c.i
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/parser.c.i
 .PHONY : app/src/parser.c.i
 
@@ -357,7 +309,6 @@ app/src/parser.s: app/src/parser.c.s
 
 # target to generate assembly for a file
 app/src/parser.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/parser.c.s
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/parser.c.s
 .PHONY : app/src/parser.c.s
 
@@ -367,7 +318,6 @@ app/src/parser_impl.o: app/src/parser_impl.c.o
 
 # target to build an object file
 app/src/parser_impl.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/parser_impl.c.o
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/parser_impl.c.o
 .PHONY : app/src/parser_impl.c.o
 
@@ -377,7 +327,6 @@ app/src/parser_impl.i: app/src/parser_impl.c.i
 
 # target to preprocess a source file
 app/src/parser_impl.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/parser_impl.c.i
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/parser_impl.c.i
 .PHONY : app/src/parser_impl.c.i
 
@@ -387,7 +336,6 @@ app/src/parser_impl.s: app/src/parser_impl.c.s
 
 # target to generate assembly for a file
 app/src/parser_impl.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/parser_impl.c.s
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/parser_impl.c.s
 .PHONY : app/src/parser_impl.c.s
 
@@ -397,7 +345,6 @@ app/src/parser_txdef.o: app/src/parser_txdef.c.o
 
 # target to build an object file
 app/src/parser_txdef.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/parser_txdef.c.o
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/parser_txdef.c.o
 .PHONY : app/src/parser_txdef.c.o
 
@@ -407,7 +354,6 @@ app/src/parser_txdef.i: app/src/parser_txdef.c.i
 
 # target to preprocess a source file
 app/src/parser_txdef.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/parser_txdef.c.i
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/parser_txdef.c.i
 .PHONY : app/src/parser_txdef.c.i
 
@@ -417,69 +363,62 @@ app/src/parser_txdef.s: app/src/parser_txdef.c.s
 
 # target to generate assembly for a file
 app/src/parser_txdef.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/parser_txdef.c.s
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/parser_txdef.c.s
 .PHONY : app/src/parser_txdef.c.s
 
-app/src/polkadot_dispatch.o: app/src/polkadot_dispatch.c.o
+app/src/substrate_dispatch.o: app/src/substrate_dispatch.c.o
 
-.PHONY : app/src/polkadot_dispatch.o
-
-# target to build an object file
-app/src/polkadot_dispatch.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/polkadot_dispatch.c.o
-	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/polkadot_dispatch.c.o
-.PHONY : app/src/polkadot_dispatch.c.o
-
-app/src/polkadot_dispatch.i: app/src/polkadot_dispatch.c.i
-
-.PHONY : app/src/polkadot_dispatch.i
-
-# target to preprocess a source file
-app/src/polkadot_dispatch.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/polkadot_dispatch.c.i
-	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/polkadot_dispatch.c.i
-.PHONY : app/src/polkadot_dispatch.c.i
-
-app/src/polkadot_dispatch.s: app/src/polkadot_dispatch.c.s
-
-.PHONY : app/src/polkadot_dispatch.s
-
-# target to generate assembly for a file
-app/src/polkadot_dispatch.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/polkadot_dispatch.c.s
-	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/polkadot_dispatch.c.s
-.PHONY : app/src/polkadot_dispatch.c.s
-
-app/src/polkadot_types.o: app/src/polkadot_types.c.o
-
-.PHONY : app/src/polkadot_types.o
+.PHONY : app/src/substrate_dispatch.o
 
 # target to build an object file
-app/src/polkadot_types.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/polkadot_types.c.o
-	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/polkadot_types.c.o
-.PHONY : app/src/polkadot_types.c.o
+app/src/substrate_dispatch.c.o:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/substrate_dispatch.c.o
+.PHONY : app/src/substrate_dispatch.c.o
 
-app/src/polkadot_types.i: app/src/polkadot_types.c.i
+app/src/substrate_dispatch.i: app/src/substrate_dispatch.c.i
 
-.PHONY : app/src/polkadot_types.i
+.PHONY : app/src/substrate_dispatch.i
 
 # target to preprocess a source file
-app/src/polkadot_types.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/polkadot_types.c.i
-	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/polkadot_types.c.i
-.PHONY : app/src/polkadot_types.c.i
+app/src/substrate_dispatch.c.i:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/substrate_dispatch.c.i
+.PHONY : app/src/substrate_dispatch.c.i
 
-app/src/polkadot_types.s: app/src/polkadot_types.c.s
+app/src/substrate_dispatch.s: app/src/substrate_dispatch.c.s
 
-.PHONY : app/src/polkadot_types.s
+.PHONY : app/src/substrate_dispatch.s
 
 # target to generate assembly for a file
-app/src/polkadot_types.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/app/src/polkadot_types.c.s
-	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/polkadot_types.c.s
-.PHONY : app/src/polkadot_types.c.s
+app/src/substrate_dispatch.c.s:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/substrate_dispatch.c.s
+.PHONY : app/src/substrate_dispatch.c.s
+
+app/src/substrate_types.o: app/src/substrate_types.c.o
+
+.PHONY : app/src/substrate_types.o
+
+# target to build an object file
+app/src/substrate_types.c.o:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/substrate_types.c.o
+.PHONY : app/src/substrate_types.c.o
+
+app/src/substrate_types.i: app/src/substrate_types.c.i
+
+.PHONY : app/src/substrate_types.i
+
+# target to preprocess a source file
+app/src/substrate_types.c.i:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/substrate_types.c.i
+.PHONY : app/src/substrate_types.c.i
+
+app/src/substrate_types.s: app/src/substrate_types.c.s
+
+.PHONY : app/src/substrate_types.s
+
+# target to generate assembly for a file
+app/src/substrate_types.c.s:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/app/src/substrate_types.c.s
+.PHONY : app/src/substrate_types.c.s
 
 deps/BLAKE2/ref/blake2b-ref.o: deps/BLAKE2/ref/blake2b-ref.c.o
 
@@ -487,7 +426,6 @@ deps/BLAKE2/ref/blake2b-ref.o: deps/BLAKE2/ref/blake2b-ref.c.o
 
 # target to build an object file
 deps/BLAKE2/ref/blake2b-ref.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/BLAKE2/ref/blake2b-ref.c.o
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/BLAKE2/ref/blake2b-ref.c.o
 .PHONY : deps/BLAKE2/ref/blake2b-ref.c.o
 
@@ -497,7 +435,6 @@ deps/BLAKE2/ref/blake2b-ref.i: deps/BLAKE2/ref/blake2b-ref.c.i
 
 # target to preprocess a source file
 deps/BLAKE2/ref/blake2b-ref.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/BLAKE2/ref/blake2b-ref.c.i
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/BLAKE2/ref/blake2b-ref.c.i
 .PHONY : deps/BLAKE2/ref/blake2b-ref.c.i
 
@@ -507,9 +444,35 @@ deps/BLAKE2/ref/blake2b-ref.s: deps/BLAKE2/ref/blake2b-ref.c.s
 
 # target to generate assembly for a file
 deps/BLAKE2/ref/blake2b-ref.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/BLAKE2/ref/blake2b-ref.c.s
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/BLAKE2/ref/blake2b-ref.c.s
 .PHONY : deps/BLAKE2/ref/blake2b-ref.c.s
+
+deps/ledger-zxlib/src/base58.o: deps/ledger-zxlib/src/base58.c.o
+
+.PHONY : deps/ledger-zxlib/src/base58.o
+
+# target to build an object file
+deps/ledger-zxlib/src/base58.c.o:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/base58.c.o
+.PHONY : deps/ledger-zxlib/src/base58.c.o
+
+deps/ledger-zxlib/src/base58.i: deps/ledger-zxlib/src/base58.c.i
+
+.PHONY : deps/ledger-zxlib/src/base58.i
+
+# target to preprocess a source file
+deps/ledger-zxlib/src/base58.c.i:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/base58.c.i
+.PHONY : deps/ledger-zxlib/src/base58.c.i
+
+deps/ledger-zxlib/src/base58.s: deps/ledger-zxlib/src/base58.c.s
+
+.PHONY : deps/ledger-zxlib/src/base58.s
+
+# target to generate assembly for a file
+deps/ledger-zxlib/src/base58.c.s:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/base58.c.s
+.PHONY : deps/ledger-zxlib/src/base58.c.s
 
 deps/ledger-zxlib/src/bignum.o: deps/ledger-zxlib/src/bignum.c.o
 
@@ -517,7 +480,6 @@ deps/ledger-zxlib/src/bignum.o: deps/ledger-zxlib/src/bignum.c.o
 
 # target to build an object file
 deps/ledger-zxlib/src/bignum.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/ledger-zxlib/src/bignum.c.o
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/bignum.c.o
 .PHONY : deps/ledger-zxlib/src/bignum.c.o
 
@@ -527,7 +489,6 @@ deps/ledger-zxlib/src/bignum.i: deps/ledger-zxlib/src/bignum.c.i
 
 # target to preprocess a source file
 deps/ledger-zxlib/src/bignum.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/ledger-zxlib/src/bignum.c.i
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/bignum.c.i
 .PHONY : deps/ledger-zxlib/src/bignum.c.i
 
@@ -537,7 +498,6 @@ deps/ledger-zxlib/src/bignum.s: deps/ledger-zxlib/src/bignum.c.s
 
 # target to generate assembly for a file
 deps/ledger-zxlib/src/bignum.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/ledger-zxlib/src/bignum.c.s
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/bignum.c.s
 .PHONY : deps/ledger-zxlib/src/bignum.c.s
 
@@ -547,7 +507,6 @@ deps/ledger-zxlib/src/hexutils.o: deps/ledger-zxlib/src/hexutils.c.o
 
 # target to build an object file
 deps/ledger-zxlib/src/hexutils.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/ledger-zxlib/src/hexutils.c.o
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/hexutils.c.o
 .PHONY : deps/ledger-zxlib/src/hexutils.c.o
 
@@ -557,7 +516,6 @@ deps/ledger-zxlib/src/hexutils.i: deps/ledger-zxlib/src/hexutils.c.i
 
 # target to preprocess a source file
 deps/ledger-zxlib/src/hexutils.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/ledger-zxlib/src/hexutils.c.i
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/hexutils.c.i
 .PHONY : deps/ledger-zxlib/src/hexutils.c.i
 
@@ -567,9 +525,62 @@ deps/ledger-zxlib/src/hexutils.s: deps/ledger-zxlib/src/hexutils.c.s
 
 # target to generate assembly for a file
 deps/ledger-zxlib/src/hexutils.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/ledger-zxlib/src/hexutils.c.s
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/hexutils.c.s
 .PHONY : deps/ledger-zxlib/src/hexutils.c.s
+
+deps/ledger-zxlib/src/zbuffer.o: deps/ledger-zxlib/src/zbuffer.c.o
+
+.PHONY : deps/ledger-zxlib/src/zbuffer.o
+
+# target to build an object file
+deps/ledger-zxlib/src/zbuffer.c.o:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/zbuffer.c.o
+.PHONY : deps/ledger-zxlib/src/zbuffer.c.o
+
+deps/ledger-zxlib/src/zbuffer.i: deps/ledger-zxlib/src/zbuffer.c.i
+
+.PHONY : deps/ledger-zxlib/src/zbuffer.i
+
+# target to preprocess a source file
+deps/ledger-zxlib/src/zbuffer.c.i:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/zbuffer.c.i
+.PHONY : deps/ledger-zxlib/src/zbuffer.c.i
+
+deps/ledger-zxlib/src/zbuffer.s: deps/ledger-zxlib/src/zbuffer.c.s
+
+.PHONY : deps/ledger-zxlib/src/zbuffer.s
+
+# target to generate assembly for a file
+deps/ledger-zxlib/src/zbuffer.c.s:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/zbuffer.c.s
+.PHONY : deps/ledger-zxlib/src/zbuffer.c.s
+
+deps/ledger-zxlib/src/zxformat.o: deps/ledger-zxlib/src/zxformat.c.o
+
+.PHONY : deps/ledger-zxlib/src/zxformat.o
+
+# target to build an object file
+deps/ledger-zxlib/src/zxformat.c.o:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/zxformat.c.o
+.PHONY : deps/ledger-zxlib/src/zxformat.c.o
+
+deps/ledger-zxlib/src/zxformat.i: deps/ledger-zxlib/src/zxformat.c.i
+
+.PHONY : deps/ledger-zxlib/src/zxformat.i
+
+# target to preprocess a source file
+deps/ledger-zxlib/src/zxformat.c.i:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/zxformat.c.i
+.PHONY : deps/ledger-zxlib/src/zxformat.c.i
+
+deps/ledger-zxlib/src/zxformat.s: deps/ledger-zxlib/src/zxformat.c.s
+
+.PHONY : deps/ledger-zxlib/src/zxformat.s
+
+# target to generate assembly for a file
+deps/ledger-zxlib/src/zxformat.c.s:
+	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/zxformat.c.s
+.PHONY : deps/ledger-zxlib/src/zxformat.c.s
 
 deps/ledger-zxlib/src/zxmacros.o: deps/ledger-zxlib/src/zxmacros.c.o
 
@@ -577,7 +588,6 @@ deps/ledger-zxlib/src/zxmacros.o: deps/ledger-zxlib/src/zxmacros.c.o
 
 # target to build an object file
 deps/ledger-zxlib/src/zxmacros.c.o:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/ledger-zxlib/src/zxmacros.c.o
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/zxmacros.c.o
 .PHONY : deps/ledger-zxlib/src/zxmacros.c.o
 
@@ -587,7 +597,6 @@ deps/ledger-zxlib/src/zxmacros.i: deps/ledger-zxlib/src/zxmacros.c.i
 
 # target to preprocess a source file
 deps/ledger-zxlib/src/zxmacros.c.i:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/ledger-zxlib/src/zxmacros.c.i
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/zxmacros.c.i
 .PHONY : deps/ledger-zxlib/src/zxmacros.c.i
 
@@ -597,36 +606,35 @@ deps/ledger-zxlib/src/zxmacros.s: deps/ledger-zxlib/src/zxmacros.c.s
 
 # target to generate assembly for a file
 deps/ledger-zxlib/src/zxmacros.c.s:
-	$(MAKE) -f CMakeFiles/app_lib32.dir/build.make CMakeFiles/app_lib32.dir/deps/ledger-zxlib/src/zxmacros.c.s
 	$(MAKE) -f CMakeFiles/app_lib.dir/build.make CMakeFiles/app_lib.dir/deps/ledger-zxlib/src/zxmacros.c.s
 .PHONY : deps/ledger-zxlib/src/zxmacros.c.s
 
-fuzzing/fuzzingMain.o: fuzzing/fuzzingMain.cpp.o
+fuzz/parser_parse.o: fuzz/parser_parse.cpp.o
 
-.PHONY : fuzzing/fuzzingMain.o
+.PHONY : fuzz/parser_parse.o
 
 # target to build an object file
-fuzzing/fuzzingMain.cpp.o:
-	$(MAKE) -f CMakeFiles/fuzzing_stub.dir/build.make CMakeFiles/fuzzing_stub.dir/fuzzing/fuzzingMain.cpp.o
-.PHONY : fuzzing/fuzzingMain.cpp.o
+fuzz/parser_parse.cpp.o:
+	$(MAKE) -f CMakeFiles/fuzz-parser_parse.dir/build.make CMakeFiles/fuzz-parser_parse.dir/fuzz/parser_parse.cpp.o
+.PHONY : fuzz/parser_parse.cpp.o
 
-fuzzing/fuzzingMain.i: fuzzing/fuzzingMain.cpp.i
+fuzz/parser_parse.i: fuzz/parser_parse.cpp.i
 
-.PHONY : fuzzing/fuzzingMain.i
+.PHONY : fuzz/parser_parse.i
 
 # target to preprocess a source file
-fuzzing/fuzzingMain.cpp.i:
-	$(MAKE) -f CMakeFiles/fuzzing_stub.dir/build.make CMakeFiles/fuzzing_stub.dir/fuzzing/fuzzingMain.cpp.i
-.PHONY : fuzzing/fuzzingMain.cpp.i
+fuzz/parser_parse.cpp.i:
+	$(MAKE) -f CMakeFiles/fuzz-parser_parse.dir/build.make CMakeFiles/fuzz-parser_parse.dir/fuzz/parser_parse.cpp.i
+.PHONY : fuzz/parser_parse.cpp.i
 
-fuzzing/fuzzingMain.s: fuzzing/fuzzingMain.cpp.s
+fuzz/parser_parse.s: fuzz/parser_parse.cpp.s
 
-.PHONY : fuzzing/fuzzingMain.s
+.PHONY : fuzz/parser_parse.s
 
 # target to generate assembly for a file
-fuzzing/fuzzingMain.cpp.s:
-	$(MAKE) -f CMakeFiles/fuzzing_stub.dir/build.make CMakeFiles/fuzzing_stub.dir/fuzzing/fuzzingMain.cpp.s
-.PHONY : fuzzing/fuzzingMain.cpp.s
+fuzz/parser_parse.cpp.s:
+	$(MAKE) -f CMakeFiles/fuzz-parser_parse.dir/build.make CMakeFiles/fuzz-parser_parse.dir/fuzz/parser_parse.cpp.s
+.PHONY : fuzz/parser_parse.cpp.s
 
 tests/crypto.o: tests/crypto.cpp.o
 
@@ -769,7 +777,6 @@ tests/utils/common.o: tests/utils/common.cpp.o
 
 # target to build an object file
 tests/utils/common.cpp.o:
-	$(MAKE) -f CMakeFiles/fuzzing_stub.dir/build.make CMakeFiles/fuzzing_stub.dir/tests/utils/common.cpp.o
 	$(MAKE) -f CMakeFiles/unittests.dir/build.make CMakeFiles/unittests.dir/tests/utils/common.cpp.o
 .PHONY : tests/utils/common.cpp.o
 
@@ -779,7 +786,6 @@ tests/utils/common.i: tests/utils/common.cpp.i
 
 # target to preprocess a source file
 tests/utils/common.cpp.i:
-	$(MAKE) -f CMakeFiles/fuzzing_stub.dir/build.make CMakeFiles/fuzzing_stub.dir/tests/utils/common.cpp.i
 	$(MAKE) -f CMakeFiles/unittests.dir/build.make CMakeFiles/unittests.dir/tests/utils/common.cpp.i
 .PHONY : tests/utils/common.cpp.i
 
@@ -789,7 +795,6 @@ tests/utils/common.s: tests/utils/common.cpp.s
 
 # target to generate assembly for a file
 tests/utils/common.cpp.s:
-	$(MAKE) -f CMakeFiles/fuzzing_stub.dir/build.make CMakeFiles/fuzzing_stub.dir/tests/utils/common.cpp.s
 	$(MAKE) -f CMakeFiles/unittests.dir/build.make CMakeFiles/unittests.dir/tests/utils/common.cpp.s
 .PHONY : tests/utils/common.cpp.s
 
@@ -800,14 +805,13 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
-	@echo "... install/local"
-	@echo "... edit_cache"
-	@echo "... test"
-	@echo "... app_lib32"
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... fuzzing_stub"
+	@echo "... edit_cache"
+	@echo "... test"
+	@echo "... install/local"
+	@echo "... fuzz-parser_parse"
 	@echo "... unittests"
 	@echo "... app_lib"
 	@echo "... gmock_main"
@@ -817,9 +821,6 @@ help:
 	@echo "... app/src/crypto.o"
 	@echo "... app/src/crypto.i"
 	@echo "... app/src/crypto.s"
-	@echo "... app/src/lib/base58.o"
-	@echo "... app/src/lib/base58.i"
-	@echo "... app/src/lib/base58.s"
 	@echo "... app/src/parser.o"
 	@echo "... app/src/parser.i"
 	@echo "... app/src/parser.s"
@@ -829,27 +830,36 @@ help:
 	@echo "... app/src/parser_txdef.o"
 	@echo "... app/src/parser_txdef.i"
 	@echo "... app/src/parser_txdef.s"
-	@echo "... app/src/polkadot_dispatch.o"
-	@echo "... app/src/polkadot_dispatch.i"
-	@echo "... app/src/polkadot_dispatch.s"
-	@echo "... app/src/polkadot_types.o"
-	@echo "... app/src/polkadot_types.i"
-	@echo "... app/src/polkadot_types.s"
+	@echo "... app/src/substrate_dispatch.o"
+	@echo "... app/src/substrate_dispatch.i"
+	@echo "... app/src/substrate_dispatch.s"
+	@echo "... app/src/substrate_types.o"
+	@echo "... app/src/substrate_types.i"
+	@echo "... app/src/substrate_types.s"
 	@echo "... deps/BLAKE2/ref/blake2b-ref.o"
 	@echo "... deps/BLAKE2/ref/blake2b-ref.i"
 	@echo "... deps/BLAKE2/ref/blake2b-ref.s"
+	@echo "... deps/ledger-zxlib/src/base58.o"
+	@echo "... deps/ledger-zxlib/src/base58.i"
+	@echo "... deps/ledger-zxlib/src/base58.s"
 	@echo "... deps/ledger-zxlib/src/bignum.o"
 	@echo "... deps/ledger-zxlib/src/bignum.i"
 	@echo "... deps/ledger-zxlib/src/bignum.s"
 	@echo "... deps/ledger-zxlib/src/hexutils.o"
 	@echo "... deps/ledger-zxlib/src/hexutils.i"
 	@echo "... deps/ledger-zxlib/src/hexutils.s"
+	@echo "... deps/ledger-zxlib/src/zbuffer.o"
+	@echo "... deps/ledger-zxlib/src/zbuffer.i"
+	@echo "... deps/ledger-zxlib/src/zbuffer.s"
+	@echo "... deps/ledger-zxlib/src/zxformat.o"
+	@echo "... deps/ledger-zxlib/src/zxformat.i"
+	@echo "... deps/ledger-zxlib/src/zxformat.s"
 	@echo "... deps/ledger-zxlib/src/zxmacros.o"
 	@echo "... deps/ledger-zxlib/src/zxmacros.i"
 	@echo "... deps/ledger-zxlib/src/zxmacros.s"
-	@echo "... fuzzing/fuzzingMain.o"
-	@echo "... fuzzing/fuzzingMain.i"
-	@echo "... fuzzing/fuzzingMain.s"
+	@echo "... fuzz/parser_parse.o"
+	@echo "... fuzz/parser_parse.i"
+	@echo "... fuzz/parser_parse.s"
 	@echo "... tests/crypto.o"
 	@echo "... tests/crypto.i"
 	@echo "... tests/crypto.s"

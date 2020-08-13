@@ -17,11 +17,11 @@
    "False"
   ],
   [
-   "jsoncpp:shared",
-   "False"
+   "jsoncpp:fPIC",
+   "True"
   ],
   [
-   "jsoncpp:use_pic",
+   "jsoncpp:shared",
    "False"
   ]
  ],

@@ -1,22 +1,22 @@
 {
- "profile_host": "[settings]\narch=x86_64\narch_build=x86_64\nbuild_type=Debug\ncompiler=gcc\ncompiler.libcxx=libstdc++11\ncompiler.version=9\nos=Linux\nos_build=Linux\n[options]\n[build_requires]\n[env]\n",
+ "profile_host": "[settings]\narch=x86_64\narch_build=x86_64\nbuild_type=Debug\ncompiler=clang\ncompiler.libcxx=libstdc++11\ncompiler.version=10\nos=Linux\nos_build=Linux\n[options]\n[build_requires]\n[env]\n",
  "graph_lock": {
   "nodes": {
    "0": {
     "pref": null,
-    "options": "fmt:fPIC=True\nfmt:header_only=False\nfmt:shared=False\nfmt:with_fmt_alias=False\njsoncpp:shared=False\njsoncpp:use_pic=False",
+    "options": "fmt:fPIC=True\nfmt:header_only=False\nfmt:shared=False\nfmt:with_fmt_alias=False\njsoncpp:fPIC=True\njsoncpp:shared=False",
     "requires": [
      "1",
      "2"
     ],
-    "path": "/home/lenij/zondax/ledger-kusama/conanfile.txt"
+    "path": "/home/lenij/zondax/ledger-polkadot/conanfile.txt"
    },
    "1": {
-    "pref": "jsoncpp/1.9.0@theirix/stable#0:dfe2c959761ac11a1b854db19439f3576ba4b371#0",
-    "options": "shared=False\nuse_pic=False"
+    "pref": "jsoncpp/1.9.3#0:803d1cd04e225b70657161961aaf49e6f4674680#1d503e16e09637e6d60cc55e4b21ada9",
+    "options": "fPIC=True\nshared=False"
    },
    "2": {
-    "pref": "fmt/6.0.0@bincrafters/stable#0:038baac88f4c7bfa972ce5adac1616bed8fe2ef4#8d4795df26d02e8439b9dec75107d8fe",
+    "pref": "fmt/7.0.2#0:803d1cd04e225b70657161961aaf49e6f4674680#da4c054e763772e1d365a8b4490ecab3",
     "options": "fPIC=True\nheader_only=False\nshared=False\nwith_fmt_alias=False"
    }
   }

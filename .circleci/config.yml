@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: zondax/circleci:latest
+      - image: zondax/circleci@sha256:37f78ab294b35a055768c2305b3f13813e55fb9db4e65f72745ede61dd842c08
     steps:
       - checkout
       - run: git submodule update --init --recursive
@@ -13,7 +13,7 @@ jobs:
 
   build_ledger:
     docker:
-      - image: zondax/builder-bolos:latest
+      - image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
     environment:
       - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
       - BOLOS_ENV=/opt/bolos
@@ -27,6 +27,26 @@ jobs:
             source /home/zondax/.cargo/env
             cd /home/zondax/project
             make
+
+  test_fuzz_crash_fixes:
+    docker:
+      - image: zondax/circleci@sha256:37f78ab294b35a055768c2305b3f13813e55fb9db4e65f72745ede61dd842c08
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - run: sudo apt update && sudo apt -y install clang-10
+      - run:
+          name: Build
+          command: |
+            cmake -B build \
+                    -DCMAKE_C_COMPILER=clang-10 \
+                    -DCMAKE_CXX_COMPILER=clang++-10 \
+                    -DCMAKE_BUILD_TYPE=Debug \
+                    -DENABLE_FUZZING=1 \
+                    -DENABLE_SANITIZERS=1 \
+                    .
+            make -C build
+      - run: ./run-fuzz-crashes.py
 
   build_ledger_ledgeracio:
     docker:
@@ -48,12 +68,14 @@ jobs:
   test_zemu:
     machine:
       image: ubuntu-1604:201903-01
+    resource_class: large
     working_directory: ~/repo
     environment:
       BASH_ENV: "/opt/circleci/.nvm/nvm.sh"
     steps:
       - checkout
       - run: git submodule update --init --recursive
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
       - run:
           name: Build Ledger app
           command: |
@@ -108,7 +130,7 @@ jobs:
 
   build_package:
     docker:
-      - image: zondax/builder-bolos:latest
+      - image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
     environment:
       - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
       - BOLOS_ENV=/opt/bolos

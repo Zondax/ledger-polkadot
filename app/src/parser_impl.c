@@ -190,64 +190,30 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
     if (c->len <= 4) {
         uint64_t v;
         _getValue(c, &v);
-
-        if (decimalPlaces == 0) {
-            if (uint64_to_str(bufferUI, sizeof(bufferUI), v) != NULL){
-                return parser_unexpected_value;
-            }
-        } else {
-            if (fpuint64_to_str(bufferUI, sizeof(bufferUI), v, decimalPlaces) == 0) {
-                return parser_unexpected_value;
-            }
+        if (uint64_to_str(bufferUI, sizeof(bufferUI), v) != NULL) {
+            return parser_unexpected_value;
         }
-
-        // Add postfix
-        if (postfix > 32 && postfix < 127) {
-            const uint16_t p = strlen(bufferUI);
-            bufferUI[p] = postfix;
-        }
-
-        pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     } else {
+        // This is longer number
         uint8_t bcdOut[100];
         const uint16_t bcdOutLen = sizeof(bcdOut);
-
         bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, c->ptr + 1, c->len - 1);
         if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen))
             return parser_unexpected_buffer_end;
-
-        if (decimalPlaces > 0) {
-            uint16_t numChars = strlen(bufferUI);
-
-//        0123456789012     <-decimal places
-//        abcd              < numChars = 4
-//                 abcd     < shift
-//        000000000abcd     < fill
-//        0.00000000abcd    < add decimal point
-
-            if (numChars < decimalPlaces) {
-                for (uint16_t j = 0; j < numChars; j++) {
-                    bufferUI[decimalPlaces + 1 - j] = bufferUI[numChars - 1 - j];
-                }
-                MEMSET(bufferUI, '0', decimalPlaces - numChars + 1);
-                numChars = strlen(bufferUI);
-            }
-
-            // add decimal point
-            for (uint16_t j = 0; j < decimalPlaces + 1; j++) {
-                bufferUI[numChars + 1 - j] = bufferUI[numChars - j];
-            }
-            bufferUI[numChars - decimalPlaces] = '.';
-        }
-
-        // Add postfix
-        if (postfix > 32 && postfix < 127) {
-            const uint16_t p = strlen(bufferUI);
-            bufferUI[p] = postfix;
-        }
-
-        pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     }
+
+    // Format number
+    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), decimalPlaces) == 0){
+        return parser_unexpected_value;
+    }
+
+    // Add postfix
+    if (postfix > 32 && postfix < 127) {
+        const uint16_t p = strlen(bufferUI);
+        bufferUI[p] = postfix;
+    }
+
+    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
 
     return parser_ok;
 }
@@ -346,17 +312,17 @@ parser_error_t _checkVersions(parser_context_t *c) {
 
     uint8_t *p = (uint8_t *) (c->buffer + c->bufferLen - specOffsetFromBack);
     uint32_t specVersion = 0;
-    specVersion += p[0] << 0u;
-    specVersion += p[1] << 8u;
-    specVersion += p[2] << 16u;
-    specVersion += p[3] << 24u;
+    specVersion += (uint32_t) p[0] << 0u;
+    specVersion += (uint32_t) p[1] << 8u;
+    specVersion += (uint32_t) p[2] << 16u;
+    specVersion += (uint32_t) p[3] << 24u;
 
     p += 4;
     uint32_t transactionVersion = 0;
-    transactionVersion += p[0] << 0u;
-    transactionVersion += p[1] << 8u;
-    transactionVersion += p[2] << 16u;
-    transactionVersion += p[3] << 24u;
+    transactionVersion += (uint32_t) p[0] << 0u;
+    transactionVersion += (uint32_t) p[1] << 8u;
+    transactionVersion += (uint32_t) p[2] << 16u;
+    transactionVersion += (uint32_t) p[3] << 24u;
 
     if (specVersion < SUPPORTED_MINIMUM_SPEC_VERSION) {
         return parser_spec_not_supported;
