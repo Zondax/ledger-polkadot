@@ -178,36 +178,36 @@ parser_error_t _readConviction(parser_context_t *c, pd_Conviction_t *v) {
 
 parser_error_t _readData(parser_context_t *c, pd_Data_t *v) {
     CHECK_INPUT();
+    MEMZERO(v, sizeof(pd_Data_t));
     CHECK_ERROR(_readUInt8(c, (uint8_t *) &v->type))
+
+    v->_ptr = NULL;
+    v->_len = 0;
 
     // based on:
     // https://github.com/paritytech/substrate/blob/effe489951d1edab9d34846b1eefdfaf9511dab9/frame/identity/src/lib.rs#L139
-
-    if (v->type > Data_e_NONE && v->type <= Data_e_RAW_VECU8) {
-        const uint8_t bufferSize = ((uint8_t) v->type - 1);
-        v->_ptr = c->buffer + c->offset;
-        v->_len = bufferSize;
-        CTX_CHECK_AND_ADVANCE(c, v->_len);
-        return parser_ok;
-    }
-
     switch (v->type) {
-        case Data_e_NONE:
+        case Data_e_NONE: {
             v->_ptr = NULL;
             v->_len = 0;
-            break;
-        case Data_e_RAW_VECU8:
-            // This should have been handled before (1..33)
-            return parser_unexpected_value;
+            return parser_ok;
+        }
         case Data_e_BLAKETWO256U8_32:
         case Data_e_SHA256_U8_32:
         case Data_e_KECCAK256_U8_32:
         case Data_e_SHATHREE256_U8_32:
-        default:
             return parser_not_supported;
+        default: {
+            if (v->type > Data_e_NONE && v->type <= Data_e_RAW_VECU8) {
+                const uint8_t bufferSize = ((uint8_t) v->type - 1);
+                v->_ptr = c->buffer + c->offset;
+                v->_len = bufferSize;
+                CTX_CHECK_AND_ADVANCE(c, v->_len);
+                return parser_ok;
+            }
+            return parser_not_supported;
+        }
     }
-
-    return parser_ok;
 }
 
 parser_error_t _readDefunctVoter(parser_context_t *c, pd_DefunctVoter_t *v) {
@@ -390,7 +390,7 @@ parser_error_t _readTupleBalanceOfBalanceOfBlockNumber(parser_context_t *c, pd_T
 parser_error_t _readTupleDataData(parser_context_t *c, pd_TupleDataData_t *v) {
     CHECK_INPUT();
     CHECK_ERROR(_readData(c, &v->data1))
-    CHECK_ERROR(_readData(c, &v->data1))
+    CHECK_ERROR(_readData(c, &v->data2))
     return parser_ok;
 }
 
@@ -770,7 +770,7 @@ parser_error_t _toStringAccountVoteStandard(
     pages[0] = 1;
     CHECK_ERROR(_toStringVote(&v->vote, outValue, outValueLen, 0, &pages[1]))
     CHECK_ERROR(_toStringBalanceOf(&v->balance, outValue, outValueLen, 0, &pages[2]));
-    
+
     *pageCount = 0;
     for (uint8_t i = 0; i < (uint8_t) sizeof(pages); i++) {
         *pageCount += pages[i];
@@ -983,9 +983,12 @@ parser_error_t _toStringData(
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
 
+    if (v->_ptr == NULL || v->_len == 0) {
+        return parser_unexpected_value;
+    }
+
     if (v->type > Data_e_NONE && v->type <= Data_e_RAW_VECU8) {
         const uint8_t bufferSize = ((uint8_t) v->type - 1);
-        // FIXME: page+print utf8
         GEN_DEF_TOSTRING_ARRAY(bufferSize)
     }
 
@@ -1153,7 +1156,7 @@ parser_error_t _toStringIdentityInfo(
     CHECK_ERROR(_toStringOptionu8_array_20(&v->pgp_fingerprint, outValue, outValueLen, 0, &pages[6]))
     CHECK_ERROR(_toStringData(&v->image, outValue, outValueLen, 0, &pages[7]))
     CHECK_ERROR(_toStringData(&v->twitter, outValue, outValueLen, 0, &pages[8]))
-    
+
     *pageCount = 0;
     for (uint8_t i = 0; i < (uint8_t) sizeof(pages); i++) {
         *pageCount += pages[i];
@@ -1284,7 +1287,7 @@ parser_error_t _toStringKey(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     CLEAN_AND_CHECK()
-    
+
     return parser_print_not_supported;
 }
 
@@ -1689,7 +1692,7 @@ parser_error_t _toStringVestingInfo(
     return parser_ok;
   }
   pageIdx -= pages[1];
-  
+
   //////
   if (pageIdx < pages[2]) {
     CHECK_ERROR(_toStringBlockNumber(&v->starting_block, outValue, outValueLen, pageIdx, &pages[2]))

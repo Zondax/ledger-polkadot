@@ -42,7 +42,8 @@ extern "C" {
     if (v == NULL) { return parser_no_data; } \
     CTX_CHECK_AVAIL(c, 1) // Checks that there is something available in the buffer
 
-#define CLEAN_AND_CHECK() MEMZERO(outValue, outValueLen);  \
+#define CLEAN_AND_CHECK() \
+    MEMZERO(outValue, outValueLen);  \
     if (v == NULL) { *pageCount = 0; return parser_no_data; }
 
 #define GEN_DEF_READARRAY(SIZE) \
@@ -51,24 +52,21 @@ extern "C" {
     return parser_ok;
 
 #define GEN_DEF_TOSTRING_ARRAY(SIZE) \
-    CLEAN_AND_CHECK();\
-    if (v->_ptr == NULL) return parser_unexpected_buffer_end; \
-    const uint16_t outLenNormalized = ((outValueLen - 1u) >> 1u);\
-    const uint16_t pageOffset = pageIdx * outLenNormalized;\
-    *pageCount = SIZE / outLenNormalized;    \
-    if (SIZE % outLenNormalized != 0)    \
-    (*pageCount)++; \
-    uint16_t loopmax = outLenNormalized;    \
-    if (loopmax > SIZE - pageOffset) { \
-        loopmax = SIZE - pageOffset; \
-    };\
-    for (uint16_t i = 0; i < loopmax; i++) {\
-        const uint16_t offset = i << 1u;\
-        snprintf(outValue + offset,\
-        outValueLen - offset,\
-        "%02x", *(v->_ptr + pageOffset + i));\
-    }\
+    CLEAN_AND_CHECK();                                                                  \
+    if (v->_ptr == NULL || outValueLen == 0 ) return parser_unexpected_buffer_end;      \
+    const uint16_t outLenNormalized = (outValueLen - 1) / 2;                            \
+    *pageCount = SIZE / outLenNormalized;                                               \
+    if (SIZE % outLenNormalized != 0) *pageCount+=1;                                    \
+    const uint16_t pageOffset = pageIdx * outLenNormalized;                             \
+    uint16_t loopmax = outLenNormalized;                                                \
+    if (loopmax > SIZE - pageOffset)  loopmax = SIZE - pageOffset;                      \
+    for (uint16_t i = 0; i < loopmax; i++) {                                            \
+        const uint16_t offset = i << 1u;                                                \
+        const uint8_t *c = v->_ptr + pageOffset;                                        \
+        snprintf(outValue + offset, outValueLen - offset, "%02x", c[i]);                \
+    }                                                                                   \
     return parser_ok;
+
 #define GEN_DEC_READFIX_UNSIGNED(BITS) parser_error_t _readUInt ## BITS(parser_context_t *ctx, uint ## BITS ##_t *value)
 #define GEN_DEF_READFIX_UNSIGNED(BITS) parser_error_t _readUInt ## BITS(parser_context_t *ctx, uint ## BITS ##_t *value) \
 {                                                                                           \

@@ -1,6 +1,6 @@
 [requires]
-jsoncpp/1.9.0@theirix/stable
-fmt/6.0.0@bincrafters/stable
+jsoncpp/1.9.3
+fmt/7.0.2
 
 [generators]
 cmake

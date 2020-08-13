@@ -1,10 +1,10 @@
 [includedirs]
-/home/lenij/.conan/data/jsoncpp/1.9.0/theirix/stable/package/dfe2c959761ac11a1b854db19439f3576ba4b371/include
-/home/lenij/.conan/data/fmt/6.0.0/bincrafters/stable/package/038baac88f4c7bfa972ce5adac1616bed8fe2ef4/include
+/home/lenij/.conan/data/jsoncpp/1.9.3/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/include
+/home/lenij/.conan/data/fmt/7.0.2/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/include
 
 [libdirs]
-/home/lenij/.conan/data/jsoncpp/1.9.0/theirix/stable/package/dfe2c959761ac11a1b854db19439f3576ba4b371/lib
-/home/lenij/.conan/data/fmt/6.0.0/bincrafters/stable/package/038baac88f4c7bfa972ce5adac1616bed8fe2ef4/lib
+/home/lenij/.conan/data/jsoncpp/1.9.3/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/lib
+/home/lenij/.conan/data/fmt/7.0.2/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/lib
 
 [bindirs]
 
@@ -13,8 +13,8 @@
 
 
 [builddirs]
-/home/lenij/.conan/data/jsoncpp/1.9.0/theirix/stable/package/dfe2c959761ac11a1b854db19439f3576ba4b371/
-/home/lenij/.conan/data/fmt/6.0.0/bincrafters/stable/package/038baac88f4c7bfa972ce5adac1616bed8fe2ef4/
+/home/lenij/.conan/data/jsoncpp/1.9.3/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/
+/home/lenij/.conan/data/fmt/7.0.2/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/
 
 [libs]
 jsoncpp
@@ -52,10 +52,10 @@ fmtd
 
 
 [includedirs_jsoncpp]
-/home/lenij/.conan/data/jsoncpp/1.9.0/theirix/stable/package/dfe2c959761ac11a1b854db19439f3576ba4b371/include
+/home/lenij/.conan/data/jsoncpp/1.9.3/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/include
 
 [libdirs_jsoncpp]
-/home/lenij/.conan/data/jsoncpp/1.9.0/theirix/stable/package/dfe2c959761ac11a1b854db19439f3576ba4b371/lib
+/home/lenij/.conan/data/jsoncpp/1.9.3/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/lib
 
 [bindirs_jsoncpp]
 
@@ -64,7 +64,7 @@ fmtd
 
 
 [builddirs_jsoncpp]
-/home/lenij/.conan/data/jsoncpp/1.9.0/theirix/stable/package/dfe2c959761ac11a1b854db19439f3576ba4b371/
+/home/lenij/.conan/data/jsoncpp/1.9.3/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/
 
 [libs_jsoncpp]
 jsoncpp
@@ -100,14 +100,20 @@ jsoncpp
 
 
 [rootpath_jsoncpp]
-/home/lenij/.conan/data/jsoncpp/1.9.0/theirix/stable/package/dfe2c959761ac11a1b854db19439f3576ba4b371
+/home/lenij/.conan/data/jsoncpp/1.9.3/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680
+
+[name_jsoncpp]
+jsoncpp
+
+[version_jsoncpp]
+1.9.3
 
 
 [includedirs_fmt]
-/home/lenij/.conan/data/fmt/6.0.0/bincrafters/stable/package/038baac88f4c7bfa972ce5adac1616bed8fe2ef4/include
+/home/lenij/.conan/data/fmt/7.0.2/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/include
 
 [libdirs_fmt]
-/home/lenij/.conan/data/fmt/6.0.0/bincrafters/stable/package/038baac88f4c7bfa972ce5adac1616bed8fe2ef4/lib
+/home/lenij/.conan/data/fmt/7.0.2/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/lib
 
 [bindirs_fmt]
 
@@ -116,7 +122,7 @@ jsoncpp
 
 
 [builddirs_fmt]
-/home/lenij/.conan/data/fmt/6.0.0/bincrafters/stable/package/038baac88f4c7bfa972ce5adac1616bed8fe2ef4/
+/home/lenij/.conan/data/fmt/7.0.2/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680/
 
 [libs_fmt]
 fmtd
@@ -152,7 +158,13 @@ fmtd
 
 
 [rootpath_fmt]
-/home/lenij/.conan/data/fmt/6.0.0/bincrafters/stable/package/038baac88f4c7bfa972ce5adac1616bed8fe2ef4
+/home/lenij/.conan/data/fmt/7.0.2/_/_/package/803d1cd04e225b70657161961aaf49e6f4674680
+
+[name_fmt]
+fmt
+
+[version_fmt]
+7.0.2
 
 
 [USER_jsoncpp]
