@@ -24,6 +24,7 @@
 #include "view.h"
 #include "actions.h"
 #include "tx.h"
+#include "addr.h"
 #include "crypto.h"
 #include "coin.h"
 #include "zxmacros.h"
@@ -99,6 +100,7 @@ __Z_INLINE bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
     THROW(APDU_CODE_INVALIDP1P2);
 }
 
+#if defined(APP_RESTRICTED)
 __Z_INLINE bool process_chunk_update(volatile uint32_t *tx, uint32_t rx) {
     const uint8_t payloadType = G_io_apdu_buffer[OFFSET_PAYLOAD_TYPE];
 
@@ -127,6 +129,7 @@ __Z_INLINE bool process_chunk_update(volatile uint32_t *tx, uint32_t rx) {
 
     return payloadType == 2;
 }
+#endif
 
 __Z_INLINE void handle_getversion(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
     G_io_apdu_buffer[0] = 0;
@@ -135,7 +138,7 @@ __Z_INLINE void handle_getversion(volatile uint32_t *flags, volatile uint32_t *t
     G_io_apdu_buffer[0] = 0x01;
 #endif
 
-    #if defined(APP_RESTRICTED)
+#if defined(APP_RESTRICTED)
     G_io_apdu_buffer[0] = 0x02;
 #endif
 
@@ -166,7 +169,10 @@ __Z_INLINE void handleGetAddr(volatile uint32_t *flags, volatile uint32_t *tx, u
 
     if (requireConfirmation) {
         app_fill_address();
-        view_address_show(addr_ed22519);
+
+        view_review_init(addr_getItem, addr_getNumItems, app_reply_address, app_reject);
+        view_review_show();
+
         *flags |= IO_ASYNCH_REPLY;
         return;
     }
@@ -194,7 +200,8 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
     }
 
     CHECK_APP_CANARY()
-    view_sign_show();
+    view_review_init(tx_getItem, tx_getNumItems, app_sign, app_reject);
+    view_review_show();
     *flags |= IO_ASYNCH_REPLY;
 }
 
@@ -213,7 +220,18 @@ __Z_INLINE void handleAllowlistGetMasterkey(volatile uint32_t *flags, volatile u
     THROW(APDU_CODE_OK);
 }
 
-__Z_INLINE void handleAllowlistSetMasterkey(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
+void app_allowlist_SetPublicKey() {
+    if (!allowlist_pubkey_set(G_io_apdu_buffer + OFFSET_DATA, 32)) {
+        set_code(G_io_apdu_buffer, 0, APDU_CODE_EXECUTION_ERROR);
+        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
+    }
+    zemu_log_stack("allowlist: pubkey updated");
+
+    set_code(G_io_apdu_buffer, 0, APDU_CODE_OK);
+    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
+}
+
+__Z_INLINE void handleAllowlistSetPublicKey(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
     if (allowlist_pubkey_is_set()) {
         // Can only be set once
         THROW(APDU_CODE_COMMAND_NOT_ALLOWED);  // 0x6986
@@ -225,12 +243,9 @@ __Z_INLINE void handleAllowlistSetMasterkey(volatile uint32_t *flags, volatile u
 
     zemu_log_stack("allowlist: try update pubkey");
 
-    if (!allowlist_pubkey_set(G_io_apdu_buffer + OFFSET_DATA, 32)) {
-        THROW(APDU_CODE_EXECUTION_ERROR);    // 6400
-    }
-
-    zemu_log_stack("allowlist: pubkey updated");
-    THROW(APDU_CODE_OK);
+    view_review_init(allowlist_getItem, allowlist_getNumItems, app_allowlist_SetPublicKey, app_reject);
+    view_review_show();
+    *flags |= IO_ASYNCH_REPLY;
 }
 
 __Z_INLINE void handleAllowlistGetHash(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
@@ -241,6 +256,18 @@ __Z_INLINE void handleAllowlistGetHash(volatile uint32_t *flags, volatile uint32
     allowlist_hash(G_io_apdu_buffer);
     *tx = 32;
     THROW(APDU_CODE_OK);
+}
+
+void app_allowlist_Upload() {
+    zemu_log_stack("allowlist: try update");
+    if (!allowlist_upgrade(tx_get_buffer(), tx_get_buffer_length())) {
+        set_code(G_io_apdu_buffer, 0, APDU_CODE_EXECUTION_ERROR);
+        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
+    }
+
+    zemu_log_stack("allowlist: updated");
+    set_code(G_io_apdu_buffer, 0, APDU_CODE_OK);
+    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
 }
 
 __Z_INLINE void handleAllowlistUpload(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
@@ -255,13 +282,14 @@ __Z_INLINE void handleAllowlistUpload(volatile uint32_t *flags, volatile uint32_
     }
     CHECK_APP_CANARY()
 
-    zemu_log_stack("allowlist: try update");
-    if (!allowlist_upgrade(tx_get_buffer(), tx_get_buffer_length())) {
+    if (!allowlist_list_validate(tx_get_buffer(), tx_get_buffer_length())) {
+        // conditions to update allowlist are not satisfied
         THROW(APDU_CODE_EXECUTION_ERROR);
     }
 
-    zemu_log_stack("allowlist: updated");
-    THROW(APDU_CODE_OK);
+    view_review_init(allowlist_getItem, allowlist_getNumItems, app_allowlist_Upload, app_reject);
+    view_review_show();
+    *flags |= IO_ASYNCH_REPLY;
 }
 #endif
 
@@ -304,7 +332,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                     }
 
                     case INS_ALLOWLIST_SET_PUBKEY: {
-                        handleAllowlistSetMasterkey(flags, tx, rx);
+                        handleAllowlistSetPublicKey(flags, tx, rx);
                         break;
                     }
 

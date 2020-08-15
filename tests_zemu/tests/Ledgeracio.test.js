@@ -87,7 +87,12 @@ describe('Basic checks', function () {
 
             const pk = Buffer.from("1234000000000000000000000000000000000000000000000000000000000000", "hex")
 
-            let resp = await app.setAllowlistPubKey(pk);
+            let req = app.setAllowlistPubKey(pk);
+            await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
+            await sim.clickRight();
+            await sim.clickRight();
+            await sim.clickBoth();
+            let resp = await req;
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
 
@@ -158,13 +163,23 @@ describe('Basic checks', function () {
 
             console.log("\n\n------------ Set pubkey")
             const keypair = ed25519.createKeyPair(TESTING_ALLOWLIST_SEED)
-            let resp = await app.setAllowlistPubKey(keypair.publicKey);
+            let req = app.setAllowlistPubKey(keypair.publicKey);
+            await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
+            await sim.clickRight();
+            await sim.clickRight();
+            await sim.clickBoth();
+            let resp = await req;
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
 
             let allowlist = dummyAllowlist(10);
             console.log(`\n\n------------ Upload allowlist : ${allowlist.length} bytes`)
-            resp = await app.uploadAllowlist(allowlist);
+            req = app.uploadAllowlist(allowlist);
+            await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
+            await sim.clickRight();
+            await sim.clickRight();
+            await sim.clickBoth();
+            resp = await req;
             console.log(resp);
 
             expect(resp.return_code).toEqual(0x9000);
@@ -184,7 +199,12 @@ describe('Basic checks', function () {
 
             console.log(`\n\n------------ Upload allowlist : Again but change nonce`)
             allowlist = dummyAllowlist(11);
-            resp = await app.uploadAllowlist(allowlist);
+            req = app.uploadAllowlist(allowlist);
+            await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
+            await sim.clickRight();
+            await sim.clickRight();
+            await sim.clickBoth();
+            resp = await req;
             console.log(resp);
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");

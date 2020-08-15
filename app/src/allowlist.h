@@ -14,8 +14,10 @@
 *  limitations under the License.
 ********************************************************************************/
 #pragma once
+
 #include "zxmacros.h"
 #include <stdbool.h>
+#include "zxerror.h"
 
 #define ALLOW_LIST_SIZE                 128
 // Length is limited to 63 because it must be zero terminated
@@ -52,7 +54,16 @@ void allowlist_hash(uint8_t *digest);
 
 bool allowlist_item_validate(const char *address);
 
+bool allowlist_list_validate(const uint8_t *new_list_buffer, size_t new_list_buffer_len);
+
 bool allowlist_upgrade(const uint8_t *new_list_buffer, size_t new_list_buffer_len);
+
+zxerr_t allowlist_getNumItems(uint8_t *num_items);
+
+zxerr_t allowlist_getItem(int8_t displayIdx,
+                          char *outKey, uint16_t outKeyLen,
+                          char *outValue, uint16_t outValueLen,
+                          uint8_t pageIdx, uint8_t *pageCount);
 
 #ifdef __cplusplus
 }
