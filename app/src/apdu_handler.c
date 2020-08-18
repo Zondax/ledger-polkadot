@@ -170,7 +170,7 @@ __Z_INLINE void handleGetAddr(volatile uint32_t *flags, volatile uint32_t *tx, u
     if (requireConfirmation) {
         app_fill_address();
 
-        view_review_init(addr_getItem, addr_getNumItems, app_reply_address, app_reject);
+        view_review_init(addr_getItem, addr_getNumItems, app_reply_address);
         view_review_show();
 
         *flags |= IO_ASYNCH_REPLY;
@@ -200,7 +200,7 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
     }
 
     CHECK_APP_CANARY()
-    view_review_init(tx_getItem, tx_getNumItems, app_sign, app_reject);
+    view_review_init(tx_getItem, tx_getNumItems, app_sign);
     view_review_show();
     *flags |= IO_ASYNCH_REPLY;
 }
@@ -243,7 +243,7 @@ __Z_INLINE void handleAllowlistSetPublicKey(volatile uint32_t *flags, volatile u
 
     zemu_log_stack("allowlist: try update pubkey");
 
-    view_review_init(allowlist_getItem, allowlist_getNumItems, app_allowlist_SetPublicKey, app_reject);
+    view_review_init(allowlist_getItem, allowlist_getNumItems, app_allowlist_SetPublicKey);
     view_review_show();
     *flags |= IO_ASYNCH_REPLY;
 }
@@ -287,7 +287,7 @@ __Z_INLINE void handleAllowlistUpload(volatile uint32_t *flags, volatile uint32_
         THROW(APDU_CODE_EXECUTION_ERROR);
     }
 
-    view_review_init(allowlist_getItem, allowlist_getNumItems, app_allowlist_Upload, app_reject);
+    view_review_init(allowlist_getItem, allowlist_getNumItems, app_allowlist_Upload);
     view_review_show();
     *flags |= IO_ASYNCH_REPLY;
 }

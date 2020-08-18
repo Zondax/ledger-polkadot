@@ -48,7 +48,6 @@ typedef struct {
     viewfunc_getItem_t viewfuncGetItem;
     viewfunc_getNumItems_t viewfuncGetNumItems;
     viewfunc_accept_t viewfuncAccept;
-    viewfunc_reject_t viewfuncReject;
 
     uint8_t itemIdx;
     uint8_t itemCount;

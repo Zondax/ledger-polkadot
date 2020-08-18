@@ -16,7 +16,7 @@
 
 import jest, {expect, test} from "jest";
 import Zemu from "@zondax/zemu";
-const {newPolkadotApp} = require("@zondax/ledger-polkadot");
+import {newPolkadotApp} from "@zondax/ledger-polkadot";
 import ed25519 from "ed25519-supercop";
 import {dummyAllowlist, TESTING_ALLOWLIST_SEED} from "./common";
 

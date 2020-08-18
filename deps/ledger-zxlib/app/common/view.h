@@ -37,8 +37,6 @@ typedef zxerr_t (*viewfunc_getItem_t)(int8_t displayIdx,
 
 typedef void (*viewfunc_accept_t)();
 
-typedef void (*viewfunc_reject_t)();
-
 /// view_init (initializes UI)
 void view_init();
 
@@ -50,7 +48,6 @@ void view_error_show();
 
 void view_review_init(viewfunc_getItem_t viewfuncGetItem,
                       viewfunc_getNumItems_t viewfuncGetNumItems,
-                      viewfunc_accept_t viewfuncAccept,
-                      viewfunc_reject_t viewfuncReject);
+                      viewfunc_accept_t viewfuncAccept);
 
 void view_review_show();

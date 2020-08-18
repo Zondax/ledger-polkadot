@@ -23,7 +23,6 @@
 #include "parser_impl.h"
 
 using ::testing::TestWithParam;
-using ::testing::Values;
 
 typedef struct {
     uint64_t decimals;

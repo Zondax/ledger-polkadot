@@ -20,9 +20,6 @@
 #include <hexutils.h>
 #include <crypto.h>
 
-using ::testing::TestWithParam;
-using ::testing::Values;
-
 extern const char *crypto_testPubKey;
 
 /// Test that we can generate the address from a known mnemonic

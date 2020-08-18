@@ -49,9 +49,7 @@ void h_reject(unsigned int _) {
     UNUSED(_);
     view_idle_show(0);
     UX_WAIT();
-    if (viewdata.viewfuncReject != NULL) {
-        viewdata.viewfuncReject();
-    }
+    app_reject();
 }
 
 void h_error_accept(unsigned int _) {
@@ -184,12 +182,10 @@ void view_idle_show(uint8_t item_idx) {
 
 void view_review_init(viewfunc_getItem_t viewfuncGetItem,
                       viewfunc_getNumItems_t viewfuncGetNumItems,
-                      viewfunc_accept_t viewfuncAccept,
-                      viewfunc_reject_t viewfuncReject) {
+                      viewfunc_accept_t viewfuncAccept) {
     viewdata.viewfuncGetItem = viewfuncGetItem;
     viewdata.viewfuncGetNumItems = viewfuncGetNumItems;
     viewdata.viewfuncAccept = viewfuncAccept;
-    viewdata.viewfuncReject = viewfuncReject;
 }
 
 void view_review_show() {
