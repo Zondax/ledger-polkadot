@@ -18,6 +18,7 @@
 
 #include <stdint.h>
 #include "coin.h"
+#include "zxerror.h"
 
 #if defined(LEDGER_SPECIFIC)
 #include "bolos_target.h"
@@ -26,6 +27,15 @@
 #include "cx.h"
 #endif
 #endif
+
+typedef zxerr_t (*viewfunc_getNumItems_t)(uint8_t *num_items);
+
+typedef zxerr_t (*viewfunc_getItem_t)(int8_t displayIdx,
+                                      char *outKey, uint16_t outKeyLen,
+                                      char *outVal, uint16_t outValLen,
+                                      uint8_t pageIdx, uint8_t *pageCount);
+
+typedef void (*viewfunc_accept_t)();
 
 /// view_init (initializes UI)
 void view_init();
@@ -36,8 +46,8 @@ void view_idle_show(uint8_t item_idx);
 /// view_error (error view)
 void view_error_show();
 
-// shows address in the screen
-void view_address_show();
+void view_review_init(viewfunc_getItem_t viewfuncGetItem,
+                      viewfunc_getNumItems_t viewfuncGetNumItems,
+                      viewfunc_accept_t viewfuncAccept);
 
-// Shows review screen + later sign menu
-void view_sign_show();
+void view_review_show();

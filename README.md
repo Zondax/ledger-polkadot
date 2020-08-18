@@ -131,7 +131,7 @@ To run a single specific test:
 
 > At the moment, the recommendation is to run from the IDE. Remember to run `make` if you change the app.
 
-## How to debug a ledger app?
+## How to debug a Ledger app?
 
 You can use vscode or clion to debug the app. We recommend using CLion but we provide a vscode (unsupported) configuration too.
 
@@ -241,6 +241,7 @@ Many of our integration tests expect the device to be configured with a known te
 
 - Run `make dev_ca`. The device will receive a development certificate to avoid constant manual confirmations.
 
+## Building the Ledger App
 
 ### Loading into your development device
 
@@ -253,7 +254,10 @@ The Makefile will build the firmware in a docker container and leave the binary 
    ```
 
 - Upload to a device
-   The following command will upload the application to the ledger. _Warning: The application will be deleted before uploading._
+
+   The following command will upload the application to the ledger:
+
+   _Warning: The application will be deleted before uploading._
    ```
    make load          # Builds and loads the app to the device
    ```

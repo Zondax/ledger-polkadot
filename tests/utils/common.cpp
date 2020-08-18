@@ -21,10 +21,13 @@
 std::vector<std::string> dumpUI(parser_context_t *ctx,
                                 uint16_t maxKeyLen,
                                 uint16_t maxValueLen) {
+    auto answer = std::vector<std::string>();
+
     uint8_t numItems;
     parser_error_t err = parser_getNumItems(ctx, &numItems);
-
-    auto answer = std::vector<std::string>();
+    if (err != parser_ok) {
+        return answer;
+    }
 
     for (uint16_t idx = 0; idx < numItems; idx++) {
         char keyBuffer[1000];
@@ -35,15 +38,15 @@ std::vector<std::string> dumpUI(parser_context_t *ctx,
         while (pageIdx < pageCount) {
             std::stringstream ss;
 
-            auto err = parser_getItem(ctx,
-                                      idx,
-                                      keyBuffer, maxKeyLen,
-                                      valueBuffer, maxValueLen,
-                                      pageIdx, &pageCount);
+            err = parser_getItem(ctx,
+                                 idx,
+                                 keyBuffer, maxKeyLen,
+                                 valueBuffer, maxValueLen,
+                                 pageIdx, &pageCount);
 
             ss << idx << " | " << keyBuffer;
             if (pageCount > 1) {
-                ss << " [" << (int) pageIdx+1 << "/" << (int) pageCount << "]";
+                ss << " [" << (int) pageIdx + 1 << "/" << (int) pageCount << "]";
             }
             ss << " : ";
 

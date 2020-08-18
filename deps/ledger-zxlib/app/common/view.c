@@ -36,11 +36,20 @@
 
 view_t viewdata;
 
-void h_address_accept(unsigned int _) {
+void h_approve(unsigned int _) {
     UNUSED(_);
     view_idle_show(0);
     UX_WAIT();
-    app_reply_address();
+    if (viewdata.viewfuncAccept != NULL) {
+        viewdata.viewfuncAccept();
+    }
+}
+
+void h_reject(unsigned int _) {
+    UNUSED(_);
+    view_idle_show(0);
+    UX_WAIT();
+    app_reject();
 }
 
 void h_error_accept(unsigned int _) {
@@ -50,24 +59,12 @@ void h_error_accept(unsigned int _) {
     app_reply_error();
 }
 
-void h_sign_accept(unsigned int _) {
-    UNUSED(_);
-    view_idle_show(0);
-    UX_WAIT();
-    app_sign();
-}
-
-void h_sign_reject(unsigned int _) {
-    UNUSED(_);
-    view_idle_show(0);
-    UX_WAIT();
-    app_reject();
-}
-
 ///////////////////////////////////
 // Paging related
 
 void h_paging_init() {
+    zemu_log_stack("-- h_paging_init");
+
     viewdata.itemIdx = 0;
     viewdata.pageIdx = 0;
     viewdata.pageCount = 1;
@@ -121,60 +118,34 @@ void h_paging_decrease() {
     }
 }
 
-void h_paging_set_page_count(uint8_t pageCount) {
-    viewdata.pageCount = pageCount;
-    if (viewdata.pageIdx > viewdata.pageCount) {
-        viewdata.pageIdx = viewdata.pageCount - 1;
-    }
-}
-
 ///////////////////////////////////
 // Paging related
 
 zxerr_t h_review_update_data() {
+    if (viewdata.viewfuncGetNumItems == NULL) {
+        return zxerr_no_data;
+    }
+
     do {
         viewdata.pageCount = 1;
-        switch (viewdata.mode) {
-            case review_tx: {
-                CHECK_ZXERR(tx_getNumItems(&viewdata.itemCount))
+        CHECK_ZXERR(viewdata.viewfuncGetNumItems(&viewdata.itemCount))
 
-                // be sure we are not out of bounds
-                CHECK_ZXERR(tx_getItem(viewdata.itemIdx,
-                                       viewdata.key, MAX_CHARS_PER_KEY_LINE,
-                                       viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
-                                       0, &viewdata.pageCount))
-                if (viewdata.pageCount != 0 && viewdata.pageIdx > viewdata.pageCount) {
-                    // try again and get last page
-                    viewdata.pageIdx = viewdata.pageCount - 1;
-                }
-                CHECK_ZXERR(
-                        tx_getItem(viewdata.itemIdx,
-                                   viewdata.key, MAX_CHARS_PER_KEY_LINE,
-                                   viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
-                                   viewdata.pageIdx, &viewdata.pageCount))
-                break;
-            }
-            case review_address: {
-                CHECK_ZXERR(addr_getNumItems(&viewdata.itemCount))
-                // be sure we are not out of bounds
-                CHECK_ZXERR(addr_getItem(viewdata.itemIdx,
-                                         viewdata.key, MAX_CHARS_PER_KEY_LINE,
-                                         viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
-                                         0, &viewdata.pageCount))
-                if (viewdata.pageCount != 0 && viewdata.pageIdx > viewdata.pageCount) {
-                    // try again and get last page
-                    viewdata.pageIdx = viewdata.pageCount - 1;
-                }
-                CHECK_ZXERR(
-                        addr_getItem(viewdata.itemIdx,
-                                     viewdata.key, MAX_CHARS_PER_KEY_LINE,
-                                     viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
-                                     viewdata.pageIdx, &viewdata.pageCount))
-                break;
-            }
-            default:
-                return zxerr_unknown;
+        // be sure we are not out of bounds
+        CHECK_ZXERR(viewdata.viewfuncGetItem(
+                viewdata.itemIdx,
+                viewdata.key, MAX_CHARS_PER_KEY_LINE,
+                viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
+                0, &viewdata.pageCount))
+        if (viewdata.pageCount != 0 && viewdata.pageIdx > viewdata.pageCount) {
+            // try again and get last page
+            viewdata.pageIdx = viewdata.pageCount - 1;
         }
+        CHECK_ZXERR(viewdata.viewfuncGetItem(
+                viewdata.itemIdx,
+                viewdata.key, MAX_CHARS_PER_KEY_LINE,
+                viewdata.value, MAX_CHARS_PER_VALUE1_LINE,
+                viewdata.pageIdx, &viewdata.pageCount))
+
         viewdata.itemCount++;
 
         if (viewdata.pageCount > 1) {
@@ -209,14 +180,16 @@ void view_idle_show(uint8_t item_idx) {
     view_idle_show_impl(item_idx);
 }
 
-void view_address_show() {
-    viewdata.mode = review_address;
-    view_address_show_impl();
+void view_review_init(viewfunc_getItem_t viewfuncGetItem,
+                      viewfunc_getNumItems_t viewfuncGetNumItems,
+                      viewfunc_accept_t viewfuncAccept) {
+    viewdata.viewfuncGetItem = viewfuncGetItem;
+    viewdata.viewfuncGetNumItems = viewfuncGetNumItems;
+    viewdata.viewfuncAccept = viewfuncAccept;
 }
 
-void view_sign_show() {
-    viewdata.mode = review_tx;
-    view_sign_show_impl();
+void view_review_show() {
+    view_review_show_impl();
 }
 
 void view_error_show() {

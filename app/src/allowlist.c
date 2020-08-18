@@ -18,6 +18,8 @@
 
 #include "os.h"
 #include "cx.h"
+#include "coin.h"
+#include "app_main.h"
 #include "allowlist.h"
 
 typedef struct {
@@ -155,7 +157,6 @@ bool allowlist_list_validate(const uint8_t *new_list_buffer, size_t new_list_buf
         return false;
     }
 
-
     zemu_log_stack("\n");
     // Hash allowlist (len + items)
     uint8_t digest[32];
@@ -202,7 +203,6 @@ bool allowlist_list_validate(const uint8_t *new_list_buffer, size_t new_list_buf
     }
 
     return valid_signature;
-//    return true;
 }
 
 bool allowlist_upgrade(const uint8_t *new_list_buffer, size_t new_list_buffer_len) {
@@ -212,6 +212,53 @@ bool allowlist_upgrade(const uint8_t *new_list_buffer, size_t new_list_buffer_le
     }
     MEMCPY_NV( (void*) PIC(&N_allowlist), (void*) PIC(new_list_buffer), new_list_buffer_len);
     return true;
+}
+
+zxerr_t allowlist_getNumItems(uint8_t *num_items) {
+    zemu_log_stack("allowlist_getNumItems");
+    *num_items = 1;
+    return zxerr_ok;
+}
+
+zxerr_t allowlist_getItem(int8_t displayIdx,
+                          char *outKey, uint16_t outKeyLen,
+                          char *outVal, uint16_t outValLen,
+                          uint8_t pageIdx, uint8_t *pageCount) {
+    zemu_log_stack("allowlist_getItem");
+    if (displayIdx != 0) {
+        return zxerr_no_data;
+    }
+
+    switch (G_io_apdu_buffer[OFFSET_INS]) {
+        case INS_ALLOWLIST_SET_PUBKEY: {
+            snprintf(outKey, outKeyLen, "Set Pubkey");
+
+            char bufferUI[100];
+            if (array_to_hexstr(bufferUI, sizeof(bufferUI), G_io_apdu_buffer+OFFSET_DATA, 32) != 64) {
+                return zxerr_encoding_failed;
+            }
+            pageString(outVal, outValLen, bufferUI, pageIdx, pageCount);
+            return zxerr_ok;
+        }
+        case INS_ALLOWLIST_UPLOAD: {
+            snprintf(outKey, outKeyLen, "Allowlist Upload");
+
+            uint8_t digest[32];
+            allowlist_t *new_list = (allowlist_t *) tx_get_buffer();
+            allowlist_calculate_digest(digest, new_list);
+
+            char bufferUI[100];
+            if (array_to_hexstr(bufferUI, sizeof(bufferUI), digest, sizeof(digest)) != 64) {
+                return zxerr_encoding_failed;
+            }
+            pageString(outVal, outValLen, bufferUI, pageIdx, pageCount);
+            return zxerr_ok;
+        }
+        default:
+            break;
+    }
+
+    return zxerr_no_data;
 }
 
 #endif

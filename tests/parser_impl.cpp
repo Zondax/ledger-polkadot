@@ -22,9 +22,6 @@
 #include <parser.h>
 #include "parser_impl.h"
 
-using ::testing::TestWithParam;
-using ::testing::Values;
-
 // Test that we can parse SCALE-encoded unsigned intergers correctly (uint8_t, uint16_t, uint32_t, uint64_t}
 TEST(SCALE, UIntX) {
     parser_context_t ctx;

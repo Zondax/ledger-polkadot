@@ -19,6 +19,7 @@
 #include <stdint.h>
 #include "coin.h"
 #include "zxerror.h"
+#include "view.h"
 
 #define CUR_FLOW G_ux.flow_stack[G_ux.stack_count-1]
 
@@ -36,11 +37,6 @@
 
 // This takes data from G_io_apdu_buffer that is prefilled with the address
 
-typedef enum  {
-    review_tx = 0,
-    review_address = 1
-} review_mode_e;
-
 typedef struct {
     struct {
         char key[MAX_CHARS_PER_KEY_LINE];
@@ -49,7 +45,10 @@ typedef struct {
         char value2[MAX_CHARS_PER_VALUE2_LINE];
 #endif
     };
-    review_mode_e mode;
+    viewfunc_getItem_t viewfuncGetItem;
+    viewfunc_getNumItems_t viewfuncGetNumItems;
+    viewfunc_accept_t viewfuncAccept;
+
     uint8_t itemIdx;
     uint8_t itemCount;
     uint8_t pageIdx;
@@ -79,19 +78,8 @@ void splitValueField();
 
 void view_idle_show_impl(uint8_t item_idx);
 
-void view_address_show_impl();
 
 void view_error_show_impl();
-
-void view_sign_show_impl();
-
-void h_address_accept(unsigned int _);
-
-void h_error_accept(unsigned int _);
-
-void h_sign_accept(unsigned int _);
-
-void h_sign_reject(unsigned int _);
 
 void h_paging_init();
 
@@ -103,6 +91,12 @@ uint8_t h_paging_can_decrease();
 
 void h_paging_decrease();
 
-void h_paging_set_page_count(uint8_t pageCount);
+void view_review_show_impl();
+
+void h_approve(unsigned int _);
+
+void h_reject(unsigned int _);
+
+void h_error_accept(unsigned int _);
 
 zxerr_t h_review_update_data();

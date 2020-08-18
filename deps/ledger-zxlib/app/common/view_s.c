@@ -36,7 +36,6 @@ void h_expert_toggle();
 void h_expert_update();
 void h_review_button_left();
 void h_review_button_right();
-void view_review_show();
 void view_review_decision_s();
 
 ux_state_t ux;
@@ -55,16 +54,9 @@ const ux_menu_entry_t menu_main[] = {
     UX_MENU_END
 };
 
-void h_review(unsigned int _) { UNUSED(_); view_sign_show_impl(); }
-
-const ux_menu_entry_t menu_decision_sign[] = {
-    {NULL, h_sign_accept, 0, NULL, "Approve", NULL, 0, 0},
-    {NULL, h_sign_reject, 0, NULL, "Reject", NULL, 0, 0},
-    UX_MENU_END
-};
-
-const ux_menu_entry_t menu_decision_address[] = {
-    {NULL, h_address_accept, 0, NULL, "Accept", NULL, 0, 0},
+const ux_menu_entry_t menu_decision_review[] = {
+    {NULL, h_approve, 0, NULL, "Approve", NULL, 0, 0},
+    {NULL, h_reject, 0, NULL, "Reject", NULL, 0, 0},
     UX_MENU_END
 };
 
@@ -145,8 +137,7 @@ void h_review_button_left() {
     zxerr_t err = h_review_update_data();
     switch(err) {
         case zxerr_ok:
-            view_review_show();
-            UX_WAIT();
+            UX_DISPLAY(view_review, view_prepro);
             break;
         case zxerr_no_data:
             view_review_decision_s();
@@ -165,8 +156,7 @@ void h_review_button_right() {
 
     switch(err) {
         case zxerr_ok:
-            view_review_show();
-            UX_WAIT();
+            UX_DISPLAY(view_review, view_prepro);
             break;
         case zxerr_no_data:
             view_review_decision_s();
@@ -203,20 +193,7 @@ void view_error_show_impl() {
 }
 
 void view_review_decision_s(void){
-            switch (viewdata.mode) {
-            case review_tx: {
-                UX_MENU_DISPLAY(0, menu_decision_sign, NULL);
-                break;
-            }
-            case review_address: {
-                UX_MENU_DISPLAY(0, menu_decision_address, NULL);
-                break;
-            }
-        }
-}
-
-void view_review_show() {
-    UX_DISPLAY(view_review, view_prepro);
+    UX_MENU_DISPLAY(0, menu_decision_review, NULL);
 }
 
 void h_expert_toggle() {
@@ -231,29 +208,15 @@ void h_expert_update() {
     }
 }
 
-void view_sign_show_impl() {
+void view_review_show_impl() {
+    zemu_log_stack("-- view_review_show_impl");
+
     h_paging_init();
 
     zxerr_t err = h_review_update_data();
     switch(err) {
         case zxerr_ok:
-            view_review_show();
-            break;
-        case zxerr_no_data:
-            view_review_decision_s();
-            break;
-        default:
-            view_error_show();
-            break;
-    }
-}
-
-void view_address_show_impl() {
-    h_paging_init();
-    zxerr_t err = h_review_update_data();
-    switch(err) {
-        case zxerr_ok:
-            view_review_show();
+            UX_DISPLAY(view_review, view_prepro);
             break;
         case zxerr_no_data:
             view_review_decision_s();

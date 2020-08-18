@@ -148,7 +148,7 @@ describe('Basic checks', function () {
             // Now verify the signature
             let prehash = txBlob;
             if (txBlob.length > 256) {
-                const context = blake2bInit(64, null);
+                const context = blake2bInit(32, null);
                 blake2bUpdate(context, txBlob);
                 prehash = Buffer.from(blake2bFinal(context));
             }

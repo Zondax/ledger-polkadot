@@ -25,7 +25,6 @@
 #include "utils/common.h"
 
 using ::testing::TestWithParam;
-using ::testing::Values;
 
 typedef struct {
     uint64_t index;
@@ -61,8 +60,9 @@ std::vector<testcase_t> GetJsonTestCases() {
                         << "Check that your working directory points to the tests directory\n"
                         << "In CLion use $PROJECT_DIR$\\tests\n"
                         << "******************\n";
-    if (!inFile.is_open())
+    if (!inFile.is_open()) {
         return answer;
+    }
 
     // Retrieve all test cases
     JSONCPP_STRING errs;
@@ -71,8 +71,9 @@ std::vector<testcase_t> GetJsonTestCases() {
 
     for (int i = 0; i < obj.size(); i++) {
         auto outputs = std::vector<std::string>();
-        for (auto s : obj[i]["output"])
+        for (auto s : obj[i]["output"]) {
             outputs.push_back(s.asString());
+        }
 
         answer.push_back(testcase_t{
                 obj[i]["index"].asUInt64(),
