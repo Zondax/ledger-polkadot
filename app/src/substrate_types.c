@@ -121,10 +121,6 @@ parser_error_t _readAccountVote(parser_context_t *c, pd_AccountVote_t *v) {
     return parser_ok;
 }
 
-parser_error_t _readApprovals(parser_context_t *c, pd_Approvals_t *v) {
-    return parser_not_supported;
-}
-
 parser_error_t _readAttestedCandidate(parser_context_t *c, pd_AttestedCandidate_t *v) {
     return parser_not_supported;
 }
@@ -829,17 +825,6 @@ parser_error_t _toStringAccountVote(
     }
 
     return parser_ok;
-}
-
-parser_error_t _toStringApprovals(
-        const pd_Approvals_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    return parser_print_not_supported;
 }
 
 parser_error_t _toStringAttestedCandidate(

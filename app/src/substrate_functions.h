@@ -49,7 +49,6 @@ parser_error_t _readAccountValidity(parser_context_t *c, pd_AccountValidity_t *v
 parser_error_t _readAccountVoteSplit(parser_context_t *c, pd_AccountVoteSplit_t *v);
 parser_error_t _readAccountVoteStandard(parser_context_t *c, pd_AccountVoteStandard_t *v);
 parser_error_t _readAccountVote(parser_context_t *c, pd_AccountVote_t *v);
-parser_error_t _readApprovals(parser_context_t *c, pd_Approvals_t *v);
 parser_error_t _readAttestedCandidate(parser_context_t *c, pd_AttestedCandidate_t *v);
 parser_error_t _readBabeEquivocationProof(parser_context_t *c, pd_BabeEquivocationProof_t *v);
 parser_error_t _readBalanceOf(parser_context_t *c, pd_BalanceOf_t *v);
@@ -190,13 +189,6 @@ parser_error_t _toStringAccountVoteStandard(
 
 parser_error_t _toStringAccountVote(
     const pd_AccountVote_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringApprovals(
-    const pd_Approvals_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

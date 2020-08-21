@@ -55,7 +55,6 @@ extern "C" {
 #define PD_CALL_IDENTITY 28
 #define PD_CALL_PROXY 29
 #define PD_CALL_MULTISIG 30
-#define PD_CALL_POLL 31
 
 
 #define PD_CALL_SYSTEM_FILL_BLOCK 0
@@ -1050,11 +1049,6 @@ typedef struct {
     pd_u8_array_32_t call_hash;
 } pd_multisig_cancel_as_multi_t;
 
-#define PD_CALL_POLL_VOTE 0
-typedef struct {
-    pd_Approvals_t approvals;
-} pd_poll_vote_t;
-
 
 typedef union {
     pd_system_fill_block_t system_fill_block;
@@ -1229,7 +1223,6 @@ typedef union {
     pd_multisig_as_multi_t multisig_as_multi;
     pd_multisig_approve_as_multi_t multisig_approve_as_multi;
     pd_multisig_cancel_as_multi_t multisig_cancel_as_multi;
-    pd_poll_vote_t poll_vote;
 } pd_MethodBasic_t;
 
 typedef struct {
