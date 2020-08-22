@@ -16,6 +16,7 @@
 #include "substrate_dispatch.h"
 #include "parser_impl.h"
 #include "bignum.h"
+#include "coin.h"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -733,7 +734,7 @@ parser_error_t _toStringAccountVoteSplit(
     /////////
 
     if (pageIdx < pages[1]) {
-        CHECK_ERROR(_toStringBalanceOf(&v->aye, outValue, outValueLen, 0, &pages[1]));
+        CHECK_ERROR(_toStringBalanceOf(&v->aye, outValue, outValueLen, pageIdx, &pages[1]));
         return parser_ok;
     }
     pageIdx -= pages[1];
@@ -742,7 +743,7 @@ parser_error_t _toStringAccountVoteSplit(
     /////////
 
     if (pageIdx < pages[2]) {
-        CHECK_ERROR(_toStringBalanceOf(&v->nay, outValue, outValueLen, 0, &pages[2]));
+        CHECK_ERROR(_toStringBalanceOf(&v->nay, outValue, outValueLen, pageIdx, &pages[2]));
         return parser_ok;
     }
     pageIdx -= pages[2];
@@ -786,7 +787,7 @@ parser_error_t _toStringAccountVoteStandard(
     /////////
 
     if (pageIdx < pages[1]) {
-        CHECK_ERROR(_toStringVote(&v->vote, outValue, outValueLen, 0, &pages[1]));
+        CHECK_ERROR(_toStringVote(&v->vote, outValue, outValueLen, pageIdx, &pages[1]));
         return parser_ok;
     }
     pageIdx -= pages[1];
@@ -795,7 +796,7 @@ parser_error_t _toStringAccountVoteStandard(
     /////////
 
     if (pageIdx < pages[2]) {
-        CHECK_ERROR(_toStringBalanceOf(&v->balance, outValue, outValueLen, 0, &pages[2]));
+        CHECK_ERROR(_toStringBalanceOf(&v->balance, outValue, outValueLen, pageIdx, &pages[2]));
         return parser_ok;
     }
     pageIdx -= pages[2];
@@ -862,12 +863,17 @@ parser_error_t _toStringBalanceOf(
     MEMSET(bufferUI, 0, sizeof(bufferUI));
     *pageCount = 1;
 
-    uint8_t bcdOut[50];
+    uint8_t bcdOut[100];
     const uint16_t bcdOutLen = sizeof(bcdOut);
 
     bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, v->_ptr, 16);
     if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen)) {
         return parser_unexpected_buffer_end;
+    }
+
+    // Format number
+    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), COIN_AMOUNT_DECIMAL_PLACES) == 0){
+        return parser_unexpected_value;
     }
 
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
@@ -1152,7 +1158,7 @@ parser_error_t _toStringIdentityInfo(
     }
 
     if (pageIdx < pages[0]) {
-        CHECK_ERROR(_toStringVecTupleDataData(&v->additional, outValue, outValueLen, 0, &pages[0]))
+        CHECK_ERROR(_toStringVecTupleDataData(&v->additional, outValue, outValueLen, pageIdx, &pages[0]))
         return parser_ok;
     }
     pageIdx -= pages[0];
@@ -1161,7 +1167,7 @@ parser_error_t _toStringIdentityInfo(
     /////////
 
     if (pageIdx < pages[1]) {
-        CHECK_ERROR(_toStringData(&v->display, outValue, outValueLen, 0, &pages[1]))
+        CHECK_ERROR(_toStringData(&v->display, outValue, outValueLen, pageIdx, &pages[1]))
         return parser_ok;
     }
     pageIdx -= pages[1];
@@ -1170,7 +1176,7 @@ parser_error_t _toStringIdentityInfo(
     /////////
 
     if (pageIdx < pages[2]) {
-        CHECK_ERROR(_toStringData(&v->legal, outValue, outValueLen, 0, &pages[2]))
+        CHECK_ERROR(_toStringData(&v->legal, outValue, outValueLen, pageIdx, &pages[2]))
         return parser_ok;
     }
     pageIdx -= pages[2];
@@ -1179,7 +1185,7 @@ parser_error_t _toStringIdentityInfo(
     /////////
 
     if (pageIdx < pages[3]) {
-        CHECK_ERROR(_toStringData(&v->web, outValue, outValueLen, 0, &pages[3]))
+        CHECK_ERROR(_toStringData(&v->web, outValue, outValueLen, pageIdx, &pages[3]))
         return parser_ok;
     }
     pageIdx -= pages[3];
@@ -1188,7 +1194,7 @@ parser_error_t _toStringIdentityInfo(
     /////////
 
     if (pageIdx < pages[4]) {
-        CHECK_ERROR(_toStringData(&v->riot, outValue, outValueLen, 0, &pages[4]))
+        CHECK_ERROR(_toStringData(&v->riot, outValue, outValueLen, pageIdx, &pages[4]))
         return parser_ok;
     }
     pageIdx -= pages[4];
@@ -1197,7 +1203,7 @@ parser_error_t _toStringIdentityInfo(
     /////////
 
     if (pageIdx < pages[5]) {
-        CHECK_ERROR(_toStringData(&v->email, outValue, outValueLen, 0, &pages[5]))
+        CHECK_ERROR(_toStringData(&v->email, outValue, outValueLen, pageIdx, &pages[5]))
         return parser_ok;
     }
     pageIdx -= pages[5];
@@ -1206,7 +1212,7 @@ parser_error_t _toStringIdentityInfo(
     /////////
 
     if (pageIdx < pages[6]) {
-        CHECK_ERROR(_toStringOptionu8_array_20(&v->pgp_fingerprint, outValue, outValueLen, 0, &pages[6]))
+        CHECK_ERROR(_toStringOptionu8_array_20(&v->pgp_fingerprint, outValue, outValueLen, pageIdx, &pages[6]))
         return parser_ok;
     }
     pageIdx -= pages[6];
@@ -1215,7 +1221,7 @@ parser_error_t _toStringIdentityInfo(
     /////////
 
     if (pageIdx < pages[7]) {
-        CHECK_ERROR(_toStringData(&v->image, outValue, outValueLen, 0, &pages[7]))
+        CHECK_ERROR(_toStringData(&v->image, outValue, outValueLen, pageIdx, &pages[7]))
         return parser_ok;
     }
     pageIdx -= pages[7];
@@ -1224,7 +1230,7 @@ parser_error_t _toStringIdentityInfo(
     /////////
 
     if (pageIdx < pages[8]) {
-        CHECK_ERROR(_toStringData(&v->twitter, outValue, outValueLen, 0, &pages[8]))
+        CHECK_ERROR(_toStringData(&v->twitter, outValue, outValueLen, pageIdx, &pages[8]))
         return parser_ok;
     }
     pageIdx -= pages[8];
@@ -1598,7 +1604,7 @@ parser_error_t _toStringTupleDataData(
     }
 
     if (pageIdx < pages[0]) {
-        CHECK_ERROR(_toStringData(&v->data1, outValue, outValueLen, 0, &pages[0]))
+        CHECK_ERROR(_toStringData(&v->data1, outValue, outValueLen, pageIdx, &pages[0]))
         return parser_ok;
     }
     pageIdx -= pages[0];
@@ -1607,7 +1613,7 @@ parser_error_t _toStringTupleDataData(
     /////////
 
     if (pageIdx < pages[1]) {
-        CHECK_ERROR(_toStringData(&v->data2, outValue, outValueLen, 0, &pages[1]))
+        CHECK_ERROR(_toStringData(&v->data2, outValue, outValueLen, pageIdx, &pages[1]))
         return parser_ok;
     }
     pageIdx -= pages[1];
