@@ -125,7 +125,7 @@ describe('Basic checks', function () {
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "0500a1b3d9e860a3d4f163414442c17a10df6a31f3ab017e2aa7fb9a0fe87ebff0ba0b63ce64c10c05d50391016d0f110000000300000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            let txBlobStr = "05001c59cb529434fabec102a0fcd011f5117f7bbb98face565cb8b0392102ed1f5503d2029649d503008ed73e0d120000000400000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
