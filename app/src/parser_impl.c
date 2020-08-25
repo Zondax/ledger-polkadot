@@ -197,6 +197,7 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
         // This is longer number
         uint8_t bcdOut[100];
         const uint16_t bcdOutLen = sizeof(bcdOut);
+
         bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, c->ptr + 1, c->len - 1);
         if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen))
             return parser_unexpected_buffer_end;

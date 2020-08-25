@@ -1212,12 +1212,6 @@ __Z_INLINE parser_error_t _readMethod_multisig_cancel_as_multi(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_poll_vote(
-    parser_context_t *c, pd_poll_vote_t *m) {
-    CHECK_ERROR(_readApprovals(c, &m->approvals))
-    return parser_ok;
-}
-
 
 parser_error_t _readMethodBasic(
     parser_context_t *c,
@@ -1742,9 +1736,6 @@ parser_error_t _readMethodBasic(
             break;
         case 7683: /* module 30 call 3 */
             CHECK_ERROR(_readMethod_multisig_cancel_as_multi(c, &method->multisig_cancel_as_multi))
-            break;
-        case 7936: /* module 31 call 0 */
-            CHECK_ERROR(_readMethod_poll_vote(c, &method->poll_vote))
             break;
     default:
     return parser_unexpected_callIndex;
@@ -2289,9 +2280,6 @@ parser_error_t _readMethod(
         case 7683: /* module 30 call 3 */
             CHECK_ERROR(_readMethod_multisig_cancel_as_multi(c, &method->basic.multisig_cancel_as_multi))
             break;
-        case 7936: /* module 31 call 0 */
-            CHECK_ERROR(_readMethod_poll_vote(c, &method->basic.poll_vote))
-            break;
         default:
             return parser_unexpected_callIndex;
     }
@@ -2337,7 +2325,6 @@ const char * _getMethod_ModuleName(uint8_t moduleIdx) {
         case 28:   return "Identity";
         case 29:   return "Proxy";
         case 30:   return "Multisig";
-        case 31:   return "Poll";
     default:
     return NULL;
     }
@@ -2526,7 +2513,6 @@ const char * _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx) {
         case 7681: /* module 30 call 1 */   return "As multi";
         case 7682: /* module 30 call 2 */   return "Approve as multi";
         case 7683: /* module 30 call 3 */   return "Cancel as multi";
-        case 7936: /* module 31 call 0 */   return "Vote";
     default:
         return NULL;
     }
@@ -2714,7 +2700,6 @@ uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *met
         case 7681: /* module 30 call 1 */ return 6;
         case 7682: /* module 30 call 2 */ return 5;
         case 7683: /* module 30 call 3 */ return 4;
-        case 7936: /* module 31 call 0 */ return 1;
     default:
     return 0;
     }
@@ -3743,11 +3728,6 @@ const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t ite
                 case 1: return "Other signatories";
                 case 2: return "Timepoint";
                 case 3: return "Call hash";
-                default: return NULL;
-            }
-        case 7936: /* module 31 call 0 */
-            switch(itemIdx) {
-                case 0: return "Approvals";
                 default: return NULL;
             }
         default:
@@ -6210,16 +6190,6 @@ parser_error_t _getMethod_ItemValue(
             case 3: /* multisig_cancel_as_multi - call_hash */;
                 return _toStringu8_array_32(
                     &m->basic.multisig_cancel_as_multi.call_hash,
-                    outValue, outValueLen,
-                    pageIdx, pageCount);
-            default:
-                return parser_no_data;
-        }
-        case 7936: /* module 31 call 0 */
-        switch(itemIdx) {
-            case 0: /* poll_vote - approvals */;
-                return _toStringApprovals(
-                    &m->basic.poll_vote.approvals,
                     outValue, outValueLen,
                     pageIdx, pageCount);
             default:

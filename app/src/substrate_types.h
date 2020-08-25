@@ -204,11 +204,6 @@ typedef struct {
 typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Approvals_t;
-
-typedef struct { 
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_BabeEquivocationProof_t;
 
 typedef struct { 
