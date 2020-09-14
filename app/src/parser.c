@@ -101,6 +101,9 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
             if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_SET_PAYEE) {
                 return parser_ok;
             }
+            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_CHILL) {
+                return parser_ok;
+            }
             if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_NOMINATE) {
                 pd_VecLookupSource_t *targets = &ctx->tx_obj->method.basic.staking_nominate.targets;
                 CHECK_PARSER_ERR(parser_validate_vecLookupSource(targets))
@@ -114,6 +117,9 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
                 return parser_ok;
             }
             if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_VALIDATE) {
+                return parser_ok;
+            }
+            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_CHILL) {
                 return parser_ok;
             }
         }
