@@ -26,10 +26,6 @@ parser_error_t _readCompactAssignments(parser_context_t *c, pd_CompactAssignment
     return _readCompactInt(c, v);
 }
 
-parser_error_t _readCompactAuctionIndex(parser_context_t *c, pd_CompactAuctionIndex_t *v) {
-    return _readCompactInt(c, v);
-}
-
 parser_error_t _readCompactBlockNumber(parser_context_t *c, pd_CompactBlockNumber_t *v) {
     return _readCompactInt(c, v);
 }
@@ -38,19 +34,11 @@ parser_error_t _readCompactEraIndex(parser_context_t *c, pd_CompactEraIndex_t *v
     return _readCompactInt(c, v);
 }
 
-parser_error_t _readCompactLeasePeriodOf(parser_context_t *c, pd_CompactLeasePeriodOf_t *v) {
-    return _readCompactInt(c, v);
-}
-
 parser_error_t _readCompactMemberCount(parser_context_t *c, pd_CompactMemberCount_t *v) {
     return _readCompactInt(c, v);
 }
 
 parser_error_t _readCompactMoment(parser_context_t *c, pd_CompactMoment_t *v) {
-    return _readCompactInt(c, v);
-}
-
-parser_error_t _readCompactParaId(parser_context_t *c, pd_CompactParaId_t *v) {
     return _readCompactInt(c, v);
 }
 
@@ -67,10 +55,6 @@ parser_error_t _readCompactReferendumIndex(parser_context_t *c, pd_CompactRefere
 }
 
 parser_error_t _readCompactRegistrarIndex(parser_context_t *c, pd_CompactRegistrarIndex_t *v) {
-    return _readCompactInt(c, v);
-}
-
-parser_error_t _readCompactSubId(parser_context_t *c, pd_CompactSubId_t *v) {
     return _readCompactInt(c, v);
 }
 
@@ -122,20 +106,12 @@ parser_error_t _readAccountVote(parser_context_t *c, pd_AccountVote_t *v) {
     return parser_ok;
 }
 
-parser_error_t _readAttestedCandidate(parser_context_t *c, pd_AttestedCandidate_t *v) {
-    return parser_not_supported;
-}
-
 parser_error_t _readBabeEquivocationProof(parser_context_t *c, pd_BabeEquivocationProof_t *v) {
     return parser_not_supported;
 }
 
 parser_error_t _readBalanceOf(parser_context_t *c, pd_BalanceOf_t *v) {
     GEN_DEF_READARRAY(16)
-}
-
-parser_error_t _readBalance(parser_context_t *c, pd_Balance_t *v) {
-    return parser_not_supported;
 }
 
 parser_error_t _readBytes(parser_context_t *c, pd_Bytes_t *v) {
@@ -150,16 +126,16 @@ parser_error_t _readBytes(parser_context_t *c, pd_Bytes_t *v) {
     return parser_ok;
 }
 
+parser_error_t _readCallHashOf(parser_context_t *c, pd_CallHashOf_t *v) {
+    return parser_not_supported;
+}
+
 parser_error_t _readCall(parser_context_t *c, pd_Call_t *v) {
     return parser_not_supported;
 }
 
 parser_error_t _readChangesTrieConfiguration(parser_context_t *c, pd_ChangesTrieConfiguration_t *v) {
     return parser_not_supported;
-}
-
-parser_error_t _readCollatorId(parser_context_t *c, pd_CollatorId_t *v) {
-    return _readHash(c, &v->value);
 }
 
 parser_error_t _readConviction(parser_context_t *c, pd_Conviction_t *v) {
@@ -211,10 +187,6 @@ parser_error_t _readDefunctVoter(parser_context_t *c, pd_DefunctVoter_t *v) {
     return parser_not_supported;
 }
 
-parser_error_t _readDoubleVoteReport(parser_context_t *c, pd_DoubleVoteReport_t *v) {
-    return parser_not_supported;
-}
-
 parser_error_t _readEcdsaSignature(parser_context_t *c, pd_EcdsaSignature_t *v) {
     GEN_DEF_READARRAY(65)
 }
@@ -236,10 +208,6 @@ parser_error_t _readEthereumAddress(parser_context_t *c, pd_EthereumAddress_t *v
 }
 
 parser_error_t _readGrandpaEquivocationProof(parser_context_t *c, pd_GrandpaEquivocationProof_t *v) {
-    return parser_not_supported;
-}
-
-parser_error_t _readHeadData(parser_context_t *c, pd_HeadData_t *v) {
     return parser_not_supported;
 }
 
@@ -292,22 +260,8 @@ parser_error_t _readMemberCount(parser_context_t *c, pd_MemberCount_t *v) {
     return _readUInt32(c, &v->value);
 }
 
-parser_error_t _readMoreAttestations(parser_context_t *c, pd_MoreAttestations_t *v) {
-    return parser_not_supported;
-}
-
 parser_error_t _readOpaqueCall(parser_context_t *c, pd_OpaqueCall_t *v) {
     return parser_not_supported;
-}
-
-parser_error_t _readParaId(parser_context_t *c, pd_ParaId_t *v) {
-    return parser_not_supported;
-}
-
-parser_error_t _readParaInfo(parser_context_t *c, pd_ParaInfo_t *v) {
-    CHECK_INPUT();
-    CHECK_ERROR(_readUInt8(c, &v->scheduling))
-    return parser_ok;
 }
 
 parser_error_t _readPerbill(parser_context_t *c, pd_Perbill_t *v) {
@@ -340,10 +294,6 @@ parser_error_t _readReferendumIndex(parser_context_t *c, pd_ReferendumIndex_t *v
 
 parser_error_t _readRegistrarIndex(parser_context_t *c, pd_RegistrarIndex_t *v) {
     return _readUInt32(c, &v->value);
-}
-
-parser_error_t _readRemark(parser_context_t *c, pd_Remark_t *v) {
-    return parser_not_supported;
 }
 
 parser_error_t _readRenouncing(parser_context_t *c, pd_Renouncing_t *v) {
@@ -391,10 +341,6 @@ parser_error_t _readTupleDataData(parser_context_t *c, pd_TupleDataData_t *v) {
     return parser_ok;
 }
 
-parser_error_t _readValidationCode(parser_context_t *c, pd_ValidationCode_t *v) {
-    return parser_not_supported;
-}
-
 parser_error_t _readValidatorIndex(parser_context_t *c, pd_ValidatorIndex_t *v) {
     return parser_not_supported;
 }
@@ -440,10 +386,6 @@ parser_error_t _readu8_array_32(parser_context_t *c, pd_u8_array_32_t *v) {
 
 parser_error_t _readVecAccountId(parser_context_t *c, pd_VecAccountId_t *v) {
     GEN_DEF_READVECTOR(AccountId)
-}
-
-parser_error_t _readVecAttestedCandidate(parser_context_t *c, pd_VecAttestedCandidate_t *v) {
-    GEN_DEF_READVECTOR(AttestedCandidate)
 }
 
 parser_error_t _readVecCall(parser_context_t *c, pd_VecCall_t *v) {
@@ -559,15 +501,6 @@ parser_error_t _toStringCompactAssignments(
     return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
 }
 
-parser_error_t _toStringCompactAuctionIndex(
-        const pd_CompactAuctionIndex_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
-}
-
 parser_error_t _toStringCompactBlockNumber(
         const pd_CompactBlockNumber_t *v,
         char *outValue,
@@ -586,15 +519,6 @@ parser_error_t _toStringCompactEraIndex(
     return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
 }
 
-parser_error_t _toStringCompactLeasePeriodOf(
-        const pd_CompactLeasePeriodOf_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
-}
-
 parser_error_t _toStringCompactMemberCount(
         const pd_CompactMemberCount_t *v,
         char *outValue,
@@ -606,15 +530,6 @@ parser_error_t _toStringCompactMemberCount(
 
 parser_error_t _toStringCompactMoment(
         const pd_CompactMoment_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
-}
-
-parser_error_t _toStringCompactParaId(
-        const pd_CompactParaId_t *v,
         char *outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
@@ -651,15 +566,6 @@ parser_error_t _toStringCompactReferendumIndex(
 
 parser_error_t _toStringCompactRegistrarIndex(
         const pd_CompactRegistrarIndex_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
-}
-
-parser_error_t _toStringCompactSubId(
-        const pd_CompactSubId_t *v,
         char *outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
@@ -828,17 +734,6 @@ parser_error_t _toStringAccountVote(
     return parser_ok;
 }
 
-parser_error_t _toStringAttestedCandidate(
-        const pd_AttestedCandidate_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    return parser_print_not_supported;
-}
-
 parser_error_t _toStringBabeEquivocationProof(
         const pd_BabeEquivocationProof_t *v,
         char *outValue,
@@ -880,17 +775,6 @@ parser_error_t _toStringBalanceOf(
     return parser_ok;
 }
 
-parser_error_t _toStringBalance(
-        const pd_Balance_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    return parser_print_not_supported;
-}
-
 parser_error_t _toStringBytes(
         const pd_Bytes_t *v,
         char *outValue,
@@ -898,6 +782,17 @@ parser_error_t _toStringBytes(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     GEN_DEF_TOSTRING_ARRAY(v->_len);
+}
+
+parser_error_t _toStringCallHashOf(
+        const pd_CallHashOf_t *v,
+        char *outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t *pageCount) {
+    CLEAN_AND_CHECK()
+
+    return parser_print_not_supported;
 }
 
 parser_error_t _toStringCall(
@@ -920,15 +815,6 @@ parser_error_t _toStringChangesTrieConfiguration(
     CLEAN_AND_CHECK()
 
     return parser_print_not_supported;
-}
-
-parser_error_t _toStringCollatorId(
-        const pd_CollatorId_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    return _toStringHash(&v->value, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringConviction(
@@ -1013,17 +899,6 @@ parser_error_t _toStringDefunctVoter(
     return parser_print_not_supported;
 }
 
-parser_error_t _toStringDoubleVoteReport(
-        const pd_DoubleVoteReport_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    return parser_print_not_supported;
-}
-
 parser_error_t _toStringEcdsaSignature(
         const pd_EcdsaSignature_t *v,
         char *outValue,
@@ -1075,17 +950,6 @@ parser_error_t _toStringEthereumAddress(
 
 parser_error_t _toStringGrandpaEquivocationProof(
         const pd_GrandpaEquivocationProof_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    return parser_print_not_supported;
-}
-
-parser_error_t _toStringHeadData(
-        const pd_HeadData_t *v,
         char *outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
@@ -1300,17 +1164,6 @@ parser_error_t _toStringMemberCount(
       return _toStringu32(&v->value, outValue, outValueLen, pageIdx, pageCount);
 }
 
-parser_error_t _toStringMoreAttestations(
-        const pd_MoreAttestations_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    return parser_print_not_supported;
-}
-
 parser_error_t _toStringOpaqueCall(
         const pd_OpaqueCall_t *v,
         char *outValue,
@@ -1320,40 +1173,6 @@ parser_error_t _toStringOpaqueCall(
     CLEAN_AND_CHECK()
 
     return parser_print_not_supported;
-}
-
-parser_error_t _toStringParaId(
-        const pd_ParaId_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    return parser_print_not_supported;
-}
-
-parser_error_t _toStringParaInfo(
-        const pd_ParaInfo_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    switch (v->scheduling) {
-        case 0:
-            snprintf(outValue, outValueLen, "Scheduling: Always");
-            break;
-        case 1:
-            snprintf(outValue, outValueLen, "Scheduling: Dynamic");
-            break;
-        default:
-            snprintf(outValue, outValueLen, "Scheduling: %d", v->scheduling);
-            break;
-    }
-
-    return parser_ok;
 }
 
 parser_error_t _toStringPerbill(
@@ -1449,17 +1268,6 @@ parser_error_t _toStringRegistrarIndex(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     return _toStringu32(&v->value, outValue, outValueLen, pageIdx, pageCount);
-}
-
-parser_error_t _toStringRemark(
-        const pd_Remark_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    return parser_print_not_supported;
 }
 
 parser_error_t _toStringRenouncing(
@@ -1621,17 +1429,6 @@ parser_error_t _toStringTupleDataData(
     return parser_display_idx_out_of_range;
 }
 
-parser_error_t _toStringValidationCode(
-        const pd_ValidationCode_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    return parser_print_not_supported;
-}
-
 parser_error_t _toStringValidatorIndex(
         const pd_ValidatorIndex_t *v,
         char *outValue,
@@ -1749,15 +1546,6 @@ parser_error_t _toStringVecAccountId(
         uint8_t pageIdx,
         uint8_t *pageCount) {
     GEN_DEF_TOSTRING_VECTOR(AccountId);
-}
-
-parser_error_t _toStringVecAttestedCandidate(
-        const pd_VecAttestedCandidate_t *v,
-        char *outValue,
-        uint16_t outValueLen,
-        uint8_t pageIdx,
-        uint8_t *pageCount) {
-    GEN_DEF_TOSTRING_VECTOR(AttestedCandidate);
 }
 
 parser_error_t _toStringVecCall(
