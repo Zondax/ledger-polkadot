@@ -141,19 +141,13 @@ typedef uint32_t pd_BlockNumber_t;                  // u32
 
 typedef compactInt_t pd_CompactAssignments_t;
 
-typedef compactInt_t pd_CompactAuctionIndex_t;
-
 typedef compactInt_t pd_CompactBlockNumber_t;
 
 typedef compactInt_t pd_CompactEraIndex_t;
 
-typedef compactInt_t pd_CompactLeasePeriodOf_t;
-
 typedef compactInt_t pd_CompactMemberCount_t;
 
 typedef compactInt_t pd_CompactMoment_t;
-
-typedef compactInt_t pd_CompactParaId_t;
 
 typedef compactInt_t pd_CompactPerBill_t;
 
@@ -164,8 +158,6 @@ typedef compactInt_t pd_CompactProposalIndex_t;
 typedef compactInt_t pd_CompactReferendumIndex_t;
 
 typedef compactInt_t pd_CompactRegistrarIndex_t;
-
-typedef compactInt_t pd_CompactSubId_t;
 
 typedef compactInt_t pd_CompactWeight_t;
 
@@ -207,14 +199,14 @@ typedef struct {
 } pd_BabeEquivocationProof_t;
 
 typedef struct { 
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Balance_t;
-
-typedef struct { 
     uint64_t _len;
     const uint8_t *_ptr;
 } pd_Bytes_t;
+
+typedef struct { 
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_CallHashOf_t;
 
 typedef struct { 
     // TODO: Not implemented
@@ -227,10 +219,6 @@ typedef struct {
 } pd_ChangesTrieConfiguration_t;
 
 typedef struct { 
-    pd_Hash_t value;
-} pd_CollatorId_t;
-
-typedef struct { 
     uint8_t type;
     const uint8_t *_ptr;
     uint8_t _len;
@@ -240,11 +228,6 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_DefunctVoter_t;
-
-typedef struct { 
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_DoubleVoteReport_t;
 
 typedef struct { 
     const uint8_t *_ptr;
@@ -272,11 +255,6 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_GrandpaEquivocationProof_t;
-
-typedef struct { 
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_HeadData_t;
 
 typedef struct { 
     // TODO: Not implemented
@@ -321,23 +299,7 @@ typedef struct {
 typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_MoreAttestations_t;
-
-typedef struct { 
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_OpaqueCall_t;
-
-typedef struct { 
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_ParaId_t;
-
-typedef struct { 
-    uint8_t scheduling;     //pd_ParaScheduling_t
-    // 0 - Always
-    // 1 - Dynamic
-} pd_ParaInfo_t;
 
 typedef struct { 
     uint32_t value;
@@ -375,11 +337,6 @@ typedef struct {
 typedef struct { 
     uint32_t value;
 } pd_RegistrarIndex_t;
-
-typedef struct { 
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Remark_t;
 
 typedef struct { 
     // TODO: Not implemented
@@ -423,11 +380,6 @@ typedef struct {
 typedef struct { 
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_ValidationCode_t;
-
-typedef struct { 
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ValidatorIndex_t;
 
 typedef struct { 
@@ -454,12 +406,6 @@ typedef struct {
     const uint8_t *_ptr;
     uint64_t _lenBuffer;
 } pd_VecAccountId_t;
-
-typedef struct {
-    uint64_t _len;
-    const uint8_t *_ptr;
-    uint64_t _lenBuffer;
-} pd_VecAttestedCandidate_t;
 
 typedef struct {
     uint64_t _len;

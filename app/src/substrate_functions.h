@@ -49,43 +49,35 @@ parser_error_t _readAccountValidity(parser_context_t *c, pd_AccountValidity_t *v
 parser_error_t _readAccountVoteSplit(parser_context_t *c, pd_AccountVoteSplit_t *v);
 parser_error_t _readAccountVoteStandard(parser_context_t *c, pd_AccountVoteStandard_t *v);
 parser_error_t _readAccountVote(parser_context_t *c, pd_AccountVote_t *v);
-parser_error_t _readAttestedCandidate(parser_context_t *c, pd_AttestedCandidate_t *v);
 parser_error_t _readBabeEquivocationProof(parser_context_t *c, pd_BabeEquivocationProof_t *v);
 parser_error_t _readBalanceOf(parser_context_t *c, pd_BalanceOf_t *v);
-parser_error_t _readBalance(parser_context_t *c, pd_Balance_t *v);
 parser_error_t _readBlockNumber(parser_context_t *c, pd_BlockNumber_t *v);
 parser_error_t _readBytes(parser_context_t *c, pd_Bytes_t *v);
+parser_error_t _readCallHashOf(parser_context_t *c, pd_CallHashOf_t *v);
 parser_error_t _readCall(parser_context_t *c, pd_Call_t *v);
 parser_error_t _readChangesTrieConfiguration(parser_context_t *c, pd_ChangesTrieConfiguration_t *v);
-parser_error_t _readCollatorId(parser_context_t *c, pd_CollatorId_t *v);
 parser_error_t _readCompactAssignments(parser_context_t *c, pd_CompactAssignments_t *v);
-parser_error_t _readCompactAuctionIndex(parser_context_t *c, pd_CompactAuctionIndex_t *v);
 parser_error_t _readCompactBalanceOf(parser_context_t *c, pd_CompactBalanceOf_t *v);
 parser_error_t _readCompactBlockNumber(parser_context_t *c, pd_CompactBlockNumber_t *v);
 parser_error_t _readCompactEraIndex(parser_context_t *c, pd_CompactEraIndex_t *v);
-parser_error_t _readCompactLeasePeriodOf(parser_context_t *c, pd_CompactLeasePeriodOf_t *v);
 parser_error_t _readCompactMemberCount(parser_context_t *c, pd_CompactMemberCount_t *v);
 parser_error_t _readCompactMoment(parser_context_t *c, pd_CompactMoment_t *v);
-parser_error_t _readCompactParaId(parser_context_t *c, pd_CompactParaId_t *v);
 parser_error_t _readCompactPerBill(parser_context_t *c, pd_CompactPerBill_t *v);
 parser_error_t _readCompactPropIndex(parser_context_t *c, pd_CompactPropIndex_t *v);
 parser_error_t _readCompactProposalIndex(parser_context_t *c, pd_CompactProposalIndex_t *v);
 parser_error_t _readCompactReferendumIndex(parser_context_t *c, pd_CompactReferendumIndex_t *v);
 parser_error_t _readCompactRegistrarIndex(parser_context_t *c, pd_CompactRegistrarIndex_t *v);
-parser_error_t _readCompactSubId(parser_context_t *c, pd_CompactSubId_t *v);
 parser_error_t _readCompactWeight(parser_context_t *c, pd_CompactWeight_t *v);
 parser_error_t _readCompactu32(parser_context_t *c, pd_Compactu32_t *v);
 parser_error_t _readConviction(parser_context_t *c, pd_Conviction_t *v);
 parser_error_t _readData(parser_context_t *c, pd_Data_t *v);
 parser_error_t _readDefunctVoter(parser_context_t *c, pd_DefunctVoter_t *v);
-parser_error_t _readDoubleVoteReport(parser_context_t *c, pd_DoubleVoteReport_t *v);
 parser_error_t _readEcdsaSignature(parser_context_t *c, pd_EcdsaSignature_t *v);
 parser_error_t _readElectionScore(parser_context_t *c, pd_ElectionScore_t *v);
 parser_error_t _readElectionSize(parser_context_t *c, pd_ElectionSize_t *v);
 parser_error_t _readEraIndex(parser_context_t *c, pd_EraIndex_t *v);
 parser_error_t _readEthereumAddress(parser_context_t *c, pd_EthereumAddress_t *v);
 parser_error_t _readGrandpaEquivocationProof(parser_context_t *c, pd_GrandpaEquivocationProof_t *v);
-parser_error_t _readHeadData(parser_context_t *c, pd_HeadData_t *v);
 parser_error_t _readHeader(parser_context_t *c, pd_Header_t *v);
 parser_error_t _readHeartbeat(parser_context_t *c, pd_Heartbeat_t *v);
 parser_error_t _readIdentityFields(parser_context_t *c, pd_IdentityFields_t *v);
@@ -97,7 +89,6 @@ parser_error_t _readKey(parser_context_t *c, pd_Key_t *v);
 parser_error_t _readKeys(parser_context_t *c, pd_Keys_t *v);
 parser_error_t _readLookupSource(parser_context_t *c, pd_LookupSource_t *v);
 parser_error_t _readMemberCount(parser_context_t *c, pd_MemberCount_t *v);
-parser_error_t _readMoreAttestations(parser_context_t *c, pd_MoreAttestations_t *v);
 parser_error_t _readOpaqueCall(parser_context_t *c, pd_OpaqueCall_t *v);
 parser_error_t _readOptionAccountId(parser_context_t *c, pd_OptionAccountId_t *v);
 parser_error_t _readOptionChangesTrieConfiguration(parser_context_t *c, pd_OptionChangesTrieConfiguration_t *v);
@@ -107,8 +98,6 @@ parser_error_t _readOptionStatementKind(parser_context_t *c, pd_OptionStatementK
 parser_error_t _readOptionTimepoint(parser_context_t *c, pd_OptionTimepoint_t *v);
 parser_error_t _readOptionTupleBalanceOfBalanceOfBlockNumber(parser_context_t *c, pd_OptionTupleBalanceOfBalanceOfBlockNumber_t *v);
 parser_error_t _readOptionu8_array_20(parser_context_t *c, pd_Optionu8_array_20_t *v);
-parser_error_t _readParaId(parser_context_t *c, pd_ParaId_t *v);
-parser_error_t _readParaInfo(parser_context_t *c, pd_ParaInfo_t *v);
 parser_error_t _readPerbill(parser_context_t *c, pd_Perbill_t *v);
 parser_error_t _readPercent(parser_context_t *c, pd_Percent_t *v);
 parser_error_t _readPeriod(parser_context_t *c, pd_Period_t *v);
@@ -117,7 +106,6 @@ parser_error_t _readPriority(parser_context_t *c, pd_Priority_t *v);
 parser_error_t _readProxyType(parser_context_t *c, pd_ProxyType_t *v);
 parser_error_t _readReferendumIndex(parser_context_t *c, pd_ReferendumIndex_t *v);
 parser_error_t _readRegistrarIndex(parser_context_t *c, pd_RegistrarIndex_t *v);
-parser_error_t _readRemark(parser_context_t *c, pd_Remark_t *v);
 parser_error_t _readRenouncing(parser_context_t *c, pd_Renouncing_t *v);
 parser_error_t _readRewardDestination(parser_context_t *c, pd_RewardDestination_t *v);
 parser_error_t _readSignature(parser_context_t *c, pd_Signature_t *v);
@@ -126,11 +114,9 @@ parser_error_t _readTimepoint(parser_context_t *c, pd_Timepoint_t *v);
 parser_error_t _readTupleAccountIdData(parser_context_t *c, pd_TupleAccountIdData_t *v);
 parser_error_t _readTupleBalanceOfBalanceOfBlockNumber(parser_context_t *c, pd_TupleBalanceOfBalanceOfBlockNumber_t *v);
 parser_error_t _readTupleDataData(parser_context_t *c, pd_TupleDataData_t *v);
-parser_error_t _readValidationCode(parser_context_t *c, pd_ValidationCode_t *v);
 parser_error_t _readValidatorIndex(parser_context_t *c, pd_ValidatorIndex_t *v);
 parser_error_t _readValidatorPrefs(parser_context_t *c, pd_ValidatorPrefs_t *v);
 parser_error_t _readVecAccountId(parser_context_t *c, pd_VecAccountId_t *v);
-parser_error_t _readVecAttestedCandidate(parser_context_t *c, pd_VecAttestedCandidate_t *v);
 parser_error_t _readVecCall(parser_context_t *c, pd_VecCall_t *v);
 parser_error_t _readVecHeader(parser_context_t *c, pd_VecHeader_t *v);
 parser_error_t _readVecKeyValue(parser_context_t *c, pd_VecKeyValue_t *v);
@@ -194,13 +180,6 @@ parser_error_t _toStringAccountVote(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
-parser_error_t _toStringAttestedCandidate(
-    const pd_AttestedCandidate_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
 parser_error_t _toStringBabeEquivocationProof(
     const pd_BabeEquivocationProof_t *v,
     char *outValue,
@@ -210,13 +189,6 @@ parser_error_t _toStringBabeEquivocationProof(
 
 parser_error_t _toStringBalanceOf(
     const pd_BalanceOf_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringBalance(
-    const pd_Balance_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -236,6 +208,13 @@ parser_error_t _toStringBytes(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
+parser_error_t _toStringCallHashOf(
+    const pd_CallHashOf_t *v,
+    char *outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t *pageCount);
+
 parser_error_t _toStringCall(
     const pd_Call_t *v,
     char *outValue,
@@ -250,22 +229,8 @@ parser_error_t _toStringChangesTrieConfiguration(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
-parser_error_t _toStringCollatorId(
-    const pd_CollatorId_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
 parser_error_t _toStringCompactAssignments(
     const pd_CompactAssignments_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringCompactAuctionIndex(
-    const pd_CompactAuctionIndex_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -292,13 +257,6 @@ parser_error_t _toStringCompactEraIndex(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
-parser_error_t _toStringCompactLeasePeriodOf(
-    const pd_CompactLeasePeriodOf_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
 parser_error_t _toStringCompactMemberCount(
     const pd_CompactMemberCount_t *v,
     char *outValue,
@@ -308,13 +266,6 @@ parser_error_t _toStringCompactMemberCount(
 
 parser_error_t _toStringCompactMoment(
     const pd_CompactMoment_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringCompactParaId(
-    const pd_CompactParaId_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -355,13 +306,6 @@ parser_error_t _toStringCompactRegistrarIndex(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
-parser_error_t _toStringCompactSubId(
-    const pd_CompactSubId_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
 parser_error_t _toStringCompactWeight(
     const pd_CompactWeight_t *v,
     char *outValue,
@@ -392,13 +336,6 @@ parser_error_t _toStringData(
 
 parser_error_t _toStringDefunctVoter(
     const pd_DefunctVoter_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringDoubleVoteReport(
-    const pd_DoubleVoteReport_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -441,13 +378,6 @@ parser_error_t _toStringEthereumAddress(
 
 parser_error_t _toStringGrandpaEquivocationProof(
     const pd_GrandpaEquivocationProof_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringHeadData(
-    const pd_HeadData_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -530,13 +460,6 @@ parser_error_t _toStringMemberCount(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
-parser_error_t _toStringMoreAttestations(
-    const pd_MoreAttestations_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
 parser_error_t _toStringOpaqueCall(
     const pd_OpaqueCall_t *v,
     char *outValue,
@@ -600,20 +523,6 @@ parser_error_t _toStringOptionu8_array_20(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
-parser_error_t _toStringParaId(
-    const pd_ParaId_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringParaInfo(
-    const pd_ParaInfo_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
 parser_error_t _toStringPerbill(
     const pd_Perbill_t *v,
     char *outValue,
@@ -665,13 +574,6 @@ parser_error_t _toStringReferendumIndex(
 
 parser_error_t _toStringRegistrarIndex(
     const pd_RegistrarIndex_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringRemark(
-    const pd_Remark_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -733,13 +635,6 @@ parser_error_t _toStringTupleDataData(
     uint8_t pageIdx,
     uint8_t *pageCount);
 
-parser_error_t _toStringValidationCode(
-    const pd_ValidationCode_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
 parser_error_t _toStringValidatorIndex(
     const pd_ValidatorIndex_t *v,
     char *outValue,
@@ -756,13 +651,6 @@ parser_error_t _toStringValidatorPrefs(
 
 parser_error_t _toStringVecAccountId(
     const pd_VecAccountId_t *v,
-    char *outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t *pageCount);
-
-parser_error_t _toStringVecAttestedCandidate(
-    const pd_VecAttestedCandidate_t *v,
     char *outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
