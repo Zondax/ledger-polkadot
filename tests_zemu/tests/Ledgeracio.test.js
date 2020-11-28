@@ -28,12 +28,12 @@ const sim_options = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`
-    , X11: true
+//    , X11: true
 };
 
 jest.setTimeout(30000)
 
-describe('Basic checks', function () {
+describe('Ledgeracio', function () {
     test('can start and stop container', async function () {
         const sim = new Zemu(APP_PATH);
         try {
