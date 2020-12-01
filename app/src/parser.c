@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <zxmacros.h>
 #include "zbuffer.h"
+#include "app_mode.h"
 #include "parser.h"
 #include "coin.h"
 #include "coin_ss58.h"
@@ -47,7 +48,7 @@ void __assert_fail(const char * assertion, const char * file, unsigned int line,
 #define FIELD_BLOCK_HASH    6
 
 
-#define EXPERT_FIELDS_TOTAL_COUNT 7
+#define EXPERT_FIELDS_TOTAL_COUNT 4
 
 parser_error_t parser_parse(parser_context_t *ctx, const uint8_t *data, size_t dataLen, parser_tx_t *tx_obj) {
     CHECK_PARSER_ERR(parser_init(ctx, data, dataLen))
@@ -218,11 +219,17 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
         }
 
         if( displayIdx == FIELD_ONCE ) {
-            snprintf(outKey, outKeyLen, "Nonce");
-            _toStringCompactIndex(&ctx->tx_obj->nonce,
-                                  outVal, outValLen,
-                                  pageIdx, pageCount);
-            return err;
+            if(parser_show_expert_fields(ctx) == 0){
+                displayIdx++;
+            } else {
+                snprintf(outKey, outKeyLen, "Nonce");
+                _toStringCompactIndex(&ctx->tx_obj->nonce,
+                                      outVal, outValLen,
+                                      pageIdx, pageCount);
+                return err;
+            }
+        } else if( displayIdx > FIELD_ONCE && parser_show_expert_fields(ctx) == 0 ){
+            displayIdx++;
         }
 
         if( displayIdx == FIELD_TIP ) {
@@ -242,23 +249,41 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
         }
 
         if( displayIdx == FIELD_ERA_PHASE ) {
-            snprintf(outKey, outKeyLen, "Era Phase");
-            uint64_to_str(outVal, outValLen, ctx->tx_obj->era.phase);
-            return err;
+            if(parser_show_expert_fields(ctx) == 0){
+                displayIdx++;
+            } else {
+                snprintf(outKey, outKeyLen, "Era Phase");
+                uint64_to_str(outVal, outValLen, ctx->tx_obj->era.phase);
+                return err;
+            }
+        } else if( displayIdx > FIELD_ERA_PHASE && parser_show_expert_fields(ctx) == 0 ){
+            displayIdx++;
         }
 
         if( displayIdx == FIELD_ERA_PERIOD ) {
-            snprintf(outKey, outKeyLen, "Era Period");
-            uint64_to_str(outVal, outValLen, ctx->tx_obj->era.period);
-            return err;
+            if(parser_show_expert_fields(ctx) == 0){
+                displayIdx++;
+            } else {
+                snprintf(outKey, outKeyLen, "Era Period");
+                uint64_to_str(outVal, outValLen, ctx->tx_obj->era.period);
+                return err;
+            }
+        } else if( displayIdx > FIELD_ERA_PERIOD && parser_show_expert_fields(ctx) == 0 ){
+            displayIdx++;
         }
 
         if( displayIdx == FIELD_BLOCK_HASH ) {
-            snprintf(outKey, outKeyLen, "Block");
-            _toStringHash(&ctx->tx_obj->blockHash,
-                          outVal, outValLen,
-                          pageIdx, pageCount);
-            return err;
+            if(parser_show_expert_fields(ctx) == 0){
+                displayIdx++;
+            } else {
+                snprintf(outKey, outKeyLen, "Block");
+                _toStringHash(&ctx->tx_obj->blockHash,
+                              outVal, outValLen,
+                              pageIdx, pageCount);
+                return err;
+            }
+        } else if( displayIdx > FIELD_BLOCK_HASH && parser_show_expert_fields(ctx) == 0 ){
+            displayIdx++;
         }
 
         return parser_no_data;
@@ -290,6 +315,7 @@ int parser_show_tip(const parser_context_t *ctx){
 
 
 int parser_show_expert_fields(const parser_context_t *ctx) {
-    return 1;
+    if ( app_mode_expert() == bool_true ) return 1;
+    return 0;
 }
 
