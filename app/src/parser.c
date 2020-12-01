@@ -46,6 +46,9 @@ void __assert_fail(const char * assertion, const char * file, unsigned int line,
 #define FIELD_ERA_PERIOD    5
 #define FIELD_BLOCK_HASH    6
 
+
+#define EXPERT_FIELDS_TOTAL_COUNT 7
+
 parser_error_t parser_parse(parser_context_t *ctx, const uint8_t *data, size_t dataLen, parser_tx_t *tx_obj) {
     CHECK_PARSER_ERR(parser_init(ctx, data, dataLen))
     ctx->tx_obj = tx_obj;
@@ -142,7 +145,15 @@ parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_item
                                                  ctx->tx_obj->callIndex.idx,
                                                  &ctx->tx_obj->method);
 
-    *num_items = FIELD_FIXED_TOTAL_COUNT + methodArgCount;
+    uint8_t total = FIELD_FIXED_TOTAL_COUNT;
+    if(parser_show_tip(ctx) == 0){
+        total -= 1;
+    }
+    if( parser_show_expert_fields(ctx) == 0 ){
+        total -= EXPERT_FIELDS_TOTAL_COUNT;
+    }
+
+    *num_items = total + methodArgCount;
     return parser_ok;
 }
 
@@ -188,52 +199,97 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                                    ctx->tx_obj->callIndex.moduleIdx, ctx->tx_obj->callIndex.idx, argIdx,
                                    outVal, outValLen,
                                    pageIdx, pageCount);
+        return err;
     } else {
         // CONTINUE WITH FIXED ARGUMENTS
         // FIXME: Review. We can probably show this only in expert mode
         displayIdx -= methodArgCount;
-        switch (displayIdx) {
-            case FIELD_NETWORK:
-                if (_getAddressType() == PK_ADDRESS_TYPE) {
-                    snprintf(outKey, outKeyLen, "Chain");
-                    snprintf(outVal, outValLen, COIN_NAME);
-                    break;
-                }
+        if( displayIdx == FIELD_NETWORK ){
+            if (_getAddressType() == PK_ADDRESS_TYPE) {
+                snprintf(outKey, outKeyLen, "Chain");
+                snprintf(outVal, outValLen, COIN_NAME);
+            }else {
                 snprintf(outKey, outKeyLen, "Genesis Hash");
                 _toStringHash(&ctx->tx_obj->genesisHash,
                               outVal, outValLen,
                               pageIdx, pageCount);
-                break;
-            case FIELD_ONCE:
-                snprintf(outKey, outKeyLen, "Nonce");
-                _toStringCompactIndex(&ctx->tx_obj->nonce,
-                                      outVal, outValLen,
-                                      pageIdx, pageCount);
-                break;
-            case FIELD_TIP:
+            }
+            return err;
+        }
+
+        if( displayIdx == FIELD_ONCE ) {
+            snprintf(outKey, outKeyLen, "Nonce");
+            _toStringCompactIndex(&ctx->tx_obj->nonce,
+                                  outVal, outValLen,
+                                  pageIdx, pageCount);
+            return err;
+        }
+
+        if( displayIdx == FIELD_TIP ) {
+
+            if(parser_show_tip(ctx) == 0){
+                displayIdx++;
+            } else {
                 snprintf(outKey, outKeyLen, "Tip");
                 _toStringCompactBalance(&ctx->tx_obj->tip,
                                         outVal, outValLen,
                                         pageIdx, pageCount);
-                break;
-            case FIELD_ERA_PHASE:
-                snprintf(outKey, outKeyLen, "Era Phase");
-                uint64_to_str(outVal, outValLen, ctx->tx_obj->era.phase);
-                break;
-            case FIELD_ERA_PERIOD:
-                snprintf(outKey, outKeyLen, "Era Period");
-                uint64_to_str(outVal, outValLen, ctx->tx_obj->era.period);
-                break;
-            case FIELD_BLOCK_HASH:
-                snprintf(outKey, outKeyLen, "Block");
-                _toStringHash(&ctx->tx_obj->blockHash,
-                              outVal, outValLen,
-                              pageIdx, pageCount);
-                break;
-            default:
-                return parser_no_data;
+                return err;
+            }
+
+        } else if( displayIdx > FIELD_TIP && parser_show_tip(ctx) == 0 ){
+            displayIdx++;
         }
+
+        if( displayIdx == FIELD_ERA_PHASE ) {
+            snprintf(outKey, outKeyLen, "Era Phase");
+            uint64_to_str(outVal, outValLen, ctx->tx_obj->era.phase);
+            return err;
+        }
+
+        if( displayIdx == FIELD_ERA_PERIOD ) {
+            snprintf(outKey, outKeyLen, "Era Period");
+            uint64_to_str(outVal, outValLen, ctx->tx_obj->era.period);
+            return err;
+        }
+
+        if( displayIdx == FIELD_BLOCK_HASH ) {
+            snprintf(outKey, outKeyLen, "Block");
+            _toStringHash(&ctx->tx_obj->blockHash,
+                          outVal, outValLen,
+                          pageIdx, pageCount);
+            return err;
+        }
+
+        return parser_no_data;
     }
 
-    return err;
 }
+
+int parser_show_tip(const parser_context_t *ctx){
+
+    uint16_t outValLen;
+
+    char outVal[1000];
+    MEMZERO(outVal, 40);
+
+    uint8_t pageCount = 0;
+    uint8_t pageIdx = 0;
+
+    _toStringCompactBalance(&ctx->tx_obj->tip,
+                            outVal, outValLen,
+                            pageIdx, &pageCount);
+
+
+    char value[] = "0.0000000000";
+    if ( strcmp( outVal, value ) == 0 ){
+        return 0;
+    }
+    return 1;
+}
+
+
+int parser_show_expert_fields(const parser_context_t *ctx) {
+    return 1;
+}
+
