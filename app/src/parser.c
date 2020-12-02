@@ -232,64 +232,54 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
             return err;
         }
 
-        if( displayIdx == FIELD_NONCE ) {
-            if(parser_show_expert_fields()){
-                snprintf(outKey, outKeyLen, "Nonce");
-                _toStringCompactIndex(&ctx->tx_obj->nonce,
-                                      outVal, outValLen,
-                                      pageIdx, pageCount);
-                return err;
-            }
-            displayIdx++;
-        } else if( !parser_show_expert_fields() ){
+        if( displayIdx == FIELD_NONCE && parser_show_expert_fields()) {
+            snprintf(outKey, outKeyLen, "Nonce");
+            return _toStringCompactIndex(&ctx->tx_obj->nonce,
+                                  outVal, outValLen,
+                                  pageIdx, pageCount);
+        }
+
+        if( !parser_show_expert_fields() ){
             displayIdx++;
         }
 
-        if( displayIdx == FIELD_TIP ) {
+        if( displayIdx == FIELD_TIP && parser_show_tip(ctx)) {
+            snprintf(outKey, outKeyLen, "Tip");
+            return _toStringCompactBalance(&ctx->tx_obj->tip,
+                                    outVal, outValLen,
+                                    pageIdx, pageCount);
+        }
 
-            if(parser_show_tip(ctx)){
-                snprintf(outKey, outKeyLen, "Tip");
-                _toStringCompactBalance(&ctx->tx_obj->tip,
-                                        outVal, outValLen,
-                                        pageIdx, pageCount);
-                return err;
-            }
-            displayIdx++;
-
-        } else if(!parser_show_tip(ctx)){
+        if(!parser_show_tip(ctx)){
             displayIdx++;
         }
 
-        if( displayIdx == FIELD_ERA_PHASE ) {
-            if(parser_show_expert_fields()){
-                snprintf(outKey, outKeyLen, "Era Phase");
-                uint64_to_str(outVal, outValLen, ctx->tx_obj->era.phase);
-                return err;
-            }
-            displayIdx++;
-        } else if( !parser_show_expert_fields() ){
+        if( displayIdx == FIELD_ERA_PHASE && parser_show_expert_fields() ) {
+            snprintf(outKey, outKeyLen, "Era Phase");
+            uint64_to_str(outVal, outValLen, ctx->tx_obj->era.phase);
+            return err;
+        }
+
+        if( !parser_show_expert_fields() ){
             displayIdx++;
         }
 
-        if( displayIdx == FIELD_ERA_PERIOD ) {
-            if(parser_show_expert_fields()){
-                snprintf(outKey, outKeyLen, "Era Period");
-                uint64_to_str(outVal, outValLen, ctx->tx_obj->era.period);
-                return err;
-            }
-            displayIdx++;
-        } else if( !parser_show_expert_fields() ){
+        if( displayIdx == FIELD_ERA_PERIOD && parser_show_expert_fields() ) {
+            snprintf(outKey, outKeyLen, "Era Period");
+            uint64_to_str(outVal, outValLen, ctx->tx_obj->era.period);
+            return err;
+        }
+
+        if( !parser_show_expert_fields() ){
             displayIdx++;
         }
 
-        if( displayIdx == FIELD_BLOCK_HASH ) {
-            if(parser_show_expert_fields()){
-                snprintf(outKey, outKeyLen, "Block");
-                _toStringHash(&ctx->tx_obj->blockHash,
-                              outVal, outValLen,
-                              pageIdx, pageCount);
-                return err;
-            }
+        if( displayIdx == FIELD_BLOCK_HASH && parser_show_expert_fields() ) {
+            snprintf(outKey, outKeyLen, "Block");
+            _toStringHash(&ctx->tx_obj->blockHash,
+                          outVal, outValLen,
+                          pageIdx, pageCount);
+            return err;
         }
 
         return parser_no_data;

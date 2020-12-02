@@ -117,19 +117,11 @@ void check_testcase(const testcase_t &tc, bool expert_mode) {
     }
     std::cout << std::endl << std::endl;
 
-    if (app_mode_expert()) {
-        EXPECT_EQ(output.size(), tc.expected_expert.size());
-        for (size_t i = 0; i < tc.expected_expert.size(); i++) {
-            if (i < output.size()) {
-                EXPECT_THAT(output[i], testing::Eq(tc.expected_expert[i]));
-            }
-        }
-    } else {
-        EXPECT_EQ(output.size(), tc.expected.size());
-        for (size_t i = 0; i < tc.expected.size(); i++) {
-            if (i < output.size()) {
-                EXPECT_THAT(output[i], testing::Eq(tc.expected[i]));
-            }
+    std::vector<std::string> expected = app_mode_expert() ? tc.expected_expert : tc.expected;
+    EXPECT_EQ(output.size(), expected.size());
+    for (size_t i = 0; i < expected.size(); i++) {
+        if (i < output.size()) {
+            EXPECT_THAT(output[i], testing::Eq(expected[i]));
         }
     }
 }
