@@ -86,6 +86,21 @@ parser_error_t parser_validate_vecLookupSource(pd_VecLookupSource_t *targets) {
 }
 #endif
 
+bool parser_show_expert_fields() {
+    return app_mode_expert();
+}
+
+bool parser_show_tip(const parser_context_t *ctx){
+    if (ctx->tx_obj->tip.value.len <= 4) {
+        uint64_t v;
+        _getValue(&ctx->tx_obj->tip.value, &v);
+        if ( v == 0 ){
+            return false;
+        }
+    }
+    return true;
+}
+
 parser_error_t parser_validate(const parser_context_t *ctx) {
     // Iterate through all items to check that all can be shown and are valid
     uint8_t numItems = 0;
@@ -147,10 +162,10 @@ parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_item
                                                  &ctx->tx_obj->method);
 
     uint8_t total = FIELD_FIXED_TOTAL_COUNT;
-    if(parser_show_tip(ctx) == 0){
+    if(parser_show_tip(ctx) == false){
         total -= 1;
     }
-    if( parser_show_expert_fields(ctx) == 0 ){
+    if( parser_show_expert_fields() == false ){
         total -= EXPERT_FIELDS_TOTAL_COUNT;
     }
 
@@ -219,7 +234,7 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
         }
 
         if( displayIdx == FIELD_ONCE ) {
-            if(parser_show_expert_fields(ctx) == 0){
+            if(parser_show_expert_fields() == false){
                 displayIdx++;
             } else {
                 snprintf(outKey, outKeyLen, "Nonce");
@@ -228,13 +243,13 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                                       pageIdx, pageCount);
                 return err;
             }
-        } else if( displayIdx > FIELD_ONCE && parser_show_expert_fields(ctx) == 0 ){
+        } else if( displayIdx > FIELD_ONCE && parser_show_expert_fields() == false ){
             displayIdx++;
         }
 
         if( displayIdx == FIELD_TIP ) {
 
-            if(parser_show_tip(ctx) == 0){
+            if(parser_show_tip(ctx) == false){
                 displayIdx++;
             } else {
                 snprintf(outKey, outKeyLen, "Tip");
@@ -244,36 +259,36 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                 return err;
             }
 
-        } else if( displayIdx > FIELD_TIP && parser_show_tip(ctx) == 0 ){
+        } else if( displayIdx > FIELD_TIP && parser_show_tip(ctx) == false ){
             displayIdx++;
         }
 
         if( displayIdx == FIELD_ERA_PHASE ) {
-            if(parser_show_expert_fields(ctx) == 0){
+            if(parser_show_expert_fields() == false){
                 displayIdx++;
             } else {
                 snprintf(outKey, outKeyLen, "Era Phase");
                 uint64_to_str(outVal, outValLen, ctx->tx_obj->era.phase);
                 return err;
             }
-        } else if( displayIdx > FIELD_ERA_PHASE && parser_show_expert_fields(ctx) == 0 ){
+        } else if( displayIdx > FIELD_ERA_PHASE && parser_show_expert_fields() == false ){
             displayIdx++;
         }
 
         if( displayIdx == FIELD_ERA_PERIOD ) {
-            if(parser_show_expert_fields(ctx) == 0){
+            if(parser_show_expert_fields() == false){
                 displayIdx++;
             } else {
                 snprintf(outKey, outKeyLen, "Era Period");
                 uint64_to_str(outVal, outValLen, ctx->tx_obj->era.period);
                 return err;
             }
-        } else if( displayIdx > FIELD_ERA_PERIOD && parser_show_expert_fields(ctx) == 0 ){
+        } else if( displayIdx > FIELD_ERA_PERIOD && parser_show_expert_fields() == false ){
             displayIdx++;
         }
 
         if( displayIdx == FIELD_BLOCK_HASH ) {
-            if(parser_show_expert_fields(ctx) == 0){
+            if(parser_show_expert_fields() == false){
                 displayIdx++;
             } else {
                 snprintf(outKey, outKeyLen, "Block");
@@ -282,7 +297,7 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                               pageIdx, pageCount);
                 return err;
             }
-        } else if( displayIdx > FIELD_BLOCK_HASH && parser_show_expert_fields(ctx) == 0 ){
+        } else if( displayIdx > FIELD_BLOCK_HASH && parser_show_expert_fields() == false ){
             displayIdx++;
         }
 
@@ -291,31 +306,5 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
 
 }
 
-int parser_show_tip(const parser_context_t *ctx){
 
-    uint16_t outValLen;
-
-    char outVal[1000];
-    MEMZERO(outVal, 40);
-
-    uint8_t pageCount = 0;
-    uint8_t pageIdx = 0;
-
-    _toStringCompactBalance(&ctx->tx_obj->tip,
-                            outVal, outValLen,
-                            pageIdx, &pageCount);
-
-
-    char value[] = "0.0000000000";
-    if ( strcmp( outVal, value ) == 0 ){
-        return 0;
-    }
-    return 1;
-}
-
-
-int parser_show_expert_fields(const parser_context_t *ctx) {
-    if ( app_mode_expert() == bool_true ) return 1;
-    return 0;
-}
 
