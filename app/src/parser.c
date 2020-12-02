@@ -87,7 +87,7 @@ parser_error_t parser_validate_vecLookupSource(pd_VecLookupSource_t *targets) {
 #endif
 
 bool parser_show_expert_fields() {
-    return app_mode_expert();
+    return true;
 }
 
 bool parser_show_tip(const parser_context_t *ctx){
@@ -218,7 +218,6 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
         return err;
     } else {
         // CONTINUE WITH FIXED ARGUMENTS
-        // FIXME: Review. We can probably show this only in expert mode
         displayIdx -= methodArgCount;
         if( displayIdx == FIELD_NETWORK ){
             if (_getAddressType() == PK_ADDRESS_TYPE) {
