@@ -96,36 +96,42 @@ std::vector<testcase_t> GetJsonTestCases() {
 }
 
 void check_testcase(const testcase_t &tc) {
-    parser_context_t ctx;
-    parser_error_t err;
 
-    uint8_t buffer[5000];
-    uint16_t bufferLen = parseHexString(buffer, sizeof(buffer), tc.blob.c_str());
+    for (int i = 0; i < 2; i++) {
 
-    parser_tx_t tx_obj;
-    err = parser_parse(&ctx, buffer, bufferLen, &tx_obj);
-    ASSERT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+        app_mode_set_expert(i);
 
-    auto output = dumpUI(&ctx, 40, 40);
+        parser_context_t ctx;
+        parser_error_t err;
 
-    std::cout << std::endl;
-    for (const auto &i : output) {
-        std::cout << i << std::endl;
-    }
-    std::cout << std::endl << std::endl;
+        uint8_t buffer[5000];
+        uint16_t bufferLen = parseHexString(buffer, sizeof(buffer), tc.blob.c_str());
 
-    if(app_mode_expert()){
-        EXPECT_EQ(output.size(), tc.expected_expert.size());
-        for (size_t i = 0; i < tc.expected_expert.size(); i++) {
-            if (i < output.size()) {
-                EXPECT_THAT(output[i], testing::Eq(tc.expected_expert[i]));
-            }
+        parser_tx_t tx_obj;
+        err = parser_parse(&ctx, buffer, bufferLen, &tx_obj);
+        ASSERT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+
+        auto output = dumpUI(&ctx, 40, 40);
+
+        std::cout << std::endl;
+        for (const auto &i : output) {
+            std::cout << i << std::endl;
         }
-    } else {
-        EXPECT_EQ(output.size(), tc.expected.size());
-        for (size_t i = 0; i < tc.expected.size(); i++) {
-            if (i < output.size()) {
-                EXPECT_THAT(output[i], testing::Eq(tc.expected[i]));
+        std::cout << std::endl << std::endl;
+
+        if (app_mode_expert()) {
+            EXPECT_EQ(output.size(), tc.expected_expert.size());
+            for (size_t i = 0; i < tc.expected_expert.size(); i++) {
+                if (i < output.size()) {
+                    EXPECT_THAT(output[i], testing::Eq(tc.expected_expert[i]));
+                }
+            }
+        } else {
+            EXPECT_EQ(output.size(), tc.expected.size());
+            for (size_t i = 0; i < tc.expected.size(); i++) {
+                if (i < output.size()) {
+                    EXPECT_THAT(output[i], testing::Eq(tc.expected[i]));
+                }
             }
         }
     }
