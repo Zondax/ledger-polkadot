@@ -87,7 +87,7 @@ parser_error_t parser_validate_vecLookupSource(pd_VecLookupSource_t *targets) {
 #endif
 
 bool parser_show_expert_fields() {
-    return true;
+    return app_mode_expert();
 }
 
 bool parser_show_tip(const parser_context_t *ctx){
@@ -162,10 +162,10 @@ parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_item
                                                  &ctx->tx_obj->method);
 
     uint8_t total = FIELD_FIXED_TOTAL_COUNT;
-    if(parser_show_tip(ctx) == false){
+    if(!parser_show_tip(ctx)){
         total -= 1;
     }
-    if( parser_show_expert_fields() == false ){
+    if(!parser_show_expert_fields()){
         total -= EXPERT_FIELDS_TOTAL_COUNT;
     }
 
@@ -290,7 +290,6 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                               pageIdx, pageCount);
                 return err;
             }
-            displayIdx++;
         }
 
         return parser_no_data;

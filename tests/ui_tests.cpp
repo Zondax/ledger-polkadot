@@ -114,7 +114,7 @@ void check_testcase(const testcase_t &tc) {
     }
     std::cout << std::endl << std::endl;
 
-    if(true){
+    if(app_mode_expert()){
         EXPECT_EQ(output.size(), tc.expected_expert.size());
         for (size_t i = 0; i < tc.expected_expert.size(); i++) {
             if (i < output.size()) {
