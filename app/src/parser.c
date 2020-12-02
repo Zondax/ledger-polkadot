@@ -233,70 +233,63 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
         }
 
         if( displayIdx == FIELD_NONCE ) {
-            if(parser_show_expert_fields() == false){
-                displayIdx++;
-            } else {
+            if(parser_show_expert_fields()){
                 snprintf(outKey, outKeyLen, "Nonce");
                 _toStringCompactIndex(&ctx->tx_obj->nonce,
                                       outVal, outValLen,
                                       pageIdx, pageCount);
                 return err;
             }
-        } else if( displayIdx > FIELD_NONCE && parser_show_expert_fields() == false ){
+            displayIdx++;
+        } else if( !parser_show_expert_fields() ){
             displayIdx++;
         }
 
         if( displayIdx == FIELD_TIP ) {
 
-            if(parser_show_tip(ctx) == false){
-                displayIdx++;
-            } else {
+            if(parser_show_tip(ctx)){
                 snprintf(outKey, outKeyLen, "Tip");
                 _toStringCompactBalance(&ctx->tx_obj->tip,
                                         outVal, outValLen,
                                         pageIdx, pageCount);
                 return err;
             }
+            displayIdx++;
 
-        } else if( displayIdx > FIELD_TIP && parser_show_tip(ctx) == false ){
+        } else if(!parser_show_tip(ctx)){
             displayIdx++;
         }
 
         if( displayIdx == FIELD_ERA_PHASE ) {
-            if(parser_show_expert_fields() == false){
-                displayIdx++;
-            } else {
+            if(parser_show_expert_fields()){
                 snprintf(outKey, outKeyLen, "Era Phase");
                 uint64_to_str(outVal, outValLen, ctx->tx_obj->era.phase);
                 return err;
             }
-        } else if( displayIdx > FIELD_ERA_PHASE && parser_show_expert_fields() == false ){
+            displayIdx++;
+        } else if( !parser_show_expert_fields() ){
             displayIdx++;
         }
 
         if( displayIdx == FIELD_ERA_PERIOD ) {
-            if(parser_show_expert_fields() == false){
-                displayIdx++;
-            } else {
+            if(parser_show_expert_fields()){
                 snprintf(outKey, outKeyLen, "Era Period");
                 uint64_to_str(outVal, outValLen, ctx->tx_obj->era.period);
                 return err;
             }
-        } else if( displayIdx > FIELD_ERA_PERIOD && parser_show_expert_fields() == false ){
+            displayIdx++;
+        } else if( !parser_show_expert_fields() ){
             displayIdx++;
         }
 
         if( displayIdx == FIELD_BLOCK_HASH ) {
-            if(parser_show_expert_fields() == false){
-                displayIdx++;
-            } else {
+            if(parser_show_expert_fields()){
                 snprintf(outKey, outKeyLen, "Block");
                 _toStringHash(&ctx->tx_obj->blockHash,
                               outVal, outValLen,
                               pageIdx, pageCount);
                 return err;
             }
-        } else if( displayIdx > FIELD_BLOCK_HASH && parser_show_expert_fields() == false ){
             displayIdx++;
         }
 
