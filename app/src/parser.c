@@ -41,7 +41,7 @@ void __assert_fail(const char * assertion, const char * file, unsigned int line,
 
 #define FIELD_METHOD        0
 #define FIELD_NETWORK       1
-#define FIELD_ONCE          2
+#define FIELD_NONCE         2
 #define FIELD_TIP           3
 #define FIELD_ERA_PHASE     4
 #define FIELD_ERA_PERIOD    5
@@ -233,7 +233,7 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
             return err;
         }
 
-        if( displayIdx == FIELD_ONCE ) {
+        if( displayIdx == FIELD_NONCE ) {
             if(parser_show_expert_fields() == false){
                 displayIdx++;
             } else {
@@ -243,7 +243,7 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                                       pageIdx, pageCount);
                 return err;
             }
-        } else if( displayIdx > FIELD_ONCE && parser_show_expert_fields() == false ){
+        } else if( displayIdx > FIELD_NONCE && parser_show_expert_fields() == false ){
             displayIdx++;
         }
 
