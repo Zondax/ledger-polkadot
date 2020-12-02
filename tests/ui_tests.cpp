@@ -95,43 +95,40 @@ std::vector<testcase_t> GetJsonTestCases() {
     return answer;
 }
 
-void check_testcase(const testcase_t &tc) {
+void check_testcase(const testcase_t &tc, bool expert_mode) {
 
-    for (int i = 0; i < 2; i++) {
+    app_mode_set_expert(expert_mode);
 
-        app_mode_set_expert(i);
+    parser_context_t ctx;
+    parser_error_t err;
 
-        parser_context_t ctx;
-        parser_error_t err;
+    uint8_t buffer[5000];
+    uint16_t bufferLen = parseHexString(buffer, sizeof(buffer), tc.blob.c_str());
 
-        uint8_t buffer[5000];
-        uint16_t bufferLen = parseHexString(buffer, sizeof(buffer), tc.blob.c_str());
+    parser_tx_t tx_obj;
+    err = parser_parse(&ctx, buffer, bufferLen, &tx_obj);
+    ASSERT_EQ(err, parser_ok) << parser_getErrorDescription(err);
 
-        parser_tx_t tx_obj;
-        err = parser_parse(&ctx, buffer, bufferLen, &tx_obj);
-        ASSERT_EQ(err, parser_ok) << parser_getErrorDescription(err);
+    auto output = dumpUI(&ctx, 40, 40);
 
-        auto output = dumpUI(&ctx, 40, 40);
+    std::cout << std::endl;
+    for (const auto &i : output) {
+        std::cout << i << std::endl;
+    }
+    std::cout << std::endl << std::endl;
 
-        std::cout << std::endl;
-        for (const auto &i : output) {
-            std::cout << i << std::endl;
-        }
-        std::cout << std::endl << std::endl;
-
-        if (app_mode_expert()) {
-            EXPECT_EQ(output.size(), tc.expected_expert.size());
-            for (size_t i = 0; i < tc.expected_expert.size(); i++) {
-                if (i < output.size()) {
-                    EXPECT_THAT(output[i], testing::Eq(tc.expected_expert[i]));
-                }
+    if (app_mode_expert()) {
+        EXPECT_EQ(output.size(), tc.expected_expert.size());
+        for (size_t i = 0; i < tc.expected_expert.size(); i++) {
+            if (i < output.size()) {
+                EXPECT_THAT(output[i], testing::Eq(tc.expected_expert[i]));
             }
-        } else {
-            EXPECT_EQ(output.size(), tc.expected.size());
-            for (size_t i = 0; i < tc.expected.size(); i++) {
-                if (i < output.size()) {
-                    EXPECT_THAT(output[i], testing::Eq(tc.expected[i]));
-                }
+        }
+    } else {
+        EXPECT_EQ(output.size(), tc.expected.size());
+        for (size_t i = 0; i < tc.expected.size(); i++) {
+            if (i < output.size()) {
+                EXPECT_THAT(output[i], testing::Eq(tc.expected[i]));
             }
         }
     }
@@ -147,4 +144,6 @@ INSTANTIATE_TEST_SUITE_P
 );
 
 // Parametric test:
-TEST_P(JsonTests, CheckUIOutput) { check_testcase(GetParam()); }
+TEST_P(JsonTests, CheckUIOutput_Normal) { check_testcase(GetParam(), false); }
+// Parametric test:
+TEST_P(JsonTests, CheckUIOutput_Expert) { check_testcase(GetParam(), true); }
