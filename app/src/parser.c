@@ -86,7 +86,7 @@ parser_error_t parser_validate_vecLookupSource(pd_VecLookupSource_t *targets) {
 }
 #endif
 
-bool parser_show_expert_fields() {
+__Z_INLINE bool parser_show_expert_fields() {
     return app_mode_expert();
 }
 
