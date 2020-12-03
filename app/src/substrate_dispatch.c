@@ -3474,6 +3474,7 @@ parser_error_t _getMethod_ItemValue(
     char *outValue, uint16_t outValueLen,
     uint8_t pageIdx, uint8_t *pageCount) {
     uint16_t callPrivIdx = ( (uint16_t) moduleIdx << 8u) + callIdx;
+    parser_error_t err;
 
     switch(callPrivIdx) {
         case 0: /* module 0 call 0 */
@@ -3824,10 +3825,13 @@ parser_error_t _getMethod_ItemValue(
                     outValue, outValueLen,
                     pageIdx, pageCount);
             case 1: /* balances_transfer - value */;
-                return _toStringCompactBalance(
+                err = _toStringCompactBalance(
                     &m->basic.balances_transfer.value,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }
@@ -3839,15 +3843,21 @@ parser_error_t _getMethod_ItemValue(
                     outValue, outValueLen,
                     pageIdx, pageCount);
             case 1: /* balances_set_balance - new_free */;
-                return _toStringCompactBalance(
+                err = _toStringCompactBalance(
                     &m->basic.balances_set_balance.new_free,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             case 2: /* balances_set_balance - new_reserved */;
-                return _toStringCompactBalance(
+                err = _toStringCompactBalance(
                     &m->basic.balances_set_balance.new_reserved,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }
@@ -3879,10 +3889,13 @@ parser_error_t _getMethod_ItemValue(
                     outValue, outValueLen,
                     pageIdx, pageCount);
             case 1: /* balances_transfer_keep_alive - value */;
-                return _toStringCompactBalance(
+                err = _toStringCompactBalance(
                     &m->basic.balances_transfer_keep_alive.value,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }
@@ -3904,10 +3917,13 @@ parser_error_t _getMethod_ItemValue(
                     outValue, outValueLen,
                     pageIdx, pageCount);
             case 1: /* staking_bond - value */;
-                return _toStringCompactBalanceOf(
+                err = _toStringCompactBalanceOf(
                     &m->basic.staking_bond.value,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             case 2: /* staking_bond - payee */;
                 return _toStringRewardDestination(
                     &m->basic.staking_bond.payee,
@@ -3919,20 +3935,26 @@ parser_error_t _getMethod_ItemValue(
         case 1793: /* module 7 call 1 */
         switch(itemIdx) {
             case 0: /* staking_bond_extra - max_additional */;
-                return _toStringCompactBalanceOf(
+                err = _toStringCompactBalanceOf(
                     &m->basic.staking_bond_extra.max_additional,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }
         case 1794: /* module 7 call 2 */
         switch(itemIdx) {
             case 0: /* staking_unbond - value */;
-                return _toStringCompactBalanceOf(
+                err = _toStringCompactBalanceOf(
                     &m->basic.staking_unbond.value,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }
@@ -4094,10 +4116,13 @@ parser_error_t _getMethod_ItemValue(
         case 1811: /* module 7 call 19 */
         switch(itemIdx) {
             case 0: /* staking_rebond - value */;
-                return _toStringCompactBalanceOf(
+                err = _toStringCompactBalanceOf(
                     &m->basic.staking_rebond.value,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }
@@ -4289,10 +4314,13 @@ parser_error_t _getMethod_ItemValue(
                     outValue, outValueLen,
                     pageIdx, pageCount);
             case 1: /* democracy_propose - value */;
-                return _toStringCompactBalanceOf(
+                err = _toStringCompactBalanceOf(
                     &m->basic.democracy_propose.value,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }
@@ -4779,10 +4807,13 @@ parser_error_t _getMethod_ItemValue(
                     outValue, outValueLen,
                     pageIdx, pageCount);
             case 1: /* electionsphragmen_vote - value */;
-                return _toStringCompactBalanceOf(
+                err = _toStringCompactBalanceOf(
                     &m->basic.electionsphragmen_vote.value,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }
@@ -4909,10 +4940,13 @@ parser_error_t _getMethod_ItemValue(
         case 4864: /* module 19 call 0 */
         switch(itemIdx) {
             case 0: /* treasury_propose_spend - value */;
-                return _toStringCompactBalanceOf(
+                err = _toStringCompactBalanceOf(
                     &m->basic.treasury_propose_spend.value,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             case 1: /* treasury_propose_spend - beneficiary */;
                 return _toStringLookupSource(
                     &m->basic.treasury_propose_spend.beneficiary,
@@ -5314,10 +5348,13 @@ parser_error_t _getMethod_ItemValue(
                     outValue, outValueLen,
                     pageIdx, pageCount);
             case 1: /* identity_request_judgement - max_fee */;
-                return _toStringCompactBalanceOf(
+                err = _toStringCompactBalanceOf(
                     &m->basic.identity_request_judgement.max_fee,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }
@@ -5339,10 +5376,13 @@ parser_error_t _getMethod_ItemValue(
                     outValue, outValueLen,
                     pageIdx, pageCount);
             case 1: /* identity_set_fee - fee */;
-                return _toStringCompactBalanceOf(
+                err = _toStringCompactBalanceOf(
                     &m->basic.identity_set_fee.fee,
                     outValue, outValueLen,
                     pageIdx, pageCount);
+                if( err != parser_ok ) return err;
+                number_inplace_trimming(outValue);
+                return err;
             default:
                 return parser_no_data;
         }

@@ -245,9 +245,12 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
 
         if( displayIdx == FIELD_TIP && parser_show_tip(ctx)) {
             snprintf(outKey, outKeyLen, "Tip");
-            return _toStringCompactBalance(&ctx->tx_obj->tip,
+            err = _toStringCompactBalance(&ctx->tx_obj->tip,
                                     outVal, outValLen,
                                     pageIdx, pageCount);
+            if( err != parser_ok ) return err;
+            number_inplace_trimming(outVal);
+            return err;
         }
 
         if(!parser_show_tip(ctx)){
