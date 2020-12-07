@@ -77,6 +77,7 @@ static const bagl_element_t view_error[] = {
 };
 
 static unsigned int view_error_button(unsigned int button_mask, unsigned int button_mask_counter) {
+
     switch (button_mask) {
         case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
         case BUTTON_EVT_RELEASED | BUTTON_LEFT:
@@ -89,6 +90,7 @@ static unsigned int view_error_button(unsigned int button_mask, unsigned int but
 }
 
 static unsigned int view_review_button(unsigned int button_mask, unsigned int button_mask_counter) {
+
     switch (button_mask) {
         case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
             // Press both left and right buttons to quit
@@ -136,17 +138,21 @@ void h_review_both_buttons() {
 
     switch(err) {
         case zxerr_accept:
+            zemu_log_stack("-- zxerr_accept");
             h_approve(1);
             break;
         case zxerr_refuse:
+            zemu_log_stack("-- zxerr_refuse");
             h_reject(1);
             break;
         default:
+            zemu_log_stack("-- zxerr_default");
             break;
     }
 }
 
 void h_review_button_left() {
+
     h_paging_decrease();
 
     zxerr_t err = h_review_update_data();
@@ -165,6 +171,7 @@ void h_review_button_left() {
 }
 
 void h_review_button_right() {
+
     h_paging_increase();
 
     zxerr_t err = h_review_update_data();
