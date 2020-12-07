@@ -139,12 +139,14 @@ zxerr_t h_review_update_data() {
     }
 
     if( viewdata.itemIdx  == (viewdata.itemCount  - 2) ){
-        snprintf(viewdata.key, 10, "%s",ACCEPT_LABEL);
-        snprintf(viewdata.value, 10, "%s","");
+        snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s","");
+        snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s",ACCEPT_LABEL);
+        snprintf(viewdata.value2, MAX_CHARS_PER_VALUE2_LINE, "%s","");
         return zxerr_ok;
     } else if( viewdata.itemIdx  == (viewdata.itemCount  - 1) ){
-        snprintf(viewdata.key, 10, "%s", REJECT_LABEL);
-        snprintf(viewdata.value, 10, "%s","");
+        snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s", "");
+        snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s",REJECT_LABEL);
+        snprintf(viewdata.value2, MAX_CHARS_PER_VALUE2_LINE, "%s","");
         return zxerr_ok;
     }
 

@@ -28,8 +28,8 @@ const APP_SEED = "equip will roof matter pink blind book anxiety banner elbow su
 const sim_options = {
     logging: true,
     start_delay: 3000,
-    custom: `-s "${APP_SEED}"`,
-    X11: true
+    custom: `-s "${APP_SEED}"`
+    , X11: true
 };
 
 jest.setTimeout(60000)
