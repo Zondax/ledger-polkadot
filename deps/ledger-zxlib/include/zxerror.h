@@ -30,7 +30,9 @@ typedef enum {
     zxerr_buffer_too_small,
     zxerr_out_of_bounds,
     zxerr_encoding_failed,
-    zxerr_unknown
+    zxerr_unknown,
+    zxerr_accept,
+    zxerr_refuse,
 } zxerr_t;
 
 #ifdef __cplusplus

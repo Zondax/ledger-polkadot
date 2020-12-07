@@ -28,6 +28,9 @@
 #endif
 #endif
 
+#define ACCEPT_LABEL "Accept"
+#define REJECT_LABEL "Reject"
+
 typedef zxerr_t (*viewfunc_getNumItems_t)(uint8_t *num_items);
 
 typedef zxerr_t (*viewfunc_getItem_t)(int8_t displayIdx,

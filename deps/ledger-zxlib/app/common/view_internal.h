@@ -100,3 +100,6 @@ void h_reject(unsigned int _);
 void h_error_accept(unsigned int _);
 
 zxerr_t h_review_update_data();
+
+
+zxerr_t h_review_actions();

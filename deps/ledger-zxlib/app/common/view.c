@@ -121,9 +121,31 @@ void h_paging_decrease() {
 ///////////////////////////////////
 // Paging related
 
+zxerr_t h_review_actions() {
+
+    if( viewdata.itemIdx  == (viewdata.itemCount  - 2) && strcmp(viewdata.key, ACCEPT_LABEL ) == 0 ){
+        return zxerr_accept;
+    } else if( viewdata.itemIdx  == (viewdata.itemCount  - 1) && strcmp(viewdata.key, REJECT_LABEL ) == 0 ){
+        return zxerr_refuse;
+    }
+
+    return zxerr_no_data;
+
+}
+
 zxerr_t h_review_update_data() {
     if (viewdata.viewfuncGetNumItems == NULL) {
         return zxerr_no_data;
+    }
+
+    if( viewdata.itemIdx  == (viewdata.itemCount  - 2) ){
+        snprintf(viewdata.key, 10, "%s",ACCEPT_LABEL);
+        snprintf(viewdata.value, 10, "%s","");
+        return zxerr_ok;
+    } else if( viewdata.itemIdx  == (viewdata.itemCount  - 1) ){
+        snprintf(viewdata.key, 10, "%s", REJECT_LABEL);
+        snprintf(viewdata.value, 10, "%s","");
+        return zxerr_ok;
     }
 
     do {

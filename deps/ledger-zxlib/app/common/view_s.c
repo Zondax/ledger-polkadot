@@ -37,6 +37,7 @@ void h_expert_update();
 void h_review_button_left();
 void h_review_button_right();
 void view_review_decision_s();
+void h_review_both_buttons();
 
 ux_state_t ux;
 
@@ -90,10 +91,8 @@ static unsigned int view_error_button(unsigned int button_mask, unsigned int but
 static unsigned int view_review_button(unsigned int button_mask, unsigned int button_mask_counter) {
     switch (button_mask) {
         case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
-            if (app_mode_expert()) {
-                // Press both left and right buttons to quit
-                view_review_decision_s();
-            }
+            // Press both left and right buttons to quit
+            h_review_both_buttons();
             break;
         case BUTTON_EVT_RELEASED | BUTTON_LEFT:
             // Press left to progress to the previous element
@@ -129,6 +128,22 @@ const bagl_element_t *view_prepro(const bagl_element_t *element) {
             break;
     }
     return element;
+}
+
+
+void h_review_both_buttons() {
+    zxerr_t err = h_review_actions();
+
+    switch(err) {
+        case zxerr_accept:
+            h_approve(1);
+            break;
+        case zxerr_refuse:
+            h_reject(1);
+            break;
+        default:
+            break;
+    }
 }
 
 void h_review_button_left() {
