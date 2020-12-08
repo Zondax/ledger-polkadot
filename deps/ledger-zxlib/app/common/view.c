@@ -81,7 +81,7 @@ uint8_t h_paging_can_increase() {
         return 1;
     } else {
         // passed page count, go to next index
-        if (viewdata.itemIdx + 1 < viewdata.itemCount) {
+        if (viewdata.itemIdx + 1 < (viewdata.itemCount+2)) {
             return 1;
         }
     }
@@ -96,7 +96,7 @@ void h_paging_increase() {
         viewdata.pageIdx++;
     } else {
         // passed page count, go to next index
-        if (viewdata.itemIdx + 1 < viewdata.itemCount) {
+        if (viewdata.itemIdx + 1 < (viewdata.itemCount+2)) {
             viewdata.itemIdx++;
             viewdata.pageIdx = 0;
         }
@@ -136,14 +136,37 @@ void h_paging_decrease() {
 zxerr_t h_review_actions() {
     zemu_log_stack("-- h_review_actions");
 
-    if( viewdata.itemIdx  == (viewdata.itemCount  - 2) && strcmp(viewdata.value, ACCEPT_LABEL ) == 0 ){
+    if( is_accept_item() ){
         return zxerr_accept;
-    } else if( viewdata.itemIdx  == (viewdata.itemCount  - 1) && strcmp(viewdata.value, REJECT_LABEL ) == 0 ){
+    } else if( is_reject_item() ){
         return zxerr_refuse;
     }
 
     return zxerr_no_data;
+}
 
+uint8_t is_accept_item(){
+    return viewdata.itemIdx == (viewdata.itemCount-1);
+}
+
+uint8_t is_reject_item(){
+    return viewdata.itemIdx == viewdata.itemCount;
+}
+
+void show_accept_action(){
+    snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s","");
+    snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", ACCEPT_LABEL);
+    snprintf(viewdata.value2, MAX_CHARS_PER_VALUE2_LINE, "%s","");
+    
+    zemu_log_stack("-- h_review_update_data - accept item");
+}
+
+void show_reject_action(){
+    snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s", "");
+    snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", REJECT_LABEL);
+    snprintf(viewdata.value2, MAX_CHARS_PER_VALUE2_LINE, "%s","");
+
+    zemu_log_stack("-- h_review_update_data - refuse item");
 }
 
 zxerr_t h_review_update_data() {
@@ -153,17 +176,13 @@ zxerr_t h_review_update_data() {
         return zxerr_no_data;
     }
 
-    if( viewdata.itemIdx  == (viewdata.itemCount  - 2) ){
-        snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s","");
-        snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", ACCEPT_LABEL);
-        snprintf(viewdata.value2, MAX_CHARS_PER_VALUE2_LINE, "%s","");
-        zemu_log_stack("-- h_review_update_data - accept item");
+    if( is_accept_item() ){
+        show_accept_action();
         return zxerr_ok;
-    } else if( viewdata.itemIdx  == (viewdata.itemCount  - 1) ){
-        snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s", "");
-        snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", REJECT_LABEL);
-        snprintf(viewdata.value2, MAX_CHARS_PER_VALUE2_LINE, "%s","");
-        zemu_log_stack("-- h_review_update_data - refuse item");
+    }
+
+    if( is_reject_item() ){
+        show_reject_action();
         return zxerr_ok;
     }
 
