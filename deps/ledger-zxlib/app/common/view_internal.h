@@ -17,6 +17,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "coin.h"
 #include "zxerror.h"
 #include "view.h"
@@ -104,9 +105,9 @@ zxerr_t h_review_update_data();
 
 zxerr_t h_review_actions();
 
-uint8_t is_accept_item();
+bool is_accept_item();
 
-uint8_t is_reject_item();
+bool is_reject_item();
 
 void show_accept_action();
 

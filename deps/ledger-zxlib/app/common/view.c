@@ -33,6 +33,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 view_t viewdata;
 
@@ -81,7 +82,7 @@ uint8_t h_paging_can_increase() {
         return 1;
     } else {
         // passed page count, go to next index
-        if (viewdata.itemIdx + 1 < (viewdata.itemCount+2)) {
+        if (viewdata.itemIdx + 1 < (viewdata.itemCount+1)) {
             return 1;
         }
     }
@@ -96,7 +97,7 @@ void h_paging_increase() {
         viewdata.pageIdx++;
     } else {
         // passed page count, go to next index
-        if (viewdata.itemIdx + 1 < (viewdata.itemCount+2)) {
+        if (viewdata.itemIdx + 1 < (viewdata.itemCount+1)) {
             viewdata.itemIdx++;
             viewdata.pageIdx = 0;
         }
@@ -145,11 +146,11 @@ zxerr_t h_review_actions() {
     return zxerr_no_data;
 }
 
-uint8_t is_accept_item(){
+bool is_accept_item(){
     return viewdata.itemIdx == (viewdata.itemCount-1);
 }
 
-uint8_t is_reject_item(){
+bool is_reject_item(){
     return viewdata.itemIdx == viewdata.itemCount;
 }
 
@@ -157,7 +158,7 @@ void show_accept_action(){
     snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s","");
     snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", ACCEPT_LABEL);
     snprintf(viewdata.value2, MAX_CHARS_PER_VALUE2_LINE, "%s","");
-    
+
     zemu_log_stack("-- h_review_update_data - accept item");
 }
 
@@ -176,6 +177,7 @@ zxerr_t h_review_update_data() {
         return zxerr_no_data;
     }
 
+    viewdata.pageCount = 1;
     if( is_accept_item() ){
         show_accept_action();
         return zxerr_ok;
