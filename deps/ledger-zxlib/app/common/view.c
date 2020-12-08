@@ -82,7 +82,7 @@ uint8_t h_paging_can_increase() {
         return 1;
     } else {
         // passed page count, go to next index
-        if (viewdata.itemIdx + 1 < (viewdata.itemCount+1)) {
+        if (viewdata.itemIdx + 1 < ( viewdata.itemCount + DECISION_ACTIONS )) {
             return 1;
         }
     }
@@ -97,7 +97,7 @@ void h_paging_increase() {
         viewdata.pageIdx++;
     } else {
         // passed page count, go to next index
-        if (viewdata.itemIdx + 1 < (viewdata.itemCount+1)) {
+        if (viewdata.itemIdx + 1 < ( viewdata.itemCount + DECISION_ACTIONS )) {
             viewdata.itemIdx++;
             viewdata.pageIdx = 0;
         }
@@ -139,7 +139,9 @@ zxerr_t h_review_actions() {
 
     if( is_accept_item() ){
         return zxerr_accept;
-    } else if( is_reject_item() ){
+    }
+
+    if( is_reject_item() ){
         return zxerr_refuse;
     }
 
@@ -147,7 +149,7 @@ zxerr_t h_review_actions() {
 }
 
 bool is_accept_item(){
-    return viewdata.itemIdx == (viewdata.itemCount-1);
+    return (viewdata.itemIdx + 1) == viewdata.itemCount;
 }
 
 bool is_reject_item(){
@@ -178,6 +180,7 @@ zxerr_t h_review_update_data() {
     }
 
     viewdata.pageCount = 1;
+
     if( is_accept_item() ){
         show_accept_action();
         return zxerr_ok;

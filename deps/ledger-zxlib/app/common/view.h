@@ -30,6 +30,7 @@
 
 #define ACCEPT_LABEL "-- ACCEPT --"
 #define REJECT_LABEL "-- REJECT --"
+#define DECISION_ACTIONS 1
 
 typedef zxerr_t (*viewfunc_getNumItems_t)(uint8_t *num_items);
 
