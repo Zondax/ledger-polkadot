@@ -25,3 +25,94 @@ jobs:
             source /home/zondax/.cargo/env
             cd /home/zondax/project
             make
+  test_fuzz_crash_fixes:
+    runs-on: ubuntu-latest
+    container: zondax/circleci@sha256:37f78ab294b35a055768c2305b3f13813e55fb9db4e65f72745ede61dd842c08
+    steps:
+      - run: git submodule update --init --recursive
+      - run: sudo apt update && sudo apt -y install clang-10
+      - name: Build
+        run: |
+          cmake -B build \
+                  -DCMAKE_C_COMPILER=clang-10 \
+                  -DCMAKE_CXX_COMPILER=clang++-10 \
+                  -DCMAKE_BUILD_TYPE=Debug \
+                  -DENABLE_FUZZING=1 \
+                  -DENABLE_SANITIZERS=1 \
+                  .
+          make -C build
+      - run: ./run-fuzz-crashes.py
+  build_ledger_ledgeracio:
+    runs-on: ubuntu-latest
+    container: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+    env:
+      BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+    steps:
+      # Docker entrypoint is not considered
+      - run: git submodule update --init --recursive
+      - name: Build Ledgeracio
+        run: |
+          source /home/zondax/.cargo/env
+          cd /home/zondax/project
+          COIN=Ledgeracio make
+  test_zemu:
+    runs-on: ubuntu-16.04
+    env:
+      BASH_ENV: "/opt/circleci/.nvm/nvm.sh"
+      working-directory: ~/repo
+    steps:
+      - run: git submodule update --init --recursive
+        working-directory: ${{env.working-directory}}
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+        working-directory: ${{env.working-directory}}
+      - name: Build Ledger app
+        run: |
+          make
+        working-directory: ${{env.working-directory}}
+      - name: Install node + yarn
+        working-directory: ${{env.working-directory}}
+        run: |
+          nvm install 14.4.0
+          nvm use 14.4.0
+          npm install -g yarn
+      - name: Build/Install build js deps
+        working-directory: ${{env.working-directory}}
+        run: |
+          nvm use 14.4.0
+          make zemu_install
+      - name: Run zemu tests
+        working-directory: ${{env.working-directory}}
+        run: |
+          nvm use 14.4.0
+          make zemu_test
+
+  test_zemu_ledgeracio:
+    runs-on: ubuntu-16.04
+    env:
+      BASH_ENV: "/opt/circleci/.nvm/nvm.sh"
+      working-directory: ~/repo
+    steps:
+      - run: git submodule update --init --recursive
+        working-directory: ${{env.working-directory}}
+      - name: Install node + yarn
+        working-directory: ${{env.working-directory}}
+        run: |
+          nvm install 14.4.0
+          nvm use 14.4.0
+          npm install -g yarn
+      - name: Build/Install build js deps
+        working-directory: ${{env.working-directory}}
+        run: |
+          nvm use 14.4.0
+          make zemu_install
+      - name: Build Ledger app
+        working-directory: ${{env.working-directory}}
+        run: |
+          COIN=Ledgeracio make
+          cp /home/circleci/repo/app/bin/app.elf /home/circleci/repo/app/bin/app_ledgeracio.elf
+      - name: Run zemu tests for Ledgeracio app
+        working-directory: ${{env.working-directory}}
+        run: |
+          nvm use 14.4.0
+          COIN=Ledgeracio make zemu_test
