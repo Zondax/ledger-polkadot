@@ -116,3 +116,41 @@ jobs:
         run: |
           nvm use 14.4.0
           COIN=Ledgeracio make zemu_test
+
+  build_package:
+    runs-on: ubuntu-latest
+    container: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+    env:
+      BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+    steps:
+      - run: git submodule update --init --recursive
+      - name: Build
+        run: |
+          source /home/zondax/.cargo/env
+          cd /home/zondax/project
+          make
+      - name: Rename installer
+        run: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_app.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_app.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app.elf
+
+  build_package_ledgeracio:
+    runs-on: ubuntu-latest
+    container: zondax/builder-bolos:latest
+    env:
+      BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+    steps:
+      - run: git submodule update --init --recursive
+      - name: Build
+        run: |
+          source /home/zondax/.cargo/env
+          cd /home/zondax/project
+          COIN=Ledgeracio make
+      - name: Rename installer
+        run: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_ledgeracio_app.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_ledgeracio_app.sh
+      - name: Rename elf
+        run: cp /home/zondax/project/app/bin/app.elf /home/zondax/project/app/bin/app_ledgeracio.elf
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app_ledgeracio.elf
