@@ -19,29 +19,34 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
-#include <stddef.h>
 #include "parser_common.h"
 #include "substrate_functions.h"
+#include <stddef.h>
+#include <stdint.h>
 
-#define CHECK_ERROR(FUNC_CALL) { parser_error_t err = FUNC_CALL;  if (err != parser_ok) return err; }
+#define CHECK_ERROR(FUNC_CALL)          \
+    {                                   \
+        parser_error_t err = FUNC_CALL; \
+        if (err != parser_ok)           \
+            return err;                 \
+    }
 
-parser_error_t _readMethodBasic(parser_context_t *c, uint8_t moduleIdx, uint8_t callIdx, pd_MethodBasic_t *method);
+parser_error_t _readMethodBasic(parser_context_t* c, uint8_t moduleIdx, uint8_t callIdx, pd_MethodBasic_t* method);
 
-parser_error_t _readMethod(parser_context_t *c, uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *method);
+parser_error_t _readMethod(parser_context_t* c, uint8_t moduleIdx, uint8_t callIdx, pd_Method_t* method);
 
-const char * _getMethod_ModuleName(uint8_t moduleIdx);
+const char* _getMethod_ModuleName(uint8_t moduleIdx);
 
-const char * _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx);
+const char* _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx);
 
-const char * _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
+const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
 
-uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t *method);
+uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t* method);
 
 parser_error_t _getMethod_ItemValue(
-    pd_Method_t *m, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx,
-    char *outValue, uint16_t outValueLen,
-    uint8_t pageIdx, uint8_t *pageCount);
+    pd_Method_t* m, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx,
+    char* outValue, uint16_t outValueLen,
+    uint8_t pageIdx, uint8_t* pageCount);
 
 #ifdef __cplusplus
 }

@@ -22,6 +22,7 @@
 #include <hexutils.h>
 #include <parser_txdef.h>
 #include "parser.h"
+#include "app_mode.h"
 #include "utils/common.h"
 
 using ::testing::TestWithParam;
@@ -31,6 +32,7 @@ typedef struct {
     std::string name;
     std::string blob;
     std::vector<std::string> expected;
+    std::vector<std::string> expected_expert;
 } testcase_t;
 
 class JsonTests : public ::testing::TestWithParam<testcase_t> {
@@ -70,23 +72,33 @@ std::vector<testcase_t> GetJsonTestCases() {
     std::cout << "Number of testcases: " << obj.size() << std::endl;
 
     for (int i = 0; i < obj.size(); i++) {
+
         auto outputs = std::vector<std::string>();
         for (auto s : obj[i]["output"]) {
             outputs.push_back(s.asString());
+        }
+
+        auto outputs_expert = std::vector<std::string>();
+        for (auto s : obj[i]["output_expert"]) {
+            outputs_expert.push_back(s.asString());
         }
 
         answer.push_back(testcase_t{
                 obj[i]["index"].asUInt64(),
                 obj[i]["name"].asString(),
                 obj[i]["blob"].asString(),
-                outputs
+                outputs,
+                outputs_expert
         });
     }
 
     return answer;
 }
 
-void check_testcase(const testcase_t &tc) {
+void check_testcase(const testcase_t &tc, bool expert_mode) {
+
+    app_mode_set_expert(expert_mode);
+
     parser_context_t ctx;
     parser_error_t err;
 
@@ -105,10 +117,11 @@ void check_testcase(const testcase_t &tc) {
     }
     std::cout << std::endl << std::endl;
 
-    EXPECT_EQ(output.size(), tc.expected.size());
-    for (size_t i = 0; i < tc.expected.size(); i++) {
+    std::vector<std::string> expected = app_mode_expert() ? tc.expected_expert : tc.expected;
+    EXPECT_EQ(output.size(), expected.size());
+    for (size_t i = 0; i < expected.size(); i++) {
         if (i < output.size()) {
-            EXPECT_THAT(output[i], testing::Eq(tc.expected[i]));
+            EXPECT_THAT(output[i], testing::Eq(expected[i]));
         }
     }
 }
@@ -123,4 +136,6 @@ INSTANTIATE_TEST_SUITE_P
 );
 
 // Parametric test:
-TEST_P(JsonTests, CheckUIOutput) { check_testcase(GetParam()); }
+TEST_P(JsonTests, CheckUIOutput_Normal) { check_testcase(GetParam(), false); }
+// Parametric test:
+TEST_P(JsonTests, CheckUIOutput_Expert) { check_testcase(GetParam(), true); }
