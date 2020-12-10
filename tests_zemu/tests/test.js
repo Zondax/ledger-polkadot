@@ -229,7 +229,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_basic_2", 12, 4);
+            await sim.compareSnapshotsAndAccept(".", "sign_basic_FB", 7, 4);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
