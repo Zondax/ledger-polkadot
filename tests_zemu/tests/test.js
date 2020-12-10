@@ -168,6 +168,10 @@ describe('Standard', function () {
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
+            // Change to expert mode so we can skip fields
+            await sim.clickRight();
+            await sim.clickBoth();
+
             let txBlobStr = "05005cd6daea110119e757f4af9ad9fc0cdc7d4d6380ca0009169c9b7b1c909c20248ed73e0dd503040b63ce64c10c05170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
@@ -177,10 +181,6 @@ describe('Standard', function () {
 
             // do not wait here.. we need to navigate
             const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob);
-
-            // Change to expert mode so we can skip fields
-            await sim.clickRight();
-            await sim.clickBoth();
 
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
