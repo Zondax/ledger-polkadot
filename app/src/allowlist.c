@@ -20,6 +20,7 @@
 #include "cx.h"
 #include "coin.h"
 #include "app_main.h"
+#include "tx.h"
 #include "allowlist.h"
 
 typedef struct {
