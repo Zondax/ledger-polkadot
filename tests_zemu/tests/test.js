@@ -171,6 +171,7 @@ describe('Standard', function () {
             // Change to expert mode so we can skip fields
             await sim.clickRight();
             await sim.clickBoth();
+            await sim.clickLeft();
 
             let txBlobStr = "05005cd6daea110119e757f4af9ad9fc0cdc7d4d6380ca0009169c9b7b1c909c20248ed73e0dd503040b63ce64c10c05170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
