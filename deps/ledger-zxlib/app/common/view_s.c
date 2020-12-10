@@ -38,6 +38,7 @@ void h_review_button_left();
 void h_review_button_right();
 void view_review_decision_s();
 void h_review_both_buttons();
+void h_review_accept_direct_access();
 
 ux_state_t ux;
 
@@ -134,6 +135,8 @@ const bagl_element_t *view_prepro(const bagl_element_t *element) {
 
 
 void h_review_both_buttons() {
+
+    zemu_log_stack("-- h_review_both_buttons");
     zxerr_t err = h_review_actions();
 
     switch(err) {
@@ -147,21 +150,40 @@ void h_review_both_buttons() {
             break;
         default:
             zemu_log_stack("-- zxerr_default");
+            if (app_mode_expert()) {
+                h_review_accept_direct_access();
+            }
             break;
     }
 }
 
-void h_review_button_left() {
 
-    h_paging_decrease();
+void h_review_accept_direct_access() {
+
+    zemu_log_stack("-- take to accept/reject menu");
+    set_accept_item();
 
     zxerr_t err = h_review_update_data();
     switch(err) {
         case zxerr_ok:
             UX_DISPLAY(view_review, view_prepro);
             break;
-        case zxerr_no_data:
-            view_review_decision_s();
+        default:
+            view_error_show();
+            UX_WAIT();
+            break;
+    }
+}
+
+void h_review_button_left() {
+
+    zemu_log_stack("-- h_review_button_left");
+    h_paging_decrease();
+
+    zxerr_t err = h_review_update_data();
+    switch(err) {
+        case zxerr_ok:
+            UX_DISPLAY(view_review, view_prepro);
             break;
         default:
             view_error_show();
@@ -172,6 +194,7 @@ void h_review_button_left() {
 
 void h_review_button_right() {
 
+    zemu_log_stack("-- h_review_button_right");
     h_paging_increase();
 
     zxerr_t err = h_review_update_data();
@@ -179,9 +202,6 @@ void h_review_button_right() {
     switch(err) {
         case zxerr_ok:
             UX_DISPLAY(view_review, view_prepro);
-            break;
-        case zxerr_no_data:
-            view_review_decision_s();
             break;
         default:
             view_error_show();

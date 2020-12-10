@@ -112,3 +112,5 @@ bool is_reject_item();
 void show_accept_action();
 
 void show_reject_action();
+
+void set_accept_item();

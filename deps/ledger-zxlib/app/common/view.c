@@ -152,6 +152,11 @@ bool is_accept_item(){
     return (viewdata.itemIdx + 1) == viewdata.itemCount;
 }
 
+void set_accept_item(){
+    viewdata.itemIdx = viewdata.itemCount - 1;
+    viewdata.pageIdx = 0;
+}
+
 bool is_reject_item(){
     return viewdata.itemIdx == viewdata.itemCount;
 }
