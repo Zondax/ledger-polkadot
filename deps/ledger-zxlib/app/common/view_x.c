@@ -76,8 +76,8 @@ UX_FLOW(
 UX_STEP_INIT(ux_review_flow_2_start_step, NULL, NULL, { h_review_loop_start(); });
 UX_STEP_NOCB_INIT(ux_review_flow_2_step, bnnn_paging, { h_review_loop_inside(); }, { .title = viewdata.key, .text = viewdata.value, });
 UX_STEP_INIT(ux_review_flow_2_end_step, NULL, NULL, { h_review_loop_end(); });
-UX_STEP_VALID(ux_review_flow_3_step, pb, h_approve(0), { &C_icon_validate_14, "Approve" });
-UX_STEP_VALID(ux_review_flow_4_step, pb, h_reject(0), { &C_icon_crossmark, "Reject" });
+UX_STEP_VALID(ux_review_flow_3_step, pb, h_approve(0), { &C_icon_validate_14, APPROVE_LABEL });
+UX_STEP_VALID(ux_review_flow_4_step, pb, h_reject(0), { &C_icon_crossmark, REJECT_LABEL });
 
 const ux_flow_step_t *const ux_review_flow[] = {
   &ux_review_flow_2_start_step,
@@ -191,11 +191,20 @@ void h_expert_update() {
 //////////////////////////
 //////////////////////////
 
-void view_idle_show_impl(uint8_t item_idx) {
+void view_idle_show_impl(uint8_t item_idx, char *statusString) {
+    if (statusString == NULL ) {
+        snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s", MENU_MAIN_APP_LINE2);
+    } else {
+        snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s", statusString);
+    }
+
     if(G_ux.stack_count == 0) {
         ux_stack_push();
     }
     ux_flow_init(0, ux_idle_flow, NULL);
+}
+
+void h_review_update() {
 }
 
 void view_review_show_impl(){

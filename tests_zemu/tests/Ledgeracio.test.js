@@ -130,9 +130,7 @@ describe('Ledgeracio', function () {
     });
 
     test('create signed allowlist', async function () {
-        const keypair = ed25519.createKeyPair(TESTING_ALLOWLIST_SEED)
         const allowList = dummyAllowlist(0)
-
         console.log(allowList)
         expect(allowList.length).toEqual(4 + 4 + 64 * 3)
     });
