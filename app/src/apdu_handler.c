@@ -315,11 +315,17 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                 }
 
                 case INS_GET_ADDR_ED25519: {
+                    if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                        THROW(APDU_CODE_STATUS_NOT_SATISFIED);
+                    }
                     handleGetAddr(flags, tx, rx);
                     break;
                 }
 
                 case INS_SIGN_ED25519: {
+                    if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                        THROW(APDU_CODE_STATUS_NOT_SATISFIED);
+                    }
                     handleSign(flags, tx, rx);
                     break;
                 }
@@ -327,21 +333,33 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
 #if defined(APP_RESTRICTED)
                     // Allow list commands
                     case INS_ALLOWLIST_GET_PUBKEY: {
+                        if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                            THROW(APDU_CODE_STATUS_NOT_SATISFIED);
+                        }
                         handleAllowlistGetMasterkey(flags, tx, rx);
                         break;
                     }
 
                     case INS_ALLOWLIST_SET_PUBKEY: {
+                        if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                            THROW(APDU_CODE_STATUS_NOT_SATISFIED);
+                        }
                         handleAllowlistSetPublicKey(flags, tx, rx);
                         break;
                     }
 
                     case INS_ALLOWLIST_GET_HASH: {
+                        if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                            THROW(APDU_CODE_STATUS_NOT_SATISFIED);
+                        }
                         handleAllowlistGetHash(flags, tx, rx);
                         break;
                     }
 
                     case INS_ALLOWLIST_UPLOAD: {
+                        if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                            THROW(APDU_CODE_STATUS_NOT_SATISFIED);
+                        }
                         handleAllowlistUpload(flags, tx, rx);
                         break;
                     }

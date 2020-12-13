@@ -42,6 +42,7 @@
 #define APDU_CODE_UNKNOWN                   0x6F00
 #define APDU_CODE_SIGN_VERIFY_ERROR         0x6F01
 
+#define APDU_CODE_STATUS_NOT_SATISFIED      0x6982
 
 __Z_INLINE void set_code(uint8_t *buffer, uint8_t offset, uint16_t value) {
     *(buffer + offset) = (uint8_t) (value >> 8);
