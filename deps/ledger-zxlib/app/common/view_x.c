@@ -73,6 +73,7 @@ UX_FLOW(
 
 ///////////
 
+UX_FLOW_DEF_NOCB(ux_review_flow_1_review_title, pbb, { &C_icon_app, "Please", "review",});
 UX_STEP_INIT(ux_review_flow_2_start_step, NULL, NULL, { h_review_loop_start(); });
 UX_STEP_NOCB_INIT(ux_review_flow_2_step, bnnn_paging, { h_review_loop_inside(); }, { .title = viewdata.key, .text = viewdata.value, });
 UX_STEP_INIT(ux_review_flow_2_end_step, NULL, NULL, { h_review_loop_end(); });
@@ -80,6 +81,7 @@ UX_STEP_VALID(ux_review_flow_3_step, pb, h_approve(0), { &C_icon_validate_14, AP
 UX_STEP_VALID(ux_review_flow_4_step, pb, h_reject(0), { &C_icon_crossmark, REJECT_LABEL });
 
 const ux_flow_step_t *const ux_review_flow[] = {
+  &ux_review_flow_1_review_title,
   &ux_review_flow_2_start_step,
   &ux_review_flow_2_step,
   &ux_review_flow_2_end_step,
@@ -94,21 +96,7 @@ const ux_flow_step_t *const ux_review_flow[] = {
 //////////////////////////
 //////////////////////////
 
-void h_review_loop_start() {
-    if (flow_inside_loop) {
-        // coming from right
-        h_paging_decrease();
-        if (viewdata.itemIdx<0) {
-            // exit to the left
-            flow_inside_loop = 0;
-            ux_flow_prev();
-            return;
-        }
-    } else {
-    // coming from left
-        h_paging_init();
-    }
-
+void h_review_update() {
     zxerr_t err = h_review_update_data();
     switch(err) {
         case zxerr_ok:
@@ -118,6 +106,26 @@ void h_review_loop_start() {
             view_error_show();
             break;
     }
+}
+
+void h_review_loop_start() {
+    if (flow_inside_loop) {
+        // coming from right
+
+        if (!h_paging_can_decrease()) {
+            // exit to the left
+            flow_inside_loop = 0;
+            ux_flow_prev();
+            return;
+        }
+
+        h_paging_decrease();
+    } else {
+    // coming from left
+        h_paging_init();
+    }
+
+    h_review_update();
 
     ux_flow_next();
 }
@@ -148,16 +156,7 @@ void h_review_loop_end() {
     } else {
     // coming from right
         h_paging_decrease();
-        zxerr_t err = h_review_update_data();
-
-        switch(err) {
-            case zxerr_ok:
-            case zxerr_no_data:
-                break;
-            default:
-                view_error_show();
-                break;
-        }
+        h_review_update();
     }
 
     // move to prev flow but trick paging to show first page
@@ -202,9 +201,6 @@ void view_idle_show_impl(uint8_t item_idx, char *statusString) {
         ux_stack_push();
     }
     ux_flow_init(0, ux_idle_flow, NULL);
-}
-
-void h_review_update() {
 }
 
 void view_review_show_impl(){
