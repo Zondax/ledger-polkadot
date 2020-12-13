@@ -18,14 +18,11 @@
 #include "app_mode.h"
 #include "view.h"
 #include "view_internal.h"
-#include "actions.h"
 #include "apdu_codes.h"
 #include "glyphs.h"
 #include "bagl.h"
 #include "zxmacros.h"
 #include "view_templates.h"
-#include "tx.h"
-#include "addr.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -36,7 +33,7 @@ void h_expert_toggle();
 void h_expert_update();
 void h_review_button_left();
 void h_review_button_right();
-void view_review_decision_s();
+void h_review_button_both();
 
 ux_state_t ux;
 
@@ -45,7 +42,7 @@ void os_exit(uint32_t id) {
 }
 
 const ux_menu_entry_t menu_main[] = {
-    {NULL, NULL, 0, &C_icon_app, MENU_MAIN_APP_LINE1, MENU_MAIN_APP_LINE2, 33, 12},
+    {NULL, NULL, 0, &C_icon_app, MENU_MAIN_APP_LINE1, viewdata.key, 33, 12},
     {NULL, h_expert_toggle, 0, &C_icon_app, "Expert mode:", viewdata.value, 33, 12},
     {NULL, NULL, 0, &C_icon_app, APPVERSION_LINE1, APPVERSION_LINE2, 33, 12},
     {NULL, NULL, 0, &C_icon_app, "Developed by:", "Zondax.ch", 33, 12},
@@ -54,10 +51,10 @@ const ux_menu_entry_t menu_main[] = {
     UX_MENU_END
 };
 
-const ux_menu_entry_t menu_decision_review[] = {
-    {NULL, h_approve, 0, NULL, "Approve", NULL, 0, 0},
-    {NULL, h_reject, 0, NULL, "Reject", NULL, 0, 0},
-    UX_MENU_END
+static const bagl_element_t view_message[] = {
+    UI_BACKGROUND,
+    UI_LabelLine(UIID_LABEL + 0, 0, 8, UI_SCREEN_WIDTH, UI_11PX, UI_WHITE, UI_BLACK, viewdata.key),
+    UI_LabelLine(UIID_LABEL + 1, 0, 19, UI_SCREEN_WIDTH, UI_11PX, UI_WHITE, UI_BLACK, viewdata.value),
 };
 
 static const bagl_element_t view_review[] = {
@@ -87,13 +84,20 @@ static unsigned int view_error_button(unsigned int button_mask, unsigned int but
     return 0;
 }
 
+static unsigned int view_message_button(unsigned int button_mask, unsigned int button_mask_counter) {
+    switch (button_mask) {
+        case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
+        case BUTTON_EVT_RELEASED | BUTTON_LEFT:
+        case BUTTON_EVT_RELEASED | BUTTON_RIGHT:
+            break;
+    }
+    return 0;
+}
+
 static unsigned int view_review_button(unsigned int button_mask, unsigned int button_mask_counter) {
     switch (button_mask) {
         case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
-            if (app_mode_expert()) {
-                // Press both left and right buttons to quit
-                view_review_decision_s();
-            }
+            h_review_button_both();
             break;
         case BUTTON_EVT_RELEASED | BUTTON_LEFT:
             // Press left to progress to the previous element
@@ -131,16 +135,20 @@ const bagl_element_t *view_prepro(const bagl_element_t *element) {
     return element;
 }
 
-void h_review_button_left() {
-    h_paging_decrease();
+const bagl_element_t *view_prepro_idle(const bagl_element_t *element) {
+    switch (element->component.userid) {
+        case UIID_ICONLEFT:
+        case UIID_ICONRIGHT:
+            return NULL;
+    }
+    return element;
+}
 
+void h_review_update() {
     zxerr_t err = h_review_update_data();
     switch(err) {
         case zxerr_ok:
             UX_DISPLAY(view_review, view_prepro);
-            break;
-        case zxerr_no_data:
-            view_review_decision_s();
             break;
         default:
             view_error_show();
@@ -149,23 +157,21 @@ void h_review_button_left() {
     }
 }
 
+void h_review_button_left() {
+    zemu_log_stack("h_review_button_left");
+    h_paging_decrease();
+    h_review_update();
+}
+
 void h_review_button_right() {
+    zemu_log_stack("h_review_button_right");
     h_paging_increase();
+    h_review_update();
+}
 
-    zxerr_t err = h_review_update_data();
-
-    switch(err) {
-        case zxerr_ok:
-            UX_DISPLAY(view_review, view_prepro);
-            break;
-        case zxerr_no_data:
-            view_review_decision_s();
-            break;
-        default:
-            view_error_show();
-            UX_WAIT();
-            break;
-    }
+void h_review_button_both() {
+    zemu_log_stack("h_review_button_left");
+    h_review_action();
 }
 
 void splitValueField() {
@@ -183,22 +189,29 @@ void splitValueField() {
 //////////////////////////
 //////////////////////////
 
-void view_idle_show_impl(uint8_t item_idx) {
+void view_idle_show_impl(uint8_t item_idx, char *statusString) {
+    if (statusString == NULL ) {
+        snprintf(viewdata.key, MAX_CHARS_PER_VALUE_LINE, "%s", MENU_MAIN_APP_LINE2);
+    } else {
+        snprintf(viewdata.key, MAX_CHARS_PER_VALUE_LINE, "%s", statusString);
+    }
     h_expert_update();
     UX_MENU_DISPLAY(item_idx, menu_main, NULL);
+}
+
+void view_message_impl(char *title, char *message) {
+    snprintf(viewdata.key, MAX_CHARS_PER_VALUE_LINE, "%s", title);
+    snprintf(viewdata.value, MAX_CHARS_PER_VALUE_LINE, "%s", message);
+    UX_DISPLAY(view_message, view_prepro_idle);
 }
 
 void view_error_show_impl() {
     UX_DISPLAY(view_error, view_prepro);
 }
 
-void view_review_decision_s(void){
-    UX_MENU_DISPLAY(0, menu_decision_review, NULL);
-}
-
 void h_expert_toggle() {
     app_mode_set_expert(!app_mode_expert());
-    view_idle_show(1);
+    view_idle_show(1, NULL);
 }
 
 void h_expert_update() {
@@ -209,7 +222,7 @@ void h_expert_update() {
 }
 
 void view_review_show_impl() {
-    zemu_log_stack("-- view_review_show_impl");
+    zemu_log_stack("view_review_show_impl");
 
     h_paging_init();
 
@@ -217,9 +230,6 @@ void view_review_show_impl() {
     switch(err) {
         case zxerr_ok:
             UX_DISPLAY(view_review, view_prepro);
-            break;
-        case zxerr_no_data:
-            view_review_decision_s();
             break;
         default:
             view_error_show();

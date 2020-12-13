@@ -62,7 +62,7 @@ void extractHDPath(uint32_t rx, uint32_t offset) {
 }
 
 __Z_INLINE bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
-    zemu_log("-- process_chunk\n");
+    zemu_log("process_chunk\n");
     const uint8_t payloadType = G_io_apdu_buffer[OFFSET_PAYLOAD_TYPE];
 
     if (G_io_apdu_buffer[OFFSET_P2] != 0) {
@@ -76,20 +76,20 @@ __Z_INLINE bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
     uint32_t added;
     switch (payloadType) {
         case 0:
-            zemu_log("-- process_chunk - init\n");
+            zemu_log("process_chunk - init\n");
             tx_initialize();
             tx_reset();
             extractHDPath(rx, OFFSET_DATA);
             return false;
         case 1:
-            zemu_log("-- process_chunk - add \n");
+            zemu_log("process_chunk - add \n");
             added = tx_append(&(G_io_apdu_buffer[OFFSET_DATA]), rx - OFFSET_DATA);
             if (added != rx - OFFSET_DATA) {
                 THROW(APDU_CODE_OUTPUT_BUFFER_TOO_SMALL);
             }
             return false;
         case 2:
-            zemu_log("-- process_chunk - end \n");
+            zemu_log("process_chunk - end \n");
             added = tx_append(&(G_io_apdu_buffer[OFFSET_DATA]), rx - OFFSET_DATA);
             if (added != rx - OFFSET_DATA) {
                 THROW(APDU_CODE_OUTPUT_BUFFER_TOO_SMALL);
@@ -182,7 +182,7 @@ __Z_INLINE void handleGetAddr(volatile uint32_t *flags, volatile uint32_t *tx, u
 }
 
 __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    zemu_log("-- handleSign\n");
+    zemu_log("handleSign\n");
     if (!process_chunk(tx, rx)) {
         THROW(APDU_CODE_OK);
     }
@@ -315,11 +315,17 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                 }
 
                 case INS_GET_ADDR_ED25519: {
+                    if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
+                        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
+                    }
                     handleGetAddr(flags, tx, rx);
                     break;
                 }
 
                 case INS_SIGN_ED25519: {
+                    if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
+                        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
+                    }
                     handleSign(flags, tx, rx);
                     break;
                 }
@@ -327,21 +333,33 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
 #if defined(APP_RESTRICTED)
                     // Allow list commands
                     case INS_ALLOWLIST_GET_PUBKEY: {
+                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
+                            THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
+                        }
                         handleAllowlistGetMasterkey(flags, tx, rx);
                         break;
                     }
 
                     case INS_ALLOWLIST_SET_PUBKEY: {
+                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
+                            THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
+                        }
                         handleAllowlistSetPublicKey(flags, tx, rx);
                         break;
                     }
 
                     case INS_ALLOWLIST_GET_HASH: {
+                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
+                            THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
+                        }
                         handleAllowlistGetHash(flags, tx, rx);
                         break;
                     }
 
                     case INS_ALLOWLIST_UPLOAD: {
+                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
+                            THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
+                        }
                         handleAllowlistUpload(flags, tx, rx);
                         break;
                     }

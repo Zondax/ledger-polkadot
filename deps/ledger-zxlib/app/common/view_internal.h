@@ -17,6 +17,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "coin.h"
 #include "zxerror.h"
 #include "view.h"
@@ -37,6 +38,16 @@
 
 // This takes data from G_io_apdu_buffer that is prefilled with the address
 
+#define APPROVE_LABEL "APPROVE"
+#define REJECT_LABEL "REJECT"
+
+#if defined(TARGET_NANOS)
+#define INCLUDE_ACTIONS_AS_ITEMS 2
+#define INCLUDE_ACTIONS_COUNT (INCLUDE_ACTIONS_AS_ITEMS-1)
+#else
+#define INCLUDE_ACTIONS_COUNT 0
+#endif
+
 typedef struct {
     struct {
         char key[MAX_CHARS_PER_KEY_LINE];
@@ -54,6 +65,12 @@ typedef struct {
     uint8_t pageIdx;
     uint8_t pageCount;
 } view_t;
+
+typedef enum {
+    view_action_unknown,
+    view_action_accept,
+    view_action_reject,
+} view_action_t;
 
 extern view_t viewdata;
 
@@ -76,18 +93,19 @@ void splitValueField();
 ///////////////////////////////////////////////
 ///////////////////////////////////////////////
 
-void view_idle_show_impl(uint8_t item_idx);
+void view_idle_show_impl(uint8_t item_idx, char *statusString);
 
+void view_message_impl(char *title, char *message);
 
 void view_error_show_impl();
 
 void h_paging_init();
 
-uint8_t h_paging_can_increase();
+bool h_paging_can_increase();
 
 void h_paging_increase();
 
-uint8_t h_paging_can_decrease();
+bool h_paging_can_decrease();
 
 void h_paging_decrease();
 
@@ -96,6 +114,10 @@ void view_review_show_impl();
 void h_approve(unsigned int _);
 
 void h_reject(unsigned int _);
+
+void h_review_action();
+
+void h_review_update();
 
 void h_error_accept(unsigned int _);
 
