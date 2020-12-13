@@ -315,7 +315,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                 }
 
                 case INS_GET_ADDR_ED25519: {
-                    if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                    if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
                         THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
                     }
                     handleGetAddr(flags, tx, rx);
@@ -323,7 +323,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                 }
 
                 case INS_SIGN_ED25519: {
-                    if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                    if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
                         THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
                     }
                     handleSign(flags, tx, rx);
@@ -333,7 +333,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
 #if defined(APP_RESTRICTED)
                     // Allow list commands
                     case INS_ALLOWLIST_GET_PUBKEY: {
-                        if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
                             THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
                         }
                         handleAllowlistGetMasterkey(flags, tx, rx);
@@ -341,7 +341,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                     }
 
                     case INS_ALLOWLIST_SET_PUBKEY: {
-                        if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
                             THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
                         }
                         handleAllowlistSetPublicKey(flags, tx, rx);
@@ -349,7 +349,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                     }
 
                     case INS_ALLOWLIST_GET_HASH: {
-                        if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
                             THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
                         }
                         handleAllowlistGetHash(flags, tx, rx);
@@ -357,7 +357,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                     }
 
                     case INS_ALLOWLIST_UPLOAD: {
-                        if( os_global_pin_is_validated() != BOLOS_TRUE ) {
+                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
                             THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
                         }
                         handleAllowlistUpload(flags, tx, rx);
