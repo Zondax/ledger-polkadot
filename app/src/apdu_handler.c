@@ -62,7 +62,7 @@ void extractHDPath(uint32_t rx, uint32_t offset) {
 }
 
 __Z_INLINE bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
-    zemu_log("-- process_chunk\n");
+    zemu_log("process_chunk\n");
     const uint8_t payloadType = G_io_apdu_buffer[OFFSET_PAYLOAD_TYPE];
 
     if (G_io_apdu_buffer[OFFSET_P2] != 0) {
@@ -76,20 +76,20 @@ __Z_INLINE bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
     uint32_t added;
     switch (payloadType) {
         case 0:
-            zemu_log("-- process_chunk - init\n");
+            zemu_log("process_chunk - init\n");
             tx_initialize();
             tx_reset();
             extractHDPath(rx, OFFSET_DATA);
             return false;
         case 1:
-            zemu_log("-- process_chunk - add \n");
+            zemu_log("process_chunk - add \n");
             added = tx_append(&(G_io_apdu_buffer[OFFSET_DATA]), rx - OFFSET_DATA);
             if (added != rx - OFFSET_DATA) {
                 THROW(APDU_CODE_OUTPUT_BUFFER_TOO_SMALL);
             }
             return false;
         case 2:
-            zemu_log("-- process_chunk - end \n");
+            zemu_log("process_chunk - end \n");
             added = tx_append(&(G_io_apdu_buffer[OFFSET_DATA]), rx - OFFSET_DATA);
             if (added != rx - OFFSET_DATA) {
                 THROW(APDU_CODE_OUTPUT_BUFFER_TOO_SMALL);
@@ -182,7 +182,7 @@ __Z_INLINE void handleGetAddr(volatile uint32_t *flags, volatile uint32_t *tx, u
 }
 
 __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    zemu_log("-- handleSign\n");
+    zemu_log("handleSign\n");
     if (!process_chunk(tx, rx)) {
         THROW(APDU_CODE_OK);
     }

@@ -239,7 +239,7 @@ __Z_INLINE uint64_t uint64_from_BEarray(const uint8_t data[8]) {
 }
 
 __Z_INLINE uint32_t array_to_hexstr(char *dst, uint16_t dstLen, const uint8_t *src, uint8_t count) {
-
+    MEMZERO(dst, dstLen);
     if (dstLen < (count * 2 + 1)) {
         return 0;
     }

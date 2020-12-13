@@ -33,12 +33,15 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 view_t viewdata;
 
 void h_approve(unsigned int _) {
+    zemu_log_stack("h_approve");
+
     UNUSED(_);
-    view_idle_show(0);
+    view_idle_show(0, NULL);
     UX_WAIT();
     if (viewdata.viewfuncAccept != NULL) {
         viewdata.viewfuncAccept();
@@ -46,15 +49,17 @@ void h_approve(unsigned int _) {
 }
 
 void h_reject(unsigned int _) {
+    zemu_log_stack("h_reject");
+
     UNUSED(_);
-    view_idle_show(0);
+    view_idle_show(0, NULL);
     UX_WAIT();
     app_reject();
 }
 
 void h_error_accept(unsigned int _) {
     UNUSED(_);
-    view_idle_show(0);
+    view_idle_show(0, NULL);
     UX_WAIT();
     app_reply_error();
 }
@@ -63,68 +68,139 @@ void h_error_accept(unsigned int _) {
 // Paging related
 
 void h_paging_init() {
-    zemu_log_stack("-- h_paging_init");
+    zemu_log_stack("h_paging_init");
 
     viewdata.itemIdx = 0;
     viewdata.pageIdx = 0;
     viewdata.pageCount = 1;
 }
 
-uint8_t h_paging_can_increase() {
+bool h_paging_can_increase() {
+    zemu_log_stack("h_paging_can_increase");
+
     if (viewdata.pageIdx + 1 < viewdata.pageCount) {
-        return 1;
-    } else {
-        // passed page count, go to next index
-        if (viewdata.itemIdx + 1 < viewdata.itemCount) {
-            return 1;
-        }
+        return true;
     }
-    return 0;
+
+    // passed page count, go to next index
+    if (viewdata.itemCount > 0 && viewdata.itemIdx < (viewdata.itemCount - 1 + INCLUDE_ACTIONS_COUNT)) {
+        return true;
+    }
+
+    return false;
 }
 
 void h_paging_increase() {
+    zemu_log_stack("h_paging_increase");
+
     if (viewdata.pageIdx + 1 < viewdata.pageCount) {
         // increase page
         viewdata.pageIdx++;
-    } else {
-        // passed page count, go to next index
-        if (viewdata.itemIdx + 1 < viewdata.itemCount) {
-            viewdata.itemIdx++;
-            viewdata.pageIdx = 0;
-        }
+        return;
+    }
+
+    // passed page count, go to next index
+    if (viewdata.itemCount > 0 && viewdata.itemIdx < (viewdata.itemCount - 1 + INCLUDE_ACTIONS_COUNT)) {
+        viewdata.itemIdx++;
+        viewdata.pageIdx = 0;
     }
 }
 
-uint8_t h_paging_can_decrease() {
+bool h_paging_can_decrease() {
+    zemu_log_stack("h_paging_can_decrease");
+
     if (viewdata.pageIdx != 0) {
-        return 1;
-    } else {
-        if (viewdata.itemIdx > 0) {
-            return 1;
-        }
+        return true;
     }
-    return 0;
+
+    if (viewdata.itemIdx > 0) {
+        return true;
+    }
+
+    return false;
 }
 
 void h_paging_decrease() {
+    zemu_log_stack("h_paging_decrease");
+
     if (viewdata.pageIdx != 0) {
         viewdata.pageIdx--;
-    } else {
-        if (viewdata.itemIdx > 0) {
-            viewdata.itemIdx--;
-            // jump to last page. update will cap this value
-            viewdata.pageIdx = 255;
-        }
+        return;
+    }
+
+    if (viewdata.itemIdx > 0) {
+        viewdata.itemIdx--;
+        // jump to last page. update will cap this value
+        viewdata.pageIdx = 255;
     }
 }
 
 ///////////////////////////////////
 // Paging related
 
+#ifdef INCLUDE_ACTIONS_AS_ITEMS
+bool is_accept_item(){
+    return viewdata.itemIdx == viewdata.itemCount - 1;
+}
+
+void set_accept_item(){
+    viewdata.itemIdx = viewdata.itemCount - 1;
+    viewdata.pageIdx = 0;
+}
+
+bool is_reject_item(){
+    return viewdata.itemIdx == viewdata.itemCount;
+}
+#endif
+
+void h_review_action() {
+#ifdef INCLUDE_ACTIONS_AS_ITEMS
+    if( is_accept_item() ){
+        zemu_log_stack("action_accept");
+        h_approve(1);
+        return;
+    }
+
+    if( is_reject_item() ){
+        zemu_log_stack("action_reject");
+        h_reject(1);
+        return;
+    }
+
+    zemu_log_stack("quick accept");
+    if (app_mode_expert()) {
+        set_accept_item();
+        h_review_update();
+        return;
+    }
+#endif
+};
+
 zxerr_t h_review_update_data() {
     if (viewdata.viewfuncGetNumItems == NULL) {
+        zemu_log_stack("h_review_update_data - GetNumItems==NULL");
         return zxerr_no_data;
     }
+
+#ifdef INCLUDE_ACTIONS_AS_ITEMS
+    viewdata.pageCount = 1;
+
+    if( is_accept_item() ){
+        snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s","");
+        snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", APPROVE_LABEL);
+        splitValueField();
+        zemu_log_stack("show_accept_action - accept item");
+        return zxerr_ok;
+    }
+
+    if( is_reject_item() ){
+        snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s", "");
+        snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", REJECT_LABEL);
+        splitValueField();
+        zemu_log_stack("show_reject_action - reject item");
+        return zxerr_ok;
+    }
+#endif
 
     do {
         viewdata.pageCount = 1;
@@ -176,8 +252,12 @@ void view_init(void) {
     UX_INIT();
 }
 
-void view_idle_show(uint8_t item_idx) {
-    view_idle_show_impl(item_idx);
+void view_idle_show(uint8_t item_idx, char *statusString) {
+    view_idle_show_impl(item_idx, statusString);
+}
+
+void view_message_show(char *title, char *message) {
+    view_message_impl(title, message);
 }
 
 void view_review_init(viewfunc_getItem_t viewfuncGetItem,

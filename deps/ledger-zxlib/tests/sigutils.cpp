@@ -101,3 +101,32 @@ TEST(SIGUTILS, convertBasic3) {
     EXPECT_THAT(R, ::testing::ElementsAreArray(inSignatureDER_R));
     EXPECT_THAT(S, ::testing::ElementsAreArray(inSignatureDER_S));
 }
+
+TEST(SIGUTILS, convertShort1) {
+    char inSignatureDERStr[] = "3041021e544670fe5627f2d483484582284f627d9cfd1e0ab123984e81611a8da4fc021f6d99f9afd3c4fa62cee8dff21786f9c23c8d2f524d8fd363acc6c6567dc380";
+    char inSignatureDERStr_R[] = "0000544670fe5627f2d483484582284f627d9cfd1e0ab123984e81611a8da4fc";
+    char inSignatureDERStr_S[] = "006d99f9afd3c4fa62cee8dff21786f9c23c8d2f524d8fd363acc6c6567dc380";
+
+    auto inSignatureDER = std::vector<uint8_t>(sizeof(inSignatureDERStr));
+
+    auto length = parseHexString(inSignatureDER.data(), inSignatureDER.size(), inSignatureDERStr);
+    EXPECT_EQ(length, sizeof(inSignatureDERStr) / 2);
+
+    uint8_t R[32];
+    uint8_t S[32];
+    uint8_t V;
+
+    auto ret = convertDERtoRSV(inSignatureDER.data(), 0, R, S, &V);
+    EXPECT_EQ(ret, 0);
+
+
+    char R_str[200];
+    char S_str[200];
+    array_to_hexstr(R_str, sizeof(R_str), R, 32);
+    std::cout << R_str << std::endl;
+    array_to_hexstr(S_str, sizeof(S_str), S, 32);
+    std::cout << S_str << std::endl;
+
+    EXPECT_STREQ(R_str, inSignatureDERStr_R);
+    EXPECT_STREQ(S_str, inSignatureDERStr_S);
+}

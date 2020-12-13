@@ -27,8 +27,8 @@ const APP_SEED = "equip will roof matter pink blind book anxiety banner elbow su
 const sim_options = {
     logging: true,
     start_delay: 3000,
-    custom: `-s "${APP_SEED}"`
-//    , X11: true
+    custom: `-s "${APP_SEED}"`,
+    X11: true
 };
 
 jest.setTimeout(30000)
@@ -130,9 +130,7 @@ describe('Ledgeracio', function () {
     });
 
     test('create signed allowlist', async function () {
-        const keypair = ed25519.createKeyPair(TESTING_ALLOWLIST_SEED)
         const allowList = dummyAllowlist(0)
-
         console.log(allowList)
         expect(allowList.length).toEqual(4 + 4 + 64 * 3)
     });

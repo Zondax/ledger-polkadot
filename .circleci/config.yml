@@ -120,8 +120,7 @@ jobs:
       - run:
           name: Build Ledger app
           command: |
-            COIN=Ledgeracio make
-            cp /home/circleci/repo/app/bin/app.elf /home/circleci/repo/app/bin/app_ledgeracio.elf
+            make build_ledgeracio
       - run:
           name: Run zemu tests for Ledgeracio app
           command: |

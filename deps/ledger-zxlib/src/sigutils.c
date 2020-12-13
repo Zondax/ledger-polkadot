@@ -17,6 +17,10 @@
 #include <sigutils.h>
 #include <zxmacros.h>
 
+#define MINPAYLOADLEN 1
+#define PAYLOADLEN 32
+#define MAXPAYLOADLEN 33
+
 err_convert_e convertDERtoRSV(const uint8_t *inSignatureDER,
                               unsigned int inInfo,
                               uint8_t *outR,
@@ -47,8 +51,8 @@ err_convert_e convertDERtoRSV(const uint8_t *inSignatureDER,
     }
 
     const uint8_t payloadLen = *(inSignatureDER + 1);
-    const uint8_t minPayloadLen = 2 + 31 + 2 + 31;
-    const uint8_t maxPayloadLen = 2 + 33 + 2 + 33;
+    const uint8_t minPayloadLen = 2 + MINPAYLOADLEN + 2 + MINPAYLOADLEN;
+    const uint8_t maxPayloadLen = 2 + MAXPAYLOADLEN + 2 + MAXPAYLOADLEN;
     if (payloadLen < minPayloadLen || payloadLen > maxPayloadLen) {
         return invalid_payloadLen;
     }
@@ -59,7 +63,7 @@ err_convert_e convertDERtoRSV(const uint8_t *inSignatureDER,
     }
 
     uint8_t rLen = *(inSignatureDER + 3);
-    if (rLen > 33 || rLen < 31) {
+    if (rLen > MAXPAYLOADLEN || rLen < MINPAYLOADLEN) {
         return invalid_rLen;
     }
 
@@ -69,7 +73,7 @@ err_convert_e convertDERtoRSV(const uint8_t *inSignatureDER,
     }
 
     uint8_t sLen = *(inSignatureDER + 4 + rLen + 1);
-    if (sLen > 33 || sLen < 31) {
+    if (sLen > MAXPAYLOADLEN || sLen < MINPAYLOADLEN) {
         return invalid_sLen;
     }
 
@@ -78,19 +82,20 @@ err_convert_e convertDERtoRSV(const uint8_t *inSignatureDER,
     const uint8_t *sPtr = inSignatureDER + 4 + rLen + 2;
 
     // Correct field pointers
-    if (rLen == 31) {
-        outR++;
+    if (rLen < PAYLOADLEN) {
+        outR += PAYLOADLEN - rLen;
     }
-    if (rLen == 33) {
-        rLen--;
-        rPtr++;       // get only 32 bytes
+    if (rLen > PAYLOADLEN) {
+        rPtr += rLen - PAYLOADLEN;       // move forward get only 32 bytes
+        rLen = PAYLOADLEN;
     }
-    if (sLen == 31) {
-        outS++;
+
+    if (sLen < PAYLOADLEN) {
+        outS += PAYLOADLEN - sLen;
     }
-    if (sLen == 33) {
-        sLen--;
-        sPtr++;       // get only 32 bytes
+    if (sLen > PAYLOADLEN) {
+        sPtr += sLen - PAYLOADLEN;       // move forward get only 32 bytes
+        sLen = PAYLOADLEN;
     }
 
     // Prepare V
