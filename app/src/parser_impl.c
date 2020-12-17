@@ -61,6 +61,8 @@ const char *parser_getErrorDescription(parser_error_t err) {
         // Coin specific
         case parser_spec_not_supported:
             return "Spec version not supported";
+        case parser_tx_version_not_supported:
+            return "Txn version not supported";
         case parser_not_allowed:
             return "Not allowed";
         case parser_not_supported:
@@ -135,7 +137,7 @@ parser_error_t _readCompactInt(parser_context_t *c, compactInt_t *v) {
             CTX_CHECK_AND_ADVANCE(c, v->len)
             _getValue(v, &tmp);
             break;
-        case 3:         // bitint
+        case 3:         // bigint
             v->len = (*v->ptr >> 2u) + 4 + 1;
             CTX_CHECK_AND_ADVANCE(c, v->len)
             break;
@@ -330,7 +332,7 @@ parser_error_t _checkVersions(parser_context_t *c) {
     }
 
     if (transactionVersion != (SUPPORTED_TX_VERSION)) {
-        return parser_spec_not_supported;
+        return parser_tx_version_not_supported;
     }
 
     return parser_ok;

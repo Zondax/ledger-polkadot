@@ -22,7 +22,7 @@
 #include <parser.h>
 #include "parser_impl.h"
 
-// Test that we can parse SCALE-encoded unsigned intergers correctly (uint8_t, uint16_t, uint32_t, uint64_t}
+// Test that we can parse SCALE-encoded unsigned integers correctly (uint8_t, uint16_t, uint32_t, uint64_t}
 TEST(SCALE, UIntX) {
     parser_context_t ctx;
     parser_error_t err;
