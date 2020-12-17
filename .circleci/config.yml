@@ -15,8 +15,8 @@ jobs:
     docker:
       - image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
     environment:
-      - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
-      - BOLOS_ENV=/opt/bolos
+      BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
     steps:
       - checkout
       # Docker entrypoint is not considered
@@ -52,8 +52,8 @@ jobs:
     docker:
       - image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
     environment:
-      - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
-      - BOLOS_ENV=/opt/bolos
+      BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
     steps:
       - checkout
       # Docker entrypoint is not considered
@@ -120,8 +120,7 @@ jobs:
       - run:
           name: Build Ledger app
           command: |
-            COIN=Ledgeracio make
-            cp /home/circleci/repo/app/bin/app.elf /home/circleci/repo/app/bin/app_ledgeracio.elf
+            make build_ledgeracio
       - run:
           name: Run zemu tests for Ledgeracio app
           command: |
@@ -132,8 +131,8 @@ jobs:
     docker:
       - image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
     environment:
-      - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
-      - BOLOS_ENV=/opt/bolos
+      BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
     steps:
       - checkout
       - run: git submodule update --init --recursive
@@ -153,8 +152,8 @@ jobs:
     docker:
       - image: zondax/builder-bolos:latest
     environment:
-      - BOLOS_SDK=/home/zondax/project/deps/nanos-secure-sdk
-      - BOLOS_ENV=/opt/bolos
+      BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
     steps:
       - checkout
       - run: git submodule update --init --recursive

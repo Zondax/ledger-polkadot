@@ -41,7 +41,9 @@ typedef void (*viewfunc_accept_t)();
 void view_init();
 
 /// view_idle_show (idle view - main menu + status)
-void view_idle_show(uint8_t item_idx);
+void view_idle_show(uint8_t item_idx, char *statusString);
+
+void view_message_show(char *title, char *message);
 
 /// view_error (error view)
 void view_error_show();
