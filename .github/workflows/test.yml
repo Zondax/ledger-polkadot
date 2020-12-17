@@ -12,7 +12,7 @@ jobs:
       - name: Build Ledger app
         run: |
           make
-      - name: Install node + yarn
+      - name: Install node and yarn
         run: |
           nvm install 14.4.0
           nvm use 14.4.0
