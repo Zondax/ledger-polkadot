@@ -9,6 +9,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
+      - run: make deps
       - run: cmake -DCMAKE_BUILD_TYPE=Debug . && make
       - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
 
@@ -24,8 +25,7 @@ jobs:
           submodules: true
       - name: Build Standard app
         run: |
-          source /home/zondax/.cargo/env
-          cd /home/zondax/project
+          make deps
           make
 
   build_ledger_ledgeracio:
@@ -40,6 +40,5 @@ jobs:
           submodules: true
       - name: Build Ledgeracio
         run: |
-          source /home/zondax/.cargo/env
-          cd /home/zondax/project
+          make deps
           COIN=Ledgeracio make
