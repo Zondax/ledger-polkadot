@@ -27,8 +27,6 @@ jobs:
       - run: id
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          submodules: true
       - name: Build Standard app
         run: |
           source /home/zondax/.cargo/env
@@ -45,8 +43,6 @@ jobs:
       - run: id
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          submodules: true
       - name: Install deps
         run: |
           sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
