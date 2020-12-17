@@ -7,7 +7,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: git submodule update --init --recursive
+        with:
+          submodules: true
       - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
       - name: Build Ledger app
         run: |
@@ -29,7 +30,10 @@ jobs:
   test_zemu_ledgeracio:
     runs-on: ubuntu-latest
     steps:
-      - checkout
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
       - run: git submodule update --init --recursive
       - name: Install node + yarn
         run: |
