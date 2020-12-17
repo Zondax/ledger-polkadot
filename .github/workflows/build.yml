@@ -4,7 +4,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: zondax/circleci@sha256:37f78ab294b35a055768c2305b3f13813e55fb9db4e65f72745ede61dd842c08
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -15,14 +14,14 @@ jobs:
 
   build_ledger:
     runs-on: ubuntu-latest
-    container: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
     env:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: git submodule update --init --recursive
+        with:
+          submodules: true
       - name: Build Standard app
         run: |
           source /home/zondax/.cargo/env
@@ -31,14 +30,14 @@ jobs:
 
   build_ledger_ledgeracio:
     runs-on: ubuntu-latest
-    container: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
     env:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: git submodule update --init --recursive
+        with:
+          submodules: true
       - name: Build Ledgeracio
         run: |
           source /home/zondax/.cargo/env
