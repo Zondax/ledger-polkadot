@@ -34,20 +34,18 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-      - run: git submodule update --init --recursive
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.4.0'
       - name: Install node + yarn
         run: |
-          nvm install 14.4.0
-          nvm use 14.4.0
           npm install -g yarn
       - name: Build/Install build js deps
         run: |
-          nvm use 14.4.0
           make zemu_install
       - name: Build Ledger app
         run: |
           make build_ledgeracio
       - name: Run zemu tests for Ledgeracio app
         run: |
-          nvm use 14.4.0
           COIN=Ledgeracio make zemu_test
