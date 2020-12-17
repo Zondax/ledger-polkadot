@@ -27,16 +27,12 @@ jobs:
     env:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
-      wk: /home/Zondax
     steps:
-      - name: Test
-        run: |
-          id
-          echo $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          path: ~/
+          submodules: true
+          path: /home/Zondax
       - name: Build Standard app
         working-directory: ~/
         run: |
@@ -51,17 +47,13 @@ jobs:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
-      - name: Test
-        run: |
-          id
-          echo $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install deps
-        run: |
-          sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
-          make deps
-          brew install conan
+        with:
+          submodules: true
+          path: /home/Zondax
       - name: Build Ledgeracio
         run: |
+          source /home/zondax/.cargo/env
+          cd /home/zondax/project
           COIN=Ledgeracio make
