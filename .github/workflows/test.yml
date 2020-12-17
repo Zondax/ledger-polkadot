@@ -22,11 +22,9 @@ jobs:
           npm install -g yarn
       - name: Build/Install build js deps
         run: |
-          nvm use 14.4.0
           make zemu_install
       - name: Run zemu tests
         run: |
-          nvm use 14.4.0
           make zemu_test
 
   test_zemu_ledgeracio:
