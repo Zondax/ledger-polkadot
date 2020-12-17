@@ -24,7 +24,10 @@ jobs:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
-      - run: id
+      - name: Test
+        run: |
+          id
+          echo $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build Standard app
@@ -40,9 +43,10 @@ jobs:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
-      - run: |
-        id
-        echo $GITHUB_WORKSPACE
+      - name: Test
+        run: |
+          id
+          echo $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install deps
