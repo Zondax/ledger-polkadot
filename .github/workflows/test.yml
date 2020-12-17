@@ -1,0 +1,49 @@
+name: Tests
+on: [push]
+
+jobs:
+  test_zemu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: git submodule update --init --recursive
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+      - name: Build Ledger app
+        run: |
+          make
+      - name: Install node + yarn
+        run: |
+          nvm install 14.4.0
+          nvm use 14.4.0
+          npm install -g yarn
+      - name: Build/Install build js deps
+        run: |
+          nvm use 14.4.0
+          make zemu_install
+      - name: Run zemu tests
+        run: |
+          nvm use 14.4.0
+          make zemu_test
+
+  test_zemu_ledgeracio:
+    runs-on: ubuntu-latest
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - name: Install node + yarn
+        run: |
+          nvm install 14.4.0
+          nvm use 14.4.0
+          npm install -g yarn
+      - name: Build/Install build js deps
+        run: |
+          nvm use 14.4.0
+          make zemu_install
+      - name: Build Ledger app
+        run: |
+          make build_ledgeracio
+      - name: Run zemu tests for Ledgeracio app
+        run: |
+          nvm use 14.4.0
+          COIN=Ledgeracio make zemu_test
