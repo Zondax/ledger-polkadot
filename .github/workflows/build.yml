@@ -27,6 +27,7 @@ jobs:
     env:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
+      wk: /home/Zondax
     steps:
       - name: Test
         run: |
@@ -34,7 +35,10 @@ jobs:
           echo $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          path: ~/
       - name: Build Standard app
+        working-directory: ~/
         run: |
           source /home/zondax/.cargo/env
           cd /home/zondax/project
