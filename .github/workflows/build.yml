@@ -32,7 +32,7 @@ jobs:
       image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
       options: --user ${{ needs.configure.outputs.uid_gid }}
     env:
-      BOLOS_SDK: ./deps/nanos-secure-sdk
+      BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
       - name: Checkout
@@ -50,7 +50,7 @@ jobs:
       image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
       options: --user ${{ needs.configure.outputs.uid_gid }}
     env:
-      BOLOS_SDK: ./deps/nanos-secure-sdk
+      BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
       - name: Checkout
