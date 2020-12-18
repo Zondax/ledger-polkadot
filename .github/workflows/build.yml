@@ -28,6 +28,7 @@ jobs:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
+      - run: ls -lh
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -47,6 +48,7 @@ jobs:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
+      - run: ls -lh
       - name: Checkout
         uses: actions/checkout@v2
         with:
