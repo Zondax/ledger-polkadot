@@ -2,5 +2,4 @@
 APPVERSION_M=5
 # This is the `spec_version` field of `Runtime`
 APPVERSION_N=26
-# This is the `impl_version` field of `Runtime`
 APPVERSION_P=1
