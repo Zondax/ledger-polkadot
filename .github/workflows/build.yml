@@ -41,7 +41,6 @@ jobs:
           submodules: true
       - name: Build Standard app
         run: |
-          source /home/zondax/.cargo/env
           make
 
   build_ledger_ledgeracio:
@@ -60,5 +59,4 @@ jobs:
           submodules: true
       - name: Build Ledgeracio
         run: |
-          source /home/zondax/.cargo/env
           COIN=Ledgeracio make
