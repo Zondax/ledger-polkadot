@@ -13,10 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Test
-        run: |
-          id
-          echo $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -39,19 +35,13 @@ jobs:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
-      - run: ls -lh
-      - run: ls -lh /__w/ledger-polkadot/ledger-polkadot
-      - run: id
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: true
       - name: Build Standard app
         working-directory: ~/
-        run: |
-          source /home/zondax/.cargo/env
-          cd /home/zondax/project
-          make
+        run: make
 
   build_ledger_ledgeracio:
     needs: configure
@@ -63,15 +53,9 @@ jobs:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
     steps:
-      - run: ls -lh
-      - run: ls -lh /__w/ledger-polkadot/ledger-polkadot
-      - run: id
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: true
       - name: Build Ledgeracio
-        run: |
-          source /home/zondax/.cargo/env
-          cd /home/zondax/project
-          COIN=Ledgeracio make
+        run: COIN=Ledgeracio make
