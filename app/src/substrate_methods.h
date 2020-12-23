@@ -224,7 +224,7 @@ typedef struct {
 #define PD_CALL_STAKING_BOND 0
 typedef struct {
     pd_LookupSource_t controller;
-    pd_CompactBalanceOf_t value;
+    pd_CompactBalanceOf_t amount;
     pd_RewardDestination_t payee;
 } pd_staking_bond_t;
 
@@ -235,7 +235,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_UNBOND 2
 typedef struct {
-    pd_CompactBalanceOf_t value;
+    pd_CompactBalanceOf_t amount;
 } pd_staking_unbond_t;
 
 #define PD_CALL_STAKING_WITHDRAW_UNBONDED 3
@@ -319,7 +319,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_REBOND 19
 typedef struct {
-    pd_CompactBalanceOf_t value;
+    pd_CompactBalanceOf_t amount;
 } pd_staking_rebond_t;
 
 #define PD_CALL_STAKING_SET_HISTORY_DEPTH 20
@@ -389,7 +389,7 @@ typedef struct {
 #define PD_CALL_DEMOCRACY_PROPOSE 0
 typedef struct {
     pd_Hash_t proposal_hash;
-    pd_CompactBalanceOf_t value;
+    pd_CompactBalanceOf_t amount;
 } pd_democracy_propose_t;
 
 #define PD_CALL_DEMOCRACY_SECOND 1
@@ -577,7 +577,7 @@ typedef struct {
 #define PD_CALL_ELECTIONSPHRAGMEN_VOTE 0
 typedef struct {
     pd_VecAccountId_t votes;
-    pd_CompactBalanceOf_t value;
+    pd_CompactBalanceOf_t amount;
 } pd_electionsphragmen_vote_t;
 
 #define PD_CALL_ELECTIONSPHRAGMEN_REMOVE_VOTER 1
@@ -642,7 +642,7 @@ typedef struct {
 
 #define PD_CALL_TREASURY_PROPOSE_SPEND 0
 typedef struct {
-    pd_CompactBalanceOf_t value;
+    pd_CompactBalanceOf_t amount;
     pd_LookupSource_t beneficiary;
 } pd_treasury_propose_spend_t;
 
@@ -687,7 +687,7 @@ typedef struct {
 
 #define PD_CALL_TREASURY_PROPOSE_BOUNTY 8
 typedef struct {
-    pd_CompactBalanceOf_t value;
+    pd_CompactBalanceOf_t amount;
     pd_Bytes_t description;
 } pd_treasury_propose_bounty_t;
 
