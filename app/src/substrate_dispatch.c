@@ -3312,7 +3312,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 0:
             return "Dest";
         case 1:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -3334,7 +3334,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 1:
             return "Dest";
         case 2:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -3343,7 +3343,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 0:
             return "Dest";
         case 1:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -3359,7 +3359,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 0:
             return "Controller";
         case 1:
-            return "Value";
+            return "Amount";
         case 2:
             return "Payee";
         default:
@@ -3375,7 +3375,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
     case 1794: /* module 7 call 2 */
         switch (itemIdx) {
         case 0:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -3492,7 +3492,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
     case 1811: /* module 7 call 19 */
         switch (itemIdx) {
         case 0:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -3599,7 +3599,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 0:
             return "Proposal hash";
         case 1:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -3916,7 +3916,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 0:
             return "Votes";
         case 1:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -4007,7 +4007,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
     case 4864: /* module 19 call 0 */
         switch (itemIdx) {
         case 0:
-            return "Value";
+            return "Amount";
         case 1:
             return "Beneficiary";
         default:
@@ -4073,7 +4073,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
     case 4872: /* module 19 call 8 */
         switch (itemIdx) {
         case 0:
-            return "Value";
+            return "Amount";
         case 1:
             return "Description";
         default:
@@ -4157,7 +4157,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 0:
             return "Who";
         case 1:
-            return "Value";
+            return "Amount";
         case 2:
             return "Vesting schedule";
         case 3:
