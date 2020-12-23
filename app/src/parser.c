@@ -48,7 +48,7 @@ void __assert_fail(const char * assertion, const char * file, unsigned int line,
 #define FIELD_BLOCK_HASH    6
 
 
-#define EXPERT_FIELDS_TOTAL_COUNT 4
+#define EXPERT_FIELDS_TOTAL_COUNT 5
 
 parser_error_t parser_parse(parser_context_t *ctx, const uint8_t *data, size_t dataLen, parser_tx_t *tx_obj) {
     CHECK_PARSER_ERR(parser_init(ctx, data, dataLen))
@@ -219,17 +219,25 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
     } else {
         // CONTINUE WITH FIXED ARGUMENTS
         displayIdx -= methodArgCount;
+
         if( displayIdx == FIELD_NETWORK ){
             if (_getAddressType() == PK_ADDRESS_TYPE) {
-                snprintf(outKey, outKeyLen, "Chain");
-                snprintf(outVal, outValLen, COIN_NAME);
+                if( parser_show_expert_fields() ){
+                    snprintf(outKey, outKeyLen, "Chain");
+                    snprintf(outVal, outValLen, COIN_NAME);
+                    return err;
+                }
             }else {
                 snprintf(outKey, outKeyLen, "Genesis Hash");
                 _toStringHash(&ctx->tx_obj->genesisHash,
                               outVal, outValLen,
                               pageIdx, pageCount);
+                return err;
             }
-            return err;
+        }
+
+        if( !parser_show_expert_fields() ){
+            displayIdx++;
         }
 
         if( displayIdx == FIELD_NONCE && parser_show_expert_fields()) {
