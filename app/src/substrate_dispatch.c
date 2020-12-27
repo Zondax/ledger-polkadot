@@ -210,7 +210,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer(
     parser_context_t* c, pd_balances_transfer_t* m)
 {
     CHECK_ERROR(_readLookupSource(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->value))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -228,7 +228,7 @@ __Z_INLINE parser_error_t _readMethod_balances_force_transfer(
 {
     CHECK_ERROR(_readLookupSource(c, &m->source))
     CHECK_ERROR(_readLookupSource(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->value))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -236,7 +236,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive(
     parser_context_t* c, pd_balances_transfer_keep_alive_t* m)
 {
     CHECK_ERROR(_readLookupSource(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->value))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -3312,7 +3312,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 0:
             return "Dest";
         case 1:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -3334,7 +3334,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 1:
             return "Dest";
         case 2:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -3343,7 +3343,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 0:
             return "Dest";
         case 1:
-            return "Value";
+            return "Amount";
         default:
             return NULL;
         }
@@ -4887,9 +4887,9 @@ parser_error_t _getMethod_ItemValue(
                 &m->basic.balances_transfer.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* balances_transfer - value */;
+        case 1: /* balances_transfer - amount */;
             return _toStringCompactBalance(
-                &m->basic.balances_transfer.value,
+                &m->basic.balances_transfer.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4927,9 +4927,9 @@ parser_error_t _getMethod_ItemValue(
                 &m->basic.balances_force_transfer.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 2: /* balances_force_transfer - value */;
+        case 2: /* balances_force_transfer - amount */;
             return _toStringCompactBalance(
-                &m->basic.balances_force_transfer.value,
+                &m->basic.balances_force_transfer.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4942,9 +4942,9 @@ parser_error_t _getMethod_ItemValue(
                 &m->basic.balances_transfer_keep_alive.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* balances_transfer_keep_alive - value */;
+        case 1: /* balances_transfer_keep_alive - amount */;
             return _toStringCompactBalance(
-                &m->basic.balances_transfer_keep_alive.value,
+                &m->basic.balances_transfer_keep_alive.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:

@@ -288,7 +288,46 @@ parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
 parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
                                        char *outValue, uint16_t outValueLen,
                                        uint8_t pageIdx, uint8_t *pageCount) {
-    return _toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, pageIdx, pageCount);
+    CLEAN_AND_CHECK()
+
+    char bufferUI[200];
+    MEMZERO(outValue, outValueLen);
+    MEMZERO(bufferUI, sizeof(bufferUI));
+    *pageCount = 1;
+
+    if (v->value.len <= 4) {
+        uint64_t val;
+        _getValue(&v->value, &val);
+        if (uint64_to_str(bufferUI, sizeof(bufferUI), val) != NULL) {
+            return parser_unexpected_value;
+        }
+    } else {
+        // This is longer number
+        uint8_t bcdOut[100];
+        const uint16_t bcdOutLen = sizeof(bcdOut);
+
+        bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, v->value.ptr + 1, v->value.len - 1);
+        if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen))
+            return parser_unexpected_buffer_end;
+    }
+
+    // Format number
+    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), COIN_AMOUNT_DECIMAL_PLACES) == 0){
+        return parser_unexpected_value;
+    }
+
+    number_inplace_trimming(bufferUI);
+
+    // Prepend ticker
+    char bufferAux[200];
+    MEMZERO(bufferAux, sizeof(bufferAux));
+    strcat(bufferAux, COIN_TICKER);
+    strcat(bufferAux, " ");
+    strcat(bufferAux, bufferUI);
+
+    pageString(outValue, outValueLen, bufferAux, pageIdx, pageCount);
+
+    return parser_ok;
 }
 
 ////////////////////////////////////////////////////////////////
