@@ -77,7 +77,7 @@ parser_error_t _readCompactWeight(parser_context_t* c, pd_CompactWeight_t* v)
     return _readCompactInt(c, v);
 }
 
-parser_error_t _readAccountId(parser_context_t* c, pd_AccountId_t* v) {
+parser_error_t _readAccountId(parser_context_t* c, pd_AccountId_t* v){
     GEN_DEF_READARRAY(32)
 }
 
@@ -121,7 +121,7 @@ parser_error_t _readAccountVote(parser_context_t* c, pd_AccountVote_t* v)
     return parser_ok;
 }
 
-parser_error_t _readBalanceOf(parser_context_t* c, pd_BalanceOf_t* v) {
+parser_error_t _readBalanceOf(parser_context_t* c, pd_BalanceOf_t* v){
     GEN_DEF_READARRAY(16)
 }
 
@@ -217,7 +217,7 @@ parser_error_t _readDefunctVoter(parser_context_t* c, pd_DefunctVoter_t* v)
     return parser_not_supported;
 }
 
-parser_error_t _readEcdsaSignature(parser_context_t* c, pd_EcdsaSignature_t* v) {
+parser_error_t _readEcdsaSignature(parser_context_t* c, pd_EcdsaSignature_t* v){
     GEN_DEF_READARRAY(65)
 }
 
@@ -243,7 +243,7 @@ parser_error_t _readEraIndex(parser_context_t* c, pd_EraIndex_t* v)
     return _readUInt32(c, &v->value);
 }
 
-parser_error_t _readEthereumAddress(parser_context_t* c, pd_EthereumAddress_t* v) {
+parser_error_t _readEthereumAddress(parser_context_t* c, pd_EthereumAddress_t* v){
     GEN_DEF_READARRAY(20)
 }
 
@@ -291,7 +291,7 @@ parser_error_t _readKeyValue(parser_context_t* c, pd_KeyValue_t* v)
     return parser_not_supported;
 }
 
-parser_error_t _readKey(parser_context_t* c, pd_Key_t* v) {
+parser_error_t _readKey(parser_context_t* c, pd_Key_t* v){
     GEN_DEF_READARRAY(32)
 }
 
@@ -300,7 +300,7 @@ parser_error_t _readKeys(parser_context_t* c, pd_Keys_t* v)
     return parser_not_supported;
 }
 
-parser_error_t _readLookupSource(parser_context_t* c, pd_LookupSource_t* v) {
+parser_error_t _readLookupSource(parser_context_t* c, pd_LookupSource_t* v){
 
     GEN_DEF_READARRAY(32)
 }
@@ -369,7 +369,7 @@ parser_error_t _readRewardDestination(parser_context_t* c, pd_RewardDestination_
     return parser_ok;
 }
 
-parser_error_t _readSignature(parser_context_t* c, pd_Signature_t* v) {
+parser_error_t _readSignature(parser_context_t* c, pd_Signature_t* v){
     GEN_DEF_READARRAY(64)
 }
 
@@ -454,51 +454,51 @@ parser_error_t _readWeight(parser_context_t* c, pd_Weight_t* v)
     return _readUInt64(c, &v->value);
 }
 
-parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v) {
+parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v){
     GEN_DEF_READARRAY(20)
 }
 
-parser_error_t _readu8_array_32(parser_context_t* c, pd_u8_array_32_t* v) {
+parser_error_t _readu8_array_32(parser_context_t* c, pd_u8_array_32_t* v){
     GEN_DEF_READARRAY(32)
 }
 
-parser_error_t _readVecAccountId(parser_context_t* c, pd_VecAccountId_t* v) {
+parser_error_t _readVecAccountId(parser_context_t* c, pd_VecAccountId_t* v){
     GEN_DEF_READVECTOR(AccountId)
 }
 
-parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v) {
+parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v){
     GEN_DEF_READVECTOR(Call)
 }
 
-parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v) {
+parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v){
     GEN_DEF_READVECTOR(Header)
 }
 
-parser_error_t _readVecKeyValue(parser_context_t* c, pd_VecKeyValue_t* v) {
+parser_error_t _readVecKeyValue(parser_context_t* c, pd_VecKeyValue_t* v){
     GEN_DEF_READVECTOR(KeyValue)
 }
 
-parser_error_t _readVecKey(parser_context_t* c, pd_VecKey_t* v) {
+parser_error_t _readVecKey(parser_context_t* c, pd_VecKey_t* v){
     GEN_DEF_READVECTOR(Key)
 }
 
-parser_error_t _readVecLookupSource(parser_context_t* c, pd_VecLookupSource_t* v) {
+parser_error_t _readVecLookupSource(parser_context_t* c, pd_VecLookupSource_t* v){
     GEN_DEF_READVECTOR(LookupSource)
 }
 
-parser_error_t _readVecTupleAccountIdData(parser_context_t* c, pd_VecTupleAccountIdData_t* v) {
+parser_error_t _readVecTupleAccountIdData(parser_context_t* c, pd_VecTupleAccountIdData_t* v){
     GEN_DEF_READVECTOR(TupleAccountIdData)
 }
 
-parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v) {
+parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v){
     GEN_DEF_READVECTOR(TupleDataData)
 }
 
-parser_error_t _readVecValidatorIndex(parser_context_t* c, pd_VecValidatorIndex_t* v) {
+parser_error_t _readVecValidatorIndex(parser_context_t* c, pd_VecValidatorIndex_t* v){
     GEN_DEF_READVECTOR(ValidatorIndex)
 }
 
-parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v) {
+parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v){
     GEN_DEF_READVECTOR(u32)
 }
 
@@ -946,8 +946,45 @@ parser_error_t _toStringCompactBalanceOf(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    CHECK_ERROR(_toStringCompactBalance(v, outValue, outValueLen, pageIdx, pageCount))
-    number_inplace_trimming(outValue);
+    CLEAN_AND_CHECK()
+
+    char bufferUI[200];
+    MEMZERO(outValue, outValueLen);
+    MEMZERO(bufferUI, sizeof(bufferUI));
+    *pageCount = 1;
+
+    if (v->value.len <= 4) {
+        uint64_t val;
+        _getValue(&v->value, &val);
+        if (uint64_to_str(bufferUI, sizeof(bufferUI), val) != NULL) {
+            return parser_unexpected_value;
+        }
+    } else {
+        // This is longer number
+        uint8_t bcdOut[100];
+        const uint16_t bcdOutLen = sizeof(bcdOut);
+
+        bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, v->value.ptr + 1, v->value.len - 1);
+        if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen))
+            return parser_unexpected_buffer_end;
+    }
+
+    // Format number
+    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), COIN_AMOUNT_DECIMAL_PLACES) == 0) {
+        return parser_unexpected_value;
+    }
+
+    number_inplace_trimming(bufferUI);
+
+    // Prepend ticker
+    char bufferAux[200];
+    MEMZERO(bufferAux, sizeof(bufferAux));
+    strcat(bufferAux, COIN_TICKER);
+    strcat(bufferAux, " ");
+    strcat(bufferAux, bufferUI);
+
+    pageString(outValue, outValueLen, bufferAux, pageIdx, pageCount);
+
     return parser_ok;
 }
 
@@ -1052,7 +1089,7 @@ parser_error_t _toStringEcdsaSignature(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount) {
+    uint8_t* pageCount){
     GEN_DEF_TOSTRING_ARRAY(65)
 }
 
@@ -1126,7 +1163,7 @@ parser_error_t _toStringEthereumAddress(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount) {
+    uint8_t* pageCount){
     GEN_DEF_TOSTRING_ARRAY(20)
 }
 
@@ -1521,7 +1558,7 @@ parser_error_t _toStringSignature(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount) {
+    uint8_t* pageCount){
     GEN_DEF_TOSTRING_ARRAY(64)
 }
 
@@ -1783,7 +1820,7 @@ parser_error_t _toStringu8_array_20(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount) {
+    uint8_t* pageCount){
     GEN_DEF_TOSTRING_ARRAY(20)
 }
 
@@ -1792,7 +1829,7 @@ parser_error_t _toStringu8_array_32(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount) {
+    uint8_t* pageCount){
     GEN_DEF_TOSTRING_ARRAY(32)
 }
 
