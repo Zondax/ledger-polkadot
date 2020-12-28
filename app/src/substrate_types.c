@@ -870,6 +870,9 @@ parser_error_t _toStringBalanceOf(
         return parser_unexpected_value;
     }
 
+    number_inplace_trimming(bufferUI);
+    _appendCoinSymbol(bufferUI);
+
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
 }

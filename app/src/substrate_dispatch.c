@@ -4157,7 +4157,7 @@ const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
         case 0:
             return "Who";
         case 1:
-            return "Value";
+            return "Amount";
         case 2:
             return "Vesting schedule";
         case 3:
