@@ -210,7 +210,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer(
     parser_context_t* c, pd_balances_transfer_t* m)
 {
     CHECK_ERROR(_readLookupSource(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->value))
     return parser_ok;
 }
 
@@ -228,7 +228,7 @@ __Z_INLINE parser_error_t _readMethod_balances_force_transfer(
 {
     CHECK_ERROR(_readLookupSource(c, &m->source))
     CHECK_ERROR(_readLookupSource(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->value))
     return parser_ok;
 }
 
@@ -236,7 +236,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive(
     parser_context_t* c, pd_balances_transfer_keep_alive_t* m)
 {
     CHECK_ERROR(_readLookupSource(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->value))
     return parser_ok;
 }
 
@@ -251,7 +251,7 @@ __Z_INLINE parser_error_t _readMethod_staking_bond(
     parser_context_t* c, pd_staking_bond_t* m)
 {
     CHECK_ERROR(_readLookupSource(c, &m->controller))
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     CHECK_ERROR(_readRewardDestination(c, &m->payee))
     return parser_ok;
 }
@@ -266,7 +266,7 @@ __Z_INLINE parser_error_t _readMethod_staking_bond_extra(
 __Z_INLINE parser_error_t _readMethod_staking_unbond(
     parser_context_t* c, pd_staking_unbond_t* m)
 {
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     return parser_ok;
 }
 
@@ -384,7 +384,7 @@ __Z_INLINE parser_error_t _readMethod_staking_payout_stakers(
 __Z_INLINE parser_error_t _readMethod_staking_rebond(
     parser_context_t* c, pd_staking_rebond_t* m)
 {
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     return parser_ok;
 }
 
@@ -476,7 +476,7 @@ __Z_INLINE parser_error_t _readMethod_democracy_propose(
     parser_context_t* c, pd_democracy_propose_t* m)
 {
     CHECK_ERROR(_readHash(c, &m->proposal_hash))
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     return parser_ok;
 }
 
@@ -764,7 +764,7 @@ __Z_INLINE parser_error_t _readMethod_electionsphragmen_vote(
     parser_context_t* c, pd_electionsphragmen_vote_t* m)
 {
     CHECK_ERROR(_readVecAccountId(c, &m->votes))
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     return parser_ok;
 }
 
@@ -855,7 +855,7 @@ __Z_INLINE parser_error_t _readMethod_technicalmembership_clear_prime(
 __Z_INLINE parser_error_t _readMethod_treasury_propose_spend(
     parser_context_t* c, pd_treasury_propose_spend_t* m)
 {
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     CHECK_ERROR(_readLookupSource(c, &m->beneficiary))
     return parser_ok;
 }
@@ -916,7 +916,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_close_tip(
 __Z_INLINE parser_error_t _readMethod_treasury_propose_bounty(
     parser_context_t* c, pd_treasury_propose_bounty_t* m)
 {
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     CHECK_ERROR(_readBytes(c, &m->description))
     return parser_ok;
 }
@@ -4887,9 +4887,9 @@ parser_error_t _getMethod_ItemValue(
                 &m->basic.balances_transfer.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* balances_transfer - amount */;
+        case 1: /* balances_transfer - value */;
             return _toStringCompactBalance(
-                &m->basic.balances_transfer.amount,
+                &m->basic.balances_transfer.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4927,9 +4927,9 @@ parser_error_t _getMethod_ItemValue(
                 &m->basic.balances_force_transfer.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 2: /* balances_force_transfer - amount */;
+        case 2: /* balances_force_transfer - value */;
             return _toStringCompactBalance(
-                &m->basic.balances_force_transfer.amount,
+                &m->basic.balances_force_transfer.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4942,9 +4942,9 @@ parser_error_t _getMethod_ItemValue(
                 &m->basic.balances_transfer_keep_alive.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* balances_transfer_keep_alive - amount */;
+        case 1: /* balances_transfer_keep_alive - value */;
             return _toStringCompactBalance(
-                &m->basic.balances_transfer_keep_alive.amount,
+                &m->basic.balances_transfer_keep_alive.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4967,9 +4967,9 @@ parser_error_t _getMethod_ItemValue(
                 &m->basic.staking_bond.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* staking_bond - amount */;
+        case 1: /* staking_bond - value */;
             return _toStringCompactBalanceOf(
-                &m->basic.staking_bond.amount,
+                &m->basic.staking_bond.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* staking_bond - payee */;
@@ -4992,9 +4992,9 @@ parser_error_t _getMethod_ItemValue(
         }
     case 1794: /* module 7 call 2 */
         switch (itemIdx) {
-        case 0: /* staking_unbond - amount */;
+        case 0: /* staking_unbond - value */;
             return _toStringCompactBalanceOf(
-                &m->basic.staking_unbond.amount,
+                &m->basic.staking_unbond.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5157,9 +5157,9 @@ parser_error_t _getMethod_ItemValue(
         }
     case 1811: /* module 7 call 19 */
         switch (itemIdx) {
-        case 0: /* staking_rebond - amount */;
+        case 0: /* staking_rebond - value */;
             return _toStringCompactBalanceOf(
-                &m->basic.staking_rebond.amount,
+                &m->basic.staking_rebond.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5342,9 +5342,9 @@ parser_error_t _getMethod_ItemValue(
                 &m->basic.democracy_propose.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* democracy_propose - amount */;
+        case 1: /* democracy_propose - value */;
             return _toStringCompactBalanceOf(
-                &m->basic.democracy_propose.amount,
+                &m->basic.democracy_propose.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5857,9 +5857,9 @@ parser_error_t _getMethod_ItemValue(
                 &m->basic.electionsphragmen_vote.votes,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* electionsphragmen_vote - amount */;
+        case 1: /* electionsphragmen_vote - value */;
             return _toStringCompactBalanceOf(
-                &m->basic.electionsphragmen_vote.amount,
+                &m->basic.electionsphragmen_vote.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5987,9 +5987,9 @@ parser_error_t _getMethod_ItemValue(
         }
     case 4864: /* module 19 call 0 */
         switch (itemIdx) {
-        case 0: /* treasury_propose_spend - amount */;
+        case 0: /* treasury_propose_spend - value */;
             return _toStringCompactBalanceOf(
-                &m->basic.treasury_propose_spend.amount,
+                &m->basic.treasury_propose_spend.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_spend - beneficiary */;
@@ -6092,9 +6092,9 @@ parser_error_t _getMethod_ItemValue(
         }
     case 4872: /* module 19 call 8 */
         switch (itemIdx) {
-        case 0: /* treasury_propose_bounty - amount */;
+        case 0: /* treasury_propose_bounty - value */;
             return _toStringCompactBalanceOf(
-                &m->basic.treasury_propose_bounty.amount,
+                &m->basic.treasury_propose_bounty.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_bounty - description */;

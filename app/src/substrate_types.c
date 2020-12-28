@@ -594,7 +594,7 @@ parser_error_t _toStringCompactAssignments(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactBlockNumber(
@@ -604,7 +604,7 @@ parser_error_t _toStringCompactBlockNumber(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactBountyIndex(
@@ -614,7 +614,7 @@ parser_error_t _toStringCompactBountyIndex(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactEraIndex(
@@ -624,7 +624,7 @@ parser_error_t _toStringCompactEraIndex(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactMemberCount(
@@ -634,7 +634,7 @@ parser_error_t _toStringCompactMemberCount(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactMoment(
@@ -644,7 +644,7 @@ parser_error_t _toStringCompactMoment(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactPropIndex(
@@ -654,7 +654,7 @@ parser_error_t _toStringCompactPropIndex(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactProposalIndex(
@@ -664,7 +664,7 @@ parser_error_t _toStringCompactProposalIndex(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactReferendumIndex(
@@ -674,7 +674,7 @@ parser_error_t _toStringCompactReferendumIndex(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactRegistrarIndex(
@@ -684,7 +684,7 @@ parser_error_t _toStringCompactRegistrarIndex(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringCompactWeight(
@@ -694,7 +694,7 @@ parser_error_t _toStringCompactWeight(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringAccountId(
@@ -946,45 +946,13 @@ parser_error_t _toStringCompactBalanceOf(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    CLEAN_AND_CHECK()
+    CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, pageIdx, pageCount, bool_false))
+    number_inplace_trimming(outValue);
+    _appendCoinSymbol(outValue);
 
-    char bufferUI[200];
-    MEMZERO(outValue, outValueLen);
-    MEMZERO(bufferUI, sizeof(bufferUI));
-    *pageCount = 1;
-
-    if (v->value.len <= 4) {
-        uint64_t val;
-        _getValue(&v->value, &val);
-        if (uint64_to_str(bufferUI, sizeof(bufferUI), val) != NULL) {
-            return parser_unexpected_value;
-        }
-    } else {
-        // This is longer number
-        uint8_t bcdOut[100];
-        const uint16_t bcdOutLen = sizeof(bcdOut);
-
-        bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, v->value.ptr + 1, v->value.len - 1);
-        if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen))
-            return parser_unexpected_buffer_end;
-    }
-
-    // Format number
-    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), COIN_AMOUNT_DECIMAL_PLACES) == 0) {
-        return parser_unexpected_value;
-    }
-
-    number_inplace_trimming(bufferUI);
-
-    // Prepend ticker
-    char bufferAux[200];
-    MEMZERO(bufferAux, sizeof(bufferAux));
-    strcat(bufferAux, COIN_TICKER);
-    strcat(bufferAux, " ");
-    strcat(bufferAux, bufferUI);
-
-    pageString(outValue, outValueLen, bufferAux, pageIdx, pageCount);
-
+    char bufferUI[outValueLen];
+    strcpy(bufferUI, outValue);
+    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
 }
 
@@ -996,7 +964,7 @@ parser_error_t _toStringCompactPerBill(
     uint8_t* pageCount)
 {
     // 9 but shift 2 to show as percentage
-    return _toStringCompactInt(&v->value, 7, '%', outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(&v->value, 7, '%', outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringConviction(
@@ -1114,8 +1082,8 @@ parser_error_t _toStringElectionSize(
 {
     // Get all pages first
     uint8_t pages[2];
-    CHECK_ERROR(_toStringCompactInt(&v->validators, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, 0, &pages[0]))
-    CHECK_ERROR(_toStringCompactInt(&v->nominators, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, 0, &pages[1]))
+    CHECK_ERROR(_toStringCompactInt(&v->validators, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, 0, &pages[0], bool_true))
+    CHECK_ERROR(_toStringCompactInt(&v->nominators, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, 0, &pages[1], bool_true))
 
     *pageCount = pages[0] + pages[1];
     if (pageIdx > *pageCount) {
@@ -1123,13 +1091,13 @@ parser_error_t _toStringElectionSize(
     }
 
     if (pageIdx < pages[0]) {
-        CHECK_ERROR(_toStringCompactInt(&v->validators, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, 0, &pages[0]))
+        CHECK_ERROR(_toStringCompactInt(&v->validators, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, 0, &pages[0], bool_true))
         return parser_ok;
     }
     pageIdx -= pages[0];
 
     if (pageIdx < pages[1]) {
-        CHECK_ERROR(_toStringCompactInt(&v->nominators, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, 0, &pages[1]))
+        CHECK_ERROR(_toStringCompactInt(&v->nominators, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, 0, &pages[1], bool_true))
         return parser_ok;
     }
 
@@ -1437,7 +1405,7 @@ parser_error_t _toStringPercent(
     uint8_t* pageCount)
 {
     // 9 but shift 2 to show as percentage
-    return _toStringCompactInt(&v->value, 7, '%', outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(&v->value, 7, '%', outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 parser_error_t _toStringPeriod(
@@ -2249,7 +2217,7 @@ parser_error_t _toStringCompactu32(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
 }
 
 ///////////////////////////////////
