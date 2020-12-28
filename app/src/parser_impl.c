@@ -181,7 +181,7 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
                                    uint8_t decimalPlaces,
                                    char postfix,
                                    char *outValue, uint16_t outValueLen,
-                                   uint8_t pageIdx, uint8_t *pageCount) {
+                                   uint8_t pageIdx, uint8_t *pageCount, bool_t page) {
     char bufferUI[200];
     MEMZERO(outValue, outValueLen);
     MEMZERO(bufferUI, sizeof(bufferUI));
@@ -214,7 +214,11 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
         bufferUI[p] = postfix;
     }
 
-    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
+    if (page) {
+        pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
+    } else {
+        strcpy(outValue, bufferUI);
+    }
 
     return parser_ok;
 }
@@ -282,51 +286,18 @@ parser_error_t _readCompactBalance(parser_context_t *c, pd_CompactBalance_t *v) 
 parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
                                      char *outValue, uint16_t outValueLen,
                                      uint8_t pageIdx, uint8_t *pageCount) {
-    return _toStringCompactInt(&v->index, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(&v->index, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_false);
 }
 
 parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
                                        char *outValue, uint16_t outValueLen,
                                        uint8_t pageIdx, uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    char bufferUI[200];
-    MEMZERO(outValue, outValueLen);
-    MEMZERO(bufferUI, sizeof(bufferUI));
-    *pageCount = 1;
-
-    if (v->value.len <= 4) {
-        uint64_t val;
-        _getValue(&v->value, &val);
-        if (uint64_to_str(bufferUI, sizeof(bufferUI), val) != NULL) {
-            return parser_unexpected_value;
-        }
-    } else {
-        // This is longer number
-        uint8_t bcdOut[100];
-        const uint16_t bcdOutLen = sizeof(bcdOut);
-
-        bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, v->value.ptr + 1, v->value.len - 1);
-        if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen))
-            return parser_unexpected_buffer_end;
-    }
-
-    // Format number
-    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), COIN_AMOUNT_DECIMAL_PLACES) == 0){
-        return parser_unexpected_value;
-    }
-
-    number_inplace_trimming(bufferUI);
-
-    // Prepend ticker
-    char bufferAux[200];
-    MEMZERO(bufferAux, sizeof(bufferAux));
-    strcat(bufferAux, COIN_TICKER);
-    strcat(bufferAux, " ");
-    strcat(bufferAux, bufferUI);
-
-    pageString(outValue, outValueLen, bufferAux, pageIdx, pageCount);
-
+    CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, pageIdx, pageCount, bool_false))
+    number_inplace_trimming(outValue);
+    _appendCoinSymbol(outValue);
+    char bufferUI[outValueLen];
+    strcpy(bufferUI, outValue);
+    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
 }
 
@@ -336,6 +307,16 @@ parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
+
+parser_error_t  _appendCoinSymbol(char *value) {
+    char buffer[200];
+    MEMZERO(buffer, sizeof(buffer));
+    strcat(buffer, COIN_TICKER);
+    strcat(buffer, " ");
+    strcat(buffer,value);
+    strcpy(value, buffer);
+    return parser_ok;
+}
 
 parser_error_t _checkVersions(parser_context_t *c) {
     // Methods are not length delimited so in order to retrieve the specVersion
