@@ -1,0 +1,62 @@
+name: Build
+on: [push]
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    outputs:
+      uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "::set-output name=uid_gid::$(id -u):$(id -g)"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: |
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+          make deps
+          brew install conan
+      - run: cmake -DCMAKE_BUILD_TYPE=Debug . && make
+      - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
+
+  build_ledger:
+    needs: configure
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    env:
+      BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build Standard app
+        run: |
+          make
+
+  build_ledger_ledgeracio:
+    needs: configure
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    env:
+      BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build Ledgeracio
+        run: |
+          COIN=Ledgeracio make
