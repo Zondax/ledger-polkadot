@@ -95,7 +95,7 @@ TEST_P(CompactPrintTests, CompactPrinting) {
 
     char tmpOut[100];
     uint8_t dummy;
-    err = _toStringCompactInt(&cvalue, GetParam().decimals, 0, tmpOut, 100, 0, &dummy);
+    err = _toStringCompactInt(&cvalue, GetParam().decimals, 0, tmpOut, 100, 0, &dummy, bool_true);
     EXPECT_EQ(err, parser_ok) << parser_getErrorDescription(err);
 
     EXPECT_EQ(std::string(tmpOut), GetParam().expected);
