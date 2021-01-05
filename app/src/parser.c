@@ -124,7 +124,7 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
                 return parser_ok;
             }
             if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_NOMINATE) {
-                pd_VecLookupSource_t *targets = &ctx->tx_obj->method.basic.staking_nominate.targets;
+                pd_VecLookupSource_t *targets = getStakingTargets(ctx);
                 CHECK_PARSER_ERR(parser_validate_vecLookupSource(targets))
                 return parser_ok;
             }
