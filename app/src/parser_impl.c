@@ -18,10 +18,11 @@
 #include "parser_impl.h"
 #include "parser_txdef.h"
 #include "coin.h"
-#include "substrate_dispatch.h"
 #include "crypto.h"
 #include "bignum.h"
 #include "coin_ss58.h"
+#include "substrate_types.h"
+#include "substrate_dispatch.h"
 
 parser_error_t parser_init_context(parser_context_t *ctx,
                                    const uint8_t *buffer,
@@ -347,13 +348,17 @@ parser_error_t _checkVersions(parser_context_t *c) {
     transactionVersion += (uint32_t) p[2] << 16u;
     transactionVersion += (uint32_t) p[3] << 24u;
 
+    if (transactionVersion != (SUPPORTED_TX_VERSION_CURRENT) &&
+        transactionVersion != (SUPPORTED_TX_VERSION_PREVIOUS) ) {
+        return parser_tx_version_not_supported;
+    }
+
     if (specVersion < SUPPORTED_MINIMUM_SPEC_VERSION) {
         return parser_spec_not_supported;
     }
 
-    if (transactionVersion != (SUPPORTED_TX_VERSION)) {
-        return parser_tx_version_not_supported;
-    }
+    c->tx_obj->specVersion = specVersion;
+    c->tx_obj->transactionVersion = transactionVersion;
 
     return parser_ok;
 }
@@ -477,10 +482,6 @@ parser_error_t _readAddress(parser_context_t *c, pd_Address_t *v) {
     return parser_ok;
 }
 
-parser_error_t _readHash(parser_context_t *c, pd_Hash_t *v) {
-    GEN_DEF_READARRAY(32);
-}
-
 parser_error_t _toStringPubkeyAsAddress(const uint8_t *pubkey,
                                         char *outValue, uint16_t outValueLen,
                                         uint8_t pageIdx, uint8_t *pageCount) {
@@ -517,10 +518,4 @@ parser_error_t _toStringAddress(const pd_Address_t *v,
     }
 
     return parser_ok;
-}
-
-parser_error_t _toStringHash(const pd_Hash_t *v,
-                             char *outValue, uint16_t outValueLen,
-                             uint8_t pageIdx, uint8_t *pageCount) {
-    GEN_DEF_TOSTRING_ARRAY(32);
 }
