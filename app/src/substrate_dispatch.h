@@ -36,6 +36,9 @@ parser_error_t _getMethod_ItemValue(
     char* outValue, uint16_t outValueLen,
     uint8_t pageIdx, uint8_t* pageCount);
 
+//Special getters
+pd_VecLookupSource_t* getStakingTargets(const parser_context_t* c);
+
 #ifdef __cplusplus
 }
 #endif

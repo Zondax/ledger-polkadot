@@ -86,3 +86,13 @@ parser_error_t _getMethod_ItemValue(uint32_t transactionVersion, pd_Method_t* m,
         return parser_not_supported;
     }
 }
+
+pd_VecLookupSource_t* getStakingTargets(const parser_context_t* c)
+{
+    switch (c->tx_obj->transactionVersion) {
+    case 5:
+        return &c->tx_obj->method.V5.basic.staking_nominate_V5.targets;
+    default:
+        return NULL;
+    }
+}

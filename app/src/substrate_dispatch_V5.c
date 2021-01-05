@@ -209,7 +209,7 @@ __Z_INLINE parser_error_t _readMethod_indices_freeze_V5(
 __Z_INLINE parser_error_t _readMethod_balances_transfer_V5(
     parser_context_t* c, pd_balances_transfer_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->dest))
+    CHECK_ERROR(_readLookupSource(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->value))
     return parser_ok;
 }
@@ -217,7 +217,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_V5(
 __Z_INLINE parser_error_t _readMethod_balances_set_balance_V5(
     parser_context_t* c, pd_balances_set_balance_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->who))
+    CHECK_ERROR(_readLookupSource(c, &m->who))
     CHECK_ERROR(_readCompactBalance(c, &m->new_free))
     CHECK_ERROR(_readCompactBalance(c, &m->new_reserved))
     return parser_ok;
@@ -226,8 +226,8 @@ __Z_INLINE parser_error_t _readMethod_balances_set_balance_V5(
 __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V5(
     parser_context_t* c, pd_balances_force_transfer_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->source))
-    CHECK_ERROR(_readLookupSource_V5(c, &m->dest))
+    CHECK_ERROR(_readLookupSource(c, &m->source))
+    CHECK_ERROR(_readLookupSource(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->value))
     return parser_ok;
 }
@@ -235,7 +235,7 @@ __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V5(
 __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive_V5(
     parser_context_t* c, pd_balances_transfer_keep_alive_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->dest))
+    CHECK_ERROR(_readLookupSource(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->value))
     return parser_ok;
 }
@@ -250,7 +250,7 @@ __Z_INLINE parser_error_t _readMethod_authorship_set_uncles_V5(
 __Z_INLINE parser_error_t _readMethod_staking_bond_V5(
     parser_context_t* c, pd_staking_bond_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->controller))
+    CHECK_ERROR(_readLookupSource(c, &m->controller))
     CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     CHECK_ERROR(_readRewardDestination_V5(c, &m->payee))
     return parser_ok;
@@ -287,7 +287,7 @@ __Z_INLINE parser_error_t _readMethod_staking_validate_V5(
 __Z_INLINE parser_error_t _readMethod_staking_nominate_V5(
     parser_context_t* c, pd_staking_nominate_V5_t* m)
 {
-    CHECK_ERROR(_readVecLookupSource_V5(c, &m->targets))
+    CHECK_ERROR(_readVecLookupSource(c, &m->targets))
     return parser_ok;
 }
 
@@ -307,7 +307,7 @@ __Z_INLINE parser_error_t _readMethod_staking_set_payee_V5(
 __Z_INLINE parser_error_t _readMethod_staking_set_controller_V5(
     parser_context_t* c, pd_staking_set_controller_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->controller))
+    CHECK_ERROR(_readLookupSource(c, &m->controller))
     return parser_ok;
 }
 
@@ -798,7 +798,7 @@ __Z_INLINE parser_error_t _readMethod_electionsphragmen_renounce_candidacy_V5(
 __Z_INLINE parser_error_t _readMethod_electionsphragmen_remove_member_V5(
     parser_context_t* c, pd_electionsphragmen_remove_member_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->who))
+    CHECK_ERROR(_readLookupSource(c, &m->who))
     CHECK_ERROR(_readbool(c, &m->has_replacement))
     return parser_ok;
 }
@@ -856,7 +856,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_propose_spend_V5(
     parser_context_t* c, pd_treasury_propose_spend_V5_t* m)
 {
     CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
-    CHECK_ERROR(_readLookupSource_V5(c, &m->beneficiary))
+    CHECK_ERROR(_readLookupSource(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -932,7 +932,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_propose_curator_V5(
     parser_context_t* c, pd_treasury_propose_curator_V5_t* m)
 {
     CHECK_ERROR(_readCompactProposalIndex_V5(c, &m->bounty_id))
-    CHECK_ERROR(_readLookupSource_V5(c, &m->curator))
+    CHECK_ERROR(_readLookupSource(c, &m->curator))
     CHECK_ERROR(_readCompactBalanceOf(c, &m->fee))
     return parser_ok;
 }
@@ -955,7 +955,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_award_bounty_V5(
     parser_context_t* c, pd_treasury_award_bounty_V5_t* m)
 {
     CHECK_ERROR(_readCompactProposalIndex_V5(c, &m->bounty_id))
-    CHECK_ERROR(_readLookupSource_V5(c, &m->beneficiary))
+    CHECK_ERROR(_readLookupSource(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -1033,14 +1033,14 @@ __Z_INLINE parser_error_t _readMethod_vesting_vest_V5(
 __Z_INLINE parser_error_t _readMethod_vesting_vest_other_V5(
     parser_context_t* c, pd_vesting_vest_other_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
+    CHECK_ERROR(_readLookupSource(c, &m->target))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_vesting_vested_transfer_V5(
     parser_context_t* c, pd_vesting_vested_transfer_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
+    CHECK_ERROR(_readLookupSource(c, &m->target))
     CHECK_ERROR(_readVestingInfo_V5(c, &m->schedule))
     return parser_ok;
 }
@@ -1048,8 +1048,8 @@ __Z_INLINE parser_error_t _readMethod_vesting_vested_transfer_V5(
 __Z_INLINE parser_error_t _readMethod_vesting_force_vested_transfer_V5(
     parser_context_t* c, pd_vesting_force_vested_transfer_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->source))
-    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
+    CHECK_ERROR(_readLookupSource(c, &m->source))
+    CHECK_ERROR(_readLookupSource(c, &m->target))
     CHECK_ERROR(_readVestingInfo_V5(c, &m->schedule))
     return parser_ok;
 }
@@ -1146,7 +1146,7 @@ __Z_INLINE parser_error_t _readMethod_identity_provide_judgement_V5(
     parser_context_t* c, pd_identity_provide_judgement_V5_t* m)
 {
     CHECK_ERROR(_readCompactRegistrarIndex_V5(c, &m->reg_index))
-    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
+    CHECK_ERROR(_readLookupSource(c, &m->target))
     CHECK_ERROR(_readJudgement_V5(c, &m->judgement))
     return parser_ok;
 }
@@ -1154,14 +1154,14 @@ __Z_INLINE parser_error_t _readMethod_identity_provide_judgement_V5(
 __Z_INLINE parser_error_t _readMethod_identity_kill_identity_V5(
     parser_context_t* c, pd_identity_kill_identity_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
+    CHECK_ERROR(_readLookupSource(c, &m->target))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_identity_add_sub_V5(
     parser_context_t* c, pd_identity_add_sub_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->sub))
+    CHECK_ERROR(_readLookupSource(c, &m->sub))
     CHECK_ERROR(_readData(c, &m->data))
     return parser_ok;
 }
@@ -1169,7 +1169,7 @@ __Z_INLINE parser_error_t _readMethod_identity_add_sub_V5(
 __Z_INLINE parser_error_t _readMethod_identity_rename_sub_V5(
     parser_context_t* c, pd_identity_rename_sub_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->sub))
+    CHECK_ERROR(_readLookupSource(c, &m->sub))
     CHECK_ERROR(_readData(c, &m->data))
     return parser_ok;
 }
@@ -1177,7 +1177,7 @@ __Z_INLINE parser_error_t _readMethod_identity_rename_sub_V5(
 __Z_INLINE parser_error_t _readMethod_identity_remove_sub_V5(
     parser_context_t* c, pd_identity_remove_sub_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource_V5(c, &m->sub))
+    CHECK_ERROR(_readLookupSource(c, &m->sub))
     return parser_ok;
 }
 
@@ -4883,7 +4883,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1280: /* module 5 call 0 */
         switch (itemIdx) {
         case 0: /* balances_transfer_V5 - dest */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.balances_transfer_V5.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4898,7 +4898,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1281: /* module 5 call 1 */
         switch (itemIdx) {
         case 0: /* balances_set_balance_V5 - who */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.balances_set_balance_V5.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4918,12 +4918,12 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1282: /* module 5 call 2 */
         switch (itemIdx) {
         case 0: /* balances_force_transfer_V5 - source */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.balances_force_transfer_V5.source,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* balances_force_transfer_V5 - dest */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.balances_force_transfer_V5.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4938,7 +4938,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1283: /* module 5 call 3 */
         switch (itemIdx) {
         case 0: /* balances_transfer_keep_alive_V5 - dest */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.balances_transfer_keep_alive_V5.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4963,7 +4963,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1792: /* module 7 call 0 */
         switch (itemIdx) {
         case 0: /* staking_bond_V5 - controller */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.staking_bond_V5.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5023,7 +5023,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1797: /* module 7 call 5 */
         switch (itemIdx) {
         case 0: /* staking_nominate_V5 - targets */;
-            return _toStringVecLookupSource_V5(
+            return _toStringVecLookupSource(
                 &m->basic.staking_nominate_V5.targets,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5048,7 +5048,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1800: /* module 7 call 8 */
         switch (itemIdx) {
         case 0: /* staking_set_controller_V5 - controller */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.staking_set_controller_V5.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5903,7 +5903,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 4357: /* module 17 call 5 */
         switch (itemIdx) {
         case 0: /* electionsphragmen_remove_member_V5 - who */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.electionsphragmen_remove_member_V5.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5993,7 +5993,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_spend_V5 - beneficiary */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.treasury_propose_spend_V5.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6123,7 +6123,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_curator_V5 - curator */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.treasury_propose_curator_V5.curator,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6163,7 +6163,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_award_bounty_V5 - beneficiary */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.treasury_award_bounty_V5.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6303,7 +6303,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 6401: /* module 25 call 1 */
         switch (itemIdx) {
         case 0: /* vesting_vest_other_V5 - target */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.vesting_vest_other_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6313,7 +6313,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 6402: /* module 25 call 2 */
         switch (itemIdx) {
         case 0: /* vesting_vested_transfer_V5 - target */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.vesting_vested_transfer_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6328,12 +6328,12 @@ parser_error_t _getMethod_ItemValue_V5(
     case 6403: /* module 25 call 3 */
         switch (itemIdx) {
         case 0: /* vesting_force_vested_transfer_V5 - source */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.vesting_force_vested_transfer_V5.source,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* vesting_force_vested_transfer_V5 - target */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.vesting_force_vested_transfer_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6493,7 +6493,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* identity_provide_judgement_V5 - target */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.identity_provide_judgement_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6508,7 +6508,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 7178: /* module 28 call 10 */
         switch (itemIdx) {
         case 0: /* identity_kill_identity_V5 - target */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.identity_kill_identity_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6518,7 +6518,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 7179: /* module 28 call 11 */
         switch (itemIdx) {
         case 0: /* identity_add_sub_V5 - sub */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.identity_add_sub_V5.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6533,7 +6533,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 7180: /* module 28 call 12 */
         switch (itemIdx) {
         case 0: /* identity_rename_sub_V5 - sub */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.identity_rename_sub_V5.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6548,7 +6548,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 7181: /* module 28 call 13 */
         switch (itemIdx) {
         case 0: /* identity_remove_sub_V5 - sub */;
-            return _toStringLookupSource_V5(
+            return _toStringLookupSource(
                 &m->basic.identity_remove_sub_V5.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);

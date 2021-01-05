@@ -194,27 +194,27 @@ typedef struct {
 
 #define PD_CALL_BALANCES_TRANSFER 0
 typedef struct {
-    pd_LookupSource_V5_t dest;
+    pd_LookupSource_t dest;
     pd_CompactBalance_t value;
 } pd_balances_transfer_V5_t;
 
 #define PD_CALL_BALANCES_SET_BALANCE 1
 typedef struct {
-    pd_LookupSource_V5_t who;
+    pd_LookupSource_t who;
     pd_CompactBalance_t new_free;
     pd_CompactBalance_t new_reserved;
 } pd_balances_set_balance_V5_t;
 
 #define PD_CALL_BALANCES_FORCE_TRANSFER 2
 typedef struct {
-    pd_LookupSource_V5_t source;
-    pd_LookupSource_V5_t dest;
+    pd_LookupSource_t source;
+    pd_LookupSource_t dest;
     pd_CompactBalance_t value;
 } pd_balances_force_transfer_V5_t;
 
 #define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE 3
 typedef struct {
-    pd_LookupSource_V5_t dest;
+    pd_LookupSource_t dest;
     pd_CompactBalance_t value;
 } pd_balances_transfer_keep_alive_V5_t;
 
@@ -225,7 +225,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_BOND 0
 typedef struct {
-    pd_LookupSource_V5_t controller;
+    pd_LookupSource_t controller;
     pd_CompactBalanceOf_t value;
     pd_RewardDestination_V5_t payee;
 } pd_staking_bond_V5_t;
@@ -252,7 +252,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_NOMINATE 5
 typedef struct {
-    pd_VecLookupSource_V5_t targets;
+    pd_VecLookupSource_t targets;
 } pd_staking_nominate_V5_t;
 
 #define PD_CALL_STAKING_CHILL 6
@@ -266,7 +266,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_SET_CONTROLLER 8
 typedef struct {
-    pd_LookupSource_V5_t controller;
+    pd_LookupSource_t controller;
 } pd_staking_set_controller_V5_t;
 
 #define PD_CALL_STAKING_SET_VALIDATOR_COUNT 9
@@ -603,7 +603,7 @@ typedef struct {
 
 #define PD_CALL_ELECTIONSPHRAGMEN_REMOVE_MEMBER 5
 typedef struct {
-    pd_LookupSource_V5_t who;
+    pd_LookupSource_t who;
     pd_bool_t has_replacement;
 } pd_electionsphragmen_remove_member_V5_t;
 
@@ -645,7 +645,7 @@ typedef struct {
 #define PD_CALL_TREASURY_PROPOSE_SPEND 0
 typedef struct {
     pd_CompactBalanceOf_t value;
-    pd_LookupSource_V5_t beneficiary;
+    pd_LookupSource_t beneficiary;
 } pd_treasury_propose_spend_V5_t;
 
 #define PD_CALL_TREASURY_REJECT_PROPOSAL 1
@@ -701,7 +701,7 @@ typedef struct {
 #define PD_CALL_TREASURY_PROPOSE_CURATOR 10
 typedef struct {
     pd_CompactProposalIndex_V5_t bounty_id;
-    pd_LookupSource_V5_t curator;
+    pd_LookupSource_t curator;
     pd_CompactBalanceOf_t fee;
 } pd_treasury_propose_curator_V5_t;
 
@@ -718,7 +718,7 @@ typedef struct {
 #define PD_CALL_TREASURY_AWARD_BOUNTY 13
 typedef struct {
     pd_CompactProposalIndex_V5_t bounty_id;
-    pd_LookupSource_V5_t beneficiary;
+    pd_LookupSource_t beneficiary;
 } pd_treasury_award_bounty_V5_t;
 
 #define PD_CALL_TREASURY_CLAIM_BOUNTY 14
@@ -776,19 +776,19 @@ typedef struct {
 
 #define PD_CALL_VESTING_VEST_OTHER 1
 typedef struct {
-    pd_LookupSource_V5_t target;
+    pd_LookupSource_t target;
 } pd_vesting_vest_other_V5_t;
 
 #define PD_CALL_VESTING_VESTED_TRANSFER 2
 typedef struct {
-    pd_LookupSource_V5_t target;
+    pd_LookupSource_t target;
     pd_VestingInfo_V5_t schedule;
 } pd_vesting_vested_transfer_V5_t;
 
 #define PD_CALL_VESTING_FORCE_VESTED_TRANSFER 3
 typedef struct {
-    pd_LookupSource_V5_t source;
-    pd_LookupSource_V5_t target;
+    pd_LookupSource_t source;
+    pd_LookupSource_t target;
     pd_VestingInfo_V5_t schedule;
 } pd_vesting_force_vested_transfer_V5_t;
 
@@ -859,30 +859,30 @@ typedef struct {
 #define PD_CALL_IDENTITY_PROVIDE_JUDGEMENT 9
 typedef struct {
     pd_CompactRegistrarIndex_V5_t reg_index;
-    pd_LookupSource_V5_t target;
+    pd_LookupSource_t target;
     pd_Judgement_V5_t judgement;
 } pd_identity_provide_judgement_V5_t;
 
 #define PD_CALL_IDENTITY_KILL_IDENTITY 10
 typedef struct {
-    pd_LookupSource_V5_t target;
+    pd_LookupSource_t target;
 } pd_identity_kill_identity_V5_t;
 
 #define PD_CALL_IDENTITY_ADD_SUB 11
 typedef struct {
-    pd_LookupSource_V5_t sub;
+    pd_LookupSource_t sub;
     pd_Data_t data;
 } pd_identity_add_sub_V5_t;
 
 #define PD_CALL_IDENTITY_RENAME_SUB 12
 typedef struct {
-    pd_LookupSource_V5_t sub;
+    pd_LookupSource_t sub;
     pd_Data_t data;
 } pd_identity_rename_sub_V5_t;
 
 #define PD_CALL_IDENTITY_REMOVE_SUB 13
 typedef struct {
-    pd_LookupSource_V5_t sub;
+    pd_LookupSource_t sub;
 } pd_identity_remove_sub_V5_t;
 
 #define PD_CALL_IDENTITY_QUIT_SUB 14

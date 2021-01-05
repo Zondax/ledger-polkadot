@@ -116,7 +116,10 @@ parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v){
 
     return parser_not_supported;
 }
-parser_error_t _readBytes(parser_context_t* c, pd_Bytes_t* v)
+parser_error_t _readLookupSource(parser_context_t* c, pd_LookupSource_t* v){
+
+    GEN_DEF_READARRAY(32)
+} parser_error_t _readBytes(parser_context_t* c, pd_Bytes_t* v)
 {
 
     CHECK_INPUT()
@@ -151,6 +154,10 @@ parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v){
 
 parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v){
     GEN_DEF_READVECTOR(TupleDataData)
+}
+
+parser_error_t _readVecLookupSource(parser_context_t* c, pd_VecLookupSource_t* v){
+    GEN_DEF_READVECTOR(LookupSource)
 }
 
 parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v){
@@ -372,6 +379,17 @@ parser_error_t _toStringHeader(
     return parser_print_not_supported;
 }
 
+parser_error_t _toStringLookupSource(
+    const pd_LookupSource_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+
+    return _toStringPubkeyAsAddress(v->_ptr, outValue, outValueLen, pageIdx, pageCount);
+}
+
 parser_error_t _toStringBytes(
     const pd_Bytes_t* v,
     char* outValue,
@@ -441,6 +459,16 @@ parser_error_t _toStringVecTupleDataData(
     uint8_t* pageCount)
 {
     GEN_DEF_TOSTRING_VECTOR(TupleDataData);
+}
+
+parser_error_t _toStringVecLookupSource(
+    const pd_VecLookupSource_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    GEN_DEF_TOSTRING_VECTOR(LookupSource);
 }
 
 parser_error_t _toStringVecu32(
