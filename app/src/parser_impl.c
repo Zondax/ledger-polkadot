@@ -350,11 +350,10 @@ parser_error_t _checkVersions(parser_context_t *c) {
 
     if (transactionVersion != (SUPPORTED_TX_VERSION_CURRENT) &&
         transactionVersion != (SUPPORTED_TX_VERSION_PREVIOUS) ) {
-        return parser_spec_not_supported;
+        return parser_tx_version_not_supported;
     }
 
-    if (transactionVersion == (SUPPORTED_TX_VERSION_CURRENT) &&
-        specVersion < SUPPORTED_MINIMUM_SPEC_VERSION) {
+    if (specVersion < SUPPORTED_MINIMUM_SPEC_VERSION) {
         return parser_spec_not_supported;
     }
 
