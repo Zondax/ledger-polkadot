@@ -112,8 +112,8 @@ file(GLOB_RECURSE LIB_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_impl.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_txdef.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate_types.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate_dispatch.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate*.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate*.h
         )
 
 add_library(app_lib STATIC ${LIB_SRC})

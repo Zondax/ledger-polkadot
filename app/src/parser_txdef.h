@@ -21,7 +21,7 @@ extern "C" {
 
 #include <stdint.h>
 #include <stddef.h>
-#include "substrate_types.h"
+#include "substrate_methods.h"
 
 typedef struct {
     pd_CallIndex_t   callIndex;
