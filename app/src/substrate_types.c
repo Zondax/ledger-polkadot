@@ -413,8 +413,9 @@ parser_error_t _toStringCompactBalanceOf(
     number_inplace_trimming(outValue);
     _appendCoinSymbol(outValue);
 
-    char bufferUI[outValueLen];
-    strcpy(bufferUI, outValue);
+    char bufferUI[200];
+    MEMZERO(bufferUI, sizeof(bufferUI));
+    snprintf(bufferUI, sizeof(bufferUI), "%s", outValue);
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
 }

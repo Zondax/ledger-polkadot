@@ -298,8 +298,9 @@ parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
     CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, pageIdx, pageCount, bool_false))
     number_inplace_trimming(outValue);
     _appendCoinSymbol(outValue);
-    char bufferUI[outValueLen];
-    strcpy(bufferUI, outValue);
+    char bufferUI[200];
+    MEMZERO(bufferUI, sizeof(bufferUI));
+    snprintf(bufferUI, sizeof(bufferUI), "%s", outValue);
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
 }
@@ -316,8 +317,9 @@ parser_error_t  _appendCoinSymbol(char *value) {
     MEMZERO(buffer, sizeof(buffer));
     strcat(buffer, COIN_TICKER);
     strcat(buffer, " ");
-    strcat(buffer,value);
-    strcpy(value, buffer);
+    strcat(buffer, value);
+    // print length: strlen(value) + strlen(COIN_TICKER) + strlen(" ") + strlen("\0")
+    snprintf(value, strlen(value) + strlen(COIN_TICKER) + 2, "%s", buffer);
     return parser_ok;
 }
 
