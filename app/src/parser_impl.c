@@ -183,8 +183,9 @@ parser_error_t _getValue(const compactInt_t *c, uint64_t *v) {
 parser_error_t _toStringCompactInt(const compactInt_t *c,
                                    uint8_t decimalPlaces,
                                    char postfix,
+                                   char prefix[],
                                    char *outValue, uint16_t outValueLen,
-                                   uint8_t pageIdx, uint8_t *pageCount, bool_t page) {
+                                   uint8_t pageIdx, uint8_t *pageCount) {
     char bufferUI[200];
     MEMZERO(outValue, outValueLen);
     MEMZERO(bufferUI, sizeof(bufferUI));
@@ -211,17 +212,26 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
         return parser_unexpected_value;
     }
 
+    // Add prefix
+    if (strlen(prefix) > 0) {
+        size_t size = strlen(bufferUI) + strlen(prefix) + 2;
+        char _tmpBuffer[200];
+        MEMZERO(_tmpBuffer, sizeof(_tmpBuffer));
+        strcat(_tmpBuffer, prefix);
+        strcat(_tmpBuffer, " ");
+        strcat(_tmpBuffer, bufferUI);
+        // print length: strlen(value) + strlen(prefix) + strlen(" ") + strlen("\0")
+        MEMZERO(bufferUI, sizeof(bufferUI));
+        snprintf(bufferUI, size, "%s", _tmpBuffer);
+    }
+
     // Add postfix
     if (postfix > 32 && postfix < 127) {
         const uint16_t p = strlen(bufferUI);
         bufferUI[p] = postfix;
     }
 
-    if (page) {
-        pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
-    } else {
-        strcpy(outValue, bufferUI);
-    }
+    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
 
     return parser_ok;
 }
@@ -289,18 +299,14 @@ parser_error_t _readCompactBalance(parser_context_t *c, pd_CompactBalance_t *v) 
 parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
                                      char *outValue, uint16_t outValueLen,
                                      uint8_t pageIdx, uint8_t *pageCount) {
-    return _toStringCompactInt(&v->index, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_false);
+    return _toStringCompactInt(&v->index, 0, 0, "", outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
                                        char *outValue, uint16_t outValueLen,
                                        uint8_t pageIdx, uint8_t *pageCount) {
-    CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, pageIdx, pageCount, bool_false))
+    CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, COIN_TICKER, outValue, outValueLen, pageIdx, pageCount))
     number_inplace_trimming(outValue);
-    _appendCoinSymbol(outValue);
-    char bufferUI[outValueLen];
-    strcpy(bufferUI, outValue);
-    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
 }
 
@@ -310,16 +316,6 @@ parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
-
-parser_error_t  _appendCoinSymbol(char *value) {
-    char buffer[200];
-    MEMZERO(buffer, sizeof(buffer));
-    strcat(buffer, COIN_TICKER);
-    strcat(buffer, " ");
-    strcat(buffer,value);
-    strcpy(value, buffer);
-    return parser_ok;
-}
 
 parser_error_t _checkVersions(parser_context_t *c) {
     // Methods are not length delimited so in order to retrieve the specVersion

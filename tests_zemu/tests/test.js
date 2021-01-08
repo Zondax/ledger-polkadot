@@ -147,7 +147,7 @@ describe('Standard', function () {
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "05005cd6daea110119e757f4af9ad9fc0cdc7d4d6380ca0009169c9b7b1c909c20248ed73e0dd503040b63ce64c10c05170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -159,7 +159,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_basic_normal", 6);
+            await sim.compareSnapshotsAndAccept(".", "sign_basic_normal", 7);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -195,7 +195,7 @@ describe('Standard', function () {
             await sim.clickBoth();
             await sim.clickLeft();
 
-            let txBlobStr = "05005cd6daea110119e757f4af9ad9fc0cdc7d4d6380ca0009169c9b7b1c909c20248ed73e0dd503040b63ce64c10c05170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -208,7 +208,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_basic_expert", 12);
+            await sim.compareSnapshotsAndAccept(".", "sign_basic_expert", 13);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -244,7 +244,7 @@ describe('Standard', function () {
             await sim.clickBoth();
             await sim.clickLeft();
 
-            let txBlobStr = "05005cd6daea110119e757f4af9ad9fc0cdc7d4d6380ca0009169c9b7b1c909c20248ed73e0dd503040b63ce64c10c05170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -292,7 +292,7 @@ describe('Standard', function () {
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "05005cd6daea110119e757f4af9ad9fc0cdc7d4d6380ca0009169c9b7b1c909c20248ed73e0dd503040b63ce64c10c05170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -304,7 +304,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_basic_FB", 6, 3);
+            await sim.compareSnapshotsAndAccept(".", "sign_basic_FB", 7, 3);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -335,7 +335,7 @@ describe('Standard', function () {
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "05005cd6daea110119e757f4af9ad9fc0cdc7d4d6380ca0009169c9b7b1c909c20248ed73e0dd503040b63ce64c10c05170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -347,7 +347,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_basic_FB_reject", 8, 3);
+            await sim.compareSnapshotsAndAccept(".", "sign_basic_FB_reject", 9, 3);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);

@@ -168,6 +168,15 @@ parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_item
     }
     if(!parser_show_expert_fields()){
         total -= EXPERT_FIELDS_TOTAL_COUNT;
+
+        for (uint8_t argIdx = 0; argIdx < methodArgCount; argIdx++) {
+            bool isArgExpert = _getMethod_ItemIsExpert(ctx->tx_obj->transactionVersion,
+                                                    ctx->tx_obj->callIndex.moduleIdx,
+                                                    ctx->tx_obj->callIndex.idx, argIdx);
+            if(isArgExpert) {
+                methodArgCount--;
+            }
+        }
     }
 
     *num_items = total + methodArgCount;
@@ -208,6 +217,18 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
                                                  ctx->tx_obj->callIndex.idx,
                                                  &ctx->tx_obj->method);
     uint8_t argIdx = displayIdx - 1;
+
+
+    if (!parser_show_expert_fields()) {
+        // Search for the next non expert item
+        while ((argIdx < methodArgCount) && _getMethod_ItemIsExpert(ctx->tx_obj->transactionVersion,
+                                                                    ctx->tx_obj->callIndex.moduleIdx,
+                                                                    ctx->tx_obj->callIndex.idx, argIdx)) {
+            argIdx++;
+            displayIdx++;
+        }
+    }
+
     if (argIdx < methodArgCount) {
         snprintf(outKey, outKeyLen, "%s",
                  _getMethod_ItemName(ctx->tx_obj->transactionVersion,

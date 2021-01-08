@@ -261,7 +261,7 @@ parser_error_t _toStringCompactu32(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
+    return _toStringCompactInt(v, 0, 0, "", outValue, outValueLen, pageIdx, pageCount);
 }
 
 ///////////////////////////////////
@@ -275,7 +275,7 @@ parser_error_t _toStringCompactBlockNumber(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, outValue, outValueLen, pageIdx, pageCount, bool_true);
+    return _toStringCompactInt(v, 0, 0, "", outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringData(
@@ -409,13 +409,8 @@ parser_error_t _toStringCompactBalanceOf(
     uint8_t* pageCount)
 {
 
-    CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, pageIdx, pageCount, bool_false))
+    CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, COIN_TICKER, outValue, outValueLen, pageIdx, pageCount))
     number_inplace_trimming(outValue);
-    _appendCoinSymbol(outValue);
-
-    char bufferUI[outValueLen];
-    strcpy(bufferUI, outValue);
-    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
 }
 

@@ -152,13 +152,11 @@ parser_error_t _readTx(parser_context_t *c, parser_tx_t *v);
 
 uint8_t _getAddressType();
 
-parser_error_t  _appendCoinSymbol(char *value);
-
 parser_error_t _toStringCompactInt(const compactInt_t *c, uint8_t decimalPlaces,
                                    char postfix,
+                                   char prefix[],
                                    char *outValue, uint16_t outValueLen,
-                                   uint8_t pageIdx, uint8_t *pageCount,
-                                   bool_t page);
+                                   uint8_t pageIdx, uint8_t *pageCount);
 
 parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
                                      char *outValue, uint16_t outValueLen,
