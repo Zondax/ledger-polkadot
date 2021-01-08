@@ -87,6 +87,16 @@ parser_error_t _getMethod_ItemValue(uint32_t transactionVersion, pd_Method_t* m,
     }
 }
 
+bool _getMethod_ItemIsExpert(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx)
+{
+    switch (transactionVersion) {
+    case 5:
+        return _getMethod_ItemIsExpert_V5(moduleIdx, callIdx, itemIdx);
+    default:
+        return false;
+    }
+}
+
 pd_VecLookupSource_t* getStakingTargets(const parser_context_t* c)
 {
     switch (c->tx_obj->transactionVersion) {

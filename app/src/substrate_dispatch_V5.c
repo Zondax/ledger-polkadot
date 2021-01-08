@@ -6856,3 +6856,35 @@ parser_error_t _getMethod_ItemValue_V5(
 
     return parser_ok;
 }
+
+bool _getMethod_ItemIsExpert_V5(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx)
+{
+    uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
+
+    switch (callPrivIdx) {
+    case 1795: // Staking:Withdraw Unbonded
+        switch (itemIdx) {
+        case 0: // Num slashing spans
+            return true;
+        default:
+            return false;
+        }
+    case 1807: // Staking:Force unstake
+        switch (itemIdx) {
+        case 1: // Num slashing spans
+            return true;
+        default:
+            return false;
+        }
+    case 1813: // Staking:Reap stash
+        switch (itemIdx) {
+        case 1: // Num slashing spans
+            return true;
+        default:
+            return false;
+        }
+
+    default:
+        return false;
+    }
+}

@@ -20,6 +20,7 @@ extern "C" {
 #endif
 
 #include "parser_common.h"
+#include "stdbool.h"
 #include "substrate_dispatch_V5.h"
 #include <stddef.h>
 #include <stdint.h>
@@ -35,6 +36,8 @@ parser_error_t _getMethod_ItemValue(
     pd_Method_t* m, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx,
     char* outValue, uint16_t outValueLen,
     uint8_t pageIdx, uint8_t* pageCount);
+
+bool _getMethod_ItemIsExpert(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
 
 //Special getters
 pd_VecLookupSource_t* getStakingTargets(const parser_context_t* c);
