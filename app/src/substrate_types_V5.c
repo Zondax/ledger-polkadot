@@ -756,7 +756,7 @@ parser_error_t _toStringBalanceOf_V5(
     strcat(_tmpBuffer, COIN_TICKER);
     strcat(_tmpBuffer, " ");
     strcat(_tmpBuffer, bufferUI);
-    // print length: strlen(value) + strlen(COIN_TICKER) + strlen(" ") + strlen(" ")
+    // print length: strlen(value) + strlen(COIN_TICKER) + strlen(" ") + nullChar
     MEMZERO(bufferUI, sizeof(bufferUI));
     snprintf(bufferUI, size, "%s", _tmpBuffer);
 
