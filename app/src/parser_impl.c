@@ -361,6 +361,16 @@ parser_error_t _checkVersions(parser_context_t *c) {
 
 uint8_t __address_type;
 
+parser_error_t _getNextFreeMethodSlot(const parser_context_t *c, pd_Method_t** method) {
+    if (c->tx_obj->slotIdx + 1 == MAX_METHOD_SLOTS) {
+        return parser_not_supported;
+    }
+
+    *method = &c->tx_obj->methodSlot[c->tx_obj->slotIdx];
+    c->tx_obj->slotIdx++;
+    return parser_ok;
+}
+
 uint8_t _getAddressType() {
     return __address_type;
 }
