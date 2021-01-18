@@ -31,6 +31,7 @@ parser_error_t _readu64(parser_context_t* c, pd_u64_t* v);
 parser_error_t _readBlockNumber(parser_context_t* c, pd_BlockNumber_t* v);
 parser_error_t _readCompactu32(parser_context_t* c, pd_Compactu32_t* v);
 parser_error_t _readCompactu64(parser_context_t* c, pd_Compactu64_t* v);
+parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_Method_t* m);
 
 parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v);
 parser_error_t _readData(parser_context_t* c, pd_Data_t* v);
@@ -38,7 +39,6 @@ parser_error_t _readBalanceOf(parser_context_t* c, pd_BalanceOf_t* v);
 parser_error_t _readTupleDataData(parser_context_t* c, pd_TupleDataData_t* v);
 parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v);
 parser_error_t _readCall(parser_context_t* c, pd_Call_t* v);
-parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_Method_t* m);
 parser_error_t _readHeader(parser_context_t* c, pd_Header_t* v);
 parser_error_t _readLookupSource(parser_context_t* c, pd_LookupSource_t* v);
 parser_error_t _readOptionu8_array_20(parser_context_t* c, pd_Optionu8_array_20_t* v);

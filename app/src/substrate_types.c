@@ -59,6 +59,15 @@ parser_error_t _readCompactu64(parser_context_t* c, pd_Compactu64_t* v)
     return _readCompactInt(c, v);
 }
 
+parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_Method_t* m)
+{
+    CHECK_ERROR(_readCallIndex(c, &v->callIndex));
+    CHECK_ERROR(_readMethod(c, v->callIndex.moduleIdx, v->callIndex.idx, m))
+    v->_methodPtr = (uint8_t*)m;
+    v->_txVerPtr = &c->tx_obj->transactionVersion;
+    return parser_ok;
+}
+
 ///////////////////////////////////
 ///////////////////////////////////
 ///////////////////////////////////
@@ -130,6 +139,7 @@ parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v){
 
 parser_error_t _readCall(parser_context_t* c, pd_Call_t* v)
 {
+
     pd_Method_t* _method = NULL;
     CHECK_ERROR(_getNextFreeMethodSlot(c, &_method))
     if (_method == NULL) {
@@ -138,15 +148,6 @@ parser_error_t _readCall(parser_context_t* c, pd_Call_t* v)
 
     CHECK_ERROR(_readCallImpl(c, v, _method))
     zb_check_canary();
-    return parser_ok;
-}
-
-parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_Method_t* m)
-{
-    CHECK_ERROR(_readCallIndex(c, &v->callIndex));
-    CHECK_ERROR(_readMethod(c, v->callIndex.moduleIdx, v->callIndex.idx, m))
-    v->_methodPtr = (uint8_t*)m;
-    v->_txVerPtr = &c->tx_obj->transactionVersion;
     return parser_ok;
 }
 
@@ -165,6 +166,24 @@ parser_error_t _readProposal(parser_context_t* c, pd_Proposal_t* v)
 {
 
     return _readCall(c, &v->call);
+}
+
+parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v)
+{
+
+    compactInt_t clen;
+    pd_Call_t dummy;
+    CHECK_PARSER_ERR(_readCompactInt(c, &clen));
+    CHECK_PARSER_ERR(_getValue(&clen, &v->_len));
+    v->_ptr = c->buffer + c->offset;
+    v->_lenBuffer = c->offset;
+    for (uint64_t i = 0; i < v->_len; i++) {
+        CHECK_ERROR(_readCall(c, &dummy))
+    }
+    v->_lenBuffer = c->offset - v->_lenBuffer;
+    v->callTxVersion = *dummy._txVerPtr;
+
+    return parser_ok;
 }
 
 parser_error_t _readBytes(parser_context_t* c, pd_Bytes_t* v)
@@ -207,22 +226,6 @@ parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v){
 
 parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v){
     GEN_DEF_READVECTOR(TupleDataData)
-}
-
-parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v){
-    compactInt_t clen;
-    pd_Call_t dummy;
-    CHECK_PARSER_ERR(_readCompactInt(c, &clen));
-    CHECK_PARSER_ERR(_getValue(&clen, &v->_len));
-    v->_ptr = c->buffer + c->offset;
-    v->_lenBuffer = c->offset;
-    for (uint64_t i = 0; i < v->_len; i++ ) {
-        CHECK_ERROR(_readCall(c, &dummy))
-    }
-    v->_lenBuffer = c->offset - v->_lenBuffer;
-    v->callTxVersion = *dummy._txVerPtr;
-
-    return parser_ok;
 }
 
 parser_error_t _readVecLookupSource(parser_context_t* c, pd_VecLookupSource_t* v){
@@ -572,6 +575,57 @@ parser_error_t _toStringProposal(
     return _toStringCall(&v->call, outValue, outValueLen, pageIdx, pageCount);
 }
 
+parser_error_t _toStringVecCall(
+    const pd_VecCall_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+
+    CLEAN_AND_CHECK()
+    /* count number of pages, then output specific */
+    *pageCount = 0;
+    uint8_t chunkPageCount;
+    uint16_t currentPage, currentTotalPage = 0;
+    /* We need to do it twice because there is no memory to keep intermediate results*/
+    /* First count*/
+    parser_context_t ctx;
+    parser_init(&ctx, v->_ptr, v->_lenBuffer);
+    parser_tx_t _txObj;
+    pd_Call_t _call;
+    ctx.tx_obj = &_txObj;
+    _txObj.transactionVersion = v->callTxVersion;
+    _call._txVerPtr = &v->callTxVersion;
+
+    for (uint16_t i = 0; i < v->_len; i++) {
+        pd_Method_t _method;
+        CHECK_ERROR(_readCallImpl(&ctx, &_call, &_method));
+        CHECK_ERROR(_toStringCall(&_call, outValue, outValueLen, 0, &chunkPageCount));
+        (*pageCount) += chunkPageCount;
+    }
+
+    /* Then iterate until we can print the corresponding chunk*/
+    parser_init(&ctx, v->_ptr, v->_lenBuffer);
+    for (uint16_t i = 0; i < v->_len; i++) {
+        pd_Method_t _method;
+        CHECK_ERROR(_readCallImpl(&ctx, &_call, &_method));
+
+        chunkPageCount = 1;
+        currentPage = 0;
+        while (currentPage < chunkPageCount) {
+            CHECK_ERROR(_toStringCall(&_call, outValue, outValueLen, currentPage, &chunkPageCount));
+            if (currentTotalPage == pageIdx) {
+                return parser_ok;
+            }
+            currentPage++;
+            currentTotalPage++;
+        }
+    }
+
+    return parser_print_not_supported;
+}
+
 parser_error_t _toStringBytes(
     const pd_Bytes_t* v,
     char* outValue,
@@ -636,54 +690,6 @@ parser_error_t _toStringVecTupleDataData(
     uint8_t* pageCount)
 {
     GEN_DEF_TOSTRING_VECTOR(TupleDataData);
-}
-
-parser_error_t _toStringVecCall(
-    const pd_VecCall_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    CLEAN_AND_CHECK()
-    /* count number of pages, then output specific */
-    *pageCount = 0;
-    uint8_t chunkPageCount;
-    uint16_t currentPage, currentTotalPage = 0;
-    /* We need to do it twice because there is no memory to keep intermediate results*/
-    /* First count*/
-    parser_context_t ctx;
-    parser_init(&ctx, v->_ptr, v->_lenBuffer);
-    parser_tx_t _txObj;
-    pd_Call_t _call;
-    ctx.tx_obj = &_txObj;
-    _txObj.transactionVersion = v->callTxVersion;
-    _call._txVerPtr = &v->callTxVersion;
-
-    for (uint16_t i = 0; i < v->_len; i++) {
-        pd_Method_t _method;
-        CHECK_ERROR(_readCallImpl(&ctx, &_call, &_method));
-        CHECK_ERROR(_toStringCall(&_call, outValue, outValueLen, 0, &chunkPageCount));
-        (*pageCount)+=chunkPageCount;
-    }
-
-    /* Then iterate until we can print the corresponding chunk*/
-    parser_init(&ctx, v->_ptr, v->_lenBuffer);
-    for (uint16_t i = 0; i < v->_len; i++) {
-        pd_Method_t _method;
-        CHECK_ERROR(_readCallImpl(&ctx, &_call, &_method));
-
-        chunkPageCount = 1;
-        currentPage = 0;
-        while (currentPage < chunkPageCount) {
-            CHECK_ERROR(_toStringCall(&_call, outValue, outValueLen, currentPage, &chunkPageCount));
-            if (currentTotalPage == pageIdx) { return parser_ok; }
-            currentPage++;
-            currentTotalPage++;
-        }
-    }
-
-    return parser_print_not_supported;
 }
 
 parser_error_t _toStringVecLookupSource(
