@@ -94,7 +94,7 @@ __Z_INLINE parser_error_t _readMethod_scheduler_schedule_V5(
     CHECK_ERROR(_readBlockNumber(c, &m->when))
     CHECK_ERROR(_readOptionPeriod_V5(c, &m->maybe_periodic))
     CHECK_ERROR(_readPriority_V5(c, &m->priority))
-    CHECK_ERROR(_readCall_V5(c, &m->call))
+    CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
 
@@ -113,7 +113,7 @@ __Z_INLINE parser_error_t _readMethod_scheduler_schedule_named_V5(
     CHECK_ERROR(_readBlockNumber(c, &m->when))
     CHECK_ERROR(_readOptionPeriod_V5(c, &m->maybe_periodic))
     CHECK_ERROR(_readPriority_V5(c, &m->priority))
-    CHECK_ERROR(_readCall_V5(c, &m->call))
+    CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
 
@@ -130,7 +130,7 @@ __Z_INLINE parser_error_t _readMethod_scheduler_schedule_after_V5(
     CHECK_ERROR(_readBlockNumber(c, &m->after))
     CHECK_ERROR(_readOptionPeriod_V5(c, &m->maybe_periodic))
     CHECK_ERROR(_readPriority_V5(c, &m->priority))
-    CHECK_ERROR(_readCall_V5(c, &m->call))
+    CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
 
@@ -141,7 +141,7 @@ __Z_INLINE parser_error_t _readMethod_scheduler_schedule_named_after_V5(
     CHECK_ERROR(_readBlockNumber(c, &m->after))
     CHECK_ERROR(_readOptionPeriod_V5(c, &m->maybe_periodic))
     CHECK_ERROR(_readPriority_V5(c, &m->priority))
-    CHECK_ERROR(_readCall_V5(c, &m->call))
+    CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
 
@@ -559,7 +559,7 @@ __Z_INLINE parser_error_t _readMethod_democracy_delegate_V5(
 {
     CHECK_ERROR(_readAccountId_V5(c, &m->to))
     CHECK_ERROR(_readConviction_V5(c, &m->conviction))
-    CHECK_ERROR(_readBalanceOf_V5(c, &m->balance))
+    CHECK_ERROR(_readBalanceOf(c, &m->balance))
     return parser_ok;
 }
 
@@ -668,7 +668,7 @@ __Z_INLINE parser_error_t _readMethod_council_set_members_V5(
 __Z_INLINE parser_error_t _readMethod_council_execute_V5(
     parser_context_t* c, pd_council_execute_V5_t* m)
 {
-    CHECK_ERROR(_readProposal_V5(c, &m->proposal))
+    CHECK_ERROR(_readProposal(c, &m->proposal))
     CHECK_ERROR(_readCompactu32(c, &m->length_bound))
     return parser_ok;
 }
@@ -677,7 +677,7 @@ __Z_INLINE parser_error_t _readMethod_council_propose_V5(
     parser_context_t* c, pd_council_propose_V5_t* m)
 {
     CHECK_ERROR(_readCompactMemberCount_V5(c, &m->threshold))
-    CHECK_ERROR(_readProposal_V5(c, &m->proposal))
+    CHECK_ERROR(_readProposal(c, &m->proposal))
     CHECK_ERROR(_readCompactu32(c, &m->length_bound))
     return parser_ok;
 }
@@ -720,7 +720,7 @@ __Z_INLINE parser_error_t _readMethod_technicalcommittee_set_members_V5(
 __Z_INLINE parser_error_t _readMethod_technicalcommittee_execute_V5(
     parser_context_t* c, pd_technicalcommittee_execute_V5_t* m)
 {
-    CHECK_ERROR(_readProposal_V5(c, &m->proposal))
+    CHECK_ERROR(_readProposal(c, &m->proposal))
     CHECK_ERROR(_readCompactu32(c, &m->length_bound))
     return parser_ok;
 }
@@ -729,7 +729,7 @@ __Z_INLINE parser_error_t _readMethod_technicalcommittee_propose_V5(
     parser_context_t* c, pd_technicalcommittee_propose_V5_t* m)
 {
     CHECK_ERROR(_readCompactMemberCount_V5(c, &m->threshold))
-    CHECK_ERROR(_readProposal_V5(c, &m->proposal))
+    CHECK_ERROR(_readProposal(c, &m->proposal))
     CHECK_ERROR(_readCompactu32(c, &m->length_bound))
     return parser_ok;
 }
@@ -993,7 +993,7 @@ __Z_INLINE parser_error_t _readMethod_claims_mint_claim_V5(
     parser_context_t* c, pd_claims_mint_claim_V5_t* m)
 {
     CHECK_ERROR(_readEthereumAddress_V5(c, &m->who))
-    CHECK_ERROR(_readBalanceOf_V5(c, &m->value))
+    CHECK_ERROR(_readBalanceOf(c, &m->value))
     CHECK_ERROR(_readOptionTupleBalanceOfBalanceOfBlockNumber_V5(c, &m->vesting_schedule))
     CHECK_ERROR(_readOptionStatementKind_V5(c, &m->statement))
     return parser_ok;
@@ -1057,7 +1057,7 @@ __Z_INLINE parser_error_t _readMethod_vesting_force_vested_transfer_V5(
 __Z_INLINE parser_error_t _readMethod_utility_batch_V5(
     parser_context_t* c, pd_utility_batch_V5_t* m)
 {
-    CHECK_ERROR(_readVecCall_V5(c, &m->calls))
+    CHECK_ERROR(_readVecCall(c, &m->calls))
     return parser_ok;
 }
 
@@ -1065,14 +1065,14 @@ __Z_INLINE parser_error_t _readMethod_utility_as_derivative_V5(
     parser_context_t* c, pd_utility_as_derivative_V5_t* m)
 {
     CHECK_ERROR(_readu16(c, &m->index))
-    CHECK_ERROR(_readCall_V5(c, &m->call))
+    CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_utility_batch_all_V5(
     parser_context_t* c, pd_utility_batch_all_V5_t* m)
 {
-    CHECK_ERROR(_readVecCall_V5(c, &m->calls))
+    CHECK_ERROR(_readVecCall(c, &m->calls))
     return parser_ok;
 }
 
@@ -1192,7 +1192,7 @@ __Z_INLINE parser_error_t _readMethod_proxy_proxy_V5(
 {
     CHECK_ERROR(_readAccountId_V5(c, &m->real))
     CHECK_ERROR(_readOptionProxyType_V5(c, &m->force_proxy_type))
-    CHECK_ERROR(_readCall_V5(c, &m->call))
+    CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
 
@@ -1270,7 +1270,7 @@ __Z_INLINE parser_error_t _readMethod_proxy_proxy_announced_V5(
     CHECK_ERROR(_readAccountId_V5(c, &m->delegate))
     CHECK_ERROR(_readAccountId_V5(c, &m->real))
     CHECK_ERROR(_readOptionProxyType_V5(c, &m->force_proxy_type))
-    CHECK_ERROR(_readCall_V5(c, &m->call))
+    CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
 
@@ -1278,7 +1278,7 @@ __Z_INLINE parser_error_t _readMethod_multisig_as_multi_threshold_1_V5(
     parser_context_t* c, pd_multisig_as_multi_threshold_1_V5_t* m)
 {
     CHECK_ERROR(_readVecAccountId_V5(c, &m->other_signatories))
-    CHECK_ERROR(_readCall_V5(c, &m->call))
+    CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
 
@@ -1354,23 +1354,11 @@ parser_error_t _readMethodBasic_V5(
     case 9: /* module 0 call 9 */
         CHECK_ERROR(_readMethod_system_suicide_V5(c, &method->system_suicide_V5))
         break;
-    case 256: /* module 1 call 0 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_V5(c, &method->scheduler_schedule_V5))
-        break;
     case 257: /* module 1 call 1 */
         CHECK_ERROR(_readMethod_scheduler_cancel_V5(c, &method->scheduler_cancel_V5))
         break;
-    case 258: /* module 1 call 2 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_named_V5(c, &method->scheduler_schedule_named_V5))
-        break;
     case 259: /* module 1 call 3 */
         CHECK_ERROR(_readMethod_scheduler_cancel_named_V5(c, &method->scheduler_cancel_named_V5))
-        break;
-    case 260: /* module 1 call 4 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_after_V5(c, &method->scheduler_schedule_after_V5))
-        break;
-    case 261: /* module 1 call 5 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_named_after_V5(c, &method->scheduler_schedule_named_after_V5))
         break;
     case 512: /* module 2 call 0 */
         CHECK_ERROR(_readMethod_babe_report_equivocation_V5(c, &method->babe_report_equivocation_V5))
@@ -1720,9 +1708,6 @@ parser_error_t _readMethodBasic_V5(
     case 6656: /* module 26 call 0 */
         CHECK_ERROR(_readMethod_utility_batch_V5(c, &method->utility_batch_V5))
         break;
-    case 6657: /* module 26 call 1 */
-        CHECK_ERROR(_readMethod_utility_as_derivative_V5(c, &method->utility_as_derivative_V5))
-        break;
     case 6658: /* module 26 call 2 */
         CHECK_ERROR(_readMethod_utility_batch_all_V5(c, &method->utility_batch_all_V5))
         break;
@@ -1771,9 +1756,6 @@ parser_error_t _readMethodBasic_V5(
     case 7182: /* module 28 call 14 */
         CHECK_ERROR(_readMethod_identity_quit_sub_V5(c, &method->identity_quit_sub_V5))
         break;
-    case 7424: /* module 29 call 0 */
-        CHECK_ERROR(_readMethod_proxy_proxy_V5(c, &method->proxy_proxy_V5))
-        break;
     case 7425: /* module 29 call 1 */
         CHECK_ERROR(_readMethod_proxy_add_proxy_V5(c, &method->proxy_add_proxy_V5))
         break;
@@ -1797,12 +1779,6 @@ parser_error_t _readMethodBasic_V5(
         break;
     case 7432: /* module 29 call 8 */
         CHECK_ERROR(_readMethod_proxy_reject_announcement_V5(c, &method->proxy_reject_announcement_V5))
-        break;
-    case 7433: /* module 29 call 9 */
-        CHECK_ERROR(_readMethod_proxy_proxy_announced_V5(c, &method->proxy_proxy_announced_V5))
-        break;
-    case 7680: /* module 30 call 0 */
-        CHECK_ERROR(_readMethod_multisig_as_multi_threshold_1_V5(c, &method->multisig_as_multi_threshold_1_V5))
         break;
     case 7681: /* module 30 call 1 */
         CHECK_ERROR(_readMethod_multisig_as_multi_V5(c, &method->multisig_as_multi_V5))
@@ -1860,22 +1836,22 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_system_suicide_V5(c, &method->basic.system_suicide_V5))
         break;
     case 256: /* module 1 call 0 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_V5(c, &method->basic.scheduler_schedule_V5))
+        CHECK_ERROR(_readMethod_scheduler_schedule_V5(c, &method->nested.scheduler_schedule_V5))
         break;
     case 257: /* module 1 call 1 */
         CHECK_ERROR(_readMethod_scheduler_cancel_V5(c, &method->basic.scheduler_cancel_V5))
         break;
     case 258: /* module 1 call 2 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_named_V5(c, &method->basic.scheduler_schedule_named_V5))
+        CHECK_ERROR(_readMethod_scheduler_schedule_named_V5(c, &method->nested.scheduler_schedule_named_V5))
         break;
     case 259: /* module 1 call 3 */
         CHECK_ERROR(_readMethod_scheduler_cancel_named_V5(c, &method->basic.scheduler_cancel_named_V5))
         break;
     case 260: /* module 1 call 4 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_after_V5(c, &method->basic.scheduler_schedule_after_V5))
+        CHECK_ERROR(_readMethod_scheduler_schedule_after_V5(c, &method->nested.scheduler_schedule_after_V5))
         break;
     case 261: /* module 1 call 5 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_named_after_V5(c, &method->basic.scheduler_schedule_named_after_V5))
+        CHECK_ERROR(_readMethod_scheduler_schedule_named_after_V5(c, &method->nested.scheduler_schedule_named_after_V5))
         break;
     case 512: /* module 2 call 0 */
         CHECK_ERROR(_readMethod_babe_report_equivocation_V5(c, &method->basic.babe_report_equivocation_V5))
@@ -2238,7 +2214,7 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_utility_batch_V5(c, &method->basic.utility_batch_V5))
         break;
     case 6657: /* module 26 call 1 */
-        CHECK_ERROR(_readMethod_utility_as_derivative_V5(c, &method->basic.utility_as_derivative_V5))
+        CHECK_ERROR(_readMethod_utility_as_derivative_V5(c, &method->nested.utility_as_derivative_V5))
         break;
     case 6658: /* module 26 call 2 */
         CHECK_ERROR(_readMethod_utility_batch_all_V5(c, &method->basic.utility_batch_all_V5))
@@ -2289,7 +2265,7 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_identity_quit_sub_V5(c, &method->basic.identity_quit_sub_V5))
         break;
     case 7424: /* module 29 call 0 */
-        CHECK_ERROR(_readMethod_proxy_proxy_V5(c, &method->basic.proxy_proxy_V5))
+        CHECK_ERROR(_readMethod_proxy_proxy_V5(c, &method->nested.proxy_proxy_V5))
         break;
     case 7425: /* module 29 call 1 */
         CHECK_ERROR(_readMethod_proxy_add_proxy_V5(c, &method->basic.proxy_add_proxy_V5))
@@ -2316,10 +2292,10 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_proxy_reject_announcement_V5(c, &method->basic.proxy_reject_announcement_V5))
         break;
     case 7433: /* module 29 call 9 */
-        CHECK_ERROR(_readMethod_proxy_proxy_announced_V5(c, &method->basic.proxy_proxy_announced_V5))
+        CHECK_ERROR(_readMethod_proxy_proxy_announced_V5(c, &method->nested.proxy_proxy_announced_V5))
         break;
     case 7680: /* module 30 call 0 */
-        CHECK_ERROR(_readMethod_multisig_as_multi_threshold_1_V5(c, &method->basic.multisig_as_multi_threshold_1_V5))
+        CHECK_ERROR(_readMethod_multisig_as_multi_threshold_1_V5(c, &method->nested.multisig_as_multi_threshold_1_V5))
         break;
     case 7681: /* module 30 call 1 */
         CHECK_ERROR(_readMethod_multisig_as_multi_V5(c, &method->basic.multisig_as_multi_V5))
@@ -4644,22 +4620,22 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* scheduler_schedule_V5 - when */;
             return _toStringBlockNumber(
-                &m->basic.scheduler_schedule_V5.when,
+                &m->nested.scheduler_schedule_V5.when,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* scheduler_schedule_V5 - maybe_periodic */;
             return _toStringOptionPeriod_V5(
-                &m->basic.scheduler_schedule_V5.maybe_periodic,
+                &m->nested.scheduler_schedule_V5.maybe_periodic,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* scheduler_schedule_V5 - priority */;
             return _toStringPriority_V5(
-                &m->basic.scheduler_schedule_V5.priority,
+                &m->nested.scheduler_schedule_V5.priority,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* scheduler_schedule_V5 - call */;
-            return _toStringCall_V5(
-                &m->basic.scheduler_schedule_V5.call,
+            return _toStringCall(
+                &m->nested.scheduler_schedule_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4684,27 +4660,27 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* scheduler_schedule_named_V5 - id */;
             return _toStringBytes(
-                &m->basic.scheduler_schedule_named_V5.id,
+                &m->nested.scheduler_schedule_named_V5.id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* scheduler_schedule_named_V5 - when */;
             return _toStringBlockNumber(
-                &m->basic.scheduler_schedule_named_V5.when,
+                &m->nested.scheduler_schedule_named_V5.when,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* scheduler_schedule_named_V5 - maybe_periodic */;
             return _toStringOptionPeriod_V5(
-                &m->basic.scheduler_schedule_named_V5.maybe_periodic,
+                &m->nested.scheduler_schedule_named_V5.maybe_periodic,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* scheduler_schedule_named_V5 - priority */;
             return _toStringPriority_V5(
-                &m->basic.scheduler_schedule_named_V5.priority,
+                &m->nested.scheduler_schedule_named_V5.priority,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* scheduler_schedule_named_V5 - call */;
-            return _toStringCall_V5(
-                &m->basic.scheduler_schedule_named_V5.call,
+            return _toStringCall(
+                &m->nested.scheduler_schedule_named_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4724,22 +4700,22 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* scheduler_schedule_after_V5 - after */;
             return _toStringBlockNumber(
-                &m->basic.scheduler_schedule_after_V5.after,
+                &m->nested.scheduler_schedule_after_V5.after,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* scheduler_schedule_after_V5 - maybe_periodic */;
             return _toStringOptionPeriod_V5(
-                &m->basic.scheduler_schedule_after_V5.maybe_periodic,
+                &m->nested.scheduler_schedule_after_V5.maybe_periodic,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* scheduler_schedule_after_V5 - priority */;
             return _toStringPriority_V5(
-                &m->basic.scheduler_schedule_after_V5.priority,
+                &m->nested.scheduler_schedule_after_V5.priority,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* scheduler_schedule_after_V5 - call */;
-            return _toStringCall_V5(
-                &m->basic.scheduler_schedule_after_V5.call,
+            return _toStringCall(
+                &m->nested.scheduler_schedule_after_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4749,27 +4725,27 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* scheduler_schedule_named_after_V5 - id */;
             return _toStringBytes(
-                &m->basic.scheduler_schedule_named_after_V5.id,
+                &m->nested.scheduler_schedule_named_after_V5.id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* scheduler_schedule_named_after_V5 - after */;
             return _toStringBlockNumber(
-                &m->basic.scheduler_schedule_named_after_V5.after,
+                &m->nested.scheduler_schedule_named_after_V5.after,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* scheduler_schedule_named_after_V5 - maybe_periodic */;
             return _toStringOptionPeriod_V5(
-                &m->basic.scheduler_schedule_named_after_V5.maybe_periodic,
+                &m->nested.scheduler_schedule_named_after_V5.maybe_periodic,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* scheduler_schedule_named_after_V5 - priority */;
             return _toStringPriority_V5(
-                &m->basic.scheduler_schedule_named_after_V5.priority,
+                &m->nested.scheduler_schedule_named_after_V5.priority,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* scheduler_schedule_named_after_V5 - call */;
-            return _toStringCall_V5(
-                &m->basic.scheduler_schedule_named_after_V5.call,
+            return _toStringCall(
+                &m->nested.scheduler_schedule_named_after_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5483,7 +5459,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* democracy_delegate_V5 - balance */;
-            return _toStringBalanceOf_V5(
+            return _toStringBalanceOf(
                 &m->basic.democracy_delegate_V5.balance,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5653,7 +5629,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 3841: /* module 15 call 1 */
         switch (itemIdx) {
         case 0: /* council_execute_V5 - proposal */;
-            return _toStringProposal_V5(
+            return _toStringProposal(
                 &m->nested.council_execute_V5.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5673,7 +5649,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* council_propose_V5 - proposal */;
-            return _toStringProposal_V5(
+            return _toStringProposal(
                 &m->nested.council_propose_V5.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5763,7 +5739,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 4097: /* module 16 call 1 */
         switch (itemIdx) {
         case 0: /* technicalcommittee_execute_V5 - proposal */;
-            return _toStringProposal_V5(
+            return _toStringProposal(
                 &m->nested.technicalcommittee_execute_V5.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5783,7 +5759,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* technicalcommittee_propose_V5 - proposal */;
-            return _toStringProposal_V5(
+            return _toStringProposal(
                 &m->nested.technicalcommittee_propose_V5.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6228,7 +6204,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* claims_mint_claim_V5 - value */;
-            return _toStringBalanceOf_V5(
+            return _toStringBalanceOf(
                 &m->basic.claims_mint_claim_V5.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6348,7 +6324,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 6656: /* module 26 call 0 */
         switch (itemIdx) {
         case 0: /* utility_batch_V5 - calls */;
-            return _toStringVecCall_V5(
+            return _toStringVecCall(
                 &m->basic.utility_batch_V5.calls,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6359,12 +6335,12 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* utility_as_derivative_V5 - index */;
             return _toStringu16(
-                &m->basic.utility_as_derivative_V5.index,
+                &m->nested.utility_as_derivative_V5.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* utility_as_derivative_V5 - call */;
-            return _toStringCall_V5(
-                &m->basic.utility_as_derivative_V5.call,
+            return _toStringCall(
+                &m->nested.utility_as_derivative_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6373,7 +6349,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 6658: /* module 26 call 2 */
         switch (itemIdx) {
         case 0: /* utility_batch_all_V5 - calls */;
-            return _toStringVecCall_V5(
+            return _toStringVecCall(
                 &m->basic.utility_batch_all_V5.calls,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6564,17 +6540,17 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* proxy_proxy_V5 - real */;
             return _toStringAccountId_V5(
-                &m->basic.proxy_proxy_V5.real,
+                &m->nested.proxy_proxy_V5.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_proxy_V5 - force_proxy_type */;
             return _toStringOptionProxyType_V5(
-                &m->basic.proxy_proxy_V5.force_proxy_type,
+                &m->nested.proxy_proxy_V5.force_proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* proxy_proxy_V5 - call */;
-            return _toStringCall_V5(
-                &m->basic.proxy_proxy_V5.call,
+            return _toStringCall(
+                &m->nested.proxy_proxy_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6724,22 +6700,22 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* proxy_proxy_announced_V5 - delegate */;
             return _toStringAccountId_V5(
-                &m->basic.proxy_proxy_announced_V5.delegate,
+                &m->nested.proxy_proxy_announced_V5.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_proxy_announced_V5 - real */;
             return _toStringAccountId_V5(
-                &m->basic.proxy_proxy_announced_V5.real,
+                &m->nested.proxy_proxy_announced_V5.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* proxy_proxy_announced_V5 - force_proxy_type */;
             return _toStringOptionProxyType_V5(
-                &m->basic.proxy_proxy_announced_V5.force_proxy_type,
+                &m->nested.proxy_proxy_announced_V5.force_proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* proxy_proxy_announced_V5 - call */;
-            return _toStringCall_V5(
-                &m->basic.proxy_proxy_announced_V5.call,
+            return _toStringCall(
+                &m->nested.proxy_proxy_announced_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6749,12 +6725,12 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* multisig_as_multi_threshold_1_V5 - other_signatories */;
             return _toStringVecAccountId_V5(
-                &m->basic.multisig_as_multi_threshold_1_V5.other_signatories,
+                &m->nested.multisig_as_multi_threshold_1_V5.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* multisig_as_multi_threshold_1_V5 - call */;
-            return _toStringCall_V5(
-                &m->basic.multisig_as_multi_threshold_1_V5.call,
+            return _toStringCall(
+                &m->nested.multisig_as_multi_threshold_1_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
