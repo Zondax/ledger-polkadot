@@ -20,33 +20,27 @@ extern "C" {
 #endif
 
 #include "parser_common.h"
-#include "substrate_functions.h"
+#include "stdbool.h"
+#include "substrate_dispatch_V5.h"
 #include <stddef.h>
 #include <stdint.h>
 
-#define CHECK_ERROR(FUNC_CALL)          \
-    {                                   \
-        parser_error_t err = FUNC_CALL; \
-        if (err != parser_ok)           \
-            return err;                 \
-    }
-
-parser_error_t _readMethodBasic(parser_context_t* c, uint8_t moduleIdx, uint8_t callIdx, pd_MethodBasic_t* method);
-
 parser_error_t _readMethod(parser_context_t* c, uint8_t moduleIdx, uint8_t callIdx, pd_Method_t* method);
-
-const char* _getMethod_ModuleName(uint8_t moduleIdx);
-
-const char* _getMethod_Name(uint8_t moduleIdx, uint8_t callIdx);
-
-const char* _getMethod_ItemName(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
-
-uint8_t _getMethod_NumItems(uint8_t moduleIdx, uint8_t callIdx, pd_Method_t* method);
+uint8_t _getMethod_NumItems(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, pd_Method_t* method);
+const char* _getMethod_ModuleName(uint32_t transactionVersion, uint8_t moduleIdx);
+const char* _getMethod_Name(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx);
+const char* _getMethod_ItemName(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
 
 parser_error_t _getMethod_ItemValue(
+    uint32_t transactionVersion,
     pd_Method_t* m, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx,
     char* outValue, uint16_t outValueLen,
     uint8_t pageIdx, uint8_t* pageCount);
+
+bool _getMethod_ItemIsExpert(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
+
+//Special getters
+pd_VecLookupSource_t* getStakingTargets(const parser_context_t* c);
 
 #ifdef __cplusplus
 }

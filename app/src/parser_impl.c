@@ -18,10 +18,11 @@
 #include "parser_impl.h"
 #include "parser_txdef.h"
 #include "coin.h"
-#include "substrate_dispatch.h"
 #include "crypto.h"
 #include "bignum.h"
 #include "coin_ss58.h"
+#include "substrate_types.h"
+#include "substrate_dispatch.h"
 
 parser_error_t parser_init_context(parser_context_t *ctx,
                                    const uint8_t *buffer,
@@ -182,6 +183,7 @@ parser_error_t _getValue(const compactInt_t *c, uint64_t *v) {
 parser_error_t _toStringCompactInt(const compactInt_t *c,
                                    uint8_t decimalPlaces,
                                    char postfix,
+                                   char prefix[],
                                    char *outValue, uint16_t outValueLen,
                                    uint8_t pageIdx, uint8_t *pageCount) {
     char bufferUI[200];
@@ -208,6 +210,19 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
     // Format number
     if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), decimalPlaces) == 0){
         return parser_unexpected_value;
+    }
+
+    // Add prefix
+    if (strlen(prefix) > 0) {
+        size_t size = strlen(bufferUI) + strlen(prefix) + 2;
+        char _tmpBuffer[200];
+        MEMZERO(_tmpBuffer, sizeof(_tmpBuffer));
+        strcat(_tmpBuffer, prefix);
+        strcat(_tmpBuffer, " ");
+        strcat(_tmpBuffer, bufferUI);
+        // print length: strlen(value) + strlen(prefix) + strlen(" ") + strlen("\0")
+        MEMZERO(bufferUI, sizeof(bufferUI));
+        snprintf(bufferUI, size, "%s", _tmpBuffer);
     }
 
     // Add postfix
@@ -284,51 +299,14 @@ parser_error_t _readCompactBalance(parser_context_t *c, pd_CompactBalance_t *v) 
 parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
                                      char *outValue, uint16_t outValueLen,
                                      uint8_t pageIdx, uint8_t *pageCount) {
-    return _toStringCompactInt(&v->index, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(&v->index, 0, 0, "", outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
                                        char *outValue, uint16_t outValueLen,
                                        uint8_t pageIdx, uint8_t *pageCount) {
-    CLEAN_AND_CHECK()
-
-    char bufferUI[200];
-    MEMZERO(outValue, outValueLen);
-    MEMZERO(bufferUI, sizeof(bufferUI));
-    *pageCount = 1;
-
-    if (v->value.len <= 4) {
-        uint64_t val;
-        _getValue(&v->value, &val);
-        if (uint64_to_str(bufferUI, sizeof(bufferUI), val) != NULL) {
-            return parser_unexpected_value;
-        }
-    } else {
-        // This is longer number
-        uint8_t bcdOut[100];
-        const uint16_t bcdOutLen = sizeof(bcdOut);
-
-        bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, v->value.ptr + 1, v->value.len - 1);
-        if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen))
-            return parser_unexpected_buffer_end;
-    }
-
-    // Format number
-    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), COIN_AMOUNT_DECIMAL_PLACES) == 0){
-        return parser_unexpected_value;
-    }
-
-    number_inplace_trimming(bufferUI);
-
-    // Prepend ticker
-    char bufferAux[200];
-    MEMZERO(bufferAux, sizeof(bufferAux));
-    strcat(bufferAux, COIN_TICKER);
-    strcat(bufferAux, " ");
-    strcat(bufferAux, bufferUI);
-
-    pageString(outValue, outValueLen, bufferAux, pageIdx, pageCount);
-
+    CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, COIN_TICKER, outValue, outValueLen, pageIdx, pageCount))
+    number_inplace_trimming(outValue);
     return parser_ok;
 }
 
@@ -366,18 +344,37 @@ parser_error_t _checkVersions(parser_context_t *c) {
     transactionVersion += (uint32_t) p[2] << 16u;
     transactionVersion += (uint32_t) p[3] << 24u;
 
+    if (transactionVersion != (SUPPORTED_TX_VERSION_CURRENT) &&
+        transactionVersion != (SUPPORTED_TX_VERSION_PREVIOUS) ) {
+        return parser_tx_version_not_supported;
+    }
+
     if (specVersion < SUPPORTED_MINIMUM_SPEC_VERSION) {
         return parser_spec_not_supported;
     }
 
-    if (transactionVersion != (SUPPORTED_TX_VERSION)) {
-        return parser_tx_version_not_supported;
-    }
+    c->tx_obj->specVersion = specVersion;
+    c->tx_obj->transactionVersion = transactionVersion;
 
     return parser_ok;
 }
 
 uint8_t __address_type;
+
+parser_error_t _getNextFreeMethodSlot(const parser_context_t *c, pd_Method_t** method) {
+
+    if (c == NULL || c->tx_obj == NULL) {
+        return parser_unexpected_error;
+    }
+
+    if (c->tx_obj->slotIdx + 1 == MAX_METHOD_SLOTS) {
+        return parser_value_too_many_bytes;
+    }
+
+    *method = &c->tx_obj->methodSlot[c->tx_obj->slotIdx];
+    c->tx_obj->slotIdx++;
+    return parser_ok;
+}
 
 uint8_t _getAddressType() {
     return __address_type;
@@ -496,10 +493,6 @@ parser_error_t _readAddress(parser_context_t *c, pd_Address_t *v) {
     return parser_ok;
 }
 
-parser_error_t _readHash(parser_context_t *c, pd_Hash_t *v) {
-    GEN_DEF_READARRAY(32);
-}
-
 parser_error_t _toStringPubkeyAsAddress(const uint8_t *pubkey,
                                         char *outValue, uint16_t outValueLen,
                                         uint8_t pageIdx, uint8_t *pageCount) {
@@ -536,10 +529,4 @@ parser_error_t _toStringAddress(const pd_Address_t *v,
     }
 
     return parser_ok;
-}
-
-parser_error_t _toStringHash(const pd_Hash_t *v,
-                             char *outValue, uint16_t outValueLen,
-                             uint8_t pageIdx, uint8_t *pageCount) {
-    GEN_DEF_TOSTRING_ARRAY(32);
 }

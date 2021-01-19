@@ -21,11 +21,16 @@ extern "C" {
 
 #include <stdint.h>
 #include <stddef.h>
-#include "substrate_types.h"
+#include "substrate_methods.h"
+
+#define MAX_METHOD_SLOTS 3
 
 typedef struct {
     pd_CallIndex_t   callIndex;
     pd_Method_t method;
+
+    pd_Method_t methodSlot[MAX_METHOD_SLOTS];
+    uint8_t slotIdx;
 
     pd_ExtrinsicEra_t era;
     pd_CompactIndex_t nonce;

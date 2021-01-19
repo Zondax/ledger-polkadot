@@ -53,6 +53,7 @@ void __assert_fail(const char * assertion, const char * file, unsigned int line,
 parser_error_t parser_parse(parser_context_t *ctx, const uint8_t *data, size_t dataLen, parser_tx_t *tx_obj) {
     CHECK_PARSER_ERR(parser_init(ctx, data, dataLen))
     ctx->tx_obj = tx_obj;
+    ctx->tx_obj->slotIdx = 0;
     parser_error_t err = _readTx(ctx, ctx->tx_obj);
     CTX_CHECK_AVAIL(ctx, 0)
     zb_check_canary();
@@ -124,7 +125,7 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
                 return parser_ok;
             }
             if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_NOMINATE) {
-                pd_VecLookupSource_t *targets = &ctx->tx_obj->method.basic.staking_nominate.targets;
+                pd_VecLookupSource_t *targets = getStakingTargets(ctx);
                 CHECK_PARSER_ERR(parser_validate_vecLookupSource(targets))
                 return parser_ok;
             }
@@ -157,7 +158,8 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
 }
 
 parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_items) {
-    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->callIndex.moduleIdx,
+    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->transactionVersion,
+                                                 ctx->tx_obj->callIndex.moduleIdx,
                                                  ctx->tx_obj->callIndex.idx,
                                                  &ctx->tx_obj->method);
 
@@ -167,6 +169,15 @@ parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_item
     }
     if(!parser_show_expert_fields()){
         total -= EXPERT_FIELDS_TOTAL_COUNT;
+
+        for (uint8_t argIdx = 0; argIdx < methodArgCount; argIdx++) {
+            bool isArgExpert = _getMethod_ItemIsExpert(ctx->tx_obj->transactionVersion,
+                                                    ctx->tx_obj->callIndex.moduleIdx,
+                                                    ctx->tx_obj->callIndex.idx, argIdx);
+            if(isArgExpert) {
+                methodArgCount--;
+            }
+        }
     }
 
     *num_items = total + methodArgCount;
@@ -194,24 +205,40 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
 
     parser_error_t err = parser_ok;
     if (displayIdx == FIELD_METHOD) {
-        snprintf(outKey, outKeyLen, "%s", _getMethod_ModuleName(ctx->tx_obj->callIndex.moduleIdx));
-        snprintf(outVal, outValLen, "%s", _getMethod_Name(ctx->tx_obj->callIndex.moduleIdx,
-                                                          ctx->tx_obj->callIndex.idx));
+        snprintf(outKey, outKeyLen, "%s", _getMethod_ModuleName(ctx->tx_obj->transactionVersion, ctx->tx_obj->callIndex.moduleIdx));
+        snprintf(outVal, outValLen, "%s", _getMethod_Name(ctx->tx_obj->transactionVersion,
+                                                                  ctx->tx_obj->callIndex.moduleIdx,
+                                                                  ctx->tx_obj->callIndex.idx));
         return err;
     }
 
     // VARIABLE ARGUMENTS
-    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->callIndex.moduleIdx,
+    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->transactionVersion,
+                                                 ctx->tx_obj->callIndex.moduleIdx,
                                                  ctx->tx_obj->callIndex.idx,
                                                  &ctx->tx_obj->method);
     uint8_t argIdx = displayIdx - 1;
+
+
+    if (!parser_show_expert_fields()) {
+        // Search for the next non expert item
+        while ((argIdx < methodArgCount) && _getMethod_ItemIsExpert(ctx->tx_obj->transactionVersion,
+                                                                    ctx->tx_obj->callIndex.moduleIdx,
+                                                                    ctx->tx_obj->callIndex.idx, argIdx)) {
+            argIdx++;
+            displayIdx++;
+        }
+    }
+
     if (argIdx < methodArgCount) {
         snprintf(outKey, outKeyLen, "%s",
-                 _getMethod_ItemName(ctx->tx_obj->callIndex.moduleIdx,
+                 _getMethod_ItemName(ctx->tx_obj->transactionVersion,
+                                     ctx->tx_obj->callIndex.moduleIdx,
                                      ctx->tx_obj->callIndex.idx,
                                      argIdx));
 
-        err = _getMethod_ItemValue(&ctx->tx_obj->method,
+        err = _getMethod_ItemValue(ctx->tx_obj->transactionVersion,
+                                   &ctx->tx_obj->method,
                                    ctx->tx_obj->callIndex.moduleIdx, ctx->tx_obj->callIndex.idx, argIdx,
                                    outVal, outValLen,
                                    pageIdx, pageCount);

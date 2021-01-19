@@ -76,17 +76,18 @@ void h_paging_init() {
 }
 
 bool h_paging_can_increase() {
-    zemu_log_stack("h_paging_can_increase");
-
     if (viewdata.pageIdx + 1 < viewdata.pageCount) {
+        zemu_log_stack("h_paging_can_increase");
         return true;
     }
 
     // passed page count, go to next index
     if (viewdata.itemCount > 0 && viewdata.itemIdx < (viewdata.itemCount - 1 + INCLUDE_ACTIONS_COUNT)) {
+        zemu_log_stack("h_paging_can_increase");
         return true;
     }
 
+    zemu_log_stack("h_paging_can_increase NO");
     return false;
 }
 
@@ -107,29 +108,34 @@ void h_paging_increase() {
 }
 
 bool h_paging_can_decrease() {
-    zemu_log_stack("h_paging_can_decrease");
-
     if (viewdata.pageIdx != 0) {
+        zemu_log_stack("h_paging_can_decrease");
         return true;
     }
 
     if (viewdata.itemIdx > 0) {
+        zemu_log_stack("h_paging_can_decrease");
         return true;
     }
 
+    zemu_log_stack("h_paging_can_decrease NO");
     return false;
 }
 
 void h_paging_decrease() {
-    zemu_log_stack("h_paging_decrease");
+    char buffer[50];
+    snprintf(buffer, sizeof(buffer), "h_paging_decrease Idx %d", viewdata.itemIdx);
+    zemu_log_stack(buffer);
 
     if (viewdata.pageIdx != 0) {
         viewdata.pageIdx--;
+        zemu_log_stack("page--");
         return;
     }
 
     if (viewdata.itemIdx > 0) {
         viewdata.itemIdx--;
+        zemu_log_stack("item--");
         // jump to last page. update will cap this value
         viewdata.pageIdx = 255;
     }
@@ -182,6 +188,10 @@ zxerr_t h_review_update_data() {
         return zxerr_no_data;
     }
 
+    char buffer[20];
+    snprintf(buffer, sizeof(buffer), "update Idx %d/%d", viewdata.itemIdx, viewdata.pageIdx);
+    zemu_log_stack(buffer);
+
 #ifdef INCLUDE_ACTIONS_AS_ITEMS
     viewdata.pageCount = 1;
 
@@ -190,6 +200,7 @@ zxerr_t h_review_update_data() {
         snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", APPROVE_LABEL);
         splitValueField();
         zemu_log_stack("show_accept_action - accept item");
+        viewdata.pageIdx = 0;
         return zxerr_ok;
     }
 
@@ -198,6 +209,7 @@ zxerr_t h_review_update_data() {
         snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", REJECT_LABEL);
         splitValueField();
         zemu_log_stack("show_reject_action - reject item");
+        viewdata.pageIdx = 0;
         return zxerr_ok;
     }
 #endif

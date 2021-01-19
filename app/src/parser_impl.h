@@ -16,7 +16,6 @@
 #pragma once
 
 #include "parser_common.h"
-#include "parser_txdef.h"
 #include <zxmacros.h>
 #include "zxtypes.h"
 
@@ -141,6 +140,8 @@ parser_error_t _readBool(parser_context_t *c, pd_bool_t *value);
 
 parser_error_t _readCompactInt(parser_context_t *c, compactInt_t *v);
 
+parser_error_t _readCompactBalance(parser_context_t *c, pd_CompactBalance_t *v);
+
 parser_error_t _getValue(const compactInt_t *c, uint64_t *v);
 
 parser_error_t _readCallIndex(parser_context_t *c, pd_CallIndex_t *v);
@@ -151,8 +152,11 @@ parser_error_t _readTx(parser_context_t *c, parser_tx_t *v);
 
 uint8_t _getAddressType();
 
+parser_error_t _getNextFreeMethodSlot(const parser_context_t *c, pd_Method_t** method);
+
 parser_error_t _toStringCompactInt(const compactInt_t *c, uint8_t decimalPlaces,
                                    char postfix,
+                                   char prefix[],
                                    char *outValue, uint16_t outValueLen,
                                    uint8_t pageIdx, uint8_t *pageCount);
 
@@ -163,6 +167,10 @@ parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
 parser_error_t _toStringPubkeyAsAddress(const uint8_t *pubkey,
                                         char *outValue, uint16_t outValueLen,
                                         uint8_t pageIdx, uint8_t *pageCount);
+
+parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
+                                       char *outValue, uint16_t outValueLen,
+                                       uint8_t pageIdx, uint8_t *pageCount);
 
 #ifdef __cplusplus
 }
