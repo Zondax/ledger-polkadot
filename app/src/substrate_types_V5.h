@@ -90,8 +90,8 @@ typedef struct {
 } pd_StreamDependency_V5_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+    pd_BlockNumber_t height;
+    uint32_t index;
 } pd_Timepoint_V5_t;
 
 typedef struct {
@@ -131,9 +131,18 @@ typedef struct {
 } pd_IdentityInfo_V5_t;
 
 typedef struct {
+    pd_Call_t call;
+} pd_OpaqueCall_V5_t;
+
+typedef struct {
     uint8_t some;
     pd_ChangesTrieConfiguration_V5_t contained;
 } pd_OptionChangesTrieConfiguration_V5_t;
+
+typedef struct {
+    uint8_t some;
+    pd_Timepoint_V5_t contained;
+} pd_OptionTimepoint_V5_t;
 
 typedef struct {
     uint8_t some;
@@ -160,8 +169,7 @@ typedef struct {
 } pd_AccountIndex_V5_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+    const uint8_t* _ptr;
 } pd_CallHashOf_V5_t;
 
 typedef compactInt_t pd_CompactAssignments_V5_t;
@@ -240,11 +248,6 @@ typedef struct {
 } pd_MemberCount_V5_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_OpaqueCall_V5_t;
-
-typedef struct {
     uint8_t some;
     pd_AccountId_V5_t contained;
 } pd_OptionAccountId_V5_t;
@@ -268,11 +271,6 @@ typedef struct {
     uint8_t some;
     pd_StatementKind_V5_t contained;
 } pd_OptionStatementKind_V5_t;
-
-typedef struct {
-    uint8_t some;
-    pd_Timepoint_V5_t contained;
-} pd_OptionTimepoint_V5_t;
 
 typedef struct {
     uint32_t value;

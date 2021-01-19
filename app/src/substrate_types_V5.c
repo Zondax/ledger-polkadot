@@ -116,9 +116,8 @@ parser_error_t _readAccountVote_V5(parser_context_t* c, pd_AccountVote_V5_t* v)
     return parser_ok;
 }
 
-parser_error_t _readCallHashOf_V5(parser_context_t* c, pd_CallHashOf_V5_t* v)
-{
-    return parser_not_supported;
+parser_error_t _readCallHashOf_V5(parser_context_t* c, pd_CallHashOf_V5_t* v){
+    GEN_DEF_READARRAY(32)
 }
 
 parser_error_t _readChangesTrieConfiguration_V5(parser_context_t* c, pd_ChangesTrieConfiguration_V5_t* v)
@@ -229,7 +228,10 @@ parser_error_t _readMemberCount_V5(parser_context_t* c, pd_MemberCount_V5_t* v)
 
 parser_error_t _readOpaqueCall_V5(parser_context_t* c, pd_OpaqueCall_V5_t* v)
 {
-    return parser_not_supported;
+    // Encoded as Byte[], array size comes first
+    uint8_t size;
+    CHECK_ERROR(_readUInt8(c, &size))
+    return _readCall(c, &v->call);
 }
 
 parser_error_t _readPerbill_V5(parser_context_t* c, pd_Perbill_V5_t* v)
@@ -312,7 +314,9 @@ parser_error_t _readStreamDependency_V5(parser_context_t* c, pd_StreamDependency
 
 parser_error_t _readTimepoint_V5(parser_context_t* c, pd_Timepoint_V5_t* v)
 {
-    return parser_not_supported;
+    CHECK_ERROR(_readBlockNumber(c, &v->height))
+    CHECK_ERROR(_readu32(c, &v->index))
+    return parser_ok;
 }
 
 parser_error_t _readTupleAccountIdData_V5(parser_context_t* c, pd_TupleAccountIdData_V5_t* v)
@@ -721,10 +725,8 @@ parser_error_t _toStringCallHashOf_V5(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+    uint8_t* pageCount){
+    GEN_DEF_TOSTRING_ARRAY(32)
 }
 
 parser_error_t _toStringChangesTrieConfiguration_V5(
@@ -1093,8 +1095,7 @@ parser_error_t _toStringOpaqueCall_V5(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+    return _toStringCall(&v->call, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringPerbill_V5(
@@ -1331,7 +1332,30 @@ parser_error_t _toStringTimepoint_V5(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+
+    // Index + count pages
+    uint8_t pages[2];
+    CHECK_ERROR(_toStringBlockNumber(&v->height, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringu32(&v->index, outValue, outValueLen, 0, &pages[1]))
+
+    *pageCount = pages[0] + pages[1];
+    if (pageIdx > *pageCount) {
+        return parser_display_idx_out_of_range;
+    }
+
+    if (pageIdx < pages[0]) {
+        CHECK_ERROR(_toStringBlockNumber(&v->height, outValue, outValueLen, pageIdx, &pages[0]))
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    //////
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringu32(&v->index, outValue, outValueLen, pageIdx, &pages[1]))
+        return parser_ok;
+    }
+
+    return parser_display_idx_out_of_range;
 }
 
 parser_error_t _toStringTupleAccountIdData_V5(
