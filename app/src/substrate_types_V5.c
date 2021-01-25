@@ -83,15 +83,15 @@ parser_error_t _readAccountIndex_V5(parser_context_t* c, pd_AccountIndex_V5_t* v
 
 parser_error_t _readAccountVoteSplit_V5(parser_context_t* c, pd_AccountVoteSplit_V5_t* v)
 {
-    CHECK_ERROR(_readBalanceOf_V5(c, &v->aye));
-    CHECK_ERROR(_readBalanceOf_V5(c, &v->nay));
+    CHECK_ERROR(_readBalanceOf(c, &v->aye));
+    CHECK_ERROR(_readBalanceOf(c, &v->nay));
     return parser_ok;
 }
 
 parser_error_t _readAccountVoteStandard_V5(parser_context_t* c, pd_AccountVoteStandard_V5_t* v)
 {
     CHECK_ERROR(_readVote_V5(c, &v->vote));
-    CHECK_ERROR(_readBalanceOf_V5(c, &v->balance));
+    CHECK_ERROR(_readBalanceOf(c, &v->balance));
     return parser_ok;
 }
 
@@ -116,18 +116,8 @@ parser_error_t _readAccountVote_V5(parser_context_t* c, pd_AccountVote_V5_t* v)
     return parser_ok;
 }
 
-parser_error_t _readBalanceOf_V5(parser_context_t* c, pd_BalanceOf_V5_t* v){
-    GEN_DEF_READARRAY(16)
-}
-
-parser_error_t _readCallHashOf_V5(parser_context_t* c, pd_CallHashOf_V5_t* v)
-{
-    return parser_not_supported;
-}
-
-parser_error_t _readCall_V5(parser_context_t* c, pd_Call_V5_t* v)
-{
-    return parser_not_supported;
+parser_error_t _readCallHashOf_V5(parser_context_t* c, pd_CallHashOf_V5_t* v){
+    GEN_DEF_READARRAY(32)
 }
 
 parser_error_t _readChangesTrieConfiguration_V5(parser_context_t* c, pd_ChangesTrieConfiguration_V5_t* v)
@@ -238,7 +228,10 @@ parser_error_t _readMemberCount_V5(parser_context_t* c, pd_MemberCount_V5_t* v)
 
 parser_error_t _readOpaqueCall_V5(parser_context_t* c, pd_OpaqueCall_V5_t* v)
 {
-    return parser_not_supported;
+    // Encoded as Byte[], array size comes first
+    uint8_t size;
+    CHECK_ERROR(_readUInt8(c, &size))
+    return _readCall(c, &v->call);
 }
 
 parser_error_t _readPerbill_V5(parser_context_t* c, pd_Perbill_V5_t* v)
@@ -265,7 +258,14 @@ parser_error_t _readPriority_V5(parser_context_t* c, pd_Priority_V5_t* v)
 
 parser_error_t _readProxyType_V5(parser_context_t* c, pd_ProxyType_V5_t* v)
 {
-    return parser_not_supported;
+    CHECK_INPUT()
+
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    if (v->value > 3) {
+        return parser_value_out_of_range;
+    }
+
+    return parser_ok;
 }
 
 parser_error_t _readReferendumIndex_V5(parser_context_t* c, pd_ReferendumIndex_V5_t* v)
@@ -314,7 +314,9 @@ parser_error_t _readStreamDependency_V5(parser_context_t* c, pd_StreamDependency
 
 parser_error_t _readTimepoint_V5(parser_context_t* c, pd_Timepoint_V5_t* v)
 {
-    return parser_not_supported;
+    CHECK_ERROR(_readBlockNumber(c, &v->height))
+    CHECK_ERROR(_readu32(c, &v->index))
+    return parser_ok;
 }
 
 parser_error_t _readTupleAccountIdData_V5(parser_context_t* c, pd_TupleAccountIdData_V5_t* v)
@@ -324,8 +326,8 @@ parser_error_t _readTupleAccountIdData_V5(parser_context_t* c, pd_TupleAccountId
 
 parser_error_t _readTupleBalanceOfBalanceOfBlockNumber_V5(parser_context_t* c, pd_TupleBalanceOfBalanceOfBlockNumber_V5_t* v)
 {
-    CHECK_ERROR(_readBalanceOf_V5(c, &v->balance1))
-    CHECK_ERROR(_readBalanceOf_V5(c, &v->balance2))
+    CHECK_ERROR(_readBalanceOf(c, &v->balance1))
+    CHECK_ERROR(_readBalanceOf(c, &v->balance2))
     CHECK_ERROR(_readBlockNumber(c, &v->blockNumber))
     return parser_ok;
 }
@@ -345,8 +347,8 @@ parser_error_t _readValidatorPrefs_V5(parser_context_t* c, pd_ValidatorPrefs_V5_
 
 parser_error_t _readVestingInfo_V5(parser_context_t* c, pd_VestingInfo_V5_t* v)
 {
-    CHECK_ERROR(_readBalanceOf_V5(c, &v->locked))
-    CHECK_ERROR(_readBalanceOf_V5(c, &v->per_block))
+    CHECK_ERROR(_readBalanceOf(c, &v->locked))
+    CHECK_ERROR(_readBalanceOf(c, &v->per_block))
     CHECK_ERROR(_readBlockNumber(c, &v->starting_block))
     return parser_ok;
 }
@@ -378,10 +380,6 @@ parser_error_t _readu8_array_32_V5(parser_context_t* c, pd_u8_array_32_V5_t* v){
 
 parser_error_t _readVecAccountId_V5(parser_context_t* c, pd_VecAccountId_V5_t* v){
     GEN_DEF_READVECTOR(AccountId_V5)
-}
-
-parser_error_t _readVecCall_V5(parser_context_t* c, pd_VecCall_V5_t* v){
-    GEN_DEF_READVECTOR(Call_V5)
 }
 
 parser_error_t _readVecKeyValue_V5(parser_context_t* c, pd_VecKeyValue_V5_t* v){
@@ -608,8 +606,8 @@ parser_error_t _toStringAccountVoteSplit_V5(
     uint8_t pages[3];
 
     pages[0] = 1;
-    CHECK_ERROR(_toStringBalanceOf_V5(&v->aye, outValue, outValueLen, 0, &pages[1]))
-    CHECK_ERROR(_toStringBalanceOf_V5(&v->nay, outValue, outValueLen, 0, &pages[2]));
+    CHECK_ERROR(_toStringBalanceOf(&v->aye, outValue, outValueLen, 0, &pages[1]))
+    CHECK_ERROR(_toStringBalanceOf(&v->nay, outValue, outValueLen, 0, &pages[2]));
 
     *pageCount = 0;
     for (uint8_t i = 0; i < (uint8_t)sizeof(pages); i++) {
@@ -626,7 +624,7 @@ parser_error_t _toStringAccountVoteSplit_V5(
     /////////
 
     if (pageIdx < pages[1]) {
-        CHECK_ERROR(_toStringBalanceOf_V5(&v->aye, outValue, outValueLen, pageIdx, &pages[1]));
+        CHECK_ERROR(_toStringBalanceOf(&v->aye, outValue, outValueLen, pageIdx, &pages[1]));
         return parser_ok;
     }
     pageIdx -= pages[1];
@@ -635,7 +633,7 @@ parser_error_t _toStringAccountVoteSplit_V5(
     /////////
 
     if (pageIdx < pages[2]) {
-        CHECK_ERROR(_toStringBalanceOf_V5(&v->nay, outValue, outValueLen, pageIdx, &pages[2]));
+        CHECK_ERROR(_toStringBalanceOf(&v->nay, outValue, outValueLen, pageIdx, &pages[2]));
         return parser_ok;
     }
     pageIdx -= pages[2];
@@ -659,7 +657,7 @@ parser_error_t _toStringAccountVoteStandard_V5(
 
     pages[0] = 1;
     CHECK_ERROR(_toStringVote_V5(&v->vote, outValue, outValueLen, 0, &pages[1]))
-    CHECK_ERROR(_toStringBalanceOf_V5(&v->balance, outValue, outValueLen, 0, &pages[2]));
+    CHECK_ERROR(_toStringBalanceOf(&v->balance, outValue, outValueLen, 0, &pages[2]));
 
     *pageCount = 0;
     for (uint8_t i = 0; i < (uint8_t)sizeof(pages); i++) {
@@ -689,7 +687,7 @@ parser_error_t _toStringAccountVoteStandard_V5(
     /////////
 
     if (pageIdx < pages[2]) {
-        CHECK_ERROR(_toStringBalanceOf_V5(&v->balance, outValue, outValueLen, pageIdx, &pages[2]));
+        CHECK_ERROR(_toStringBalanceOf(&v->balance, outValue, outValueLen, pageIdx, &pages[2]));
         return parser_ok;
     }
     pageIdx -= pages[2];
@@ -722,68 +720,13 @@ parser_error_t _toStringAccountVote_V5(
     return parser_ok;
 }
 
-parser_error_t _toStringBalanceOf_V5(
-    const pd_BalanceOf_V5_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    CLEAN_AND_CHECK()
-
-    char bufferUI[200];
-    MEMSET(outValue, 0, outValueLen);
-    MEMSET(bufferUI, 0, sizeof(bufferUI));
-    *pageCount = 1;
-
-    uint8_t bcdOut[100];
-    const uint16_t bcdOutLen = sizeof(bcdOut);
-
-    bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, v->_ptr, 16);
-    if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen)) {
-        return parser_unexpected_buffer_end;
-    }
-
-    // Format number
-    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), COIN_AMOUNT_DECIMAL_PLACES) == 0) {
-        return parser_unexpected_value;
-    }
-
-    number_inplace_trimming(bufferUI);
-    size_t size = strlen(bufferUI) + strlen(COIN_TICKER) + 2;
-    char _tmpBuffer[200];
-    MEMZERO(_tmpBuffer, sizeof(_tmpBuffer));
-    strcat(_tmpBuffer, COIN_TICKER);
-    strcat(_tmpBuffer, " ");
-    strcat(_tmpBuffer, bufferUI);
-    // print length: strlen(value) + strlen(COIN_TICKER) + strlen(" ") + nullChar
-    MEMZERO(bufferUI, sizeof(bufferUI));
-    snprintf(bufferUI, size, "%s", _tmpBuffer);
-
-    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
-    return parser_ok;
-}
-
 parser_error_t _toStringCallHashOf_V5(
     const pd_CallHashOf_V5_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
-}
-
-parser_error_t _toStringCall_V5(
-    const pd_Call_V5_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+    uint8_t* pageCount){
+    GEN_DEF_TOSTRING_ARRAY(32)
 }
 
 parser_error_t _toStringChangesTrieConfiguration_V5(
@@ -1152,8 +1095,7 @@ parser_error_t _toStringOpaqueCall_V5(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+    return _toStringCall(&v->call, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringPerbill_V5(
@@ -1240,7 +1182,26 @@ parser_error_t _toStringProxyType_V5(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+
+    *pageCount = 1;
+    switch (v->value) {
+    case 0:
+        snprintf(outValue, outValueLen, "Any");
+        break;
+    case 1:
+        snprintf(outValue, outValueLen, "NonTransfer");
+        break;
+    case 2:
+        snprintf(outValue, outValueLen, "Governance");
+        break;
+    case 3:
+        snprintf(outValue, outValueLen, "Staking");
+        break;
+    default:
+        return parser_print_not_supported;
+    }
+
+    return parser_ok;
 }
 
 parser_error_t _toStringReferendumIndex_V5(
@@ -1371,7 +1332,30 @@ parser_error_t _toStringTimepoint_V5(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+
+    // Index + count pages
+    uint8_t pages[2];
+    CHECK_ERROR(_toStringBlockNumber(&v->height, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringu32(&v->index, outValue, outValueLen, 0, &pages[1]))
+
+    *pageCount = pages[0] + pages[1];
+    if (pageIdx > *pageCount) {
+        return parser_display_idx_out_of_range;
+    }
+
+    if (pageIdx < pages[0]) {
+        CHECK_ERROR(_toStringBlockNumber(&v->height, outValue, outValueLen, pageIdx, &pages[0]))
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    //////
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringu32(&v->index, outValue, outValueLen, pageIdx, &pages[1]))
+        return parser_ok;
+    }
+
+    return parser_display_idx_out_of_range;
 }
 
 parser_error_t _toStringTupleAccountIdData_V5(
@@ -1396,8 +1380,8 @@ parser_error_t _toStringTupleBalanceOfBalanceOfBlockNumber_V5(
 
     // Index + count pages
     uint8_t pages[3];
-    CHECK_ERROR(_toStringBalanceOf_V5(&v->balance1, outValue, outValueLen, 0, &pages[0]))
-    CHECK_ERROR(_toStringBalanceOf_V5(&v->balance2, outValue, outValueLen, 0, &pages[1]))
+    CHECK_ERROR(_toStringBalanceOf(&v->balance1, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringBalanceOf(&v->balance2, outValue, outValueLen, 0, &pages[1]))
     CHECK_ERROR(_toStringBlockNumber(&v->blockNumber, outValue, outValueLen, 0, &pages[2]))
 
     *pageCount = pages[0] + pages[1] + pages[2];
@@ -1406,14 +1390,14 @@ parser_error_t _toStringTupleBalanceOfBalanceOfBlockNumber_V5(
     }
 
     if (pageIdx < pages[0]) {
-        CHECK_ERROR(_toStringBalanceOf_V5(&v->balance1, outValue, outValueLen, pageIdx, &pages[0]))
+        CHECK_ERROR(_toStringBalanceOf(&v->balance1, outValue, outValueLen, pageIdx, &pages[0]))
         return parser_ok;
     }
     pageIdx -= pages[0];
 
     //////
     if (pageIdx < pages[1]) {
-        CHECK_ERROR(_toStringBalanceOf_V5(&v->balance2, outValue, outValueLen, pageIdx, &pages[1]))
+        CHECK_ERROR(_toStringBalanceOf(&v->balance2, outValue, outValueLen, pageIdx, &pages[1]))
         return parser_ok;
     }
     pageIdx -= pages[1];
@@ -1458,8 +1442,8 @@ parser_error_t _toStringVestingInfo_V5(
 
     // Index + count pages
     uint8_t pages[3];
-    CHECK_ERROR(_toStringBalanceOf_V5(&v->locked, outValue, outValueLen, 0, &pages[0]))
-    CHECK_ERROR(_toStringBalanceOf_V5(&v->per_block, outValue, outValueLen, 0, &pages[1]))
+    CHECK_ERROR(_toStringBalanceOf(&v->locked, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringBalanceOf(&v->per_block, outValue, outValueLen, 0, &pages[1]))
     CHECK_ERROR(_toStringBlockNumber(&v->starting_block, outValue, outValueLen, 0, &pages[2]))
 
     *pageCount = pages[0] + pages[1] + pages[2];
@@ -1468,14 +1452,14 @@ parser_error_t _toStringVestingInfo_V5(
     }
 
     if (pageIdx < pages[0]) {
-        CHECK_ERROR(_toStringBalanceOf_V5(&v->locked, outValue, outValueLen, pageIdx, &pages[0]))
+        CHECK_ERROR(_toStringBalanceOf(&v->locked, outValue, outValueLen, pageIdx, &pages[0]))
         return parser_ok;
     }
     pageIdx -= pages[0];
 
     //////
     if (pageIdx < pages[1]) {
-        CHECK_ERROR(_toStringBalanceOf_V5(&v->per_block, outValue, outValueLen, pageIdx, &pages[1]))
+        CHECK_ERROR(_toStringBalanceOf(&v->per_block, outValue, outValueLen, pageIdx, &pages[1]))
         return parser_ok;
     }
     pageIdx -= pages[1];
@@ -1537,16 +1521,6 @@ parser_error_t _toStringVecAccountId_V5(
     uint8_t* pageCount)
 {
     GEN_DEF_TOSTRING_VECTOR(AccountId_V5);
-}
-
-parser_error_t _toStringVecCall_V5(
-    const pd_VecCall_V5_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    GEN_DEF_TOSTRING_VECTOR(Call_V5);
 }
 
 parser_error_t _toStringVecKeyValue_V5(
@@ -1755,29 +1729,4 @@ parser_error_t _toStringOptionTupleBalanceOfBalanceOfBlockNumber_V5(
         snprintf(outValue, outValueLen, "None");
     }
     return parser_ok;
-}
-
-///////////////////////////////////
-///////////////////////////////////
-///////////////////////////////////
-
-parser_error_t _readProposal_V5(parser_context_t* c, pd_Proposal_V5_t* v)
-{
-    CHECK_INPUT();
-    uint16_t startOffset = c->offset;
-    CHECK_ERROR(_readCallIndex(c, &v->callIndex))
-    CHECK_ERROR(_readMethodBasic_V5(c, v->callIndex.moduleIdx, v->callIndex.idx, &v->method))
-    v->_ptr = c->buffer + startOffset;
-    v->_len = c->offset - startOffset;
-    return parser_ok;
-}
-
-parser_error_t _toStringProposal_V5(
-    const pd_Proposal_V5_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    GEN_DEF_TOSTRING_ARRAY(v->_len);
 }

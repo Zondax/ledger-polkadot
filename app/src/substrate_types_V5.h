@@ -31,10 +31,6 @@ typedef struct {
 } pd_Conviction_V5_t;
 
 typedef struct {
-    const uint8_t* _ptr;
-} pd_BalanceOf_V5_t;
-
-typedef struct {
     pd_bool_t aye;
     pd_Conviction_V5_t conviction;
 } pd_Vote_V5_t;
@@ -44,19 +40,14 @@ typedef struct {
 } pd_AccountId_V5_t;
 
 typedef struct {
-    pd_BalanceOf_V5_t aye;
-    pd_BalanceOf_V5_t nay;
+    pd_BalanceOf_t aye;
+    pd_BalanceOf_t nay;
 } pd_AccountVoteSplit_V5_t;
 
 typedef struct {
     pd_Vote_V5_t vote;
-    pd_BalanceOf_V5_t balance;
+    pd_BalanceOf_t balance;
 } pd_AccountVoteStandard_V5_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Call_V5_t;
 
 typedef struct {
     pd_u32_t digest_interval;
@@ -80,8 +71,7 @@ typedef struct {
 } pd_Period_V5_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+    uint8_t value;
 } pd_ProxyType_V5_t;
 
 typedef struct {
@@ -100,8 +90,8 @@ typedef struct {
 } pd_StreamDependency_V5_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+    pd_BlockNumber_t height;
+    uint32_t index;
 } pd_Timepoint_V5_t;
 
 typedef struct {
@@ -110,8 +100,8 @@ typedef struct {
 } pd_TupleAccountIdData_V5_t;
 
 typedef struct {
-    pd_BalanceOf_V5_t balance1;
-    pd_BalanceOf_V5_t balance2;
+    pd_BalanceOf_t balance1;
+    pd_BalanceOf_t balance2;
     pd_BlockNumber_t blockNumber;
 } pd_TupleBalanceOfBalanceOfBlockNumber_V5_t;
 
@@ -141,9 +131,18 @@ typedef struct {
 } pd_IdentityInfo_V5_t;
 
 typedef struct {
+    pd_Call_t call;
+} pd_OpaqueCall_V5_t;
+
+typedef struct {
     uint8_t some;
     pd_ChangesTrieConfiguration_V5_t contained;
 } pd_OptionChangesTrieConfiguration_V5_t;
+
+typedef struct {
+    uint8_t some;
+    pd_Timepoint_V5_t contained;
+} pd_OptionTimepoint_V5_t;
 
 typedef struct {
     uint8_t some;
@@ -160,8 +159,8 @@ typedef struct {
 } pd_ValidatorPrefs_V5_t;
 
 typedef struct {
-    pd_BalanceOf_V5_t locked;
-    pd_BalanceOf_V5_t per_block;
+    pd_BalanceOf_t locked;
+    pd_BalanceOf_t per_block;
     pd_BlockNumber_t starting_block;
 } pd_VestingInfo_V5_t;
 
@@ -170,8 +169,7 @@ typedef struct {
 } pd_AccountIndex_V5_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+    const uint8_t* _ptr;
 } pd_CallHashOf_V5_t;
 
 typedef compactInt_t pd_CompactAssignments_V5_t;
@@ -250,11 +248,6 @@ typedef struct {
 } pd_MemberCount_V5_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_OpaqueCall_V5_t;
-
-typedef struct {
     uint8_t some;
     pd_AccountId_V5_t contained;
 } pd_OptionAccountId_V5_t;
@@ -278,11 +271,6 @@ typedef struct {
     uint8_t some;
     pd_StatementKind_V5_t contained;
 } pd_OptionStatementKind_V5_t;
-
-typedef struct {
-    uint8_t some;
-    pd_Timepoint_V5_t contained;
-} pd_OptionTimepoint_V5_t;
 
 typedef struct {
     uint32_t value;
@@ -314,12 +302,6 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_VecAccountId_V5_t;
-
-typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
-} pd_VecCall_V5_t;
 
 typedef struct {
     uint64_t _len;

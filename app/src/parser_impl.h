@@ -152,6 +152,8 @@ parser_error_t _readTx(parser_context_t *c, parser_tx_t *v);
 
 uint8_t _getAddressType();
 
+parser_error_t _getNextFreeMethodSlot(const parser_context_t *c, pd_Method_t** method);
+
 parser_error_t _toStringCompactInt(const compactInt_t *c, uint8_t decimalPlaces,
                                    char postfix,
                                    char prefix[],
