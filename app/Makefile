@@ -39,6 +39,8 @@ all: bin/app.elf
 	@echo "\"" >> $(CURDIR)/pkg/zxtool.sh
 	@cat $(CURDIR)/../deps/ledger-zxlib/scripts/template.sh >> $(CURDIR)/pkg/zxtool.sh
 	@chmod +x $(CURDIR)/pkg/zxtool.sh
+	@cp $(CURDIR)/bin/app.elf ${OUTPUT_ELF}
+
 
 include $(BOLOS_SDK)/Makefile.defines
 
@@ -75,10 +77,12 @@ APP_LOAD_PARAMS = --appFlags 0x200 --delete $(COMMON_LOAD_PARAMS) --path $(APPPA
 
 ifeq ($(TARGET_NAME),TARGET_NANOS)
 SCRIPT_LD:=$(CURDIR)/script.ld
+OUTPUT_ELF:= $(CURDIR)/bin/app_s.elf
 ICONNAME:=$(CURDIR)/nanos_icon.gif
 endif
 
 ifeq ($(TARGET_NAME),TARGET_NANOX)
+OUTPUT_ELF:= $(CURDIR)/bin/app_x.elf
 ICONNAME:=$(CURDIR)/nanox_icon.gif
 endif
 
