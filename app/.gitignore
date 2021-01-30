@@ -39,8 +39,8 @@ cmake-build-debug/
 \.idea/workspace\.xml
 \.idea/
 
-src/glyphs\.h
-src/glyphs\.c
+glyphs/glyphs\.h
+glyphs/glyphs\.c
 obj/
 bin/
 debug/
