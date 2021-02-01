@@ -59,6 +59,7 @@ parser_error_t _readKeyOwnerProof_V5(parser_context_t* c, pd_KeyOwnerProof_V5_t*
 parser_error_t _readKeyValue_V5(parser_context_t* c, pd_KeyValue_V5_t* v);
 parser_error_t _readKey_V5(parser_context_t* c, pd_Key_V5_t* v);
 parser_error_t _readKeys_V5(parser_context_t* c, pd_Keys_V5_t* v);
+parser_error_t _readLookupSource_V5(parser_context_t* c, pd_LookupSource_V5_t* v);
 parser_error_t _readMemberCount_V5(parser_context_t* c, pd_MemberCount_V5_t* v);
 parser_error_t _readOpaqueCall_V5(parser_context_t* c, pd_OpaqueCall_V5_t* v);
 parser_error_t _readOptionAccountId_V5(parser_context_t* c, pd_OptionAccountId_V5_t* v);
@@ -89,6 +90,7 @@ parser_error_t _readValidatorPrefs_V5(parser_context_t* c, pd_ValidatorPrefs_V5_
 parser_error_t _readVecAccountId_V5(parser_context_t* c, pd_VecAccountId_V5_t* v);
 parser_error_t _readVecKeyValue_V5(parser_context_t* c, pd_VecKeyValue_V5_t* v);
 parser_error_t _readVecKey_V5(parser_context_t* c, pd_VecKey_V5_t* v);
+parser_error_t _readVecLookupSource_V5(parser_context_t* c, pd_VecLookupSource_V5_t* v);
 parser_error_t _readVecTupleAccountIdData_V5(parser_context_t* c, pd_VecTupleAccountIdData_V5_t* v);
 parser_error_t _readVecValidatorIndex_V5(parser_context_t* c, pd_VecValidatorIndex_V5_t* v);
 parser_error_t _readVestingInfo_V5(parser_context_t* c, pd_VestingInfo_V5_t* v);
@@ -328,6 +330,13 @@ parser_error_t _toStringKeys_V5(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringLookupSource_V5(
+    const pd_LookupSource_V5_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringMemberCount_V5(
     const pd_MemberCount_V5_t* v,
     char* outValue,
@@ -533,6 +542,13 @@ parser_error_t _toStringVecKeyValue_V5(
 
 parser_error_t _toStringVecKey_V5(
     const pd_VecKey_V5_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringVecLookupSource_V5(
+    const pd_VecLookupSource_V5_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

@@ -18,7 +18,7 @@
 #include "parser_impl.h"
 #include "parser_txdef.h"
 #include "coin.h"
-#include "crypto.h"
+#include "crypto_helper.h"
 #include "bignum.h"
 #include "coin_ss58.h"
 #include "substrate_types.h"
@@ -360,21 +360,6 @@ parser_error_t _checkVersions(parser_context_t *c) {
 }
 
 uint8_t __address_type;
-
-parser_error_t _getNextFreeMethodSlot(const parser_context_t *c, pd_Method_t** method) {
-
-    if (c == NULL || c->tx_obj == NULL) {
-        return parser_unexpected_error;
-    }
-
-    if (c->tx_obj->slotIdx + 1 == MAX_METHOD_SLOTS) {
-        return parser_value_too_many_bytes;
-    }
-
-    *method = &c->tx_obj->methodSlot[c->tx_obj->slotIdx];
-    c->tx_obj->slotIdx++;
-    return parser_ok;
-}
 
 uint8_t _getAddressType() {
     return __address_type;

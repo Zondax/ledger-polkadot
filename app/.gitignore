@@ -47,5 +47,6 @@ debug/
 bin/app.sha256
 bin/app.apdu
 
+\output/app.*
 pkg/zxtool.sh
 pkg/installer_?.sh

@@ -82,3 +82,5 @@ tests_zemu/yarn.lock
 /build
 /fuzz-*.log
 /fuzz/corpora
+/tests_tools/target/
+!/tests_tools/neon/yarn.lock

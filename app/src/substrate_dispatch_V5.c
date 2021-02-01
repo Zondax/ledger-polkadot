@@ -209,7 +209,7 @@ __Z_INLINE parser_error_t _readMethod_indices_freeze_V5(
 __Z_INLINE parser_error_t _readMethod_balances_transfer_V5(
     parser_context_t* c, pd_balances_transfer_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->dest))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->value))
     return parser_ok;
 }
@@ -217,7 +217,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_V5(
 __Z_INLINE parser_error_t _readMethod_balances_set_balance_V5(
     parser_context_t* c, pd_balances_set_balance_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->who))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->who))
     CHECK_ERROR(_readCompactBalance(c, &m->new_free))
     CHECK_ERROR(_readCompactBalance(c, &m->new_reserved))
     return parser_ok;
@@ -226,8 +226,8 @@ __Z_INLINE parser_error_t _readMethod_balances_set_balance_V5(
 __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V5(
     parser_context_t* c, pd_balances_force_transfer_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->source))
-    CHECK_ERROR(_readLookupSource(c, &m->dest))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->source))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->value))
     return parser_ok;
 }
@@ -235,7 +235,7 @@ __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V5(
 __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive_V5(
     parser_context_t* c, pd_balances_transfer_keep_alive_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->dest))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->value))
     return parser_ok;
 }
@@ -250,7 +250,7 @@ __Z_INLINE parser_error_t _readMethod_authorship_set_uncles_V5(
 __Z_INLINE parser_error_t _readMethod_staking_bond_V5(
     parser_context_t* c, pd_staking_bond_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->controller))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->controller))
     CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     CHECK_ERROR(_readRewardDestination_V5(c, &m->payee))
     return parser_ok;
@@ -287,7 +287,7 @@ __Z_INLINE parser_error_t _readMethod_staking_validate_V5(
 __Z_INLINE parser_error_t _readMethod_staking_nominate_V5(
     parser_context_t* c, pd_staking_nominate_V5_t* m)
 {
-    CHECK_ERROR(_readVecLookupSource(c, &m->targets))
+    CHECK_ERROR(_readVecLookupSource_V5(c, &m->targets))
     return parser_ok;
 }
 
@@ -307,7 +307,7 @@ __Z_INLINE parser_error_t _readMethod_staking_set_payee_V5(
 __Z_INLINE parser_error_t _readMethod_staking_set_controller_V5(
     parser_context_t* c, pd_staking_set_controller_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->controller))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->controller))
     return parser_ok;
 }
 
@@ -798,7 +798,7 @@ __Z_INLINE parser_error_t _readMethod_electionsphragmen_renounce_candidacy_V5(
 __Z_INLINE parser_error_t _readMethod_electionsphragmen_remove_member_V5(
     parser_context_t* c, pd_electionsphragmen_remove_member_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->who))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->who))
     CHECK_ERROR(_readbool(c, &m->has_replacement))
     return parser_ok;
 }
@@ -856,7 +856,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_propose_spend_V5(
     parser_context_t* c, pd_treasury_propose_spend_V5_t* m)
 {
     CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
-    CHECK_ERROR(_readLookupSource(c, &m->beneficiary))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -932,7 +932,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_propose_curator_V5(
     parser_context_t* c, pd_treasury_propose_curator_V5_t* m)
 {
     CHECK_ERROR(_readCompactProposalIndex_V5(c, &m->bounty_id))
-    CHECK_ERROR(_readLookupSource(c, &m->curator))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->curator))
     CHECK_ERROR(_readCompactBalanceOf(c, &m->fee))
     return parser_ok;
 }
@@ -955,7 +955,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_award_bounty_V5(
     parser_context_t* c, pd_treasury_award_bounty_V5_t* m)
 {
     CHECK_ERROR(_readCompactProposalIndex_V5(c, &m->bounty_id))
-    CHECK_ERROR(_readLookupSource(c, &m->beneficiary))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -1033,14 +1033,14 @@ __Z_INLINE parser_error_t _readMethod_vesting_vest_V5(
 __Z_INLINE parser_error_t _readMethod_vesting_vest_other_V5(
     parser_context_t* c, pd_vesting_vest_other_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->target))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_vesting_vested_transfer_V5(
     parser_context_t* c, pd_vesting_vested_transfer_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->target))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
     CHECK_ERROR(_readVestingInfo_V5(c, &m->schedule))
     return parser_ok;
 }
@@ -1048,8 +1048,8 @@ __Z_INLINE parser_error_t _readMethod_vesting_vested_transfer_V5(
 __Z_INLINE parser_error_t _readMethod_vesting_force_vested_transfer_V5(
     parser_context_t* c, pd_vesting_force_vested_transfer_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->source))
-    CHECK_ERROR(_readLookupSource(c, &m->target))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->source))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
     CHECK_ERROR(_readVestingInfo_V5(c, &m->schedule))
     return parser_ok;
 }
@@ -1146,7 +1146,7 @@ __Z_INLINE parser_error_t _readMethod_identity_provide_judgement_V5(
     parser_context_t* c, pd_identity_provide_judgement_V5_t* m)
 {
     CHECK_ERROR(_readCompactRegistrarIndex_V5(c, &m->reg_index))
-    CHECK_ERROR(_readLookupSource(c, &m->target))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
     CHECK_ERROR(_readJudgement_V5(c, &m->judgement))
     return parser_ok;
 }
@@ -1154,14 +1154,14 @@ __Z_INLINE parser_error_t _readMethod_identity_provide_judgement_V5(
 __Z_INLINE parser_error_t _readMethod_identity_kill_identity_V5(
     parser_context_t* c, pd_identity_kill_identity_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->target))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->target))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_identity_add_sub_V5(
     parser_context_t* c, pd_identity_add_sub_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->sub))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->sub))
     CHECK_ERROR(_readData(c, &m->data))
     return parser_ok;
 }
@@ -1169,7 +1169,7 @@ __Z_INLINE parser_error_t _readMethod_identity_add_sub_V5(
 __Z_INLINE parser_error_t _readMethod_identity_rename_sub_V5(
     parser_context_t* c, pd_identity_rename_sub_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->sub))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->sub))
     CHECK_ERROR(_readData(c, &m->data))
     return parser_ok;
 }
@@ -1177,7 +1177,7 @@ __Z_INLINE parser_error_t _readMethod_identity_rename_sub_V5(
 __Z_INLINE parser_error_t _readMethod_identity_remove_sub_V5(
     parser_context_t* c, pd_identity_remove_sub_V5_t* m)
 {
-    CHECK_ERROR(_readLookupSource(c, &m->sub))
+    CHECK_ERROR(_readLookupSource_V5(c, &m->sub))
     return parser_ok;
 }
 
@@ -1315,487 +1315,6 @@ __Z_INLINE parser_error_t _readMethod_multisig_cancel_as_multi_V5(
     return parser_ok;
 }
 
-parser_error_t _readMethodBasic_V5(
-    parser_context_t* c,
-    uint8_t moduleIdx,
-    uint8_t callIdx,
-    pd_MethodBasic_V5_t* method)
-{
-    uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
-
-    switch (callPrivIdx) {
-    case 0: /* module 0 call 0 */
-        CHECK_ERROR(_readMethod_system_fill_block_V5(c, &method->system_fill_block_V5))
-        break;
-    case 1: /* module 0 call 1 */
-        CHECK_ERROR(_readMethod_system_remark_V5(c, &method->system_remark_V5))
-        break;
-    case 2: /* module 0 call 2 */
-        CHECK_ERROR(_readMethod_system_set_heap_pages_V5(c, &method->system_set_heap_pages_V5))
-        break;
-    case 3: /* module 0 call 3 */
-        CHECK_ERROR(_readMethod_system_set_code_V5(c, &method->system_set_code_V5))
-        break;
-    case 4: /* module 0 call 4 */
-        CHECK_ERROR(_readMethod_system_set_code_without_checks_V5(c, &method->system_set_code_without_checks_V5))
-        break;
-    case 5: /* module 0 call 5 */
-        CHECK_ERROR(_readMethod_system_set_changes_trie_config_V5(c, &method->system_set_changes_trie_config_V5))
-        break;
-    case 6: /* module 0 call 6 */
-        CHECK_ERROR(_readMethod_system_set_storage_V5(c, &method->system_set_storage_V5))
-        break;
-    case 7: /* module 0 call 7 */
-        CHECK_ERROR(_readMethod_system_kill_storage_V5(c, &method->system_kill_storage_V5))
-        break;
-    case 8: /* module 0 call 8 */
-        CHECK_ERROR(_readMethod_system_kill_prefix_V5(c, &method->system_kill_prefix_V5))
-        break;
-    case 9: /* module 0 call 9 */
-        CHECK_ERROR(_readMethod_system_suicide_V5(c, &method->system_suicide_V5))
-        break;
-    case 257: /* module 1 call 1 */
-        CHECK_ERROR(_readMethod_scheduler_cancel_V5(c, &method->scheduler_cancel_V5))
-        break;
-    case 259: /* module 1 call 3 */
-        CHECK_ERROR(_readMethod_scheduler_cancel_named_V5(c, &method->scheduler_cancel_named_V5))
-        break;
-    case 512: /* module 2 call 0 */
-        CHECK_ERROR(_readMethod_babe_report_equivocation_V5(c, &method->babe_report_equivocation_V5))
-        break;
-    case 513: /* module 2 call 1 */
-        CHECK_ERROR(_readMethod_babe_report_equivocation_unsigned_V5(c, &method->babe_report_equivocation_unsigned_V5))
-        break;
-    case 768: /* module 3 call 0 */
-        CHECK_ERROR(_readMethod_timestamp_set_V5(c, &method->timestamp_set_V5))
-        break;
-    case 1024: /* module 4 call 0 */
-        CHECK_ERROR(_readMethod_indices_claim_V5(c, &method->indices_claim_V5))
-        break;
-    case 1025: /* module 4 call 1 */
-        CHECK_ERROR(_readMethod_indices_transfer_V5(c, &method->indices_transfer_V5))
-        break;
-    case 1026: /* module 4 call 2 */
-        CHECK_ERROR(_readMethod_indices_free_V5(c, &method->indices_free_V5))
-        break;
-    case 1027: /* module 4 call 3 */
-        CHECK_ERROR(_readMethod_indices_force_transfer_V5(c, &method->indices_force_transfer_V5))
-        break;
-    case 1028: /* module 4 call 4 */
-        CHECK_ERROR(_readMethod_indices_freeze_V5(c, &method->indices_freeze_V5))
-        break;
-    case 1280: /* module 5 call 0 */
-        CHECK_ERROR(_readMethod_balances_transfer_V5(c, &method->balances_transfer_V5))
-        break;
-    case 1281: /* module 5 call 1 */
-        CHECK_ERROR(_readMethod_balances_set_balance_V5(c, &method->balances_set_balance_V5))
-        break;
-    case 1282: /* module 5 call 2 */
-        CHECK_ERROR(_readMethod_balances_force_transfer_V5(c, &method->balances_force_transfer_V5))
-        break;
-    case 1283: /* module 5 call 3 */
-        CHECK_ERROR(_readMethod_balances_transfer_keep_alive_V5(c, &method->balances_transfer_keep_alive_V5))
-        break;
-    case 1536: /* module 6 call 0 */
-        CHECK_ERROR(_readMethod_authorship_set_uncles_V5(c, &method->authorship_set_uncles_V5))
-        break;
-    case 1792: /* module 7 call 0 */
-        CHECK_ERROR(_readMethod_staking_bond_V5(c, &method->staking_bond_V5))
-        break;
-    case 1793: /* module 7 call 1 */
-        CHECK_ERROR(_readMethod_staking_bond_extra_V5(c, &method->staking_bond_extra_V5))
-        break;
-    case 1794: /* module 7 call 2 */
-        CHECK_ERROR(_readMethod_staking_unbond_V5(c, &method->staking_unbond_V5))
-        break;
-    case 1795: /* module 7 call 3 */
-        CHECK_ERROR(_readMethod_staking_withdraw_unbonded_V5(c, &method->staking_withdraw_unbonded_V5))
-        break;
-    case 1796: /* module 7 call 4 */
-        CHECK_ERROR(_readMethod_staking_validate_V5(c, &method->staking_validate_V5))
-        break;
-    case 1797: /* module 7 call 5 */
-        CHECK_ERROR(_readMethod_staking_nominate_V5(c, &method->staking_nominate_V5))
-        break;
-    case 1798: /* module 7 call 6 */
-        CHECK_ERROR(_readMethod_staking_chill_V5(c, &method->staking_chill_V5))
-        break;
-    case 1799: /* module 7 call 7 */
-        CHECK_ERROR(_readMethod_staking_set_payee_V5(c, &method->staking_set_payee_V5))
-        break;
-    case 1800: /* module 7 call 8 */
-        CHECK_ERROR(_readMethod_staking_set_controller_V5(c, &method->staking_set_controller_V5))
-        break;
-    case 1801: /* module 7 call 9 */
-        CHECK_ERROR(_readMethod_staking_set_validator_count_V5(c, &method->staking_set_validator_count_V5))
-        break;
-    case 1802: /* module 7 call 10 */
-        CHECK_ERROR(_readMethod_staking_increase_validator_count_V5(c, &method->staking_increase_validator_count_V5))
-        break;
-    case 1803: /* module 7 call 11 */
-        CHECK_ERROR(_readMethod_staking_scale_validator_count_V5(c, &method->staking_scale_validator_count_V5))
-        break;
-    case 1804: /* module 7 call 12 */
-        CHECK_ERROR(_readMethod_staking_force_no_eras_V5(c, &method->staking_force_no_eras_V5))
-        break;
-    case 1805: /* module 7 call 13 */
-        CHECK_ERROR(_readMethod_staking_force_new_era_V5(c, &method->staking_force_new_era_V5))
-        break;
-    case 1806: /* module 7 call 14 */
-        CHECK_ERROR(_readMethod_staking_set_invulnerables_V5(c, &method->staking_set_invulnerables_V5))
-        break;
-    case 1807: /* module 7 call 15 */
-        CHECK_ERROR(_readMethod_staking_force_unstake_V5(c, &method->staking_force_unstake_V5))
-        break;
-    case 1808: /* module 7 call 16 */
-        CHECK_ERROR(_readMethod_staking_force_new_era_always_V5(c, &method->staking_force_new_era_always_V5))
-        break;
-    case 1809: /* module 7 call 17 */
-        CHECK_ERROR(_readMethod_staking_cancel_deferred_slash_V5(c, &method->staking_cancel_deferred_slash_V5))
-        break;
-    case 1810: /* module 7 call 18 */
-        CHECK_ERROR(_readMethod_staking_payout_stakers_V5(c, &method->staking_payout_stakers_V5))
-        break;
-    case 1811: /* module 7 call 19 */
-        CHECK_ERROR(_readMethod_staking_rebond_V5(c, &method->staking_rebond_V5))
-        break;
-    case 1812: /* module 7 call 20 */
-        CHECK_ERROR(_readMethod_staking_set_history_depth_V5(c, &method->staking_set_history_depth_V5))
-        break;
-    case 1813: /* module 7 call 21 */
-        CHECK_ERROR(_readMethod_staking_reap_stash_V5(c, &method->staking_reap_stash_V5))
-        break;
-    case 1814: /* module 7 call 22 */
-        CHECK_ERROR(_readMethod_staking_submit_election_solution_V5(c, &method->staking_submit_election_solution_V5))
-        break;
-    case 1815: /* module 7 call 23 */
-        CHECK_ERROR(_readMethod_staking_submit_election_solution_unsigned_V5(c, &method->staking_submit_election_solution_unsigned_V5))
-        break;
-    case 2304: /* module 9 call 0 */
-        CHECK_ERROR(_readMethod_session_set_keys_V5(c, &method->session_set_keys_V5))
-        break;
-    case 2305: /* module 9 call 1 */
-        CHECK_ERROR(_readMethod_session_purge_keys_V5(c, &method->session_purge_keys_V5))
-        break;
-    case 2816: /* module 11 call 0 */
-        CHECK_ERROR(_readMethod_grandpa_report_equivocation_V5(c, &method->grandpa_report_equivocation_V5))
-        break;
-    case 2817: /* module 11 call 1 */
-        CHECK_ERROR(_readMethod_grandpa_report_equivocation_unsigned_V5(c, &method->grandpa_report_equivocation_unsigned_V5))
-        break;
-    case 2818: /* module 11 call 2 */
-        CHECK_ERROR(_readMethod_grandpa_note_stalled_V5(c, &method->grandpa_note_stalled_V5))
-        break;
-    case 3072: /* module 12 call 0 */
-        CHECK_ERROR(_readMethod_imonline_heartbeat_V5(c, &method->imonline_heartbeat_V5))
-        break;
-    case 3584: /* module 14 call 0 */
-        CHECK_ERROR(_readMethod_democracy_propose_V5(c, &method->democracy_propose_V5))
-        break;
-    case 3585: /* module 14 call 1 */
-        CHECK_ERROR(_readMethod_democracy_second_V5(c, &method->democracy_second_V5))
-        break;
-    case 3586: /* module 14 call 2 */
-        CHECK_ERROR(_readMethod_democracy_vote_V5(c, &method->democracy_vote_V5))
-        break;
-    case 3587: /* module 14 call 3 */
-        CHECK_ERROR(_readMethod_democracy_emergency_cancel_V5(c, &method->democracy_emergency_cancel_V5))
-        break;
-    case 3588: /* module 14 call 4 */
-        CHECK_ERROR(_readMethod_democracy_external_propose_V5(c, &method->democracy_external_propose_V5))
-        break;
-    case 3589: /* module 14 call 5 */
-        CHECK_ERROR(_readMethod_democracy_external_propose_majority_V5(c, &method->democracy_external_propose_majority_V5))
-        break;
-    case 3590: /* module 14 call 6 */
-        CHECK_ERROR(_readMethod_democracy_external_propose_default_V5(c, &method->democracy_external_propose_default_V5))
-        break;
-    case 3591: /* module 14 call 7 */
-        CHECK_ERROR(_readMethod_democracy_fast_track_V5(c, &method->democracy_fast_track_V5))
-        break;
-    case 3592: /* module 14 call 8 */
-        CHECK_ERROR(_readMethod_democracy_veto_external_V5(c, &method->democracy_veto_external_V5))
-        break;
-    case 3593: /* module 14 call 9 */
-        CHECK_ERROR(_readMethod_democracy_cancel_referendum_V5(c, &method->democracy_cancel_referendum_V5))
-        break;
-    case 3594: /* module 14 call 10 */
-        CHECK_ERROR(_readMethod_democracy_cancel_queued_V5(c, &method->democracy_cancel_queued_V5))
-        break;
-    case 3595: /* module 14 call 11 */
-        CHECK_ERROR(_readMethod_democracy_delegate_V5(c, &method->democracy_delegate_V5))
-        break;
-    case 3596: /* module 14 call 12 */
-        CHECK_ERROR(_readMethod_democracy_undelegate_V5(c, &method->democracy_undelegate_V5))
-        break;
-    case 3597: /* module 14 call 13 */
-        CHECK_ERROR(_readMethod_democracy_clear_public_proposals_V5(c, &method->democracy_clear_public_proposals_V5))
-        break;
-    case 3598: /* module 14 call 14 */
-        CHECK_ERROR(_readMethod_democracy_note_preimage_V5(c, &method->democracy_note_preimage_V5))
-        break;
-    case 3599: /* module 14 call 15 */
-        CHECK_ERROR(_readMethod_democracy_note_preimage_operational_V5(c, &method->democracy_note_preimage_operational_V5))
-        break;
-    case 3600: /* module 14 call 16 */
-        CHECK_ERROR(_readMethod_democracy_note_imminent_preimage_V5(c, &method->democracy_note_imminent_preimage_V5))
-        break;
-    case 3601: /* module 14 call 17 */
-        CHECK_ERROR(_readMethod_democracy_note_imminent_preimage_operational_V5(c, &method->democracy_note_imminent_preimage_operational_V5))
-        break;
-    case 3602: /* module 14 call 18 */
-        CHECK_ERROR(_readMethod_democracy_reap_preimage_V5(c, &method->democracy_reap_preimage_V5))
-        break;
-    case 3603: /* module 14 call 19 */
-        CHECK_ERROR(_readMethod_democracy_unlock_V5(c, &method->democracy_unlock_V5))
-        break;
-    case 3604: /* module 14 call 20 */
-        CHECK_ERROR(_readMethod_democracy_remove_vote_V5(c, &method->democracy_remove_vote_V5))
-        break;
-    case 3605: /* module 14 call 21 */
-        CHECK_ERROR(_readMethod_democracy_remove_other_vote_V5(c, &method->democracy_remove_other_vote_V5))
-        break;
-    case 3606: /* module 14 call 22 */
-        CHECK_ERROR(_readMethod_democracy_enact_proposal_V5(c, &method->democracy_enact_proposal_V5))
-        break;
-    case 3607: /* module 14 call 23 */
-        CHECK_ERROR(_readMethod_democracy_blacklist_V5(c, &method->democracy_blacklist_V5))
-        break;
-    case 3608: /* module 14 call 24 */
-        CHECK_ERROR(_readMethod_democracy_cancel_proposal_V5(c, &method->democracy_cancel_proposal_V5))
-        break;
-    case 3840: /* module 15 call 0 */
-        CHECK_ERROR(_readMethod_council_set_members_V5(c, &method->council_set_members_V5))
-        break;
-    case 3843: /* module 15 call 3 */
-        CHECK_ERROR(_readMethod_council_vote_V5(c, &method->council_vote_V5))
-        break;
-    case 3844: /* module 15 call 4 */
-        CHECK_ERROR(_readMethod_council_close_V5(c, &method->council_close_V5))
-        break;
-    case 3845: /* module 15 call 5 */
-        CHECK_ERROR(_readMethod_council_disapprove_proposal_V5(c, &method->council_disapprove_proposal_V5))
-        break;
-    case 4096: /* module 16 call 0 */
-        CHECK_ERROR(_readMethod_technicalcommittee_set_members_V5(c, &method->technicalcommittee_set_members_V5))
-        break;
-    case 4099: /* module 16 call 3 */
-        CHECK_ERROR(_readMethod_technicalcommittee_vote_V5(c, &method->technicalcommittee_vote_V5))
-        break;
-    case 4100: /* module 16 call 4 */
-        CHECK_ERROR(_readMethod_technicalcommittee_close_V5(c, &method->technicalcommittee_close_V5))
-        break;
-    case 4101: /* module 16 call 5 */
-        CHECK_ERROR(_readMethod_technicalcommittee_disapprove_proposal_V5(c, &method->technicalcommittee_disapprove_proposal_V5))
-        break;
-    case 4352: /* module 17 call 0 */
-        CHECK_ERROR(_readMethod_electionsphragmen_vote_V5(c, &method->electionsphragmen_vote_V5))
-        break;
-    case 4353: /* module 17 call 1 */
-        CHECK_ERROR(_readMethod_electionsphragmen_remove_voter_V5(c, &method->electionsphragmen_remove_voter_V5))
-        break;
-    case 4354: /* module 17 call 2 */
-        CHECK_ERROR(_readMethod_electionsphragmen_report_defunct_voter_V5(c, &method->electionsphragmen_report_defunct_voter_V5))
-        break;
-    case 4355: /* module 17 call 3 */
-        CHECK_ERROR(_readMethod_electionsphragmen_submit_candidacy_V5(c, &method->electionsphragmen_submit_candidacy_V5))
-        break;
-    case 4356: /* module 17 call 4 */
-        CHECK_ERROR(_readMethod_electionsphragmen_renounce_candidacy_V5(c, &method->electionsphragmen_renounce_candidacy_V5))
-        break;
-    case 4357: /* module 17 call 5 */
-        CHECK_ERROR(_readMethod_electionsphragmen_remove_member_V5(c, &method->electionsphragmen_remove_member_V5))
-        break;
-    case 4608: /* module 18 call 0 */
-        CHECK_ERROR(_readMethod_technicalmembership_add_member_V5(c, &method->technicalmembership_add_member_V5))
-        break;
-    case 4609: /* module 18 call 1 */
-        CHECK_ERROR(_readMethod_technicalmembership_remove_member_V5(c, &method->technicalmembership_remove_member_V5))
-        break;
-    case 4610: /* module 18 call 2 */
-        CHECK_ERROR(_readMethod_technicalmembership_swap_member_V5(c, &method->technicalmembership_swap_member_V5))
-        break;
-    case 4611: /* module 18 call 3 */
-        CHECK_ERROR(_readMethod_technicalmembership_reset_members_V5(c, &method->technicalmembership_reset_members_V5))
-        break;
-    case 4612: /* module 18 call 4 */
-        CHECK_ERROR(_readMethod_technicalmembership_change_key_V5(c, &method->technicalmembership_change_key_V5))
-        break;
-    case 4613: /* module 18 call 5 */
-        CHECK_ERROR(_readMethod_technicalmembership_set_prime_V5(c, &method->technicalmembership_set_prime_V5))
-        break;
-    case 4614: /* module 18 call 6 */
-        CHECK_ERROR(_readMethod_technicalmembership_clear_prime_V5(c, &method->technicalmembership_clear_prime_V5))
-        break;
-    case 4864: /* module 19 call 0 */
-        CHECK_ERROR(_readMethod_treasury_propose_spend_V5(c, &method->treasury_propose_spend_V5))
-        break;
-    case 4865: /* module 19 call 1 */
-        CHECK_ERROR(_readMethod_treasury_reject_proposal_V5(c, &method->treasury_reject_proposal_V5))
-        break;
-    case 4866: /* module 19 call 2 */
-        CHECK_ERROR(_readMethod_treasury_approve_proposal_V5(c, &method->treasury_approve_proposal_V5))
-        break;
-    case 4867: /* module 19 call 3 */
-        CHECK_ERROR(_readMethod_treasury_report_awesome_V5(c, &method->treasury_report_awesome_V5))
-        break;
-    case 4868: /* module 19 call 4 */
-        CHECK_ERROR(_readMethod_treasury_retract_tip_V5(c, &method->treasury_retract_tip_V5))
-        break;
-    case 4869: /* module 19 call 5 */
-        CHECK_ERROR(_readMethod_treasury_tip_new_V5(c, &method->treasury_tip_new_V5))
-        break;
-    case 4870: /* module 19 call 6 */
-        CHECK_ERROR(_readMethod_treasury_tip_V5(c, &method->treasury_tip_V5))
-        break;
-    case 4871: /* module 19 call 7 */
-        CHECK_ERROR(_readMethod_treasury_close_tip_V5(c, &method->treasury_close_tip_V5))
-        break;
-    case 4872: /* module 19 call 8 */
-        CHECK_ERROR(_readMethod_treasury_propose_bounty_V5(c, &method->treasury_propose_bounty_V5))
-        break;
-    case 4873: /* module 19 call 9 */
-        CHECK_ERROR(_readMethod_treasury_approve_bounty_V5(c, &method->treasury_approve_bounty_V5))
-        break;
-    case 4874: /* module 19 call 10 */
-        CHECK_ERROR(_readMethod_treasury_propose_curator_V5(c, &method->treasury_propose_curator_V5))
-        break;
-    case 4875: /* module 19 call 11 */
-        CHECK_ERROR(_readMethod_treasury_unassign_curator_V5(c, &method->treasury_unassign_curator_V5))
-        break;
-    case 4876: /* module 19 call 12 */
-        CHECK_ERROR(_readMethod_treasury_accept_curator_V5(c, &method->treasury_accept_curator_V5))
-        break;
-    case 4877: /* module 19 call 13 */
-        CHECK_ERROR(_readMethod_treasury_award_bounty_V5(c, &method->treasury_award_bounty_V5))
-        break;
-    case 4878: /* module 19 call 14 */
-        CHECK_ERROR(_readMethod_treasury_claim_bounty_V5(c, &method->treasury_claim_bounty_V5))
-        break;
-    case 4879: /* module 19 call 15 */
-        CHECK_ERROR(_readMethod_treasury_close_bounty_V5(c, &method->treasury_close_bounty_V5))
-        break;
-    case 4880: /* module 19 call 16 */
-        CHECK_ERROR(_readMethod_treasury_extend_bounty_expiry_V5(c, &method->treasury_extend_bounty_expiry_V5))
-        break;
-    case 6144: /* module 24 call 0 */
-        CHECK_ERROR(_readMethod_claims_claim_V5(c, &method->claims_claim_V5))
-        break;
-    case 6145: /* module 24 call 1 */
-        CHECK_ERROR(_readMethod_claims_mint_claim_V5(c, &method->claims_mint_claim_V5))
-        break;
-    case 6146: /* module 24 call 2 */
-        CHECK_ERROR(_readMethod_claims_claim_attest_V5(c, &method->claims_claim_attest_V5))
-        break;
-    case 6147: /* module 24 call 3 */
-        CHECK_ERROR(_readMethod_claims_attest_V5(c, &method->claims_attest_V5))
-        break;
-    case 6148: /* module 24 call 4 */
-        CHECK_ERROR(_readMethod_claims_move_claim_V5(c, &method->claims_move_claim_V5))
-        break;
-    case 6400: /* module 25 call 0 */
-        CHECK_ERROR(_readMethod_vesting_vest_V5(c, &method->vesting_vest_V5))
-        break;
-    case 6401: /* module 25 call 1 */
-        CHECK_ERROR(_readMethod_vesting_vest_other_V5(c, &method->vesting_vest_other_V5))
-        break;
-    case 6402: /* module 25 call 2 */
-        CHECK_ERROR(_readMethod_vesting_vested_transfer_V5(c, &method->vesting_vested_transfer_V5))
-        break;
-    case 6403: /* module 25 call 3 */
-        CHECK_ERROR(_readMethod_vesting_force_vested_transfer_V5(c, &method->vesting_force_vested_transfer_V5))
-        break;
-    case 6656: /* module 26 call 0 */
-        CHECK_ERROR(_readMethod_utility_batch_V5(c, &method->utility_batch_V5))
-        break;
-    case 6658: /* module 26 call 2 */
-        CHECK_ERROR(_readMethod_utility_batch_all_V5(c, &method->utility_batch_all_V5))
-        break;
-    case 7168: /* module 28 call 0 */
-        CHECK_ERROR(_readMethod_identity_add_registrar_V5(c, &method->identity_add_registrar_V5))
-        break;
-    case 7169: /* module 28 call 1 */
-        CHECK_ERROR(_readMethod_identity_set_identity_V5(c, &method->identity_set_identity_V5))
-        break;
-    case 7170: /* module 28 call 2 */
-        CHECK_ERROR(_readMethod_identity_set_subs_V5(c, &method->identity_set_subs_V5))
-        break;
-    case 7171: /* module 28 call 3 */
-        CHECK_ERROR(_readMethod_identity_clear_identity_V5(c, &method->identity_clear_identity_V5))
-        break;
-    case 7172: /* module 28 call 4 */
-        CHECK_ERROR(_readMethod_identity_request_judgement_V5(c, &method->identity_request_judgement_V5))
-        break;
-    case 7173: /* module 28 call 5 */
-        CHECK_ERROR(_readMethod_identity_cancel_request_V5(c, &method->identity_cancel_request_V5))
-        break;
-    case 7174: /* module 28 call 6 */
-        CHECK_ERROR(_readMethod_identity_set_fee_V5(c, &method->identity_set_fee_V5))
-        break;
-    case 7175: /* module 28 call 7 */
-        CHECK_ERROR(_readMethod_identity_set_account_id_V5(c, &method->identity_set_account_id_V5))
-        break;
-    case 7176: /* module 28 call 8 */
-        CHECK_ERROR(_readMethod_identity_set_fields_V5(c, &method->identity_set_fields_V5))
-        break;
-    case 7177: /* module 28 call 9 */
-        CHECK_ERROR(_readMethod_identity_provide_judgement_V5(c, &method->identity_provide_judgement_V5))
-        break;
-    case 7178: /* module 28 call 10 */
-        CHECK_ERROR(_readMethod_identity_kill_identity_V5(c, &method->identity_kill_identity_V5))
-        break;
-    case 7179: /* module 28 call 11 */
-        CHECK_ERROR(_readMethod_identity_add_sub_V5(c, &method->identity_add_sub_V5))
-        break;
-    case 7180: /* module 28 call 12 */
-        CHECK_ERROR(_readMethod_identity_rename_sub_V5(c, &method->identity_rename_sub_V5))
-        break;
-    case 7181: /* module 28 call 13 */
-        CHECK_ERROR(_readMethod_identity_remove_sub_V5(c, &method->identity_remove_sub_V5))
-        break;
-    case 7182: /* module 28 call 14 */
-        CHECK_ERROR(_readMethod_identity_quit_sub_V5(c, &method->identity_quit_sub_V5))
-        break;
-    case 7425: /* module 29 call 1 */
-        CHECK_ERROR(_readMethod_proxy_add_proxy_V5(c, &method->proxy_add_proxy_V5))
-        break;
-    case 7426: /* module 29 call 2 */
-        CHECK_ERROR(_readMethod_proxy_remove_proxy_V5(c, &method->proxy_remove_proxy_V5))
-        break;
-    case 7427: /* module 29 call 3 */
-        CHECK_ERROR(_readMethod_proxy_remove_proxies_V5(c, &method->proxy_remove_proxies_V5))
-        break;
-    case 7428: /* module 29 call 4 */
-        CHECK_ERROR(_readMethod_proxy_anonymous_V5(c, &method->proxy_anonymous_V5))
-        break;
-    case 7429: /* module 29 call 5 */
-        CHECK_ERROR(_readMethod_proxy_kill_anonymous_V5(c, &method->proxy_kill_anonymous_V5))
-        break;
-    case 7430: /* module 29 call 6 */
-        CHECK_ERROR(_readMethod_proxy_announce_V5(c, &method->proxy_announce_V5))
-        break;
-    case 7431: /* module 29 call 7 */
-        CHECK_ERROR(_readMethod_proxy_remove_announcement_V5(c, &method->proxy_remove_announcement_V5))
-        break;
-    case 7432: /* module 29 call 8 */
-        CHECK_ERROR(_readMethod_proxy_reject_announcement_V5(c, &method->proxy_reject_announcement_V5))
-        break;
-    case 7681: /* module 30 call 1 */
-        CHECK_ERROR(_readMethod_multisig_as_multi_V5(c, &method->multisig_as_multi_V5))
-        break;
-    case 7682: /* module 30 call 2 */
-        CHECK_ERROR(_readMethod_multisig_approve_as_multi_V5(c, &method->multisig_approve_as_multi_V5))
-        break;
-    case 7683: /* module 30 call 3 */
-        CHECK_ERROR(_readMethod_multisig_cancel_as_multi_V5(c, &method->multisig_cancel_as_multi_V5))
-        break;
-    default:
-        return parser_unexpected_callIndex;
-    }
-
-    return parser_ok;
-}
-
 parser_error_t _readMethod_V5(
     parser_context_t* c,
     uint8_t moduleIdx,
@@ -1836,22 +1355,22 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_system_suicide_V5(c, &method->basic.system_suicide_V5))
         break;
     case 256: /* module 1 call 0 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_V5(c, &method->nested.scheduler_schedule_V5))
+        CHECK_ERROR(_readMethod_scheduler_schedule_V5(c, &method->basic.scheduler_schedule_V5))
         break;
     case 257: /* module 1 call 1 */
         CHECK_ERROR(_readMethod_scheduler_cancel_V5(c, &method->basic.scheduler_cancel_V5))
         break;
     case 258: /* module 1 call 2 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_named_V5(c, &method->nested.scheduler_schedule_named_V5))
+        CHECK_ERROR(_readMethod_scheduler_schedule_named_V5(c, &method->basic.scheduler_schedule_named_V5))
         break;
     case 259: /* module 1 call 3 */
         CHECK_ERROR(_readMethod_scheduler_cancel_named_V5(c, &method->basic.scheduler_cancel_named_V5))
         break;
     case 260: /* module 1 call 4 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_after_V5(c, &method->nested.scheduler_schedule_after_V5))
+        CHECK_ERROR(_readMethod_scheduler_schedule_after_V5(c, &method->basic.scheduler_schedule_after_V5))
         break;
     case 261: /* module 1 call 5 */
-        CHECK_ERROR(_readMethod_scheduler_schedule_named_after_V5(c, &method->nested.scheduler_schedule_named_after_V5))
+        CHECK_ERROR(_readMethod_scheduler_schedule_named_after_V5(c, &method->basic.scheduler_schedule_named_after_V5))
         break;
     case 512: /* module 2 call 0 */
         CHECK_ERROR(_readMethod_babe_report_equivocation_V5(c, &method->basic.babe_report_equivocation_V5))
@@ -2061,10 +1580,10 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_council_set_members_V5(c, &method->basic.council_set_members_V5))
         break;
     case 3841: /* module 15 call 1 */
-        CHECK_ERROR(_readMethod_council_execute_V5(c, &method->nested.council_execute_V5))
+        CHECK_ERROR(_readMethod_council_execute_V5(c, &method->basic.council_execute_V5))
         break;
     case 3842: /* module 15 call 2 */
-        CHECK_ERROR(_readMethod_council_propose_V5(c, &method->nested.council_propose_V5))
+        CHECK_ERROR(_readMethod_council_propose_V5(c, &method->basic.council_propose_V5))
         break;
     case 3843: /* module 15 call 3 */
         CHECK_ERROR(_readMethod_council_vote_V5(c, &method->basic.council_vote_V5))
@@ -2079,10 +1598,10 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_technicalcommittee_set_members_V5(c, &method->basic.technicalcommittee_set_members_V5))
         break;
     case 4097: /* module 16 call 1 */
-        CHECK_ERROR(_readMethod_technicalcommittee_execute_V5(c, &method->nested.technicalcommittee_execute_V5))
+        CHECK_ERROR(_readMethod_technicalcommittee_execute_V5(c, &method->basic.technicalcommittee_execute_V5))
         break;
     case 4098: /* module 16 call 2 */
-        CHECK_ERROR(_readMethod_technicalcommittee_propose_V5(c, &method->nested.technicalcommittee_propose_V5))
+        CHECK_ERROR(_readMethod_technicalcommittee_propose_V5(c, &method->basic.technicalcommittee_propose_V5))
         break;
     case 4099: /* module 16 call 3 */
         CHECK_ERROR(_readMethod_technicalcommittee_vote_V5(c, &method->basic.technicalcommittee_vote_V5))
@@ -2214,7 +1733,7 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_utility_batch_V5(c, &method->basic.utility_batch_V5))
         break;
     case 6657: /* module 26 call 1 */
-        CHECK_ERROR(_readMethod_utility_as_derivative_V5(c, &method->nested.utility_as_derivative_V5))
+        CHECK_ERROR(_readMethod_utility_as_derivative_V5(c, &method->basic.utility_as_derivative_V5))
         break;
     case 6658: /* module 26 call 2 */
         CHECK_ERROR(_readMethod_utility_batch_all_V5(c, &method->basic.utility_batch_all_V5))
@@ -2265,7 +1784,7 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_identity_quit_sub_V5(c, &method->basic.identity_quit_sub_V5))
         break;
     case 7424: /* module 29 call 0 */
-        CHECK_ERROR(_readMethod_proxy_proxy_V5(c, &method->nested.proxy_proxy_V5))
+        CHECK_ERROR(_readMethod_proxy_proxy_V5(c, &method->basic.proxy_proxy_V5))
         break;
     case 7425: /* module 29 call 1 */
         CHECK_ERROR(_readMethod_proxy_add_proxy_V5(c, &method->basic.proxy_add_proxy_V5))
@@ -2292,10 +1811,10 @@ parser_error_t _readMethod_V5(
         CHECK_ERROR(_readMethod_proxy_reject_announcement_V5(c, &method->basic.proxy_reject_announcement_V5))
         break;
     case 7433: /* module 29 call 9 */
-        CHECK_ERROR(_readMethod_proxy_proxy_announced_V5(c, &method->nested.proxy_proxy_announced_V5))
+        CHECK_ERROR(_readMethod_proxy_proxy_announced_V5(c, &method->basic.proxy_proxy_announced_V5))
         break;
     case 7680: /* module 30 call 0 */
-        CHECK_ERROR(_readMethod_multisig_as_multi_threshold_1_V5(c, &method->nested.multisig_as_multi_threshold_1_V5))
+        CHECK_ERROR(_readMethod_multisig_as_multi_threshold_1_V5(c, &method->basic.multisig_as_multi_threshold_1_V5))
         break;
     case 7681: /* module 30 call 1 */
         CHECK_ERROR(_readMethod_multisig_as_multi_V5(c, &method->basic.multisig_as_multi_V5))
@@ -4620,22 +4139,22 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* scheduler_schedule_V5 - when */;
             return _toStringBlockNumber(
-                &m->nested.scheduler_schedule_V5.when,
+                &m->basic.scheduler_schedule_V5.when,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* scheduler_schedule_V5 - maybe_periodic */;
             return _toStringOptionPeriod_V5(
-                &m->nested.scheduler_schedule_V5.maybe_periodic,
+                &m->basic.scheduler_schedule_V5.maybe_periodic,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* scheduler_schedule_V5 - priority */;
             return _toStringPriority_V5(
-                &m->nested.scheduler_schedule_V5.priority,
+                &m->basic.scheduler_schedule_V5.priority,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* scheduler_schedule_V5 - call */;
             return _toStringCall(
-                &m->nested.scheduler_schedule_V5.call,
+                &m->basic.scheduler_schedule_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4660,27 +4179,27 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* scheduler_schedule_named_V5 - id */;
             return _toStringBytes(
-                &m->nested.scheduler_schedule_named_V5.id,
+                &m->basic.scheduler_schedule_named_V5.id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* scheduler_schedule_named_V5 - when */;
             return _toStringBlockNumber(
-                &m->nested.scheduler_schedule_named_V5.when,
+                &m->basic.scheduler_schedule_named_V5.when,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* scheduler_schedule_named_V5 - maybe_periodic */;
             return _toStringOptionPeriod_V5(
-                &m->nested.scheduler_schedule_named_V5.maybe_periodic,
+                &m->basic.scheduler_schedule_named_V5.maybe_periodic,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* scheduler_schedule_named_V5 - priority */;
             return _toStringPriority_V5(
-                &m->nested.scheduler_schedule_named_V5.priority,
+                &m->basic.scheduler_schedule_named_V5.priority,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* scheduler_schedule_named_V5 - call */;
             return _toStringCall(
-                &m->nested.scheduler_schedule_named_V5.call,
+                &m->basic.scheduler_schedule_named_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4700,22 +4219,22 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* scheduler_schedule_after_V5 - after */;
             return _toStringBlockNumber(
-                &m->nested.scheduler_schedule_after_V5.after,
+                &m->basic.scheduler_schedule_after_V5.after,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* scheduler_schedule_after_V5 - maybe_periodic */;
             return _toStringOptionPeriod_V5(
-                &m->nested.scheduler_schedule_after_V5.maybe_periodic,
+                &m->basic.scheduler_schedule_after_V5.maybe_periodic,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* scheduler_schedule_after_V5 - priority */;
             return _toStringPriority_V5(
-                &m->nested.scheduler_schedule_after_V5.priority,
+                &m->basic.scheduler_schedule_after_V5.priority,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* scheduler_schedule_after_V5 - call */;
             return _toStringCall(
-                &m->nested.scheduler_schedule_after_V5.call,
+                &m->basic.scheduler_schedule_after_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4725,27 +4244,27 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* scheduler_schedule_named_after_V5 - id */;
             return _toStringBytes(
-                &m->nested.scheduler_schedule_named_after_V5.id,
+                &m->basic.scheduler_schedule_named_after_V5.id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* scheduler_schedule_named_after_V5 - after */;
             return _toStringBlockNumber(
-                &m->nested.scheduler_schedule_named_after_V5.after,
+                &m->basic.scheduler_schedule_named_after_V5.after,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* scheduler_schedule_named_after_V5 - maybe_periodic */;
             return _toStringOptionPeriod_V5(
-                &m->nested.scheduler_schedule_named_after_V5.maybe_periodic,
+                &m->basic.scheduler_schedule_named_after_V5.maybe_periodic,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* scheduler_schedule_named_after_V5 - priority */;
             return _toStringPriority_V5(
-                &m->nested.scheduler_schedule_named_after_V5.priority,
+                &m->basic.scheduler_schedule_named_after_V5.priority,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* scheduler_schedule_named_after_V5 - call */;
             return _toStringCall(
-                &m->nested.scheduler_schedule_named_after_V5.call,
+                &m->basic.scheduler_schedule_named_after_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4859,7 +4378,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1280: /* module 5 call 0 */
         switch (itemIdx) {
         case 0: /* balances_transfer_V5 - dest */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.balances_transfer_V5.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4874,7 +4393,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1281: /* module 5 call 1 */
         switch (itemIdx) {
         case 0: /* balances_set_balance_V5 - who */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.balances_set_balance_V5.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4894,12 +4413,12 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1282: /* module 5 call 2 */
         switch (itemIdx) {
         case 0: /* balances_force_transfer_V5 - source */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.balances_force_transfer_V5.source,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* balances_force_transfer_V5 - dest */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.balances_force_transfer_V5.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4914,7 +4433,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1283: /* module 5 call 3 */
         switch (itemIdx) {
         case 0: /* balances_transfer_keep_alive_V5 - dest */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.balances_transfer_keep_alive_V5.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4939,7 +4458,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1792: /* module 7 call 0 */
         switch (itemIdx) {
         case 0: /* staking_bond_V5 - controller */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.staking_bond_V5.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4999,7 +4518,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1797: /* module 7 call 5 */
         switch (itemIdx) {
         case 0: /* staking_nominate_V5 - targets */;
-            return _toStringVecLookupSource(
+            return _toStringVecLookupSource_V5(
                 &m->basic.staking_nominate_V5.targets,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5024,7 +4543,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 1800: /* module 7 call 8 */
         switch (itemIdx) {
         case 0: /* staking_set_controller_V5 - controller */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.staking_set_controller_V5.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5630,12 +5149,12 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* council_execute_V5 - proposal */;
             return _toStringProposal(
-                &m->nested.council_execute_V5.proposal,
+                &m->basic.council_execute_V5.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* council_execute_V5 - length_bound */;
             return _toStringCompactu32(
-                &m->nested.council_execute_V5.length_bound,
+                &m->basic.council_execute_V5.length_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5645,17 +5164,17 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* council_propose_V5 - threshold */;
             return _toStringCompactMemberCount_V5(
-                &m->nested.council_propose_V5.threshold,
+                &m->basic.council_propose_V5.threshold,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* council_propose_V5 - proposal */;
             return _toStringProposal(
-                &m->nested.council_propose_V5.proposal,
+                &m->basic.council_propose_V5.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* council_propose_V5 - length_bound */;
             return _toStringCompactu32(
-                &m->nested.council_propose_V5.length_bound,
+                &m->basic.council_propose_V5.length_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5740,12 +5259,12 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* technicalcommittee_execute_V5 - proposal */;
             return _toStringProposal(
-                &m->nested.technicalcommittee_execute_V5.proposal,
+                &m->basic.technicalcommittee_execute_V5.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* technicalcommittee_execute_V5 - length_bound */;
             return _toStringCompactu32(
-                &m->nested.technicalcommittee_execute_V5.length_bound,
+                &m->basic.technicalcommittee_execute_V5.length_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5755,17 +5274,17 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* technicalcommittee_propose_V5 - threshold */;
             return _toStringCompactMemberCount_V5(
-                &m->nested.technicalcommittee_propose_V5.threshold,
+                &m->basic.technicalcommittee_propose_V5.threshold,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* technicalcommittee_propose_V5 - proposal */;
             return _toStringProposal(
-                &m->nested.technicalcommittee_propose_V5.proposal,
+                &m->basic.technicalcommittee_propose_V5.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* technicalcommittee_propose_V5 - length_bound */;
             return _toStringCompactu32(
-                &m->nested.technicalcommittee_propose_V5.length_bound,
+                &m->basic.technicalcommittee_propose_V5.length_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5879,7 +5398,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 4357: /* module 17 call 5 */
         switch (itemIdx) {
         case 0: /* electionsphragmen_remove_member_V5 - who */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.electionsphragmen_remove_member_V5.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5969,7 +5488,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_spend_V5 - beneficiary */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.treasury_propose_spend_V5.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6099,7 +5618,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_curator_V5 - curator */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.treasury_propose_curator_V5.curator,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6139,7 +5658,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_award_bounty_V5 - beneficiary */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.treasury_award_bounty_V5.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6279,7 +5798,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 6401: /* module 25 call 1 */
         switch (itemIdx) {
         case 0: /* vesting_vest_other_V5 - target */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.vesting_vest_other_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6289,7 +5808,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 6402: /* module 25 call 2 */
         switch (itemIdx) {
         case 0: /* vesting_vested_transfer_V5 - target */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.vesting_vested_transfer_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6304,12 +5823,12 @@ parser_error_t _getMethod_ItemValue_V5(
     case 6403: /* module 25 call 3 */
         switch (itemIdx) {
         case 0: /* vesting_force_vested_transfer_V5 - source */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.vesting_force_vested_transfer_V5.source,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* vesting_force_vested_transfer_V5 - target */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.vesting_force_vested_transfer_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6335,12 +5854,12 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* utility_as_derivative_V5 - index */;
             return _toStringu16(
-                &m->nested.utility_as_derivative_V5.index,
+                &m->basic.utility_as_derivative_V5.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* utility_as_derivative_V5 - call */;
             return _toStringCall(
-                &m->nested.utility_as_derivative_V5.call,
+                &m->basic.utility_as_derivative_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6469,7 +5988,7 @@ parser_error_t _getMethod_ItemValue_V5(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* identity_provide_judgement_V5 - target */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.identity_provide_judgement_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6484,7 +6003,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 7178: /* module 28 call 10 */
         switch (itemIdx) {
         case 0: /* identity_kill_identity_V5 - target */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.identity_kill_identity_V5.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6494,7 +6013,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 7179: /* module 28 call 11 */
         switch (itemIdx) {
         case 0: /* identity_add_sub_V5 - sub */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.identity_add_sub_V5.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6509,7 +6028,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 7180: /* module 28 call 12 */
         switch (itemIdx) {
         case 0: /* identity_rename_sub_V5 - sub */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.identity_rename_sub_V5.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6524,7 +6043,7 @@ parser_error_t _getMethod_ItemValue_V5(
     case 7181: /* module 28 call 13 */
         switch (itemIdx) {
         case 0: /* identity_remove_sub_V5 - sub */;
-            return _toStringLookupSource(
+            return _toStringLookupSource_V5(
                 &m->basic.identity_remove_sub_V5.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6540,17 +6059,17 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* proxy_proxy_V5 - real */;
             return _toStringAccountId_V5(
-                &m->nested.proxy_proxy_V5.real,
+                &m->basic.proxy_proxy_V5.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_proxy_V5 - force_proxy_type */;
             return _toStringOptionProxyType_V5(
-                &m->nested.proxy_proxy_V5.force_proxy_type,
+                &m->basic.proxy_proxy_V5.force_proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* proxy_proxy_V5 - call */;
             return _toStringCall(
-                &m->nested.proxy_proxy_V5.call,
+                &m->basic.proxy_proxy_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6700,22 +6219,22 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* proxy_proxy_announced_V5 - delegate */;
             return _toStringAccountId_V5(
-                &m->nested.proxy_proxy_announced_V5.delegate,
+                &m->basic.proxy_proxy_announced_V5.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_proxy_announced_V5 - real */;
             return _toStringAccountId_V5(
-                &m->nested.proxy_proxy_announced_V5.real,
+                &m->basic.proxy_proxy_announced_V5.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* proxy_proxy_announced_V5 - force_proxy_type */;
             return _toStringOptionProxyType_V5(
-                &m->nested.proxy_proxy_announced_V5.force_proxy_type,
+                &m->basic.proxy_proxy_announced_V5.force_proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* proxy_proxy_announced_V5 - call */;
             return _toStringCall(
-                &m->nested.proxy_proxy_announced_V5.call,
+                &m->basic.proxy_proxy_announced_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6725,12 +6244,12 @@ parser_error_t _getMethod_ItemValue_V5(
         switch (itemIdx) {
         case 0: /* multisig_as_multi_threshold_1_V5 - other_signatories */;
             return _toStringVecAccountId_V5(
-                &m->nested.multisig_as_multi_threshold_1_V5.other_signatories,
+                &m->basic.multisig_as_multi_threshold_1_V5.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* multisig_as_multi_threshold_1_V5 - call */;
             return _toStringCall(
-                &m->nested.multisig_as_multi_threshold_1_V5.call,
+                &m->basic.multisig_as_multi_threshold_1_V5.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6862,5 +6381,183 @@ bool _getMethod_ItemIsExpert_V5(uint8_t moduleIdx, uint8_t callIdx, uint8_t item
 
     default:
         return false;
+    }
+}
+
+bool _getMethod_IsNestingSupported_V5(uint8_t moduleIdx, uint8_t callIdx)
+{
+    uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
+
+    switch (callPrivIdx) {
+    case 0: // System:Fill block
+    case 1: // System:Remark
+    case 2: // System:Set heap pages
+    case 3: // System:Set code
+    case 4: // System:Set code without checks
+    case 5: // System:Set changes trie config
+    case 6: // System:Set storage
+    case 7: // System:Kill storage
+    case 8: // System:Kill prefix
+    case 9: // System:Suicide
+    case 256: // Scheduler:Schedule
+    case 257: // Scheduler:Cancel
+    case 258: // Scheduler:Schedule named
+    case 259: // Scheduler:Cancel named
+    case 260: // Scheduler:Schedule after
+    case 261: // Scheduler:Schedule named after
+    case 512: // Babe:Report equivocation
+    case 513: // Babe:Report equivocation unsigned
+    case 768: // Timestamp:Set
+    case 1024: // Indices:Claim
+    case 1025: // Indices:Transfer
+    case 1026: // Indices:Free
+    case 1027: // Indices:Force transfer
+    case 1028: // Indices:Freeze
+    case 1280: // Balances:Transfer
+    case 1281: // Balances:Set balance
+    case 1282: // Balances:Force transfer
+    case 1283: // Balances:Transfer keep alive
+    case 1536: // Authorship:Set uncles
+    case 1792: // Staking:Bond
+    case 1793: // Staking:Bond extra
+    case 1794: // Staking:Unbond
+    case 1795: // Staking:Withdraw Unbonded
+    case 1796: // Staking:Validate
+    case 1797: // Staking:Nominate
+    case 1798: // Staking:Chill
+    case 1799: // Staking:Set payee
+    case 1800: // Staking:Set controller
+    case 1801: // Staking:Set validator count
+    case 1802: // Staking:Increase validator count
+    case 1803: // Staking:Scale validator count
+    case 1804: // Staking:Force no eras
+    case 1805: // Staking:Force new era
+    case 1806: // Staking:Set invulnerables
+    case 1807: // Staking:Force unstake
+    case 1808: // Staking:Force new era always
+    case 1809: // Staking:Cancel deferred slash
+    case 1810: // Staking:Payout stakers
+    case 1811: // Staking:Rebond
+    case 1812: // Staking:Set history depth
+    case 1813: // Staking:Reap stash
+    case 1814: // Staking:Submit election solution
+    case 1815: // Staking:Submit election solution unsigned
+    case 2304: // Session:Set keys
+    case 2305: // Session:Purge keys
+    case 2816: // Grandpa:Report equivocation
+    case 2817: // Grandpa:Report equivocation unsigned
+    case 2818: // Grandpa:Note stalled
+    case 3072: // ImOnline:Heartbeat
+    case 3584: // Democracy:Propose
+    case 3585: // Democracy:Second
+    case 3586: // Democracy:Vote
+    case 3587: // Democracy:Emergency cancel
+    case 3588: // Democracy:External propose
+    case 3589: // Democracy:External propose majority
+    case 3590: // Democracy:External propose default
+    case 3591: // Democracy:Fast track
+    case 3592: // Democracy:Veto external
+    case 3593: // Democracy:Cancel referendum
+    case 3594: // Democracy:Cancel queued
+    case 3595: // Democracy:Delegate
+    case 3596: // Democracy:Undelegate
+    case 3597: // Democracy:Clear public proposals
+    case 3598: // Democracy:Note preimage
+    case 3599: // Democracy:Note preimage operational
+    case 3600: // Democracy:Note imminent preimage
+    case 3601: // Democracy:Note imminent preimage operational
+    case 3602: // Democracy:Reap preimage
+    case 3603: // Democracy:Unlock
+    case 3604: // Democracy:Remove vote
+    case 3605: // Democracy:Remove other vote
+    case 3606: // Democracy:Enact proposal
+    case 3607: // Democracy:Blacklist
+    case 3608: // Democracy:Cancel proposal
+    case 3840: // Council:Set members
+    case 3841: // Council:Execute
+    case 3842: // Council:Propose
+    case 3843: // Council:Vote
+    case 3844: // Council:Close
+    case 3845: // Council:Disapprove proposal
+    case 4096: // TechnicalCommittee:Set members
+    case 4097: // TechnicalCommittee:Execute
+    case 4098: // TechnicalCommittee:Propose
+    case 4099: // TechnicalCommittee:Vote
+    case 4100: // TechnicalCommittee:Close
+    case 4101: // TechnicalCommittee:Disapprove proposal
+    case 4352: // ElectionsPhragmen:Vote
+    case 4353: // ElectionsPhragmen:Remove voter
+    case 4354: // ElectionsPhragmen:Report defunct voter
+    case 4355: // ElectionsPhragmen:Submit candidacy
+    case 4356: // ElectionsPhragmen:Renounce candidacy
+    case 4357: // ElectionsPhragmen:Remove member
+    case 4608: // TechnicalMembership:Add member
+    case 4609: // TechnicalMembership:Remove member
+    case 4610: // TechnicalMembership:Swap member
+    case 4611: // TechnicalMembership:Reset members
+    case 4612: // TechnicalMembership:Change key
+    case 4613: // TechnicalMembership:Set prime
+    case 4614: // TechnicalMembership:Clear prime
+    case 4864: // Treasury:Propose spend
+    case 4865: // Treasury:Reject proposal
+    case 4866: // Treasury:Approve proposal
+    case 4867: // Treasury:Report awesome
+    case 4868: // Treasury:Retract tip
+    case 4869: // Treasury:Tip new
+    case 4870: // Treasury:Tip
+    case 4871: // Treasury:Close tip
+    case 4872: // Treasury:Propose bounty
+    case 4873: // Treasury:Approve bounty
+    case 4874: // Treasury:Propose curator
+    case 4875: // Treasury:Unassign curator
+    case 4876: // Treasury:Accept curator
+    case 4877: // Treasury:Award bounty
+    case 4878: // Treasury:Claim bounty
+    case 4879: // Treasury:Close bounty
+    case 4880: // Treasury:Extend bounty expiry
+    case 6144: // Claims:Claim
+    case 6145: // Claims:Mint claim
+    case 6146: // Claims:Claim attest
+    case 6147: // Claims:Attest
+    case 6148: // Claims:Move claim
+    case 6400: // Vesting:Vest
+    case 6401: // Vesting:Vest other
+    case 6402: // Vesting:Vested transfer
+    case 6403: // Vesting:Force vested transfer
+    case 6656: // Utility:Batch
+    case 6657: // Utility:As derivative
+    case 6658: // Utility:Batch all
+    case 7168: // Identity:Add registrar
+    case 7169: // Identity:Set identity
+    case 7170: // Identity:Set subs
+    case 7171: // Identity:Clear identity
+    case 7172: // Identity:Request judgement
+    case 7173: // Identity:Cancel request
+    case 7174: // Identity:Set fee
+    case 7175: // Identity:Set account id
+    case 7176: // Identity:Set fields
+    case 7177: // Identity:Provide judgement
+    case 7178: // Identity:Kill identity
+    case 7179: // Identity:Add sub
+    case 7180: // Identity:Rename sub
+    case 7181: // Identity:Remove sub
+    case 7182: // Identity:Quit sub
+    case 7424: // Proxy:Proxy
+    case 7425: // Proxy:Add proxy
+    case 7426: // Proxy:Remove proxy
+    case 7427: // Proxy:Remove proxies
+    case 7428: // Proxy:Anonymous
+    case 7429: // Proxy:Kill anonymous
+    case 7430: // Proxy:Announce
+    case 7431: // Proxy:Remove announcement
+    case 7432: // Proxy:Reject announcement
+    case 7433: // Proxy:Proxy announced
+    case 7680: // Multisig:As multi threshold 1
+    case 7681: // Multisig:As multi
+    case 7682: // Multisig:Approve as multi
+    case 7683: // Multisig:Cancel as multi
+        return false;
+    default:
+        return true;
     }
 }

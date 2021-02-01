@@ -22,27 +22,36 @@ endif
 
 MY_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
+all: bin/app.elf
+	@echo "#!/usr/bin/env bash" > $(OUTPUT_INSTALLER)
+	@echo "APPNAME=\"${APPNAME}\"" >> $(OUTPUT_INSTALLER)
+	@echo "APPVERSION=\"${APPVERSION}\"" >> $(OUTPUT_INSTALLER)
+	@echo "APPPATH=\""${APPPATH}"\"" >> $(OUTPUT_INSTALLER)
+	@echo "LOAD_PARAMS=\"${COMMON_LOAD_PARAMS}\"" >> $(OUTPUT_INSTALLER)
+	@echo "DELETE_PARAMS=\"${COMMON_DELETE_PARAMS}\"" >> $(OUTPUT_INSTALLER)
+	@echo "APPHEX=\"" >> $(OUTPUT_INSTALLER)
+	@cat $(CURDIR)/bin/app.hex >> $(OUTPUT_INSTALLER)
+	@echo "\"" >> $(OUTPUT_INSTALLER)
+	@cat $(CURDIR)/../deps/ledger-zxlib/scripts/template.sh >> $(OUTPUT_INSTALLER)
+	@chmod +x $(OUTPUT_INSTALLER)
+	@cp $(CURDIR)/bin/* $(CURDIR)/output
+	@cp $(CURDIR)/output/app.elf ${OUTPUT_ELF}
+	@rm $(CURDIR)/output/app.elf
+
+include $(BOLOS_SDK)/Makefile.defines
+
+DEFINES = APP_SECRET_MODE_ENABLED
+
 ifeq ($(APP_TESTING),1)
 DEFINES += APP_TESTING
 DEFINES += ZEMU_LOGGING
+$(info ************  LOGGING ENABLED ************)
 endif
 
-all: bin/app.elf
-	@echo "#!/usr/bin/env bash" > ${OUTPUT_INSTALLER}
-	@echo "APPNAME=\"${APPNAME}\"" >> ${OUTPUT_INSTALLER}
-	@echo "APPVERSION=\"${APPVERSION}\"" >> ${OUTPUT_INSTALLER}
-	@echo "APPPATH=\""${APPPATH}"\"" >> ${OUTPUT_INSTALLER}
-	@echo "LOAD_PARAMS=\"${COMMON_LOAD_PARAMS}\"" >> ${OUTPUT_INSTALLER}
-	@echo "DELETE_PARAMS=\"${COMMON_DELETE_PARAMS}\"" >> ${OUTPUT_INSTALLER}
-	@echo "APPHEX=\"" >> ${OUTPUT_INSTALLER}
-	@cat $(CURDIR)/bin/app.hex >> ${OUTPUT_INSTALLER}
-	@echo "\"" >> ${OUTPUT_INSTALLER}
-	@cat $(CURDIR)/../deps/ledger-zxlib/scripts/template.sh >> ${OUTPUT_INSTALLER}
-	@chmod +x ${OUTPUT_INSTALLER}
-	@cp $(CURDIR)/bin/app.elf ${OUTPUT_ELF}
-
-
-include $(BOLOS_SDK)/Makefile.defines
+ifeq ($(SUPPORT_SR25519),1)
+DEFINES += SUPPORT_SR25519
+$(info ************  SR25519 ENABLED ************)
+endif
 
 ifndef COIN
 COIN=DOT
@@ -55,7 +64,7 @@ ifeq ($(COIN),DOT)
 # Main app configuration
 DEFINES += APP_STANDARD
 APPNAME = "Polkadot"
-APPPATH = "44'/354'"
+APPPATH = "44'/354'"  --path "44'/434'"
 
 else ifeq ($(COIN),Ledgeracio)
 DEFINES += APP_RESTRICTED
@@ -77,16 +86,19 @@ APP_LOAD_PARAMS = --appFlags 0x200 --delete $(COMMON_LOAD_PARAMS) --path $(APPPA
 
 ifeq ($(TARGET_NAME),TARGET_NANOS)
 SCRIPT_LD:=$(CURDIR)/script.ld
-OUTPUT_ELF:= $(CURDIR)/bin/app_s.elf
 ICONNAME:=$(CURDIR)/nanos_icon.gif
+OUTPUT_ELF:= $(CURDIR)/output/app_s.elf
 OUTPUT_INSTALLER:= $(CURDIR)/pkg/installer_s.sh
 endif
 
 ifeq ($(TARGET_NAME),TARGET_NANOX)
-OUTPUT_ELF:= $(CURDIR)/bin/app_x.elf
 ICONNAME:=$(CURDIR)/nanox_icon.gif
+OUTPUT_ELF:= $(CURDIR)/output/app_x.elf
 OUTPUT_INSTALLER:= $(CURDIR)/pkg/installer_x.sh
 endif
+
+$(info TARGET_NAME  = [$(TARGET_NAME)])
+$(info ICONNAME  = [$(ICONNAME)])
 
 ifndef ICONNAME
 $(error ICONNAME is not set)
@@ -167,16 +179,18 @@ AFLAGS +=
 
 LD       := $(GCCPATH)arm-none-eabi-gcc
 LDFLAGS  += -O3 -Os
+LDFLAGS  += -z muldefs
 LDLIBS   += -lm -lgcc -lc
-#LDLIBS   += -Lrust/target/thumbv6m-none-eabi/release -lrslib
+LDLIBS   += -Lrust/target/thumbv6m-none-eabi/release -lrslib
 
 ##########################
 GLYPH_SRC_DIR = glyphs
+INCLUDES_PATH += $(MY_DIR)/glyphs
 include $(BOLOS_SDK)/Makefile.glyphs
 
 APP_SOURCE_PATH += $(MY_DIR)/src
 APP_SOURCE_PATH += $(MY_DIR)/glyphs
-#APP_SOURCE_PATH += $(MY_DIR)/rust/include
+APP_SOURCE_PATH += $(MY_DIR)/rust/include
 APP_SOURCE_PATH += $(MY_DIR)/../deps/ledger-zxlib/include
 APP_SOURCE_PATH += $(MY_DIR)/../deps/ledger-zxlib/src
 APP_SOURCE_PATH += $(MY_DIR)/../deps/ledger-zxlib/app/common
@@ -186,16 +200,14 @@ SDK_SOURCE_PATH  += lib_ux
 
 .PHONY: rust
 rust:
-# DISABLED
-#	cd rust && CARGO_HOME="$(CURDIR)/rust/.cargo" cargo build --target thumbv6m-none-eabi --release
+	cd rust && CARGO_HOME="$(CURDIR)/rust/.cargo" cargo build --target thumbv6m-none-eabi --release
 
 # Before linking, we need to be sure rust lib is there
 bin/app.elf: rust
 
 .PHONY: rust_clean
 rust_clean:
-# DISABLED
-#	cd rust && CARGO_HOME="$(CURDIR)/rust/.cargo" cargo clean
+	cd rust && CARGO_HOME="$(CURDIR)/rust/.cargo" cargo clean
 
 clean: rust_clean
 
@@ -216,4 +228,4 @@ dep/%.d: %.c Makefile
 
 .PHONY: listvariants
 listvariants:
-	@echo VARIANTS COIN DOT
+	@echo VARIANTS COIN DOT Ledgeracio

@@ -67,6 +67,10 @@ typedef struct {
 } pd_Key_V5_t;
 
 typedef struct {
+    const uint8_t* _ptr;
+} pd_LookupSource_V5_t;
+
+typedef struct {
     uint64_t value;
 } pd_Period_V5_t;
 
@@ -156,6 +160,7 @@ typedef struct {
 
 typedef struct {
     pd_CompactPerBill_V5_t commission;
+    pd_bool_t blocked;
 } pd_ValidatorPrefs_V5_t;
 
 typedef struct {
@@ -314,6 +319,12 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_VecKey_V5_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecLookupSource_V5_t;
 
 typedef struct {
     uint64_t _len;

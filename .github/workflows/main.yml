@@ -1,0 +1,190 @@
+name: Build
+on: [push]
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    outputs:
+      uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "::set-output name=uid_gid::$(id -u):$(id -g)"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: |
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+          make deps
+          brew install conan
+      - run: cmake -DCMAKE_BUILD_TYPE=Debug . && make
+      - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
+
+  build_only_rust:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - name: rustfmt
+        run: |
+          cd ./app/rust
+          cargo fmt --version
+          cargo fmt -- --check
+      - name: clippy
+        run: |
+          cd ./app/rust
+          cargo clippy --version
+          cargo clippy --all-features --all-targets || true
+      - name: audit
+        run: |
+          cd ./app/rust
+          cargo audit --version
+          cargo audit
+      - name: run tests
+        run: |
+          cd ./app/rust
+          cargo test
+
+  build_ledger:
+    needs: configure
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/builder-bolos:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    env:
+      BOLOS_SDK: /__w/ledger-kusama/ledger-kusama/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+      HOME: /home/zondax_circle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build Standard app
+        shell: bash -l {0}
+        run: |
+          source $HOME/.cargo/env
+          make
+      - name: Build SR25519 app
+        shell: bash -l {0}
+        run: |
+          source $HOME/.cargo/env
+          SUPPORT_SR25519=1 make
+      - name: Build Ledgeracio
+        shell: bash -l {0}
+        run: |
+          source $HOME/.cargo/env
+          COIN=Ledgeracio make
+
+  test_zemu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: |
+          id
+          echo $HOME
+          echo $DISPLAY
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+      - name: Install rust
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake binutils-dev libcurl4-openssl-dev libiberty-dev libelf-dev libdw-dev
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain none -y;
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.4.0'
+      - name: Install yarn
+        run: |
+          npm install -g yarn
+      - name: Build Ledger app
+        run: |
+          make buildS
+          make clean
+          make buildX
+      - name: Build/Install build js deps
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          make zemu_install
+      - name: Run zemu tests
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          make zemu_test
+
+  test_zemu_ledgeracio:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+      - name: Install rust
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake binutils-dev libcurl4-openssl-dev libiberty-dev libelf-dev libdw-dev
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain none -y;
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.4.0'
+      - name: Install yarn
+        run: |
+          npm install -g yarn
+      - name: Build Ledger app
+        run: |
+          make build_ledgeracio
+      - name: Build/Install build js deps
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          make zemu_install
+      - name: Run zemu tests for Ledgeracio app
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          COIN=Ledgeracio make zemu_test
+
+  test_zemu_sr25519:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+      - name: Install rust
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake binutils-dev libcurl4-openssl-dev libiberty-dev libelf-dev libdw-dev
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain none -y;
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.4.0'
+      - name: Install yarn
+        run: |
+          npm install -g yarn
+      - name: Build Ledger app
+        run: |
+          make build_sr25519
+      - name: Build/Install build js deps
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          make zemu_install
+      - name: Run zemu tests for sr25519
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          cd tests_zemu && yarn testSR25519

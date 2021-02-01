@@ -26,8 +26,6 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
-parser_error_t _readMethodBasic_V5(parser_context_t* c, uint8_t moduleIdx, uint8_t callIdx, pd_MethodBasic_V5_t* method);
-
 parser_error_t _readMethod_V5(parser_context_t* c, uint8_t moduleIdx, uint8_t callIdx, pd_Method_V5_t* method);
 
 const char* _getMethod_ModuleName_V5(uint8_t moduleIdx);
@@ -44,6 +42,7 @@ parser_error_t _getMethod_ItemValue_V5(
     uint8_t pageIdx, uint8_t* pageCount);
 
 bool _getMethod_ItemIsExpert_V5(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
+bool _getMethod_IsNestingSupported_V5(uint8_t moduleIdx, uint8_t callIdx);
 
 #ifdef __cplusplus
 }

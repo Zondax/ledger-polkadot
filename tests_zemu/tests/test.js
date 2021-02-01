@@ -16,36 +16,45 @@
 
 import jest, {expect} from "jest";
 import Zemu from "@zondax/zemu";
-const {newPolkadotApp} = require("@zondax/ledger-polkadot");
-
-const ed25519 = require("ed25519-supercop");
 import {blake2bFinal, blake2bInit, blake2bUpdate} from "blakejs";
 
+const {newPolkadotApp} = require("@zondax/ledger-polkadot");
+const ed25519 = require("ed25519-supercop");
 const Resolve = require("path").resolve;
-const APP_PATH_S = Resolve("../app/bin/app_s.elf");
-const APP_PATH_X = Resolve("../app/bin/app_x.elf");
-
+const APP_PATH_S = Resolve("../app/output/app_s.elf");
+const APP_PATH_X = Resolve("../app/output/app_x.elf");
 
 const APP_SEED = "equip will roof matter pink blind book anxiety banner elbow sun young"
-var sim_options = {
+
+var simOptions = {
     logging: true,
     start_delay: 3000,
-    custom: `-s "${APP_SEED}"`
-    //,X11: true
+    custom: `-s "${APP_SEED}"`,
+    X11: false
 };
 
 let models = [
-  ['S', { model:'nanos', prefix: 'S', path: APP_PATH_S}],
-  ['X', { model: 'nanox', prefix: 'X', path: APP_PATH_X}]
+    ['S', {model: 'nanos', prefix: 'S', path: APP_PATH_S}],
+    ['X', {model: 'nanox', prefix: 'X', path: APP_PATH_X}]
 ]
 
 jest.setTimeout(60000)
 
-describe('Standard', function () {  
+describe('Standard', function () {
     test.each(models)('can start and stop container (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
+        } finally {
+            await sim.close();
+        }
+    });
+
+    test.each(models)('main menu (%s)', async function (_, {model, prefix, path}) {
+        const sim = new Zemu(path);
+        try {
+            await sim.start({model, ...simOptions});
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-mainmenu`, 3);
         } finally {
             await sim.close();
         }
@@ -54,7 +63,7 @@ describe('Standard', function () {
     test.each(models)('get app version (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const resp = await app.getVersion();
 
@@ -74,7 +83,7 @@ describe('Standard', function () {
     test.each(models)('get address (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
 
             const resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000);
@@ -97,14 +106,14 @@ describe('Standard', function () {
     test.each(models)('show address (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
 
             const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-show_address`, 3);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-show_address`, 2);
 
             const resp = await respRequest;
             console.log(resp);
@@ -125,14 +134,14 @@ describe('Standard', function () {
     test.each(models)('show address - reject (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
 
             const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-show_address_reject`, 4, 2);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-show_address_reject`, 3, 2);
 
             const resp = await respRequest;
             console.log(resp);
@@ -147,7 +156,7 @@ describe('Standard', function () {
     test.each(models)('sign basic normal (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -165,7 +174,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_normal`, 7);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_normal`, 6);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -190,7 +199,7 @@ describe('Standard', function () {
     test.each(models)('sign basic expert (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -214,60 +223,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_expert`, 13);
-
-            let signatureResponse = await signatureRequest;
-            console.log(signatureResponse);
-
-            expect(signatureResponse.return_code).toEqual(0x9000);
-            expect(signatureResponse.error_message).toEqual("No errors");
-
-            // Now verify the signature
-            let prehash = txBlob;
-            if (txBlob.length > 256) {
-                const context = blake2bInit(32, null);
-                blake2bUpdate(context, txBlob);
-                prehash = Buffer.from(blake2bFinal(context));
-            }
-            const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
-            expect(valid).toEqual(true);
-        } finally {
-            await sim.close();
-        }
-    });
-
-    test.each(models)('sign basic expert - accept shortcut (%s)', async function (_, {model, prefix, path}) {
-        const sim = new Zemu(path);
-        try {
-            await sim.start({model, ...sim_options});
-            const app = newPolkadotApp(sim.getTransport());
-            const pathAccount = 0x80000000;
-            const pathChange = 0x80000000;
-            const pathIndex = 0x80000000;
-
-            // Change to expert mode so we can skip fields
-            await sim.clickRight();
-            await sim.clickBoth();
-            await sim.clickLeft();
-
-            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
-
-            const txBlob = Buffer.from(txBlobStr, "hex");
-
-            const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex);
-            const pubKey = Buffer.from(responseAddr.pubKey, "hex");
-
-            // do not wait here.. we need to navigate
-            const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob);
-
-            // Wait until we are not in the main menu
-            await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
-
-            // Shortcut to accept menu
-            await sim.clickBoth();
-
-            // Accept tx
-            await sim.clickBoth();
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_expert`, 12);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -292,7 +248,7 @@ describe('Standard', function () {
     test.each(models)('sign basic - forward/backward (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -310,7 +266,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB`, 7, 3);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB`, 6, 1);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -335,7 +291,7 @@ describe('Standard', function () {
     test.each(models)('sign basic - forward/backward-reject (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -353,7 +309,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB_reject`, 9, 3);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB_reject`, 7, 1);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -368,7 +324,7 @@ describe('Standard', function () {
     test.each(models)('sign large nomination (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -386,7 +342,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_large_nomination`, 35);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_large_nomination`, model === "nanos" ? 34 : 19);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);

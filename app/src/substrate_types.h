@@ -34,6 +34,7 @@ typedef uint8_t pd_bool_t;
 typedef uint16_t pd_u16_t;
 typedef uint32_t pd_u32_t;
 typedef uint64_t pd_u64_t;
+typedef uint32_t pd_BlockNumber_t;
 
 #define CHECK_ERROR(FUNC_CALL)          \
     {                                   \
@@ -84,6 +85,11 @@ typedef struct {
 } pd_BalanceOf_t;
 
 typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+} pd_Bytes_t;
+
+typedef struct {
     pd_Data_t data1;
     pd_Data_t data2;
 } pd_TupleDataData_t;
@@ -102,10 +108,6 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Header_t;
-
-typedef struct {
-    const uint8_t* _ptr;
-} pd_LookupSource_t;
 
 typedef struct {
     uint8_t some;
@@ -130,11 +132,6 @@ typedef struct {
 } pd_VecCall_t;
 
 typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-} pd_Bytes_t;
-
-typedef struct {
     compactInt_t value;
 } pd_CompactBalanceOf_t;
 
@@ -154,12 +151,6 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_VecHeader_t;
-
-typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
-} pd_VecLookupSource_t;
 
 typedef struct {
     uint64_t _len;
@@ -205,7 +196,6 @@ typedef struct {
 
 typedef compactInt_t pd_Compactu32_t; // u32
 typedef compactInt_t pd_Compactu64_t; // u64
-typedef uint32_t pd_BlockNumber_t; // u32
 typedef compactInt_t pd_CompactAssignments_t;
 typedef compactInt_t pd_CompactBountyIndex_t;
 typedef compactInt_t pd_CompactEraIndex_t;

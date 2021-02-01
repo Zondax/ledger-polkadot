@@ -30,6 +30,7 @@ extern "C" {
 
 #define MENU_MAIN_APP_LINE1                 "Polkadot"
 #define MENU_MAIN_APP_LINE2                 "Ready"
+#define MENU_MAIN_APP_LINE2_SECRET          "DOT RECOVERY"
 #define APPVERSION_LINE1                    "Polkadot"
 #define APPVERSION_LINE2                    "v" APPVERSION
 

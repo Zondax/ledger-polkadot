@@ -9,4 +9,4 @@
 	url = https://github.com/bilke/cmake-modules.git
 [submodule "deps/nanox-secure-sdk"]
 	path = deps/nanox-secure-sdk
-	url = git@github.com:LedgerHQ/nanox-secure-sdk.git
+	url = https://github.com/LedgerHQ/nanox-secure-sdk.git
