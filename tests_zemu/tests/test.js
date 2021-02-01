@@ -22,10 +22,12 @@ const ed25519 = require("ed25519-supercop");
 import {blake2bFinal, blake2bInit, blake2bUpdate} from "blakejs";
 
 const Resolve = require("path").resolve;
-const APP_PATH = Resolve("../app/bin/app.elf");
+const APP_PATH_S = Resolve("../app/bin/app_s.elf");
+const APP_PATH_X = Resolve("../app/bin/app_x.elf");
+
 
 const APP_SEED = "equip will roof matter pink blind book anxiety banner elbow sun young"
-const sim_options = {
+var sim_options = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`,
@@ -34,11 +36,20 @@ const sim_options = {
 
 jest.setTimeout(60000)
 
-describe('Standard', function () {
+describe.each([
+  ['S', { model:'nanos', prefix: 'S', path: APP_PATH_S}],
+  ['X', { model: 'nanox', prefix: 'X', path: APP_PATH_X}]
+])('Standard - %j', function (_, {model, prefix, path}) {
+    
+    const APP_PATH = path;
+    sim_options = {model, ...sim_options};
+  
     test('can start and stop container', async function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(sim_options);
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
@@ -59,6 +70,8 @@ describe('Standard', function () {
             expect(resp).toHaveProperty("major");
             expect(resp).toHaveProperty("minor");
             expect(resp).toHaveProperty("patch");
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
@@ -82,7 +95,8 @@ describe('Standard', function () {
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
-
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
@@ -111,6 +125,8 @@ describe('Standard', function () {
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
@@ -133,6 +149,8 @@ describe('Standard', function () {
 
             expect(resp.return_code).toEqual(0x6986);
             expect(resp.error_message).toEqual("Transaction rejected");
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
@@ -176,6 +194,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
@@ -225,6 +245,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
@@ -278,6 +300,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
@@ -321,6 +345,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
@@ -397,6 +423,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
+        } catch(err) {
+            expect(err).not.toBeDefined();
         } finally {
             await sim.close();
         }
