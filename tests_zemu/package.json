@@ -6,8 +6,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles -t 'Standard' --runInBand",
-    "testLedgeracio": "jest --detectOpenHandles -t 'Ledgeracio'"
+    "test": "jest --detectOpenHandles --runInBand tests/test.js",
+    "testLedgeracio": "jest --detectOpenHandles tests/Ledgeracio.test.js"
   },
   "repository": {
     "type": "git",
