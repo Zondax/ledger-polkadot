@@ -47,8 +47,8 @@ describe('Standard', function () {
         try {
             console.log(sim_options);
             await sim.start({model, ...sim_options});
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -69,8 +69,8 @@ describe('Standard', function () {
             expect(resp).toHaveProperty("major");
             expect(resp).toHaveProperty("minor");
             expect(resp).toHaveProperty("patch");
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -94,8 +94,8 @@ describe('Standard', function () {
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -124,8 +124,8 @@ describe('Standard', function () {
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -148,8 +148,8 @@ describe('Standard', function () {
 
             expect(resp.return_code).toEqual(0x6986);
             expect(resp.error_message).toEqual("Transaction rejected");
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -193,8 +193,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -244,8 +244,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -299,8 +299,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -344,8 +344,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -379,8 +379,8 @@ describe('Standard', function () {
 
             expect(signatureResponse.return_code).toEqual(0x6986);
             expect(signatureResponse.error_message).toEqual("Transaction rejected");
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -424,8 +424,8 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        } catch(err) {
-            expect(err).not.toBeDefined();
+        /*} catch(err) {
+            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
