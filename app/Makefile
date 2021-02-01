@@ -28,17 +28,17 @@ DEFINES += ZEMU_LOGGING
 endif
 
 all: bin/app.elf
-	@echo "#!/usr/bin/env bash" > $(CURDIR)/pkg/zxtool.sh
-	@echo "APPNAME=\"${APPNAME}\"" >> $(CURDIR)/pkg/zxtool.sh
-	@echo "APPVERSION=\"${APPVERSION}\"" >> $(CURDIR)/pkg/zxtool.sh
-	@echo "APPPATH=\""${APPPATH}"\"" >> $(CURDIR)/pkg/zxtool.sh
-	@echo "LOAD_PARAMS=\"${COMMON_LOAD_PARAMS}\"" >> $(CURDIR)/pkg/zxtool.sh
-	@echo "DELETE_PARAMS=\"${COMMON_DELETE_PARAMS}\"" >> $(CURDIR)/pkg/zxtool.sh
-	@echo "APPHEX=\"" >> $(CURDIR)/pkg/zxtool.sh
-	@cat $(CURDIR)/bin/app.hex >> $(CURDIR)/pkg/zxtool.sh
-	@echo "\"" >> $(CURDIR)/pkg/zxtool.sh
-	@cat $(CURDIR)/../deps/ledger-zxlib/scripts/template.sh >> $(CURDIR)/pkg/zxtool.sh
-	@chmod +x $(CURDIR)/pkg/zxtool.sh
+	@echo "#!/usr/bin/env bash" > ${OUTPUT_INSTALLER}
+	@echo "APPNAME=\"${APPNAME}\"" >> ${OUTPUT_INSTALLER}
+	@echo "APPVERSION=\"${APPVERSION}\"" >> ${OUTPUT_INSTALLER}
+	@echo "APPPATH=\""${APPPATH}"\"" >> ${OUTPUT_INSTALLER}
+	@echo "LOAD_PARAMS=\"${COMMON_LOAD_PARAMS}\"" >> ${OUTPUT_INSTALLER}
+	@echo "DELETE_PARAMS=\"${COMMON_DELETE_PARAMS}\"" >> ${OUTPUT_INSTALLER}
+	@echo "APPHEX=\"" >> ${OUTPUT_INSTALLER}
+	@cat $(CURDIR)/bin/app.hex >> ${OUTPUT_INSTALLER}
+	@echo "\"" >> ${OUTPUT_INSTALLER}
+	@cat $(CURDIR)/../deps/ledger-zxlib/scripts/template.sh >> ${OUTPUT_INSTALLER}
+	@chmod +x ${OUTPUT_INSTALLER}
 	@cp $(CURDIR)/bin/app.elf ${OUTPUT_ELF}
 
 
@@ -79,11 +79,13 @@ ifeq ($(TARGET_NAME),TARGET_NANOS)
 SCRIPT_LD:=$(CURDIR)/script.ld
 OUTPUT_ELF:= $(CURDIR)/bin/app_s.elf
 ICONNAME:=$(CURDIR)/nanos_icon.gif
+OUTPUT_INSTALLER:= $(CURDIR)/pkg/installer_s.sh
 endif
 
 ifeq ($(TARGET_NAME),TARGET_NANOX)
 OUTPUT_ELF:= $(CURDIR)/bin/app_x.elf
 ICONNAME:=$(CURDIR)/nanox_icon.gif
+OUTPUT_INSTALLER:= $(CURDIR)/pkg/installer_x.sh
 endif
 
 ifndef ICONNAME
