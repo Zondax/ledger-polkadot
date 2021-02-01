@@ -30,8 +30,8 @@ const APP_SEED = "equip will roof matter pink blind book anxiety banner elbow su
 var sim_options = {
     logging: true,
     start_delay: 3000,
-    custom: `-s "${APP_SEED}"`,
-    //X11: true
+    custom: `-s "${APP_SEED}"`
+    //,X11: true
 };
 
 let models = [
@@ -45,10 +45,7 @@ describe('Standard', function () {
     test.each(models)('can start and stop container (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            console.log(sim_options);
             await sim.start({model, ...sim_options});
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -69,8 +66,6 @@ describe('Standard', function () {
             expect(resp).toHaveProperty("major");
             expect(resp).toHaveProperty("minor");
             expect(resp).toHaveProperty("patch");
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -94,8 +89,6 @@ describe('Standard', function () {
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -111,7 +104,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "show_address", 3);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-show_address`, 3);
 
             const resp = await respRequest;
             console.log(resp);
@@ -124,8 +117,6 @@ describe('Standard', function () {
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -141,15 +132,13 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "show_address_reject", 4, 2);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-show_address_reject`, 4, 2);
 
             const resp = await respRequest;
             console.log(resp);
 
             expect(resp.return_code).toEqual(0x6986);
             expect(resp.error_message).toEqual("Transaction rejected");
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -176,7 +165,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_basic_normal", 7);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_normal`, 7);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -193,8 +182,6 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -227,7 +214,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_basic_expert", 13);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_expert`, 13);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -244,8 +231,6 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -299,8 +284,6 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -327,7 +310,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_basic_FB", 7, 3);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB`, 7, 3);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -344,8 +327,6 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -372,15 +353,13 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_basic_FB_reject", 9, 3);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB_reject`, 9, 3);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
 
             expect(signatureResponse.return_code).toEqual(0x6986);
             expect(signatureResponse.error_message).toEqual("Transaction rejected");
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
@@ -407,7 +386,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", "sign_large_nomination", 35);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_large_nomination`, 35);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -424,8 +403,6 @@ describe('Standard', function () {
             }
             const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey);
             expect(valid).toEqual(true);
-        /*} catch(err) {
-            expect(err).not.toBeDefined();*/
         } finally {
             await sim.close();
         }
