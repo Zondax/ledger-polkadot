@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles --runInBand tests/test.js",
-    "testLedgeracio": "jest --detectOpenHandles tests/Ledgeracio.js"
+    "testLedgeracio": "jest --detectOpenHandles tests/Ledgeracio.test.js"
   },
   "repository": {
     "type": "git",
