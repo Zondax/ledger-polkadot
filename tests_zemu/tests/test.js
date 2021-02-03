@@ -16,18 +16,17 @@
 
 import jest, {expect} from "jest";
 import Zemu from "@zondax/zemu";
-const {newPolkadotApp} = require("@zondax/ledger-polkadot");
-
-const ed25519 = require("ed25519-supercop");
 import {blake2bFinal, blake2bInit, blake2bUpdate} from "blakejs";
 
+const {newPolkadotApp} = require("@zondax/ledger-polkadot");
+const ed25519 = require("ed25519-supercop");
 const Resolve = require("path").resolve;
 const APP_PATH_S = Resolve("../app/bin/app_s.elf");
 const APP_PATH_X = Resolve("../app/bin/app_x.elf");
 
 
 const APP_SEED = "equip will roof matter pink blind book anxiety banner elbow sun young"
-var sim_options = {
+var simOptions = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`
@@ -41,11 +40,11 @@ let models = [
 
 jest.setTimeout(60000)
 
-describe('Standard', function () {  
+describe('Standard', function () {
     test.each(models)('can start and stop container (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
         } finally {
             await sim.close();
         }
@@ -54,7 +53,7 @@ describe('Standard', function () {
     test.each(models)('get app version (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const resp = await app.getVersion();
 
@@ -74,7 +73,7 @@ describe('Standard', function () {
     test.each(models)('get address (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
 
             const resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000);
@@ -97,7 +96,7 @@ describe('Standard', function () {
     test.each(models)('show address (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
 
             const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
@@ -125,7 +124,7 @@ describe('Standard', function () {
     test.each(models)('show address - reject (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
 
             const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true);
@@ -147,7 +146,7 @@ describe('Standard', function () {
     test.each(models)('sign basic normal (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -190,7 +189,7 @@ describe('Standard', function () {
     test.each(models)('sign basic expert (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -239,7 +238,7 @@ describe('Standard', function () {
     test.each(models)('sign basic expert - accept shortcut (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -292,7 +291,7 @@ describe('Standard', function () {
     test.each(models)('sign basic - forward/backward (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -335,7 +334,7 @@ describe('Standard', function () {
     test.each(models)('sign basic - forward/backward-reject (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
@@ -368,7 +367,7 @@ describe('Standard', function () {
     test.each(models)('sign large nomination (%s)', async function (_, {model, prefix, path}) {
         const sim = new Zemu(path);
         try {
-            await sim.start({model, ...sim_options});
+            await sim.start({model, ...simOptions});
             const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
