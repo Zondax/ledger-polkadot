@@ -31,7 +31,7 @@ var sim_options = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`
-    //,X11: true
+    ,X11: true
 };
 
 let models = [
@@ -165,7 +165,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_normal`, 7);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_normal`, prefix == 'S' ? 7 : 8);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -214,7 +214,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_expert`, 13);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_expert`, prefix =='S' ? 13 : 14);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -249,6 +249,11 @@ describe('Standard', function () {
             await sim.clickRight();
             await sim.clickBoth();
             await sim.clickLeft();
+
+            if (prefix == 'X') {
+                // FIX ME: shortcut not working on x; killing it to avoid CI stuck;
+                expect(false).toBeTruthy()
+            }
 
             let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
@@ -298,6 +303,11 @@ describe('Standard', function () {
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
+            if (prefix == 'X') {
+                // FIX ME: Backward not intended behavior;
+                expect(false).toBeTruthy()
+            }
+
             let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
@@ -340,6 +350,11 @@ describe('Standard', function () {
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
+
+            if (prefix == 'X') {
+                // FIX ME: Backward not intended behavior;
+                expect(false).toBeTruthy()
+            }
 
             let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
@@ -386,7 +401,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_large_nomination`, 35);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_large_nomination`, prefix == 'S' ? 35 : 20);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
