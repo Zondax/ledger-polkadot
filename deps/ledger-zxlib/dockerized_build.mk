@@ -25,11 +25,7 @@ LEDGER_SRC=$(CURDIR)/app
 DOCKER_APP_SRC=/project
 DOCKER_APP_BIN=$(DOCKER_APP_SRC)/app/bin/app.elf
 
-<<<<<<< HEAD
-DOCKER_BOLOS_SDK=/project/deps/nanos-secure-sdk
-=======
 DOCKER_BOLOS_SDKS=/project/deps/nanos-secure-sdk
->>>>>>> 9b98907e2636ca03d99a14931632b76af7cba737
 DOCKER_BOLOS_SDKX=/project/deps/nanox-secure-sdk
 
 # Note: This is not an SSH key, and being public represents no risk
@@ -91,16 +87,8 @@ convert_icon:
 	@convert $(LEDGER_SRC)/tmp.gif -monochrome -size 16x16 -depth 1 $(LEDGER_SRC)/nanos_icon.gif
 	@convert $(LEDGER_SRC)/nanos_icon.gif -crop 14x14+1+1 +repage -negate $(LEDGER_SRC)/nanox_icon.gif
 
-<<<<<<< HEAD
-.PHONY: build
-build: buildS buildX
-
-.PHONY: buildS
-buildS:
-=======
 .PHONY: build_icon
 build_icon:
->>>>>>> 9b98907e2636ca03d99a14931632b76af7cba737
 	$(info Replacing app icon)
 	@cp $(LEDGER_SRC)/nanos_icon.gif $(LEDGER_SRC)/glyphs/icon_app.gif
 	@convert $(LEDGER_SRC)/nanos_icon.gif -crop 14x14+1+1 +repage -negate $(LEDGER_SRC)/nanox_icon.gif
