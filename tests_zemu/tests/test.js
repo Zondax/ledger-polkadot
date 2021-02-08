@@ -30,12 +30,12 @@ var simOptions = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`
-    //,X11: true
+    ,X11: true
 };
 
 let models = [
   ['S', { model:'nanos', prefix: 'S', path: APP_PATH_S}],
-  ['X', { model: 'nanox', prefix: 'X', path: APP_PATH_X}]
+  //['X', { model: 'nanox', prefix: 'X', path: APP_PATH_X}]
 ]
 
 jest.setTimeout(60000)
@@ -252,6 +252,7 @@ describe('Standard', function () {
             if (prefix == 'X') {
                 // FIX ME: shortcut not working on x; killing it to avoid CI stuck;
                 expect(false).toBeTruthy()
+                //this.skip()
             }
 
             let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
