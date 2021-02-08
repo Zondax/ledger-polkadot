@@ -2,19 +2,6 @@ name: Build
 on: [push]
 
 jobs:
-<<<<<<< HEAD
-  configure:
-    runs-on: ubuntu-latest
-    outputs:
-      uid_gid: ${{ steps.get-user.outputs.uid_gid }}
-    steps:
-      - id: get-user
-        run: echo "::set-output name=uid_gid::$(id -u):$(id -g)"
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-=======
   build:
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +9,6 @@ jobs:
         run: |
           id
           echo $GITHUB_WORKSPACE
->>>>>>> 9b98907e2636ca03d99a14931632b76af7cba737
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -36,16 +22,8 @@ jobs:
       - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
 
   build_ledger:
-<<<<<<< HEAD
-    needs: configure
-    runs-on: ubuntu-latest
-    container:
-      image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
-      options: --user ${{ needs.configure.outputs.uid_gid }}
-=======
     runs-on: ubuntu-latest
     container: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
->>>>>>> 9b98907e2636ca03d99a14931632b76af7cba737
     env:
       BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
@@ -54,18 +32,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-<<<<<<< HEAD
-      - name: Build Standard app
-        run: |
-          make
-
-  build_ledger_ledgeracio:
-    needs: configure
-    runs-on: ubuntu-latest
-    container:
-      image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
-      options: --user ${{ needs.configure.outputs.uid_gid }}
-=======
           path: /home/Zondax
       - name: Build Standard app
         working-directory: ~/
@@ -77,7 +43,6 @@ jobs:
   build_ledger_ledgeracio:
     runs-on: ubuntu-latest
     container: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
->>>>>>> 9b98907e2636ca03d99a14931632b76af7cba737
     env:
       BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
@@ -86,14 +51,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-<<<<<<< HEAD
-      - name: Build Ledgeracio
-        run: |
-=======
           path: /home/Zondax
       - name: Build Ledgeracio
         run: |
           source /home/zondax/.cargo/env
           cd /home/zondax/project
->>>>>>> 9b98907e2636ca03d99a14931632b76af7cba737
           COIN=Ledgeracio make
