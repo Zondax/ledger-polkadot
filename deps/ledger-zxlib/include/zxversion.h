@@ -16,5 +16,9 @@
 #pragma once
 
 #define ZXLIB_MAJOR     7
+<<<<<<< HEAD
 #define ZXLIB_MINOR     0
+=======
+#define ZXLIB_MINOR     2
+>>>>>>> 9b98907e2636ca03d99a14931632b76af7cba737
 #define ZXLIB_PATCH     0
