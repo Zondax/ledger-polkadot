@@ -22,8 +22,11 @@ jobs:
       - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
 
   build_ledger:
+    needs: configure
     runs-on: ubuntu-latest
-    container: zondax/builder-bolos@sha256:0e0097c01ef3c6c964fea8d8b6e3a584f4ff209a04ec68b6b2b4aeab64379c23
+    container:
+      image: zondax/builder-bolos@sha256:0e0097c01ef3c6c964fea8d8b6e3a584f4ff209a04ec68b6b2b4aeab64379c23
+      options: --user ${{ needs.configure.outputs.uid_gid }}
     env:
       BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
@@ -34,8 +37,6 @@ jobs:
           submodules: true
       - name: Build Standard app
         run: |
-          source /home/zondax/.cargo/env
-          cd /home/zondax/project
           make
 
   build_ledger_ledgeracio:
