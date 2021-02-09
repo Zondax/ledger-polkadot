@@ -23,7 +23,9 @@ jobs:
 
   build_ledger:
     runs-on: ubuntu-latest
-    container: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+    container: 
+      image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+      options: --user ${{ needs.configure.outputs.uid_gid }}
     env:
       BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
@@ -34,13 +36,13 @@ jobs:
           submodules: true
       - name: Build Standard app
         run: |
-          source /home/zondax/.cargo/env
-          cd /home/zondax/project
           make
 
   build_ledger_ledgeracio:
     runs-on: ubuntu-latest
-    container: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+    container: 
+      image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+      options: --user ${{ needs.configure.outputs.uid_gid }}
     env:
       BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
@@ -51,6 +53,4 @@ jobs:
           submodules: true
       - name: Build Ledgeracio
         run: |
-          source /home/zondax/.cargo/env
-          cd /home/zondax/project
           COIN=Ledgeracio make
