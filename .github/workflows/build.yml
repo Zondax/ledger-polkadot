@@ -32,7 +32,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-          path: /home/Zondax
       - name: Build Standard app
         working-directory: ~/
         run: |
@@ -51,7 +50,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-          path: /home/Zondax
       - name: Build Ledgeracio
         run: |
           source /home/zondax/.cargo/env
