@@ -60,6 +60,7 @@ jobs:
         with:
           submodules: true
       - name: Build Ledgeracio
+        shell: bash -l {0}
         run: |
           source /home/zondax/.cargo/env
           cd /home/zondax/project
