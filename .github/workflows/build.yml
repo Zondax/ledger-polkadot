@@ -62,6 +62,5 @@ jobs:
       - name: Build Ledgeracio
         shell: bash -l {0}
         run: |
-          source /home/zondax/.cargo/env
-          cd /home/zondax/project
+          source $HOME/.cargo/env
           COIN=Ledgeracio make
