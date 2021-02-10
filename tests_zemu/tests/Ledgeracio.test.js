@@ -24,11 +24,13 @@ const Resolve = require("path").resolve;
 const APP_PATH = Resolve("../app/bin/app_ledgeracio.elf");
 
 const APP_SEED = "equip will roof matter pink blind book anxiety banner elbow sun young"
+let enableX11 = null;
+
 const simOptions = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`,
-    //X11: true
+    X11: enableX11 !== null ? enableX11 : !!process.env["$DISPLAY"]
 };
 
 jest.setTimeout(30000)
