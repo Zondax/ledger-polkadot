@@ -2,13 +2,17 @@ name: Build
 on: [push]
 
 jobs:
+  configure:
+    runs-on: ubuntu-latest
+    outputs:
+      uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "::set-output name=uid_gid::$(id -u):$(id -g)"
+
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Test
-        run: |
-          id
-          echo $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -30,6 +34,7 @@ jobs:
     env:
       BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
+      HOME: /home/zondax_circle
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -40,11 +45,15 @@ jobs:
           make
 
   build_ledger_ledgeracio:
+    needs: configure
     runs-on: ubuntu-latest
-    container: zondax/builder-bolos@sha256:0e0097c01ef3c6c964fea8d8b6e3a584f4ff209a04ec68b6b2b4aeab64379c23
+    container:
+      image: zondax/builder-bolos@sha256:0e0097c01ef3c6c964fea8d8b6e3a584f4ff209a04ec68b6b2b4aeab64379c23
+      options: --user ${{ needs.configure.outputs.uid_gid }}
     env:
       BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
+      HOME: /home/zondax_circle
     steps:
       - name: Checkout
         uses: actions/checkout@v2
