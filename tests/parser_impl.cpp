@@ -208,7 +208,7 @@ TEST(SCALE, TransferTXBadSpec) {
     parser_context_t ctx;
     parser_error_t err;
 
-    const auto testTx = "00004d3dcb99d5038d240b63ce64c10c05010000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b"
+    const auto testTx = "00004d3dcb99d5038d240b63ce64c10c05010000000300000091b171bb158e2d3848fa23a9f1c25182fb8e20313b"
                         "2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
 

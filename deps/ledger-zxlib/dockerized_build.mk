@@ -94,11 +94,11 @@ convert_icon:
 	@convert $(LEDGER_SRC)/nanos_icon.gif -crop 14x14+1+1 +repage -negate $(LEDGER_SRC)/nanox_icon.gif
 
 .PHONY: buildS
-buildS: build_rustS
+buildS: clean build_rustS
 	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -j `nproc` -C $(DOCKER_APP_SRC))
 
 .PHONY: buildX
-buildX: build_rustX
+buildX: clean build_rustX
 	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -j `nproc` -C $(DOCKER_APP_SRC))
 
 .PHONY: clean
