@@ -17,8 +17,7 @@
 import jest, {expect} from "jest";
 import Zemu from "@zondax/zemu";
 
-const {newKusamaApp} = require("@zondax/ledger-polkadot");
-const ed25519 = require("ed25519-supercop");
+const {newPolkadotApp} = require("@zondax/ledger-polkadot");
 import {blake2bFinal, blake2bInit, blake2bUpdate} from "blakejs";
 var addon = require('../../tests_tools/neon/native');
 
@@ -31,7 +30,7 @@ const simOptions = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`,
-    X11: false
+    X11: true
 };
 
 jest.setTimeout(60000)
@@ -41,7 +40,7 @@ describe('SR25519', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(simOptions);
-            const app = newKusamaApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
 
             const resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000, false, 1);
 
@@ -50,8 +49,8 @@ describe('SR25519', function () {
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
 
-            const expected_address = "Cz4vu6J2NHP977ZYZcMCdjmmLgmddKvXRi5TxecuTgFfKww";
-            const expected_pk = "121cc87d316d311fe3e3b9c34b1083a29c55f6ebd214b60f59578b0a37007424";
+            const expected_address = "1b8tiTYdzk8hZ6W65ppiGPA5TnYBAnoRDSoyxyVbj1DZENm";
+            const expected_pk = "1a08e8cba45e59c761ebe72133da0b7f4de8ce6a263690b07e3bd56dcc8d2226";
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
@@ -65,7 +64,7 @@ describe('SR25519', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(simOptions);
-            const app = newKusamaApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
 
             const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true, 1);
             // Wait until we are not in the main menu
@@ -79,8 +78,8 @@ describe('SR25519', function () {
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
 
-            const expected_address = "Cz4vu6J2NHP977ZYZcMCdjmmLgmddKvXRi5TxecuTgFfKww";
-            const expected_pk = "121cc87d316d311fe3e3b9c34b1083a29c55f6ebd214b60f59578b0a37007424";
+            const expected_address = "1b8tiTYdzk8hZ6W65ppiGPA5TnYBAnoRDSoyxyVbj1DZENm";
+            const expected_pk = "1a08e8cba45e59c761ebe72133da0b7f4de8ce6a263690b07e3bd56dcc8d2226";
 
             expect(resp.address).toEqual(expected_address);
             expect(resp.pubKey).toEqual(expected_pk);
@@ -93,7 +92,7 @@ describe('SR25519', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(simOptions);
-            const app = newKusamaApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
 
             const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true, 1);
             // Wait until we are not in the main menu
@@ -114,12 +113,12 @@ describe('SR25519', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(simOptions);
-            const app = newKusamaApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "0400a03c31b64722c0852992e65493764f31ca55a86a8fa3262ba54381698bcc066133158139ae28a3dfaac5fe1560a5e9e05cd503ae1103008ed73e0dea07000003000000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
+            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -158,7 +157,7 @@ describe('SR25519', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(simOptions);
-            const app = newKusamaApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
@@ -168,7 +167,7 @@ describe('SR25519', function () {
             await sim.clickBoth();
             await sim.clickLeft();
 
-            let txBlobStr = "0400a03c31b64722c0852992e65493764f31ca55a86a8fa3262ba54381698bcc066133158139ae28a3dfaac5fe1560a5e9e05cd503ae1103008ed73e0dea07000003000000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
+            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -204,70 +203,16 @@ describe('SR25519', function () {
         }
     });
 
-    test('sign basic expert - accept shortcut', async function () {
-        const sim = new Zemu(APP_PATH);
-        try {
-            await sim.start(simOptions);
-            const app = newKusamaApp(sim.getTransport());
-            const pathAccount = 0x80000000;
-            const pathChange = 0x80000000;
-            const pathIndex = 0x80000000;
-
-            // Change to expert mode so we can skip fields
-            await sim.clickRight();
-            await sim.clickBoth();
-            await sim.clickLeft();
-
-            let txBlobStr = "0400d401b48506d4de473a04f40ad8114add5eda886068a71efdf95eee616ee4909e33158139ae28a3dfaac5fe1560a5e9e05cd503ae1103006d0fe707000003000000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
-
-            const txBlob = Buffer.from(txBlobStr, "hex");
-
-            const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex, false, 1);
-            const pubKey = Buffer.from(responseAddr.pubKey, "hex");
-
-            // do not wait here.. we need to navigate
-            const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob, 1);
-
-            // Wait until we are not in the main menu
-            await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
-
-            // Shortcut to accept menu
-            await sim.clickBoth();
-
-            // Accept tx
-            await sim.clickBoth();
-
-            let signatureResponse = await signatureRequest;
-            console.log(signatureResponse);
-
-            expect(signatureResponse.return_code).toEqual(0x9000);
-            expect(signatureResponse.error_message).toEqual("No errors");
-
-            // Now verify the signature
-            let prehash = txBlob;
-            if (txBlob.length > 256) {
-                const context = blake2bInit(32, null);
-                blake2bUpdate(context, txBlob);
-                prehash = Buffer.from(blake2bFinal(context));
-            }
-            let signingcontext = Buffer.from([]);
-            const valid = addon.schnorrkel_verify(pubKey,signingcontext,prehash, signatureResponse.signature.slice(1));
-            expect(valid).toEqual(true);
-        } finally {
-            await sim.close();
-        }
-    });
-
     test('sign basic - forward/backward', async function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(simOptions);
-            const app = newKusamaApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "0400d401b48506d4de473a04f40ad8114add5eda886068a71efdf95eee616ee4909e33158139ae28a3dfaac5fe1560a5e9e05cd503ae1103006d0fe707000003000000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
+            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -306,12 +251,12 @@ describe('SR25519', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(simOptions);
-            const app = newKusamaApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "0400d401b48506d4de473a04f40ad8114add5eda886068a71efdf95eee616ee4909e33158139ae28a3dfaac5fe1560a5e9e05cd503ae1103006d0fe707000003000000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
+            let txBlobStr = "0500c29421760786e979ca1f08f09e1793bcaa031ed77e3ad42dbe173e3cd62b410a33158139ae28a3dfaac5fe1560a5e9e05cd5030003d20296491a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -339,12 +284,12 @@ describe('SR25519', function () {
         const sim = new Zemu(APP_PATH);
         try {
             await sim.start(simOptions);
-            const app = newKusamaApp(sim.getTransport());
+            const app = newPolkadotApp(sim.getTransport());
             const pathAccount = 0x80000000;
             const pathChange = 0x80000000;
             const pathIndex = 0x80000000;
 
-            let txBlobStr = "060540632751e57bd704b9d0e1a016f35e86df929bac522e6cfc4eae03eb2a4411862ff768f8cd08f228b69a8bd71da4caa9611fcfc1be95df68cc1a28e45d7f8e4e38b80d7731115479b1bd9918a1294bd9d22c62f7de1bbe2553525dd52a779b3110ff28e16b81b22bbc3d3163b3ba1fefb9438cea8560cb0711308ab398351c89464eb2015e9a9082ac9eecd9d08868b7c38a1ed3eee6625ac027c83c49c3d57064de8952adef2e842465ec59eca2c83574a158640b294e539eae2b64c3fe86b1c7432f90c11bde3958ed8cfe29e26cd6d951d4047a4245e608743be02e7cca6c28d7d91d06e16880c2dc29b7d6d79255048a78212c76436b1fbfe96e9a61be9f0438131d928b065389b2c7eacf4ba6d3599ea01f7e142e48391e784e5603a88c53f1559a8bac1a6969efb9d30b3fad16b8d361a286072b443167a588363bd1146177d8eb34473d68f27d638321d6c35942057253842d9b9770c574dbb7b0a9ce6cac2bd27d0692ebf2d661f587354b41a8b47bce6240dc76a0f802a22930ca77814b79a4c8b3a02ae3b6bffed9ae90b186ceb8976f65dba2cd278c80170d447f49eab42ba84f4f319580c8e5dd0561df82f00d6178fc0661a12033eccdafae1a98c755a79b7622993005a2877a797c968ebd895fa9fab4e5e6bb88e87fb9ebfc0674741994dd6f5c40fb06adc78b9f53ae1cdcb369c77a528ea6ee2a140064783fd50391018ed73e0de707000003000000b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafeb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe";
+            let txBlobStr = "07054026951b3286754fa7c9138b97e43cf0688b8e7a63edb63a79bcbc624bd534db2764de55acce68b57f853a486692609b81974d730449c272b466b7423752acdc2f3659bd3d1584f3b31261fbb0f9718a3031db1ffd6e15d2cad5e1cc67303802290cf166640c67010f7b253f176449bfb9578b4f545e115e28590a0145beb2be7da0ba634ed63f424e321d4a69aa8c80b9d53733b356e51a9413adc7dd5b56901274856fc73b6f71968133674ddd8fcb1ddc8e26f8e59f45334c14727411db5d3cb0a1c57153b1dcea8783d1eafd6de7f0a039fe9b66c76be7b9e7b95d14923d55ba5db57dcd5e8c54321df0e70670243be1634233ecc5708031efbbafd9e1676cb68cb8c024fdbe85995072874b6f6248da7b603724f225a2ca46319f7f8970688ec7826410f60a71fdd095ad2557f4ea8ea3c49187b502fa8dc753862775107afcebb20575eb7d25efc9b1abf206f1fd8c5f160d9aec935e24546bf265fb0b1cc0cfc577a00be15abce98ee0942047e612295f26b42a022e982749fbe2138b6daada43755b2a7b888db0d43caf60e4cac7a587d532097324bf44f57fc75ba24b541f6c230c5fc829843e33d81e2a211e5765fdcfd17f01cc7351ce0a5aa58771d414fa05274ebfb36fa34baaa5a25ff6bb063e8d6ce621c0ea9088aab74de6326007dd05c846e9523d9e6d42b5dce339a3a517abaeceb5565c11f589d2529562d5038d246d0f1a0000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
 
             const txBlob = Buffer.from(txBlobStr, "hex");
 
@@ -378,4 +323,5 @@ describe('SR25519', function () {
             await sim.close();
         }
     });
+
 });

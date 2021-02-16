@@ -30,11 +30,11 @@ var simOptions = {
     logging: true,
     start_delay: 3000,
     custom: `-s "${APP_SEED}"`,
-    X11: false
+    X11: true
 };
 
 let models = [
-    ['S', {model: 'nanos', prefix: 'S', path: APP_PATH_S}],
+//    ['S', {model: 'nanos', prefix: 'S', path: APP_PATH_S}],
     ['X', {model: 'nanox', prefix: 'X', path: APP_PATH_X}]
 ]
 
@@ -174,7 +174,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_normal`, 6);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_normal`, model === "nanos" ? 6 : 7);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -223,7 +223,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_expert`, 12);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_expert`, model === "nanos" ? 12 : 13);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -266,7 +266,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB`, 6, 1);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB`, model === "nanos" ? 6 : 7, 1);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
@@ -309,7 +309,7 @@ describe('Standard', function () {
             // Wait until we are not in the main menu
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
 
-            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB_reject`, 7, 1);
+            await sim.compareSnapshotsAndAccept(".", `${prefix.toLowerCase()}-sign_basic_FB_reject`, model === "nanos" ? 7 : 8, 1);
 
             let signatureResponse = await signatureRequest;
             console.log(signatureResponse);
