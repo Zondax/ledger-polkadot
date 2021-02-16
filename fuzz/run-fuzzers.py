@@ -30,7 +30,7 @@ for config in CONFIGS:
     env['UBSAN_OPTIONS'] = 'halt_on_error=1:print_stacktrace=1'
 
     cmd = [fuzz_path, f'-max_total_time={max_time}',
-           f'-jobs=32'
+           f'-jobs=16'
            f'-max_len={max_len}',
            f'-mutate_depth={MUTATE_DEPTH}',
            f'-artifact_prefix={artifact_dir}/',

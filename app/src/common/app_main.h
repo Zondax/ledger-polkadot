@@ -31,13 +31,17 @@
 #define OFFSET_PAYLOAD_TYPE             OFFSET_P1
 
 #define INS_GET_VERSION                 0x00
-#define INS_GET_ADDR_ED25519            0x01
-#define INS_SIGN_ED25519                0x02
+#define INS_GET_ADDR                    0x01
+#define INS_SIGN                        0x02
 
 #define INS_ALLOWLIST_GET_PUBKEY        0x90
 #define INS_ALLOWLIST_SET_PUBKEY        0x91
 #define INS_ALLOWLIST_GET_HASH          0x92
 #define INS_ALLOWLIST_UPLOAD            0x93
+
+#if defined(APP_TESTING)
+#define INS_TEST                        0xFF
+#endif
 
 void app_init();
 

@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: zondax/circleci@sha256:37f78ab294b35a055768c2305b3f13813e55fb9db4e65f72745ede61dd842c08
+      - image: zondax/circleci:latest
     steps:
       - checkout
       - run: git submodule update --init --recursive
@@ -11,9 +11,39 @@ jobs:
       # Still run all other ASAN components
       - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
 
+  build_only_rust:
+    docker:
+      - image: zondax/rust-ci:latest
+    steps:
+      - checkout
+      - run:
+          name: rustfmt
+          command: |
+            cd ~/project/app/rust
+            cargo fmt --version
+            cargo fmt -- --check
+      - run:
+          name: clippy
+          command: |
+            cd ~/project/app/rust
+            cargo clippy --version
+            cargo clippy --all-features --all-targets || true
+      - run:
+          name: audit
+          command: |
+            cd ~/project/app/rust
+            cargo audit --version
+            cargo audit
+      - run:
+          name: run tests
+          command: |
+            cd ~/project/app/rust
+            cargo test
+
   build_ledger:
     docker:
-      - image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+      - image: zondax/builder-bolos:latest
+    working_directory: ~/project
     environment:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
@@ -25,44 +55,16 @@ jobs:
           name: Build Standard app
           command: |
             source /home/zondax/.cargo/env
-            cd /home/zondax/project
             make
-
-  test_fuzz_crash_fixes:
-    docker:
-      - image: zondax/circleci@sha256:37f78ab294b35a055768c2305b3f13813e55fb9db4e65f72745ede61dd842c08
-    steps:
-      - checkout
-      - run: git submodule update --init --recursive
-      - run: sudo apt update && sudo apt -y install clang-10
       - run:
-          name: Build
+          name: Build SR25519 app
           command: |
-            cmake -B build \
-                    -DCMAKE_C_COMPILER=clang-10 \
-                    -DCMAKE_CXX_COMPILER=clang++-10 \
-                    -DCMAKE_BUILD_TYPE=Debug \
-                    -DENABLE_FUZZING=1 \
-                    -DENABLE_SANITIZERS=1 \
-                    .
-            make -C build
-      - run: ./run-fuzz-crashes.py
-
-  build_ledger_ledgeracio:
-    docker:
-      - image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
-    environment:
-      BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
-      BOLOS_ENV: /opt/bolos
-    steps:
-      - checkout
-      # Docker entrypoint is not considered
-      - run: git submodule update --init --recursive
+            source /home/zondax/.cargo/env
+            SUPPORT_SR25519=1 make
       - run:
           name: Build Ledgeracio
           command: |
             source /home/zondax/.cargo/env
-            cd /home/zondax/project
             COIN=Ledgeracio make
 
   test_zemu:
@@ -77,9 +79,12 @@ jobs:
       - run: git submodule update --init --recursive
       - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
       - run:
-          name: Build Ledger app
+          name: Install rust
           command: |
-            make
+            sudo apt-get update
+            sudo apt-get install -y cmake binutils-dev libcurl4-openssl-dev libiberty-dev libelf-dev libdw-dev
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain none -y;
+          no_output_timeout: 1800s
       - run:
           name: Install node + yarn
           command: |
@@ -87,25 +92,42 @@ jobs:
             nvm use 14.4.0
             npm install -g yarn
       - run:
+          name: Build Ledger app
+          command: |
+            make buildS
+            make clean
+            make buildX
+      - run:
           name: Build/Install build js deps
           command: |
             nvm use 14.4.0
+            export PATH=~/.cargo/bin:$PATH
             make zemu_install
       - run:
           name: Run zemu tests
           command: |
             nvm use 14.4.0
+            export PATH=~/.cargo/bin:$PATH
             make zemu_test
 
   test_zemu_ledgeracio:
     machine:
       image: ubuntu-1604:201903-01
+    resource_class: large
     working_directory: ~/repo
     environment:
       BASH_ENV: "/opt/circleci/.nvm/nvm.sh"
     steps:
       - checkout
       - run: git submodule update --init --recursive
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+      - run:
+          name: Install rust
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y cmake binutils-dev libcurl4-openssl-dev libiberty-dev libelf-dev libdw-dev
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain none -y;
+          no_output_timeout: 1800s
       - run:
           name: Install node + yarn
           command: |
@@ -113,23 +135,66 @@ jobs:
             nvm use 14.4.0
             npm install -g yarn
       - run:
-          name: Build/Install build js deps
-          command: |
-            nvm use 14.4.0
-            make zemu_install
-      - run:
           name: Build Ledger app
           command: |
             make build_ledgeracio
       - run:
+          name: Build/Install build js deps
+          command: |
+            nvm use 14.4.0
+            export PATH=~/.cargo/bin:$PATH
+            make zemu_install
+      - run:
           name: Run zemu tests for Ledgeracio app
           command: |
             nvm use 14.4.0
+            export PATH=~/.cargo/bin:$PATH
             COIN=Ledgeracio make zemu_test
+
+  test_zemu_sr25519:
+    machine:
+      image: ubuntu-1604:201903-01
+    resource_class: large
+    working_directory: ~/repo
+    environment:
+      BASH_ENV: "/opt/circleci/.nvm/nvm.sh"
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+      - run:
+          name: Install rust
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y cmake binutils-dev libcurl4-openssl-dev libiberty-dev libelf-dev libdw-dev
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain none -y;
+          no_output_timeout: 1800s
+      - run:
+          name: Install node + yarn
+          command: |
+            nvm install 14.4.0
+            nvm use 14.4.0
+            npm install -g yarn
+      - run:
+          name: Build Ledger app
+          command: |
+            make build_sr25519
+      - run:
+          name: Build/Install build js deps
+          command: |
+            nvm use 14.4.0
+            export PATH=~/.cargo/bin:$PATH
+            make zemu_install
+      - run:
+          name: Run zemu tests for sr25519
+          command: |
+            nvm use 14.4.0
+            export PATH=~/.cargo/bin:$PATH
+            cd tests_zemu && yarn testSR25519
 
   build_package:
     docker:
-      - image: zondax/builder-bolos@sha256:5af9542b68b92c12c5c6ae5bd862ff9dbcce063b38755fe9d8153175f6a53338
+      - image: zondax/builder-bolos@sha256:0e0097c01ef3c6c964fea8d8b6e3a584f4ff209a04ec68b6b2b4aeab64379c23
     environment:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
@@ -142,15 +207,11 @@ jobs:
             source /home/zondax/.cargo/env
             cd /home/zondax/project
             make
-      - run:
-          name: Rename installer
-          command: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_app.sh
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_app.sh
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app.elf
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(/home/zondax/project/app/pkg/installer_s.sh version) /home/zondax/project/app/pkg/installer_s.sh
 
   build_package_ledgeracio:
     docker:
-      - image: zondax/builder-bolos:latest
+      - image: zondax/builder-bolos@sha256:0e0097c01ef3c6c964fea8d8b6e3a584f4ff209a04ec68b6b2b4aeab64379c23
     environment:
       BOLOS_SDK: /home/zondax/project/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
@@ -165,12 +226,12 @@ jobs:
             COIN=Ledgeracio make
       - run:
           name: Rename installer
-          command: cp /home/zondax/project/app/pkg/zxtool.sh /home/zondax/project/app/pkg/install_ledgeracio_app.sh
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/pkg/install_ledgeracio_app.sh
+          command: cp /home/zondax/project/app/pkg/installer_s.sh /home/zondax/project/app/pkg/install_ledgeracio_app.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/installer_s.sh version) /home/zondax/project/app/pkg/install_ledgeracio_app.sh
       - run:
           name: Rename elf
           command: cp /home/zondax/project/app/bin/app.elf /home/zondax/project/app/bin/app_ledgeracio.elf
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/zxtool.sh version) /home/zondax/project/app/bin/app_ledgeracio.elf
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -replace $(/home/zondax/project/app/pkg/installer_s.sh version) /home/zondax/project/app/bin/app_ledgeracio.elf
 
 workflows:
   version: 2
@@ -178,17 +239,18 @@ workflows:
   default:
     jobs:
       - build
+      - build_only_rust
       - build_ledger
-      - build_ledger_ledgeracio
       - test_zemu
       - test_zemu_ledgeracio
+#      - test_zemu_sr25519
       - build_package:
           requires:
             - build
             - build_ledger
-            - build_ledger_ledgeracio
             - test_zemu
             - test_zemu_ledgeracio
+#            - test_zemu_sr25519
           filters:
             branches:
               only:
@@ -197,9 +259,9 @@ workflows:
           requires:
             - build
             - build_ledger
-            - build_ledger_ledgeracio
             - test_zemu
             - test_zemu_ledgeracio
+#            - test_zemu_sr25519
           filters:
             branches:
               only:

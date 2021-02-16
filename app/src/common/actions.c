@@ -17,4 +17,4 @@
 
 #include "actions.h"
 
-uint8_t action_addr_len;
+uint16_t action_addrResponseLen;
