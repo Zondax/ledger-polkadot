@@ -1,5 +1,5 @@
 #*******************************************************************************
-#*   (c) 2019 Zondax GmbH
+#*   (c) 2019-2021 Zondax GmbH
 #*
 #*  Licensed under the Apache License, Version 2.0 (the "License");
 #*  you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ LEDGER_SRC=$(CURDIR)/app
 DOCKER_APP_SRC=/project
 DOCKER_APP_BIN=$(DOCKER_APP_SRC)/app/bin/app.elf
 
-DOCKER_BOLOS_SDK=/project/deps/nanos-secure-sdk
-DOCKER_BOLOS_SDKX=/project/deps/nano2-sdk
+DOCKER_BOLOS_SDKS=/project/deps/nanos-secure-sdk
+DOCKER_BOLOS_SDKX=/project/deps/nanox-secure-sdk
 
 # Note: This is not an SSH key, and being public represents no risk
 SCP_PUBKEY=049bc79d139c70c83a4b19e8922e5ee3e0080bb14a2e8b0752aa42cda90a1463f689b0fa68c1c0246845c2074787b649d0d8a6c0b97d4607065eee3057bdf16b83
@@ -40,12 +40,7 @@ $(info EXAMPLE_VUE_DIR       : $(EXAMPLE_VUE_DIR))
 $(info TESTS_JS_DIR          : $(TESTS_JS_DIR))
 $(info TESTS_JS_PACKAGE      : $(TESTS_JS_PACKAGE))
 
-ifeq ($(USERID),1001)
-# TODO: Use podman inside circleci machines?
-DOCKER_IMAGE=zondax/builder-bolos-1001@sha256:423348672bb9f1e6aca573de29afa6763bcbead1a592cedb62c8fbfd82fb7f65
-else
-DOCKER_IMAGE=zondax/builder-bolos@sha256:2ce8f16b1e3face5464c538198e57a64340f664d932b3383d019f2636321f342
-endif
+DOCKER_IMAGE=zondax/builder-bolos@sha256:0e0097c01ef3c6c964fea8d8b6e3a584f4ff209a04ec68b6b2b4aeab64379c23
 
 ifdef INTERACTIVE
 INTERACTIVE_SETTING:="-i"
@@ -62,11 +57,15 @@ define run_docker
 	-e BOLOS_ENV=/opt/bolos \
 	-u $(USERID) \
 	-v $(shell pwd):/project \
-	$(DOCKER_IMAGE) \
-	"COIN=$(COIN) APP_TESTING=$(APP_TESTING) $(2)"
+	-e SUPPORT_SR25519=$(SUPPORT_SR25519) \
+	-e COIN=$(COIN) \
+	-e APP_TESTING=$(APP_TESTING) \
+	$(DOCKER_IMAGE) "$(2)"
 endef
 
-all: build
+all:
+	@$(MAKE) buildS
+	@$(MAKE) buildX
 
 .PHONY: check_python
 check_python:
@@ -81,51 +80,73 @@ deps: check_python
 pull:
 	docker pull $(DOCKER_IMAGE)
 
-.PHONY: build_rust
-build_rust:
-	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) rust)
+.PHONY: build_rustS
+build_rustS:
+	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) rust)
+
+.PHONY: build_rustX
+build_rustX:
+	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) rust)
 
 .PHONY: convert_icon
 convert_icon:
 	@convert $(LEDGER_SRC)/tmp.gif -monochrome -size 16x16 -depth 1 $(LEDGER_SRC)/nanos_icon.gif
 	@convert $(LEDGER_SRC)/nanos_icon.gif -crop 14x14+1+1 +repage -negate $(LEDGER_SRC)/nanox_icon.gif
 
-.PHONY: build
-build:
-	$(info Replacing app icon)
-	@cp $(LEDGER_SRC)/nanos_icon.gif $(LEDGER_SRC)/glyphs/icon_app.gif
-	$(info calling make inside docker)
-	$(call run_docker,$(DOCKER_BOLOS_SDK),make -j `nproc` -C $(DOCKER_APP_SRC))
+.PHONY: buildS
+buildS: clean build_rustS
+	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -j `nproc` -C $(DOCKER_APP_SRC))
 
 .PHONY: buildX
-buildX: build_rust
-	@cp $(LEDGER_SRC)/nanos_icon.gif $(LEDGER_SRC)/glyphs/icon_app.gif
-	@convert $(LEDGER_SRC)/nanos_icon.gif -crop 14x14+1+1 +repage -negate $(LEDGER_SRC)/nanox_icon.gif
+buildX: clean build_rustX
 	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -j `nproc` -C $(DOCKER_APP_SRC))
 
 .PHONY: clean
-clean:
-	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) clean)
+clean: cleanS cleanX
 
-.PHONY: clean_rust
-clean_rust:
-	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) rust_clean)
+.PHONY: cleanS
+cleanS:
+	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) clean)
+
+.PHONY: cleanX
+cleanX:
+	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) clean)
+
+.PHONY: clean_rustS
+clean_rustS:
+	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) rust_clean)
+
+.PHONY: clean_rustX
+clean_rustX:
+	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) rust_clean)
 
 .PHONY: listvariants
 listvariants:
-	$(call run_docker,$(DOCKER_BOLOS_SDK),make -C $(DOCKER_APP_SRC) listvariants)
+	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) listvariants)
 
-.PHONY: shell
-shell:
-	$(call run_docker,$(DOCKER_BOLOS_SDK) -t,bash)
+.PHONY: shellS
+shellS:
+	$(call run_docker,$(DOCKER_BOLOS_SDKS) -t,bash)
+
+.PHONY: shellX
+shellX:
+	$(call run_docker,$(DOCKER_BOLOS_SDKX) -t,bash)
 
 .PHONY: load
 load:
-	${LEDGER_SRC}/pkg/zxtool.sh load
+	${LEDGER_SRC}/pkg/installer_s.sh load
 
 .PHONY: delete
 delete:
-	${LEDGER_SRC}/pkg/zxtool.sh delete
+	${LEDGER_SRC}/pkg/installer_s.sh delete
+
+.PHONY: loadX
+loadX:
+	${LEDGER_SRC}/pkg/installer_x.sh load
+
+.PHONY: deleteX
+deleteX:
+	${LEDGER_SRC}/pkg/installer_x.sh delete
 
 .PHONY: show_info_recovery_mode
 show_info_recovery_mode:

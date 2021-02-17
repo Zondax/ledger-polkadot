@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "neon/native",
+]
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"
+overflow-checks = true

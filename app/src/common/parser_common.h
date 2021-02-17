@@ -39,6 +39,7 @@ typedef enum {
     // Coin specific
     parser_unexpected_address_type,
     parser_spec_not_supported,
+    parser_tx_version_not_supported,
     parser_not_allowed,
     parser_not_supported,
     parser_unexpected_buffer_end,

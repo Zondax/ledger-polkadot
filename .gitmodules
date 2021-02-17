@@ -7,3 +7,6 @@
 [submodule "cmake/cmake-modules"]
 	path = cmake/cmake-modules
 	url = https://github.com/bilke/cmake-modules.git
+[submodule "deps/nanox-secure-sdk"]
+	path = deps/nanox-secure-sdk
+	url = https://github.com/LedgerHQ/nanox-secure-sdk.git

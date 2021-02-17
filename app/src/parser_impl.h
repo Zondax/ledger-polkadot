@@ -16,7 +16,6 @@
 #pragma once
 
 #include "parser_common.h"
-#include "parser_txdef.h"
 #include <zxmacros.h>
 #include "zxtypes.h"
 
@@ -95,6 +94,17 @@ GEN_DEC_READFIX_UNSIGNED(64);
     v->_lenBuffer = c->offset - v->_lenBuffer;                      \
     return parser_ok;
 
+#define GEN_DEF_READVECTOR_VERSION(TYPE, VERSION)                                    \
+    pd_##TYPE##_V##VERSION##_t dummy;                                            \
+    compactInt_t clen;                                              \
+    CHECK_PARSER_ERR(_readCompactInt(c, &clen));                    \
+    CHECK_PARSER_ERR(_getValue(&clen, &v->_len));                   \
+    v->_ptr = c->buffer + c->offset;                                \
+    v->_lenBuffer = c->offset;                                      \
+    for (uint64_t i = 0; i < v->_len; i++ ) CHECK_ERROR(_read##TYPE##_V##VERSION (c, &dummy));  \
+    v->_lenBuffer = c->offset - v->_lenBuffer;                      \
+    return parser_ok;
+
 #define GEN_DEF_READVECTOR_ITEM(VEC, TYPE, INDEX, VALUE)            \
     parser_context_t ctx;                                           \
     parser_init(&ctx, VEC._ptr, VEC._lenBuffer);                    \
@@ -141,6 +151,8 @@ parser_error_t _readBool(parser_context_t *c, pd_bool_t *value);
 
 parser_error_t _readCompactInt(parser_context_t *c, compactInt_t *v);
 
+parser_error_t _readCompactBalance(parser_context_t *c, pd_CompactBalance_t *v);
+
 parser_error_t _getValue(const compactInt_t *c, uint64_t *v);
 
 parser_error_t _readCallIndex(parser_context_t *c, pd_CallIndex_t *v);
@@ -153,6 +165,7 @@ uint8_t _getAddressType();
 
 parser_error_t _toStringCompactInt(const compactInt_t *c, uint8_t decimalPlaces,
                                    char postfix,
+                                   char prefix[],
                                    char *outValue, uint16_t outValueLen,
                                    uint8_t pageIdx, uint8_t *pageCount);
 
@@ -163,6 +176,10 @@ parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
 parser_error_t _toStringPubkeyAsAddress(const uint8_t *pubkey,
                                         char *outValue, uint16_t outValueLen,
                                         uint8_t pageIdx, uint8_t *pageCount);
+
+parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
+                                       char *outValue, uint16_t outValueLen,
+                                       uint8_t pageIdx, uint8_t *pageCount);
 
 #ifdef __cplusplus
 }

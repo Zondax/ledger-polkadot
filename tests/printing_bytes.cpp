@@ -24,7 +24,6 @@
 #include "parser_impl.h"
 
 using ::testing::TestWithParam;
-using ::testing::Values;
 
 typedef struct {
     uint16_t pageSize;

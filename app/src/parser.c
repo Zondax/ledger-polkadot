@@ -47,8 +47,7 @@ void __assert_fail(const char * assertion, const char * file, unsigned int line,
 #define FIELD_ERA_PERIOD    5
 #define FIELD_BLOCK_HASH    6
 
-
-#define EXPERT_FIELDS_TOTAL_COUNT 4
+#define EXPERT_FIELDS_TOTAL_COUNT 5
 
 parser_error_t parser_parse(parser_context_t *ctx, const uint8_t *data, size_t dataLen, parser_tx_t *tx_obj) {
     CHECK_PARSER_ERR(parser_init(ctx, data, dataLen))
@@ -59,32 +58,6 @@ parser_error_t parser_parse(parser_context_t *ctx, const uint8_t *data, size_t d
 
     return err;
 }
-
-#if defined(APP_RESTRICTED)
-parser_error_t parser_validate_vecLookupSource(pd_VecLookupSource_t *targets) {
-    if (!allowlist_is_active()) {
-        return parser_not_allowed;
-    }
-
-    parser_context_t ctx;
-    // each look up source is 32 bytes
-    pd_LookupSource_t lookupSource;
-
-    parser_init(&ctx, targets->_ptr, targets->_lenBuffer);
-    for (uint16_t i = 0; i < targets->_len; i++) {
-        CHECK_ERROR(_readLookupSource(&ctx, &lookupSource));
-        char buffer[100];
-        uint8_t dummy;
-        CHECK_ERROR(_toStringLookupSource(&lookupSource, buffer, sizeof(buffer), 0, &dummy));
-
-        if (!allowlist_item_validate(buffer)) {
-            return parser_not_allowed;
-        }
-    }
-
-    return parser_ok;
-}
-#endif
 
 __Z_INLINE bool parser_show_expert_fields() {
     return app_mode_expert();
@@ -116,37 +89,36 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
 
 #if defined(APP_RESTRICTED)
     if (hdPath[2] == HDPATH_2_STASH) {
-        if (ctx->tx_obj->callIndex.moduleIdx == PD_CALL_STAKING) {
-            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_SET_PAYEE) {
+        if (ctx->tx_obj->callIndex.moduleIdx ==GEN_GETCALL(STAKING)) {
+            if (ctx->tx_obj->callIndex.idx==GEN_GETCALL(STAKING_SET_PAYEE)) {
                 return parser_ok;
             }
-            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_CHILL) {
+            if (ctx->tx_obj->callIndex.idx==GEN_GETCALL(STAKING_CHILL)) {
                 return parser_ok;
             }
-            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_NOMINATE) {
-                pd_VecLookupSource_t *targets = &ctx->tx_obj->method.basic.staking_nominate.targets;
-                CHECK_PARSER_ERR(parser_validate_vecLookupSource(targets))
+            if (ctx->tx_obj->callIndex.idx==GEN_GETCALL(STAKING_NOMINATE)) {
+                CHECK_PARSER_ERR(parser_validate_staking_targets(ctx))
                 return parser_ok;
             }
         }
     }
     if (hdPath[2] == HDPATH_2_VALIDATOR) {
-        if (ctx->tx_obj->callIndex.moduleIdx == PD_CALL_STAKING) {
-            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_SET_PAYEE) {
+        if (ctx->tx_obj->callIndex.moduleIdx ==GEN_GETCALL(STAKING)) {
+            if (ctx->tx_obj->callIndex.idx==GEN_GETCALL(STAKING_SET_PAYEE)) {
                 return parser_ok;
             }
-            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_VALIDATE) {
+            if (ctx->tx_obj->callIndex.idx==GEN_GETCALL(STAKING_VALIDATE)) {
                 return parser_ok;
             }
-            if (ctx->tx_obj->callIndex.idx==PD_CALL_STAKING_CHILL) {
+            if (ctx->tx_obj->callIndex.idx==GEN_GETCALL(STAKING_CHILL)) {
                 return parser_ok;
             }
         }
-        if (ctx->tx_obj->callIndex.moduleIdx == PD_CALL_SESSION) {
-            if (ctx->tx_obj->callIndex.idx==PD_CALL_SESSION_SET_KEYS) {
+        if (ctx->tx_obj->callIndex.moduleIdx ==GEN_GETCALL(SESSION)) {
+            if (ctx->tx_obj->callIndex.idx==GEN_GETCALL(SESSION_SET_KEYS)) {
                 return parser_ok;
             }
-            if (ctx->tx_obj->callIndex.idx==PD_CALL_SESSION_PURGE_KEYS) {
+            if (ctx->tx_obj->callIndex.idx==GEN_GETCALL(SESSION_PURGE_KEYS)) {
                 return parser_ok;
             }
         }
@@ -157,7 +129,8 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
 }
 
 parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_items) {
-    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->callIndex.moduleIdx,
+    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->transactionVersion,
+                                                 ctx->tx_obj->callIndex.moduleIdx,
                                                  ctx->tx_obj->callIndex.idx,
                                                  &ctx->tx_obj->method);
 
@@ -167,6 +140,15 @@ parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_item
     }
     if(!parser_show_expert_fields()){
         total -= EXPERT_FIELDS_TOTAL_COUNT;
+
+        for (uint8_t argIdx = 0; argIdx < methodArgCount; argIdx++) {
+            bool isArgExpert = _getMethod_ItemIsExpert(ctx->tx_obj->transactionVersion,
+                                                    ctx->tx_obj->callIndex.moduleIdx,
+                                                    ctx->tx_obj->callIndex.idx, argIdx);
+            if(isArgExpert) {
+                methodArgCount--;
+            }
+        }
     }
 
     *num_items = total + methodArgCount;
@@ -194,24 +176,40 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
 
     parser_error_t err = parser_ok;
     if (displayIdx == FIELD_METHOD) {
-        snprintf(outKey, outKeyLen, "%s", _getMethod_ModuleName(ctx->tx_obj->callIndex.moduleIdx));
-        snprintf(outVal, outValLen, "%s", _getMethod_Name(ctx->tx_obj->callIndex.moduleIdx,
-                                                          ctx->tx_obj->callIndex.idx));
+        snprintf(outKey, outKeyLen, "%s", _getMethod_ModuleName(ctx->tx_obj->transactionVersion, ctx->tx_obj->callIndex.moduleIdx));
+        snprintf(outVal, outValLen, "%s", _getMethod_Name(ctx->tx_obj->transactionVersion,
+                                                                  ctx->tx_obj->callIndex.moduleIdx,
+                                                                  ctx->tx_obj->callIndex.idx));
         return err;
     }
 
     // VARIABLE ARGUMENTS
-    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->callIndex.moduleIdx,
+    uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->transactionVersion,
+                                                 ctx->tx_obj->callIndex.moduleIdx,
                                                  ctx->tx_obj->callIndex.idx,
                                                  &ctx->tx_obj->method);
     uint8_t argIdx = displayIdx - 1;
+
+
+    if (!parser_show_expert_fields()) {
+        // Search for the next non expert item
+        while ((argIdx < methodArgCount) && _getMethod_ItemIsExpert(ctx->tx_obj->transactionVersion,
+                                                                    ctx->tx_obj->callIndex.moduleIdx,
+                                                                    ctx->tx_obj->callIndex.idx, argIdx)) {
+            argIdx++;
+            displayIdx++;
+        }
+    }
+
     if (argIdx < methodArgCount) {
         snprintf(outKey, outKeyLen, "%s",
-                 _getMethod_ItemName(ctx->tx_obj->callIndex.moduleIdx,
+                 _getMethod_ItemName(ctx->tx_obj->transactionVersion,
+                                     ctx->tx_obj->callIndex.moduleIdx,
                                      ctx->tx_obj->callIndex.idx,
                                      argIdx));
 
-        err = _getMethod_ItemValue(&ctx->tx_obj->method,
+        err = _getMethod_ItemValue(ctx->tx_obj->transactionVersion,
+                                   &ctx->tx_obj->method,
                                    ctx->tx_obj->callIndex.moduleIdx, ctx->tx_obj->callIndex.idx, argIdx,
                                    outVal, outValLen,
                                    pageIdx, pageCount);
@@ -221,15 +219,22 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
         displayIdx -= methodArgCount;
         if( displayIdx == FIELD_NETWORK ){
             if (_getAddressType() == PK_ADDRESS_TYPE) {
-                snprintf(outKey, outKeyLen, "Chain");
-                snprintf(outVal, outValLen, COIN_NAME);
+                if(parser_show_expert_fields()){
+                    snprintf(outKey, outKeyLen, "Chain");
+                    snprintf(outVal, outValLen, COIN_NAME);
+                    return err;
+                }
             }else {
                 snprintf(outKey, outKeyLen, "Genesis Hash");
                 _toStringHash(&ctx->tx_obj->genesisHash,
                               outVal, outValLen,
                               pageIdx, pageCount);
+                return err;
             }
-            return err;
+        }
+
+        if( !parser_show_expert_fields() ){
+            displayIdx++;
         }
 
         if( displayIdx == FIELD_NONCE && parser_show_expert_fields()) {

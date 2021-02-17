@@ -35,7 +35,20 @@ typedef struct {
     std::vector<std::string> expected_expert;
 } testcase_t;
 
-class JsonTests : public ::testing::TestWithParam<testcase_t> {
+class JsonTestsA : public ::testing::TestWithParam<testcase_t> {
+public:
+    struct PrintToStringParamName {
+        template<class ParamType>
+        std::string operator()(const testing::TestParamInfo<ParamType> &info) const {
+            auto p = static_cast<testcase_t>(info.param);
+            std::stringstream ss;
+            ss << p.index << "_" << p.name;
+            return ss.str();
+        }
+    };
+};
+
+class JsonTestsB : public ::testing::TestWithParam<testcase_t> {
 public:
     struct PrintToStringParamName {
         template<class ParamType>
@@ -49,13 +62,13 @@ public:
 };
 
 // Retrieve testcases from json file
-std::vector<testcase_t> GetJsonTestCases() {
+std::vector<testcase_t> GetJsonTestCases(std::string jsonFile) {
     auto answer = std::vector<testcase_t>();
 
     Json::CharReaderBuilder builder;
     Json::Value obj;
 
-    std::ifstream inFile("testcases.json");
+    std::ifstream inFile(jsonFile);
     EXPECT_TRUE(inFile.is_open())
                         << "\n"
                         << "******************\n"
@@ -129,13 +142,26 @@ void check_testcase(const testcase_t &tc, bool expert_mode) {
 INSTANTIATE_TEST_SUITE_P
 
 (
-        JsonTestCases,
-        JsonTests,
-        ::testing::ValuesIn(GetJsonTestCases()),
-        JsonTests::PrintToStringParamName()
+    JsonTestCasesCurrentTxVer,
+    JsonTestsA,
+    ::testing::ValuesIn(GetJsonTestCases("testcases_current.json")),
+    JsonTestsA::PrintToStringParamName()
 );
 
-// Parametric test:
-TEST_P(JsonTests, CheckUIOutput_Normal) { check_testcase(GetParam(), false); }
-// Parametric test:
-TEST_P(JsonTests, CheckUIOutput_Expert) { check_testcase(GetParam(), true); }
+
+INSTANTIATE_TEST_SUITE_P
+
+(
+    JsonTestCasesPreviousTxVer,
+    JsonTestsB,
+    ::testing::ValuesIn(GetJsonTestCases("testcases_previous.json")),
+    JsonTestsB::PrintToStringParamName()
+);
+
+// Parametric test using current runtime:
+TEST_P(JsonTestsA, CheckUIOutput_CurrentTX_Normal) { check_testcase(GetParam(), false); }
+TEST_P(JsonTestsA, CheckUIOutput_CurrentTX_Expert) { check_testcase(GetParam(), true); }
+
+// Parametric test using previous runtime:
+TEST_P(JsonTestsB, CheckUIOutput_PreviousTX_Normal) { check_testcase(GetParam(), false); }
+TEST_P(JsonTestsB, CheckUIOutput_PreviousTX_Expert) { check_testcase(GetParam(), true); }

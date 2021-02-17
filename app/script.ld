@@ -1,6 +1,6 @@
 /*******************************************************************************
 *   Ledger Blue - Secure firmware
-*   (c) 2019 Zonda GmbH
+*   (c) 2019 Zondax GmbH
 *   (c) 2016, 2017 Ledger
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ MEMORY
 }
 
 PAGE_SIZE  = 64;
-STACK_SIZE = 2828;
+STACK_SIZE = 2820;
 END_STACK  = ORIGIN(SRAM) + LENGTH(SRAM);
 
 SECTIONS
