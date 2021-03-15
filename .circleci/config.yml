@@ -28,12 +28,12 @@ jobs:
             cd ~/project/app/rust
             cargo clippy --version
             cargo clippy --all-features --all-targets || true
-      - run:
-          name: audit
-          command: |
-            cd ~/project/app/rust
-            cargo audit --version
-            cargo audit
+#      - run:
+#          name: audit
+#          command: |
+#            cd ~/project/app/rust
+#            cargo audit --version
+#            cargo audit
       - run:
           name: run tests
           command: |
@@ -52,10 +52,15 @@ jobs:
       # Docker entrypoint is not considered
       - run: git submodule update --init --recursive
       - run:
-          name: Build Standard app
+          name: Build Standard light parser app
           command: |
             source /home/zondax/.cargo/env
             make
+      - run:
+          name: Build Standard full parser app
+          command: |
+            source /home/zondax/.cargo/env
+            SUBSTRATE_PARSER_FULL=1 make
       - run:
           name: Build SR25519 app
           command: |
@@ -94,9 +99,9 @@ jobs:
       - run:
           name: Build Ledger app
           command: |
-            make buildS
+            make build_full_parser_s
             make clean
-            make buildX
+            make build_full_parser_x
       - run:
           name: Build/Install build js deps
           command: |
