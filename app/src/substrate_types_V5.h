@@ -31,13 +31,17 @@ typedef struct {
 } pd_Conviction_V5_t;
 
 typedef struct {
+    const uint8_t* _ptr;
+} pd_AccountId_V5_t;
+
+typedef struct {
+    compactInt_t value;
+} pd_CompactAccountIndex_V5_t;
+
+typedef struct {
     pd_bool_t aye;
     pd_Conviction_V5_t conviction;
 } pd_Vote_V5_t;
-
-typedef struct {
-    const uint8_t* _ptr;
-} pd_AccountId_V5_t;
 
 typedef struct {
     pd_BalanceOf_t aye;
@@ -67,7 +71,13 @@ typedef struct {
 } pd_Key_V5_t;
 
 typedef struct {
-    const uint8_t* _ptr;
+    uint8_t value;
+    union {
+        pd_AccountId_V5_t id;
+        pd_CompactAccountIndex_V5_t index;
+        pd_Bytes_t raw;
+        const uint8_t* _ptr;
+    };
 } pd_LookupSource_V5_t;
 
 typedef struct {
@@ -160,8 +170,13 @@ typedef struct {
 
 typedef struct {
     pd_CompactPerBill_V5_t commission;
-    pd_bool_t blocked;
 } pd_ValidatorPrefs_V5_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecLookupSource_V5_t;
 
 typedef struct {
     pd_BalanceOf_t locked;
@@ -172,6 +187,11 @@ typedef struct {
 typedef struct {
     uint32_t value;
 } pd_AccountIndex_V5_t;
+
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_BabeEquivocationProof_V5_t;
 
 typedef struct {
     const uint8_t* _ptr;
@@ -217,11 +237,6 @@ typedef struct {
 } pd_ElectionSize_V5_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_EquivocationProof_V5_t;
-
-typedef struct {
     uint32_t value;
 } pd_EraIndex_V5_t;
 
@@ -232,12 +247,17 @@ typedef struct {
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_GrandpaEquivocationProof_V5_t;
+
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_IdentityFields_V5_t;
 
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Judgement_V5_t;
+} pd_IdentityJudgement_V5_t;
 
 typedef struct {
     // TODO: Not implemented
@@ -319,12 +339,6 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_VecKey_V5_t;
-
-typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
-} pd_VecLookupSource_V5_t;
 
 typedef struct {
     uint64_t _len;

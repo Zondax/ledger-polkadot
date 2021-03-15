@@ -31,6 +31,7 @@ parser_error_t _readAccountIndex_V6(parser_context_t* c, pd_AccountIndex_V6_t* v
 parser_error_t _readAccountVoteSplit_V6(parser_context_t* c, pd_AccountVoteSplit_V6_t* v);
 parser_error_t _readAccountVoteStandard_V6(parser_context_t* c, pd_AccountVoteStandard_V6_t* v);
 parser_error_t _readAccountVote_V6(parser_context_t* c, pd_AccountVote_V6_t* v);
+parser_error_t _readBabeEquivocationProof_V6(parser_context_t* c, pd_BabeEquivocationProof_V6_t* v);
 parser_error_t _readCallHashOf_V6(parser_context_t* c, pd_CallHashOf_V6_t* v);
 parser_error_t _readChangesTrieConfiguration_V6(parser_context_t* c, pd_ChangesTrieConfiguration_V6_t* v);
 parser_error_t _readCompactAccountIndex_V6(parser_context_t* c, pd_CompactAccountIndex_V6_t* v);
@@ -49,12 +50,12 @@ parser_error_t _readConviction_V6(parser_context_t* c, pd_Conviction_V6_t* v);
 parser_error_t _readEcdsaSignature_V6(parser_context_t* c, pd_EcdsaSignature_V6_t* v);
 parser_error_t _readElectionScore_V6(parser_context_t* c, pd_ElectionScore_V6_t* v);
 parser_error_t _readElectionSize_V6(parser_context_t* c, pd_ElectionSize_V6_t* v);
-parser_error_t _readEquivocationProof_V6(parser_context_t* c, pd_EquivocationProof_V6_t* v);
 parser_error_t _readEraIndex_V6(parser_context_t* c, pd_EraIndex_V6_t* v);
 parser_error_t _readEthereumAddress_V6(parser_context_t* c, pd_EthereumAddress_V6_t* v);
+parser_error_t _readGrandpaEquivocationProof_V6(parser_context_t* c, pd_GrandpaEquivocationProof_V6_t* v);
 parser_error_t _readIdentityFields_V6(parser_context_t* c, pd_IdentityFields_V6_t* v);
 parser_error_t _readIdentityInfo_V6(parser_context_t* c, pd_IdentityInfo_V6_t* v);
-parser_error_t _readJudgement_V6(parser_context_t* c, pd_Judgement_V6_t* v);
+parser_error_t _readIdentityJudgement_V6(parser_context_t* c, pd_IdentityJudgement_V6_t* v);
 parser_error_t _readKeyOwnerProof_V6(parser_context_t* c, pd_KeyOwnerProof_V6_t* v);
 parser_error_t _readKeyValue_V6(parser_context_t* c, pd_KeyValue_V6_t* v);
 parser_error_t _readKey_V6(parser_context_t* c, pd_Key_V6_t* v);
@@ -129,6 +130,13 @@ parser_error_t _toStringAccountVoteStandard_V6(
 
 parser_error_t _toStringAccountVote_V6(
     const pd_AccountVote_V6_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringBabeEquivocationProof_V6(
+    const pd_BabeEquivocationProof_V6_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -260,13 +268,6 @@ parser_error_t _toStringElectionSize_V6(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringEquivocationProof_V6(
-    const pd_EquivocationProof_V6_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
 parser_error_t _toStringEraIndex_V6(
     const pd_EraIndex_V6_t* v,
     char* outValue,
@@ -276,6 +277,13 @@ parser_error_t _toStringEraIndex_V6(
 
 parser_error_t _toStringEthereumAddress_V6(
     const pd_EthereumAddress_V6_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringGrandpaEquivocationProof_V6(
+    const pd_GrandpaEquivocationProof_V6_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -295,8 +303,8 @@ parser_error_t _toStringIdentityInfo_V6(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringJudgement_V6(
-    const pd_Judgement_V6_t* v,
+parser_error_t _toStringIdentityJudgement_V6(
+    const pd_IdentityJudgement_V6_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

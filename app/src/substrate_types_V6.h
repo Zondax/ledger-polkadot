@@ -190,6 +190,11 @@ typedef struct {
 } pd_AccountIndex_V6_t;
 
 typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_BabeEquivocationProof_V6_t;
+
+typedef struct {
     const uint8_t* _ptr;
 } pd_CallHashOf_V6_t;
 
@@ -228,11 +233,6 @@ typedef struct {
 } pd_ElectionSize_V6_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_EquivocationProof_V6_t;
-
-typedef struct {
     uint32_t value;
 } pd_EraIndex_V6_t;
 
@@ -243,12 +243,17 @@ typedef struct {
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_GrandpaEquivocationProof_V6_t;
+
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_IdentityFields_V6_t;
 
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Judgement_V6_t;
+} pd_IdentityJudgement_V6_t;
 
 typedef struct {
     // TODO: Not implemented
