@@ -29,6 +29,7 @@ string(APPEND CMAKE_CXX_FLAGS " -fno-omit-frame-pointer -g")
 string(APPEND CMAKE_LINKER_FLAGS " -fno-omit-frame-pointer -g")
 
 add_definitions(-DAPP_STANDARD)
+add_definitions(-DSUBSTRATE_PARSER_FULL)
 
 if(ENABLE_FUZZING)
     add_definitions(-DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION=1)
@@ -113,7 +114,6 @@ file(GLOB_RECURSE LIB_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_impl.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_txdef.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate*.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate*.h
         )
 
 add_library(app_lib STATIC ${LIB_SRC})
