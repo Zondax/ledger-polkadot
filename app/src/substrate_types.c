@@ -81,7 +81,7 @@ parser_error_t _readCompactBlockNumber(parser_context_t* c, pd_CompactBlockNumbe
     return _readCompactInt(c, v);
 }
 
-parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v) {
+parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v){
     GEN_DEF_READARRAY(16)
 }
 
@@ -146,7 +146,7 @@ parser_error_t _readTupleDataData(parser_context_t* c, pd_TupleDataData_t* v)
     return parser_ok;
 }
 
-parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v) {
+parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v){
     GEN_DEF_READARRAY(20)
 }
 
@@ -196,7 +196,7 @@ parser_error_t _readCompactBalanceOf(parser_context_t* c, pd_CompactBalanceOf_t*
     return parser_ok;
 }
 
-parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v) {
+parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v){
     GEN_DEF_READARRAY(32)
 }
 
@@ -205,15 +205,15 @@ parser_error_t _readHeartbeat(parser_context_t* c, pd_Heartbeat_t* v)
     return parser_not_supported;
 }
 
-parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v) {
+parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v){
     GEN_DEF_READVECTOR(Header)
 }
 
-parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v) {
+parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v){
     GEN_DEF_READVECTOR(TupleDataData)
 }
 
-parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v) {
+parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v){
     GEN_DEF_READVECTOR(u32)
 }
 
@@ -475,7 +475,7 @@ parser_error_t _toStringu8_array_20(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount) {
+    uint8_t* pageCount){
     GEN_DEF_TOSTRING_ARRAY(20)
 }
 
@@ -614,7 +614,7 @@ parser_error_t _toStringHash(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount) {
+    uint8_t* pageCount){
     GEN_DEF_TOSTRING_ARRAY(32)
 }
 
@@ -634,7 +634,7 @@ parser_error_t _toStringVecHeader(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount) {
+    uint8_t* pageCount){
     GEN_DEF_TOSTRING_VECTOR(Header)
 }
 
