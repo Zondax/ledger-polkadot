@@ -53,6 +53,11 @@ DEFINES += SUPPORT_SR25519
 $(info ************  SR25519 ENABLED ************)
 endif
 
+ifeq ($(SUBSTRATE_PARSER_FULL),1)
+DEFINES += SUBSTRATE_PARSER_FULL
+$(info ************ FULL PARSER ENABLED ************)
+endif
+
 ifndef COIN
 COIN=DOT
 endif
@@ -178,7 +183,7 @@ AS := $(GCCPATH)arm-none-eabi-gcc
 AFLAGS +=
 
 LD       := $(GCCPATH)arm-none-eabi-gcc
-LDFLAGS  += -O3 -Os
+LDFLAGS  += -O3 -Os --specs=nano.specs
 LDFLAGS  += -z muldefs
 LDLIBS   += -lm -lgcc -lc
 LDLIBS   += -Lrust/target/thumbv6m-none-eabi/release -lrslib
