@@ -1527,14 +1527,10 @@ parser_error_t _toStringValidatorPrefs_V6(
     }
     pageIdx -= pages[0];
 
-    /////////
-    /////////
-
     if (pageIdx < pages[1]) {
         CHECK_ERROR(_toStringbool(&v->blocked, outValue, outValueLen, pageIdx, &pages[1]))
         return parser_ok;
     }
-    pageIdx -= pages[1];
 
     return parser_display_idx_out_of_range;
 }
