@@ -65,7 +65,7 @@ jobs:
           name: Build SR25519 app
           command: |
             source /home/zondax/.cargo/env
-            SUPPORT_SR25519=1 make
+            SUPPORT_SR25519=1 SUBSTRATE_PARSER_FULL=1 make
       - run:
           name: Build Ledgeracio
           command: |
@@ -183,7 +183,7 @@ jobs:
       - run:
           name: Build Ledger app
           command: |
-            make build_sr25519
+            make SUBSTRATE_PARSER_FULL=1 build_sr25519
       - run:
           name: Build/Install build js deps
           command: |
