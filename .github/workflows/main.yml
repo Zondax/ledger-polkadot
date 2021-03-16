@@ -45,11 +45,11 @@ jobs:
           cd ./app/rust
           cargo clippy --version
           cargo clippy --all-features --all-targets || true
-#      - name: audit
-#        run: |
-#          cd ./app/rust
-#          cargo audit --version
-#          cargo audit
+      - name: audit
+        run: |
+          cd ./app/rust
+          cargo audit --version
+          cargo audit
       - name: run tests
         run: |
           cd ./app/rust
