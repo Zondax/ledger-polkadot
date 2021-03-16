@@ -28,12 +28,12 @@ jobs:
             cd ~/project/app/rust
             cargo clippy --version
             cargo clippy --all-features --all-targets || true
-#      - run:
-#          name: audit
-#          command: |
-#            cd ~/project/app/rust
-#            cargo audit --version
-#            cargo audit
+      - run:
+          name: audit
+          command: |
+            cd ~/project/app/rust
+            cargo audit --version
+            cargo audit
       - run:
           name: run tests
           command: |
