@@ -58,6 +58,7 @@ define run_docker
 	-u $(USERID) \
 	-v $(shell pwd):/project \
 	-e SUPPORT_SR25519=$(SUPPORT_SR25519) \
+	-e SUBSTRATE_PARSER_FULL=$(SUBSTRATE_PARSER_FULL) \
 	-e COIN=$(COIN) \
 	-e APP_TESTING=$(APP_TESTING) \
 	$(DOCKER_IMAGE) "$(2)"

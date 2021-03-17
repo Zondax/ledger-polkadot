@@ -52,15 +52,20 @@ jobs:
       # Docker entrypoint is not considered
       - run: git submodule update --init --recursive
       - run:
-          name: Build Standard app
+          name: Build Standard light parser app
           command: |
             source /home/zondax/.cargo/env
             make
       - run:
+          name: Build Standard full parser app
+          command: |
+            source /home/zondax/.cargo/env
+            SUBSTRATE_PARSER_FULL=1 make
+      - run:
           name: Build SR25519 app
           command: |
             source /home/zondax/.cargo/env
-            SUPPORT_SR25519=1 make
+            SUPPORT_SR25519=1 SUBSTRATE_PARSER_FULL=1 make
       - run:
           name: Build Ledgeracio
           command: |
@@ -94,9 +99,9 @@ jobs:
       - run:
           name: Build Ledger app
           command: |
-            make buildS
+            make build_full_parser_s
             make clean
-            make buildX
+            make build_full_parser_x
       - run:
           name: Build/Install build js deps
           command: |
@@ -178,7 +183,7 @@ jobs:
       - run:
           name: Build Ledger app
           command: |
-            make build_sr25519
+            make SUBSTRATE_PARSER_FULL=1 build_sr25519
       - run:
           name: Build/Install build js deps
           command: |
