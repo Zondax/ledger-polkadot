@@ -19,6 +19,7 @@
 extern "C" {
 #endif
 
+#include "stdbool.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -66,6 +67,14 @@ typedef struct {
     uint8_t len;
 } compactInt_t;
 
+typedef struct {
+    uint32_t _lenBuffer;
+    const uint8_t* _ptr; // Pointer to actual
+    const uint8_t* _nextPtr; // Pointer to next Call
+    uint8_t slotIdx; // Count of nested calls
+    bool isTail;
+} pd_NestCallIdx_t;
+
 ////////////////////////
 // Common types
 ////////////////////////
@@ -100,8 +109,8 @@ typedef struct {
 
 typedef struct {
     pd_CallIndex_t callIndex;
-    const uint8_t* _methodPtr;
     const uint32_t* _txVerPtr;
+    pd_NestCallIdx_t nestCallIdx;
 } pd_Call_t;
 
 typedef struct {

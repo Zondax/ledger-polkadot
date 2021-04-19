@@ -36,13 +36,13 @@ parser_error_t _readMethod(
     }
 }
 
-uint8_t _getMethod_NumItems(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, pd_Method_t* method)
+uint8_t _getMethod_NumItems(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx)
 {
     switch (transactionVersion) {
     case 6:
-        return _getMethod_NumItems_V6(moduleIdx, callIdx, &method->V6);
+        return _getMethod_NumItems_V6(moduleIdx, callIdx);
     case 5:
-        return _getMethod_NumItems_V5(moduleIdx, callIdx, &method->V5);
+        return _getMethod_NumItems_V5(moduleIdx, callIdx);
     default:
         return parser_not_supported;
     }
@@ -191,7 +191,6 @@ parser_error_t parser_validate_staking_targets(parser_context_t* c)
 
     return parser_ok;
 }
-#endif
 
 GEN_DEF_GETCALL(STAKING);
 GEN_DEF_GETCALL(STAKING_VALIDATE);
@@ -201,3 +200,4 @@ GEN_DEF_GETCALL(STAKING_NOMINATE);
 GEN_DEF_GETCALL(SESSION);
 GEN_DEF_GETCALL(SESSION_SET_KEYS);
 GEN_DEF_GETCALL(SESSION_PURGE_KEYS);
+#endif

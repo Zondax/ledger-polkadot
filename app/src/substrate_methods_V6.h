@@ -53,6 +53,7 @@ extern "C" {
 #define PD_CALL_MULTISIG_V6 30
 #define PD_CALL_BOUNTIES_V6 34
 #define PD_CALL_TIPS_V6 35
+#define PD_CALL_ELECTIONPROVIDERMULTIPHASE_V6 36
 
 #define PD_CALL_BALANCES_TRANSFER_V6 0
 typedef struct {
@@ -1025,6 +1026,12 @@ typedef struct {
     pd_Hash_t hash;
 } pd_tips_slash_tip_V6_t;
 
+#define PD_CALL_ELECTIONPROVIDERMULTIPHASE_SUBMIT_UNSIGNED_V6 0
+typedef struct {
+    pd_RawSolution_V6_t solution;
+    pd_SolutionOrSnapshotSize_V6_t witness;
+} pd_electionprovidermultiphase_submit_unsigned_V6_t;
+
 #endif
 
 typedef union {
@@ -1197,6 +1204,7 @@ typedef union {
     pd_tips_tip_V6_t tips_tip_V6;
     pd_tips_close_tip_V6_t tips_close_tip_V6;
     pd_tips_slash_tip_V6_t tips_slash_tip_V6;
+    pd_electionprovidermultiphase_submit_unsigned_V6_t electionprovidermultiphase_submit_unsigned_V6;
 #endif
 } pd_MethodBasic_V6_t;
 

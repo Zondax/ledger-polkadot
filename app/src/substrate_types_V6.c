@@ -17,6 +17,7 @@
 #include "coin.h"
 #include "parser_impl.h"
 #include "substrate_dispatch_V6.h"
+#include "substrate_strings.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -72,7 +73,7 @@ parser_error_t _readCompactWeight_V6(parser_context_t* c, pd_CompactWeight_V6_t*
     return _readCompactInt(c, v);
 }
 
-parser_error_t _readAccountId_V6(parser_context_t* c, pd_AccountId_V6_t* v){
+parser_error_t _readAccountId_V6(parser_context_t* c, pd_AccountId_V6_t* v) {
     GEN_DEF_READARRAY(32)
 }
 
@@ -102,11 +103,9 @@ parser_error_t _readAccountVote_V6(parser_context_t* c, pd_AccountVote_V6_t* v)
 
     switch (v->value) {
     case 0:
-        CHECK_INPUT();
         CHECK_ERROR(_readAccountVoteStandard_V6(c, &v->voteStandard))
         break;
     case 1:
-        CHECK_INPUT();
         CHECK_ERROR(_readAccountVoteSplit_V6(c, &v->voteSplit))
         break;
     default:
@@ -121,7 +120,7 @@ parser_error_t _readBabeEquivocationProof_V6(parser_context_t* c, pd_BabeEquivoc
     return parser_not_supported;
 }
 
-parser_error_t _readCallHashOf_V6(parser_context_t* c, pd_CallHashOf_V6_t* v){
+parser_error_t _readCallHashOf_V6(parser_context_t* c, pd_CallHashOf_V6_t* v) {
     GEN_DEF_READARRAY(32)
 }
 
@@ -154,7 +153,7 @@ parser_error_t _readConviction_V6(parser_context_t* c, pd_Conviction_V6_t* v)
     return parser_ok;
 }
 
-parser_error_t _readEcdsaSignature_V6(parser_context_t* c, pd_EcdsaSignature_V6_t* v){
+parser_error_t _readEcdsaSignature_V6(parser_context_t* c, pd_EcdsaSignature_V6_t* v) {
     GEN_DEF_READARRAY(65)
 }
 
@@ -175,7 +174,7 @@ parser_error_t _readEraIndex_V6(parser_context_t* c, pd_EraIndex_V6_t* v)
     return _readUInt32(c, &v->value);
 }
 
-parser_error_t _readEthereumAddress_V6(parser_context_t* c, pd_EthereumAddress_V6_t* v){
+parser_error_t _readEthereumAddress_V6(parser_context_t* c, pd_EthereumAddress_V6_t* v) {
     GEN_DEF_READARRAY(20)
 }
 
@@ -213,17 +212,16 @@ parser_error_t _readKeyOwnerProof_V6(parser_context_t* c, pd_KeyOwnerProof_V6_t*
     return parser_not_supported;
 }
 
-parser_error_t _readKeyValue_V6(parser_context_t* c, pd_KeyValue_V6_t* v){
+parser_error_t _readKeyValue_V6(parser_context_t* c, pd_KeyValue_V6_t* v) {
     GEN_DEF_READARRAY(32)
 }
 
-parser_error_t _readKey_V6(parser_context_t* c, pd_Key_V6_t* v){
+parser_error_t _readKey_V6(parser_context_t* c, pd_Key_V6_t* v) {
     GEN_DEF_READARRAY(32)
 }
 
-parser_error_t _readKeys_V6(parser_context_t* c, pd_Keys_V6_t* v)
-{
-    return parser_not_supported;
+parser_error_t _readKeys_V6(parser_context_t* c, pd_Keys_V6_t* v) {
+    GEN_DEF_READARRAY(6 * 32)
 }
 
 parser_error_t _readLookupSource_V6(parser_context_t* c, pd_LookupSource_V6_t* v)
@@ -298,6 +296,11 @@ parser_error_t _readProxyType_V6(parser_context_t* c, pd_ProxyType_V6_t* v)
     return parser_ok;
 }
 
+parser_error_t _readRawSolution_V6(parser_context_t* c, pd_RawSolution_V6_t* v)
+{
+    return parser_not_supported;
+}
+
 parser_error_t _readReferendumIndex_V6(parser_context_t* c, pd_ReferendumIndex_V6_t* v)
 {
     return _readUInt32(c, &v->value);
@@ -325,8 +328,13 @@ parser_error_t _readRewardDestination_V6(parser_context_t* c, pd_RewardDestinati
     return parser_ok;
 }
 
-parser_error_t _readSignature_V6(parser_context_t* c, pd_Signature_V6_t* v){
+parser_error_t _readSignature_V6(parser_context_t* c, pd_Signature_V6_t* v) {
     GEN_DEF_READARRAY(64)
+}
+
+parser_error_t _readSolutionOrSnapshotSize_V6(parser_context_t* c, pd_SolutionOrSnapshotSize_V6_t* v)
+{
+    return parser_not_supported;
 }
 
 parser_error_t _readStatementKind_V6(parser_context_t* c, pd_StatementKind_V6_t* v)
@@ -406,31 +414,31 @@ parser_error_t _readWeight_V6(parser_context_t* c, pd_Weight_V6_t* v)
     return _readUInt64(c, &v->value);
 }
 
-parser_error_t _readu8_array_32_V6(parser_context_t* c, pd_u8_array_32_V6_t* v){
+parser_error_t _readu8_array_32_V6(parser_context_t* c, pd_u8_array_32_V6_t* v) {
     GEN_DEF_READARRAY(32)
 }
 
-parser_error_t _readVecAccountId_V6(parser_context_t* c, pd_VecAccountId_V6_t* v){
+parser_error_t _readVecAccountId_V6(parser_context_t* c, pd_VecAccountId_V6_t* v) {
     GEN_DEF_READVECTOR(AccountId_V6)
 }
 
-parser_error_t _readVecKeyValue_V6(parser_context_t* c, pd_VecKeyValue_V6_t* v){
+parser_error_t _readVecKeyValue_V6(parser_context_t* c, pd_VecKeyValue_V6_t* v) {
     GEN_DEF_READVECTOR(KeyValue_V6)
 }
 
-parser_error_t _readVecKey_V6(parser_context_t* c, pd_VecKey_V6_t* v){
+parser_error_t _readVecKey_V6(parser_context_t* c, pd_VecKey_V6_t* v) {
     GEN_DEF_READVECTOR(Key_V6)
 }
 
-parser_error_t _readVecLookupSource_V6(parser_context_t* c, pd_VecLookupSource_V6_t* v){
+parser_error_t _readVecLookupSource_V6(parser_context_t* c, pd_VecLookupSource_V6_t* v) {
     GEN_DEF_READVECTOR(LookupSource_V6)
 }
 
-parser_error_t _readVecTupleAccountIdData_V6(parser_context_t* c, pd_VecTupleAccountIdData_V6_t* v){
+parser_error_t _readVecTupleAccountIdData_V6(parser_context_t* c, pd_VecTupleAccountIdData_V6_t* v) {
     GEN_DEF_READVECTOR(TupleAccountIdData_V6)
 }
 
-parser_error_t _readVecValidatorIndex_V6(parser_context_t* c, pd_VecValidatorIndex_V6_t* v){
+parser_error_t _readVecValidatorIndex_V6(parser_context_t* c, pd_VecValidatorIndex_V6_t* v) {
     GEN_DEF_READVECTOR(ValidatorIndex_V6)
 }
 
@@ -772,7 +780,7 @@ parser_error_t _toStringCallHashOf_V6(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount){
+    uint8_t* pageCount) {
     GEN_DEF_TOSTRING_ARRAY(32)
 }
 
@@ -869,7 +877,7 @@ parser_error_t _toStringEcdsaSignature_V6(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount){
+    uint8_t* pageCount) {
     GEN_DEF_TOSTRING_ARRAY(65)
 }
 
@@ -930,7 +938,7 @@ parser_error_t _toStringEthereumAddress_V6(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount){
+    uint8_t* pageCount) {
     GEN_DEF_TOSTRING_ARRAY(20)
 }
 
@@ -1118,10 +1126,8 @@ parser_error_t _toStringKeys_V6(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+    uint8_t* pageCount) {
+    GEN_DEF_TOSTRING_ARRAY(4 * 32)
 }
 
 parser_error_t _toStringLookupSource_V6(
@@ -1282,6 +1288,17 @@ parser_error_t _toStringProxyType_V6(
     return parser_ok;
 }
 
+parser_error_t _toStringRawSolution_V6(
+    const pd_RawSolution_V6_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    return parser_print_not_supported;
+}
+
 parser_error_t _toStringReferendumIndex_V6(
     const pd_ReferendumIndex_V6_t* v,
     char* outValue,
@@ -1345,8 +1362,19 @@ parser_error_t _toStringSignature_V6(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount){
+    uint8_t* pageCount) {
     GEN_DEF_TOSTRING_ARRAY(64)
+}
+
+parser_error_t _toStringSolutionOrSnapshotSize_V6(
+    const pd_SolutionOrSnapshotSize_V6_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    return parser_print_not_supported;
 }
 
 parser_error_t _toStringStatementKind_V6(
@@ -1613,7 +1641,7 @@ parser_error_t _toStringu8_array_32_V6(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount){
+    uint8_t* pageCount) {
     GEN_DEF_TOSTRING_ARRAY(32)
 }
 

@@ -13,8 +13,8 @@
 *  See the License for the specific language governing permissions and
 *  limitations under the License.
 ********************************************************************************/
-#include "substrate_dispatch_V6.h"
 
+#include "substrate_dispatch_V6.h"
 #include "substrate_strings.h"
 #include "zxmacros.h"
 #include <stdint.h>
@@ -1326,6 +1326,14 @@ __Z_INLINE parser_error_t _readMethod_tips_slash_tip_V6(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_submit_unsigned_V6(
+    parser_context_t* c, pd_electionprovidermultiphase_submit_unsigned_V6_t* m)
+{
+    CHECK_ERROR(_readRawSolution_V6(c, &m->solution))
+    CHECK_ERROR(_readSolutionOrSnapshotSize_V6(c, &m->witness))
+    return parser_ok;
+}
+
 #endif
 
 parser_error_t _readMethod_V6(
@@ -1844,6 +1852,9 @@ parser_error_t _readMethod_V6(
     case 8965: /* module 35 call 5 */
         CHECK_ERROR(_readMethod_tips_slash_tip_V6(c, &method->basic.tips_slash_tip_V6))
         break;
+    case 9216: /* module 36 call 0 */
+        CHECK_ERROR(_readMethod_electionprovidermultiphase_submit_unsigned_V6(c, &method->basic.electionprovidermultiphase_submit_unsigned_V6))
+        break;
 #endif
     default:
         return parser_not_supported;
@@ -1915,6 +1926,8 @@ const char* _getMethod_ModuleName_V6(uint8_t moduleIdx)
         return STR_MO_BOUNTIES;
     case 35:
         return STR_MO_TIPS;
+    case 36:
+        return STR_MO_ELECTIONPROVIDERMULTIPHASE;
 #endif
     default:
         return NULL;
@@ -2265,6 +2278,8 @@ const char* _getMethod_Name_V6(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_CLOSE_TIP;
     case 8965: /* module 35 call 5 */
         return STR_ME_SLASH_TIP;
+    case 9216: /* module 36 call 0 */
+        return STR_ME_SUBMIT_UNSIGNED;
 #endif
     default:
         return NULL;
@@ -2273,7 +2288,7 @@ const char* _getMethod_Name_V6(uint8_t moduleIdx, uint8_t callIdx)
     return NULL;
 }
 
-uint8_t _getMethod_NumItems_V6(uint8_t moduleIdx, uint8_t callIdx, pd_Method_V6_t* method)
+uint8_t _getMethod_NumItems_V6(uint8_t moduleIdx, uint8_t callIdx)
 {
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
@@ -2615,6 +2630,8 @@ uint8_t _getMethod_NumItems_V6(uint8_t moduleIdx, uint8_t callIdx, pd_Method_V6_
         return 1;
     case 8965: /* module 35 call 5 */
         return 1;
+    case 9216: /* module 36 call 0 */
+        return 2;
 #endif
     default:
         return 0;
@@ -4062,6 +4079,15 @@ const char* _getMethod_ItemName_V6(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         switch (itemIdx) {
         case 0:
             return STR_IT_hash;
+        default:
+            return NULL;
+        }
+    case 9216: /* module 36 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_solution;
+        case 1:
+            return STR_IT_witness;
         default:
             return NULL;
         }
@@ -6413,6 +6439,21 @@ parser_error_t _getMethod_ItemValue_V6(
         default:
             return parser_no_data;
         }
+    case 9216: /* module 36 call 0 */
+        switch (itemIdx) {
+        case 0: /* electionprovidermultiphase_submit_unsigned_V6 - solution */;
+            return _toStringRawSolution_V6(
+                &m->basic.electionprovidermultiphase_submit_unsigned_V6.solution,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* electionprovidermultiphase_submit_unsigned_V6 - witness */;
+            return _toStringSolutionOrSnapshotSize_V6(
+                &m->basic.electionprovidermultiphase_submit_unsigned_V6.witness,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
 #endif
     default:
         return parser_ok;
@@ -6626,6 +6667,7 @@ bool _getMethod_IsNestingSupported_V6(uint8_t moduleIdx, uint8_t callIdx)
     case 8963: // Tips:Tip
     case 8964: // Tips:Close tip
     case 8965: // Tips:Slash tip
+    case 9216: // ElectionProviderMultiPhase:Submit unsigned
         return false;
     default:
         return true;

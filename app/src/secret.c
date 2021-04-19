@@ -33,7 +33,7 @@ static char *secret_message =
         "USE AT YOUR OWN RISK!! "
         "You are about to enable the DOT recovery mode."
         "If you are not sure why you are here, reject or unplug your device immediately."
-        "Activating this mode will temporarily allow you to sign Polkadot transactions using Kusama keys";
+        "Activating this mode will temporarily allow you to sign transactions using Kusama keys";
 
 zxerr_t secret_getNumItems(uint8_t *num_items) {
     zemu_log_stack("secret_getNumItems");

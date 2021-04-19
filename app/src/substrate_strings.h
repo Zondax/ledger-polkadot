@@ -47,6 +47,7 @@ static const char* STR_MO_PROXY = "Proxy";
 static const char* STR_MO_MULTISIG = "Multisig";
 static const char* STR_MO_BOUNTIES = "Bounties";
 static const char* STR_MO_TIPS = "Tips";
+static const char* STR_MO_ELECTIONPROVIDERMULTIPHASE = "Electionprovidermultiphase";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";
@@ -204,6 +205,7 @@ static const char* STR_ME_CANCEL_AS_MULTI = "Cancel as multi";
 static const char* STR_ME_KICK = "Kick";
 static const char* STR_ME_CLEAN_DEFUNCT_VOTERS = "Clean defunct voters";
 static const char* STR_ME_SLASH_TIP = "Slash tip";
+static const char* STR_ME_SUBMIT_UNSIGNED = "Submit unsigned";
 
 // Items names
 static const char* STR_IT__ratio = "Ratio";
@@ -328,6 +330,8 @@ static const char* STR_IT_max_weight = "Max weight";
 static const char* STR_IT_timepoint = "Timepoint";
 static const char* STR_IT__num_voters = "Num voters";
 static const char* STR_IT__num_defunct = "Num defunct";
+static const char* STR_IT_solution = "Solution";
+static const char* STR_IT_witness = "Witness";
 
 #ifdef __cplusplus
 }

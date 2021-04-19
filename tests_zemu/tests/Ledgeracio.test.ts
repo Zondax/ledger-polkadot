@@ -14,31 +14,32 @@
  *  limitations under the License.
  ******************************************************************************* */
 
-import jest, {expect, test} from "jest";
-import Zemu from "@zondax/zemu";
+import Zemu, {DEFAULT_START_OPTIONS} from "@zondax/zemu";
 import {newPolkadotApp} from "@zondax/ledger-polkadot";
+
+// @ts-ignore
 import ed25519 from "ed25519-supercop";
-import {dummyAllowlist, TESTING_ALLOWLIST_SEED} from "./common";
+import {APP_SEED, dummyAllowlist, TESTING_ALLOWLIST_SEED} from "./common";
 
 const Resolve = require("path").resolve;
 const APP_PATH = Resolve("../app/output/app_ledgeracio.elf");
 
-const APP_SEED = "equip will roof matter pink blind book anxiety banner elbow sun young"
-
-const simOptions = {
+const defaultOptions = {
+    ...DEFAULT_START_OPTIONS,
     logging: true,
-    start_delay: 3000,
     custom: `-s "${APP_SEED}"`,
-    X11: false
+    X11: true,
+    model: 'nanos'
 };
 
-jest.setTimeout(30000)
+jest.setTimeout(60000)
 
 describe('Ledgeracio', function () {
+    // eslint-disable-next-line jest/expect-expect
     test('can start and stop container', async function () {
         const sim = new Zemu(APP_PATH);
         try {
-            await sim.start(simOptions);
+            await sim.start({...defaultOptions});
         } finally {
             await sim.close();
         }
@@ -47,7 +48,7 @@ describe('Ledgeracio', function () {
     test('get app version', async function () {
         const sim = new Zemu(APP_PATH);
         try {
-            await sim.start(simOptions);
+            await sim.start({...defaultOptions});
             const app = newPolkadotApp(sim.getTransport());
             const resp = await app.getVersion();
 
@@ -67,8 +68,9 @@ describe('Ledgeracio', function () {
     test('get allowlist pubkey | unset', async function () {
         const sim = new Zemu(APP_PATH);
         try {
-            await sim.start(simOptions);
+            await sim.start({...defaultOptions});
             const app = newPolkadotApp(sim.getTransport());
+            // @ts-ignore
             const resp = await app.getAllowlistPubKey();
 
             console.log(resp);
@@ -83,30 +85,40 @@ describe('Ledgeracio', function () {
     test('set allowlist pubkey', async function () {
         const sim = new Zemu(APP_PATH);
         try {
-            await sim.start(simOptions);
+            await sim.start({...defaultOptions});
             const app = newPolkadotApp(sim.getTransport());
 
             const pk = Buffer.from("1234000000000000000000000000000000000000000000000000000000000000", "hex")
 
-            let req = app.setAllowlistPubKey(pk);
+            // @ts-ignore
+            const req = app.setAllowlistPubKey(pk);
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
             await sim.clickRight();
             await sim.clickRight();
             await sim.clickBoth();
             let resp = await req;
+            // @ts-ignore
             expect(resp.return_code).toEqual(0x9000);
+            // @ts-ignore
             expect(resp.error_message).toEqual("No errors");
 
             // Try setting again
+            // @ts-ignore
             resp = await app.setAllowlistPubKey(pk);
+            // @ts-ignore
             expect(resp.return_code).toEqual(0x6986);
+            // @ts-ignore
             expect(resp.error_message).toEqual("Transaction rejected");
 
+            // @ts-ignore
             resp = await app.getAllowlistPubKey();
             console.log(resp);
+            // @ts-ignore
             expect(resp.return_code).toEqual(0x9000);
+            // @ts-ignore
             expect(resp.error_message).toEqual("No errors");
 
+            // @ts-ignore
             expect(resp.pubkey).toEqual(pk);
 
         } finally {
@@ -117,8 +129,9 @@ describe('Ledgeracio', function () {
     test('get allowlist hash | not set yet', async function () {
         const sim = new Zemu(APP_PATH);
         try {
-            await sim.start(simOptions);
+            await sim.start({...defaultOptions});
             const app = newPolkadotApp(sim.getTransport());
+            // @ts-ignore
             const resp = await app.getAllowlistHash();
 
             console.log(resp);
@@ -139,11 +152,12 @@ describe('Ledgeracio', function () {
     test('upload allowlist | no pubkey', async function () {
         const sim = new Zemu(APP_PATH);
         try {
-            await sim.start(simOptions);
+            await sim.start({...defaultOptions});
             const app = newPolkadotApp(sim.getTransport());
 
             console.log("\n\n------------ Upload allowlist")
             const allowlist = dummyAllowlist(0);
+            // @ts-ignore
             const resp = await app.uploadAllowlist(allowlist);
             console.log(resp);
 
@@ -157,11 +171,12 @@ describe('Ledgeracio', function () {
     test('upload allowlist | with pubkey set before', async function () {
         const sim = new Zemu(APP_PATH);
         try {
-            await sim.start(simOptions);
+            await sim.start({...defaultOptions});
             const app = newPolkadotApp(sim.getTransport());
 
             console.log("\n\n------------ Set pubkey")
             const keypair = ed25519.createKeyPair(TESTING_ALLOWLIST_SEED)
+            // @ts-ignore
             let req = app.setAllowlistPubKey(keypair.publicKey);
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
             await sim.clickRight();
@@ -173,6 +188,7 @@ describe('Ledgeracio', function () {
 
             let allowlist = dummyAllowlist(10);
             console.log(`\n\n------------ Upload allowlist : ${allowlist.length} bytes`)
+            // @ts-ignore
             req = app.uploadAllowlist(allowlist);
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
             await sim.clickRight();
@@ -185,12 +201,14 @@ describe('Ledgeracio', function () {
             expect(resp.error_message).toEqual("No errors");
 
             console.log("\n\n------------ Get allowlist hash")
+            // @ts-ignore
             resp = await app.getAllowlistHash();
             console.log(resp);
             expect(resp.return_code).toEqual(0x9000);
             expect(resp.error_message).toEqual("No errors");
 
             console.log(`\n\n------------ Upload allowlist : Again`)
+            // @ts-ignore
             resp = await app.uploadAllowlist(allowlist);
             console.log(resp);
             expect(resp.return_code).toEqual(0x6400);
@@ -198,6 +216,7 @@ describe('Ledgeracio', function () {
 
             console.log(`\n\n------------ Upload allowlist : Again but change nonce`)
             allowlist = dummyAllowlist(11);
+            // @ts-ignore
             req = app.uploadAllowlist(allowlist);
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
             await sim.clickRight();
@@ -214,16 +233,14 @@ describe('Ledgeracio', function () {
             await sim.clickLeft();
 
             // Try to sign a nomination not included in the allowlist
-            // This nomination targets 16dGaSkriYA9aLfDZ3wzYExzD39ysdXrmFkE1F8r4oenXHxB
-            // This nomination targets 14wbzhrtCQJ62YrAivvZby79H4MEne4M7HNdidWnLUC6rjPc
-            let nominate_tx1 = "07050800f8d66ff9ce34aa58502eef2f1c605dc5cd272eda9d0018f920668cea2156d14f00ae59c16b6ce333628ef8cf81240a29b402665d60b55b1ea238dbaf20d3bd6803d503910103d20296491c0000000600000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            const nominate_tx1 = "070508f8d66ff9ce34aa58502eef2f1c605dc5cd272eda9d0018f920668cea2156d14fae59c16b6ce333628ef8cf81240a29b402665d60b55b1ea238dbaf20d3bd6803d503ae1103000b63ce64c10c05170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
             const txBlob1 = Buffer.from(nominate_tx1, "hex");
             const signatureResponse1 = app.sign(0x80000000, 0x80000000, 0x80000000, txBlob1);
             await Zemu.sleep(1000);
             await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
             await sim.clickBoth();
             await sim.clickBoth();
-            let signature1 = await signatureResponse1;
+            const signature1 = await signatureResponse1;
             expect(signature1.return_code).toEqual(0x9000);
             expect(signature1.error_message).toEqual("No errors");
             console.log(signature1)
@@ -233,7 +250,7 @@ describe('Ledgeracio', function () {
 
             // Now try a nominations that is not allowed
             // 13BP3Jpm3SboANHyfTwDp437t1atrUKjba8YonifCBbgyDG2
-            const nominate_tx2 = "0705040060631d0c1e64840fa3d6ecc4975ebd0d2012cec0a766f0ce2658d9b1aa6c1e03d503ae1103000b63ce64c10c051c0000000600000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            const nominate_tx2 = "07050460631d0c1e64840fa3d6ecc4975ebd0d2012cec0a766f0ce2658d9b1aa6c1e03d5038d2400170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
             const txBlob2 = Buffer.from(nominate_tx2, "hex");
             const signature2 = await app.sign(0x80000000, 0x80000000, 0x80000000, txBlob2);
             await Zemu.sleep(1000);

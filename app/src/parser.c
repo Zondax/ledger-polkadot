@@ -52,6 +52,11 @@ void __assert_fail(const char * assertion, const char * file, unsigned int line,
 parser_error_t parser_parse(parser_context_t *ctx, const uint8_t *data, size_t dataLen, parser_tx_t *tx_obj) {
     CHECK_PARSER_ERR(parser_init(ctx, data, dataLen))
     ctx->tx_obj = tx_obj;
+    ctx->tx_obj->nestCallIdx.slotIdx = 0;
+    ctx->tx_obj->nestCallIdx._lenBuffer = 0;
+    ctx->tx_obj->nestCallIdx._ptr = NULL;
+    ctx->tx_obj->nestCallIdx._nextPtr = NULL;
+    ctx->tx_obj->nestCallIdx.isTail = true;
     parser_error_t err = _readTx(ctx, ctx->tx_obj);
     CTX_CHECK_AVAIL(ctx, 0)
     zb_check_canary();
@@ -131,8 +136,7 @@ parser_error_t parser_validate(const parser_context_t *ctx) {
 parser_error_t parser_getNumItems(const parser_context_t *ctx, uint8_t *num_items) {
     uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->transactionVersion,
                                                  ctx->tx_obj->callIndex.moduleIdx,
-                                                 ctx->tx_obj->callIndex.idx,
-                                                 &ctx->tx_obj->method);
+                                                 ctx->tx_obj->callIndex.idx);
 
     uint8_t total = FIELD_FIXED_TOTAL_COUNT;
     if(!parser_show_tip(ctx)){
@@ -186,8 +190,7 @@ parser_error_t parser_getItem(const parser_context_t *ctx,
     // VARIABLE ARGUMENTS
     uint8_t methodArgCount = _getMethod_NumItems(ctx->tx_obj->transactionVersion,
                                                  ctx->tx_obj->callIndex.moduleIdx,
-                                                 ctx->tx_obj->callIndex.idx,
-                                                 &ctx->tx_obj->method);
+                                                 ctx->tx_obj->callIndex.idx);
     uint8_t argIdx = displayIdx - 1;
 
 

@@ -31,7 +31,7 @@ parser_error_t _readu64(parser_context_t* c, pd_u64_t* v);
 parser_error_t _readBlockNumber(parser_context_t* c, pd_BlockNumber_t* v);
 parser_error_t _readCompactu32(parser_context_t* c, pd_Compactu32_t* v);
 parser_error_t _readCompactu64(parser_context_t* c, pd_Compactu64_t* v);
-parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_Method_t* m);
+parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_MethodNested_t* m);
 
 parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v);
 parser_error_t _readData(parser_context_t* c, pd_Data_t* v);
