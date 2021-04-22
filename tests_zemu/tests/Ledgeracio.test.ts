@@ -232,8 +232,8 @@ describe('Ledgeracio', function () {
             await sim.clickBoth();
             await sim.clickLeft();
 
-            // Try to sign a nomination not included in the allowlist
-            const nominate_tx1 = "070508f8d66ff9ce34aa58502eef2f1c605dc5cd272eda9d0018f920668cea2156d14fae59c16b6ce333628ef8cf81240a29b402665d60b55b1ea238dbaf20d3bd6803d503ae1103000b63ce64c10c05170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            // Try to sign a nomination included in the allowlist
+            const nominate_tx1 = "0705080090c8e14f2764111e777eec088e0dbf4147d28d49b9e98349f09607750b2a0c7400f461cf468c6d4348b4ee554eda68d1b5f2eb57ff348576b820032e89a2df1b6cd503046d0f1e0000000700000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
             const txBlob1 = Buffer.from(nominate_tx1, "hex");
             const signatureResponse1 = app.sign(0x80000000, 0x80000000, 0x80000000, txBlob1);
             await Zemu.sleep(1000);
@@ -249,8 +249,7 @@ describe('Ledgeracio', function () {
             console.log("Try an address that is not allowed")
 
             // Now try a nominations that is not allowed
-            // 13BP3Jpm3SboANHyfTwDp437t1atrUKjba8YonifCBbgyDG2
-            const nominate_tx2 = "07050460631d0c1e64840fa3d6ecc4975ebd0d2012cec0a766f0ce2658d9b1aa6c1e03d5038d2400170000000500000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+            const nominate_tx2 = "07050400aadebcb17c61283953f08346bef03801b39e1043b0d7e810ca7ab54bb5456d6ad503ae1103000b63ce64c10c051e0000000700000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
             const txBlob2 = Buffer.from(nominate_tx2, "hex");
             const signature2 = await app.sign(0x80000000, 0x80000000, 0x80000000, txBlob2);
             await Zemu.sleep(1000);
