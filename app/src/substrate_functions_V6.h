@@ -76,11 +76,13 @@ parser_error_t _readPercent_V6(parser_context_t* c, pd_Percent_V6_t* v);
 parser_error_t _readPeriod_V6(parser_context_t* c, pd_Period_V6_t* v);
 parser_error_t _readPriority_V6(parser_context_t* c, pd_Priority_V6_t* v);
 parser_error_t _readProxyType_V6(parser_context_t* c, pd_ProxyType_V6_t* v);
+parser_error_t _readRawSolution_V6(parser_context_t* c, pd_RawSolution_V6_t* v);
 parser_error_t _readReferendumIndex_V6(parser_context_t* c, pd_ReferendumIndex_V6_t* v);
 parser_error_t _readRegistrarIndex_V6(parser_context_t* c, pd_RegistrarIndex_V6_t* v);
 parser_error_t _readRenouncing_V6(parser_context_t* c, pd_Renouncing_V6_t* v);
 parser_error_t _readRewardDestination_V6(parser_context_t* c, pd_RewardDestination_V6_t* v);
 parser_error_t _readSignature_V6(parser_context_t* c, pd_Signature_V6_t* v);
+parser_error_t _readSolutionOrSnapshotSize_V6(parser_context_t* c, pd_SolutionOrSnapshotSize_V6_t* v);
 parser_error_t _readStatementKind_V6(parser_context_t* c, pd_StatementKind_V6_t* v);
 parser_error_t _readStreamDependency_V6(parser_context_t* c, pd_StreamDependency_V6_t* v);
 parser_error_t _readTimepoint_V6(parser_context_t* c, pd_Timepoint_V6_t* v);
@@ -450,6 +452,13 @@ parser_error_t _toStringProxyType_V6(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringRawSolution_V6(
+    const pd_RawSolution_V6_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringReferendumIndex_V6(
     const pd_ReferendumIndex_V6_t* v,
     char* outValue,
@@ -480,6 +489,13 @@ parser_error_t _toStringRewardDestination_V6(
 
 parser_error_t _toStringSignature_V6(
     const pd_Signature_V6_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringSolutionOrSnapshotSize_V6(
+    const pd_SolutionOrSnapshotSize_V6_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

@@ -34,7 +34,7 @@ const char* _getMethod_Name_V6(uint8_t moduleIdx, uint8_t callIdx);
 
 const char* _getMethod_ItemName_V6(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
 
-uint8_t _getMethod_NumItems_V6(uint8_t moduleIdx, uint8_t callIdx, pd_Method_V6_t* method);
+uint8_t _getMethod_NumItems_V6(uint8_t moduleIdx, uint8_t callIdx);
 
 parser_error_t _getMethod_ItemValue_V6(
     pd_Method_V6_t* m, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx,

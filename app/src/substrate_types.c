@@ -59,17 +59,43 @@ parser_error_t _readCompactu64(parser_context_t* c, pd_Compactu64_t* v)
     return _readCompactInt(c, v);
 }
 
-parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_Method_t* m)
+parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_MethodNested_t* m)
 {
+    // If it's the first Call, store a pointer to it
+    if (c->tx_obj->nestCallIdx._ptr == NULL) {
+        c->tx_obj->nestCallIdx._ptr = c->buffer + c->offset;
+        c->tx_obj->nestCallIdx._lenBuffer = c->bufferLen - c->offset;
+    } else {
+        // If _ptr is not null, and landed here, means we're inside a nested call.
+        // We stored the pointer to the first Call and now we store
+        // the pointer to the 'next' Call.
+        if (c->tx_obj->nestCallIdx._nextPtr == NULL) {
+            c->tx_obj->nestCallIdx._nextPtr = c->buffer + c->offset;
+        }
+    }
+
+    // To keep track on how many nested Calls we have
+    c->tx_obj->nestCallIdx.slotIdx++;
+    if (c->tx_obj->nestCallIdx.slotIdx > MAX_CALL_NESTING_SIZE) {
+        return parser_tx_nesting_limit_reached;
+    }
+
     CHECK_ERROR(_readCallIndex(c, &v->callIndex));
 
     if (!_getMethod_IsNestingSupported(c->tx_obj->transactionVersion, v->callIndex.moduleIdx, v->callIndex.idx)) {
         return parser_not_supported;
     }
 
-    CHECK_ERROR(_readMethod(c, v->callIndex.moduleIdx, v->callIndex.idx, m))
-    v->_methodPtr = (uint8_t*)m;
+    // Read and check the contained method on this Call
+    CHECK_ERROR(_readMethod(c, v->callIndex.moduleIdx, v->callIndex.idx, (pd_Method_t*)m))
+
+    // The instance of 'v' corresponding to the upper call on the stack (persisted variable)
+    // will end up having the pointer to the first Call and to the 'next' one if exists.
     v->_txVerPtr = &c->tx_obj->transactionVersion;
+    v->nestCallIdx._lenBuffer = c->tx_obj->nestCallIdx._lenBuffer;
+    v->nestCallIdx._ptr = c->tx_obj->nestCallIdx._ptr;
+    v->nestCallIdx._nextPtr = c->tx_obj->nestCallIdx._nextPtr;
+
     return parser_ok;
 }
 
@@ -81,7 +107,7 @@ parser_error_t _readCompactBlockNumber(parser_context_t* c, pd_CompactBlockNumbe
     return _readCompactInt(c, v);
 }
 
-parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v){
+parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v) {
     GEN_DEF_READARRAY(16)
 }
 
@@ -146,15 +172,26 @@ parser_error_t _readTupleDataData(parser_context_t* c, pd_TupleDataData_t* v)
     return parser_ok;
 }
 
-parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v){
+parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v) {
     GEN_DEF_READARRAY(20)
 }
 
 parser_error_t _readCall(parser_context_t* c, pd_Call_t* v)
 {
-    pd_Method_t _method;
+    pd_MethodNested_t _method;
+    if (c->tx_obj->nestCallIdx.isTail) {
+        c->tx_obj->nestCallIdx.isTail = false;
+        v->nestCallIdx.isTail = true;
+    } else {
+        v->nestCallIdx.isTail = false;
+    }
+
     CHECK_ERROR(_readCallImpl(c, v, &_method))
-    zb_check_canary();
+    if (c->tx_obj->nestCallIdx._ptr != NULL && c->tx_obj->nestCallIdx._nextPtr != NULL) {
+        v->nestCallIdx._ptr = c->tx_obj->nestCallIdx._ptr;
+        v->nestCallIdx._nextPtr = c->tx_obj->nestCallIdx._nextPtr;
+    }
+    v->nestCallIdx.slotIdx = c->tx_obj->nestCallIdx.slotIdx;
     return parser_ok;
 }
 
@@ -174,6 +211,11 @@ parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v)
     pd_Call_t dummy;
     CHECK_PARSER_ERR(_readCompactInt(c, &clen));
     CHECK_PARSER_ERR(_getValue(&clen, &v->_len));
+
+    if (v->_len > MAX_CALL_VEC_SIZE) {
+        return parser_tx_call_vec_too_large;
+    }
+
     v->_ptr = c->buffer + c->offset;
     v->_lenBuffer = c->offset;
     if (v->_len == 0) {
@@ -181,10 +223,11 @@ parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v)
     }
 
     for (uint64_t i = 0; i < v->_len; i++) {
+        c->tx_obj->nestCallIdx.slotIdx = 0;
         CHECK_ERROR(_readCall(c, &dummy))
     }
     v->_lenBuffer = c->offset - v->_lenBuffer;
-    v->callTxVersion = *dummy._txVerPtr;
+    v->callTxVersion = c->tx_obj->transactionVersion;
 
     return parser_ok;
 }
@@ -196,7 +239,7 @@ parser_error_t _readCompactBalanceOf(parser_context_t* c, pd_CompactBalanceOf_t*
     return parser_ok;
 }
 
-parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v){
+parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v) {
     GEN_DEF_READARRAY(32)
 }
 
@@ -205,15 +248,15 @@ parser_error_t _readHeartbeat(parser_context_t* c, pd_Heartbeat_t* v)
     return parser_not_supported;
 }
 
-parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v){
+parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v) {
     GEN_DEF_READVECTOR(Header)
 }
 
-parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v){
+parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v) {
     GEN_DEF_READVECTOR(TupleDataData)
 }
 
-parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v){
+parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v) {
     GEN_DEF_READVECTOR(u32)
 }
 
@@ -475,7 +518,7 @@ parser_error_t _toStringu8_array_20(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount){
+    uint8_t* pageCount) {
     GEN_DEF_TOSTRING_ARRAY(20)
 }
 
@@ -487,15 +530,50 @@ parser_error_t _toStringCall(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
-    uint8_t callNumItems = _getMethod_NumItems(*v->_txVerPtr, v->callIndex.moduleIdx, v->callIndex.idx, (pd_Method_t*)v->_methodPtr);
-
     *pageCount = 1;
+
+    parser_context_t ctx;
+
+    const uint8_t* buffer;
+    if (v->nestCallIdx.isTail) {
+        buffer = v->nestCallIdx._ptr;
+    } else {
+        buffer = v->nestCallIdx._nextPtr;
+    }
+
+    parser_init(&ctx, buffer, v->nestCallIdx._lenBuffer);
+    parser_tx_t _txObj;
+
+    pd_Call_t _call;
+    _call.nestCallIdx.isTail = false;
+
+    ctx.tx_obj = &_txObj;
+    _txObj.transactionVersion = *v->_txVerPtr;
+
+    ctx.tx_obj->nestCallIdx._ptr = NULL;
+    ctx.tx_obj->nestCallIdx._nextPtr = NULL;
+    ctx.tx_obj->nestCallIdx._lenBuffer = 0;
+    ctx.tx_obj->nestCallIdx.slotIdx = 0;
+    ctx.tx_obj->nestCallIdx.isTail = false;
+
+    // Read the Call, so we get the contained Method
+    parser_error_t err = _readCallImpl(&ctx, &_call, (pd_MethodNested_t*)&_txObj.method);
+    if (err != parser_ok) {
+        return err;
+    }
+
+    // Get num items of this current Call
+    uint8_t callNumItems = _getMethod_NumItems(*v->_txVerPtr, v->callIndex.moduleIdx, v->callIndex.idx);
+
+    // Count how many pages this call has (including nested ones if they exists)
     for (uint8_t i = 0; i < callNumItems; i++) {
         uint8_t itemPages = 0;
-        _getMethod_ItemValue(*v->_txVerPtr, (pd_Method_t*)v->_methodPtr, v->callIndex.moduleIdx, v->callIndex.idx, i,
+        _getMethod_ItemValue(*v->_txVerPtr, &_txObj.method, _call.callIndex.moduleIdx, _call.callIndex.idx, i,
             outValue, outValueLen, 0, &itemPages);
-        *pageCount += itemPages;
+        (*pageCount) += itemPages;
     }
+
+    zb_check_canary();
 
     if (pageIdx == 0) {
         snprintf(outValue, outValueLen, "%s", _getMethod_Name(*v->_txVerPtr, v->callIndex.moduleIdx, v->callIndex.idx));
@@ -510,12 +588,12 @@ parser_error_t _toStringCall(
 
     for (uint8_t i = 0; i < callNumItems; i++) {
         uint8_t itemPages = 0;
-        _getMethod_ItemValue(*v->_txVerPtr, (pd_Method_t*)v->_methodPtr, v->callIndex.moduleIdx, v->callIndex.idx, i,
+        _getMethod_ItemValue(*v->_txVerPtr, &_txObj.method, v->callIndex.moduleIdx, v->callIndex.idx, i,
             outValue, outValueLen, 0, &itemPages);
 
         if (pageIdx < itemPages) {
             uint8_t tmp;
-            _getMethod_ItemValue(*v->_txVerPtr, (pd_Method_t*)v->_methodPtr, v->callIndex.moduleIdx, v->callIndex.idx, i,
+            _getMethod_ItemValue(*v->_txVerPtr, &_txObj.method, v->callIndex.moduleIdx, v->callIndex.idx, i,
                 outValue, outValueLen, pageIdx, &tmp);
             return parser_ok;
         }
@@ -568,10 +646,19 @@ parser_error_t _toStringVecCall(
     ctx.tx_obj = &_txObj;
     _txObj.transactionVersion = v->callTxVersion;
     _call._txVerPtr = &v->callTxVersion;
+    _call.nestCallIdx.isTail = true;
+
+    ctx.tx_obj->nestCallIdx.slotIdx = 0;
+    ctx.tx_obj->nestCallIdx._lenBuffer = 0;
+    ctx.tx_obj->nestCallIdx._ptr = NULL;
+    ctx.tx_obj->nestCallIdx._nextPtr = NULL;
+    ctx.tx_obj->nestCallIdx.isTail = true;
 
     for (uint16_t i = 0; i < v->_len; i++) {
-        pd_Method_t _method;
-        CHECK_ERROR(_readCallImpl(&ctx, &_call, &_method));
+        ctx.tx_obj->nestCallIdx._ptr = NULL;
+        ctx.tx_obj->nestCallIdx._nextPtr = NULL;
+        ctx.tx_obj->nestCallIdx.slotIdx = 0;
+        CHECK_ERROR(_readCallImpl(&ctx, &_call, (pd_MethodNested_t*)&_txObj.method));
         CHECK_ERROR(_toStringCall(&_call, outValue, outValueLen, 0, &chunkPageCount));
         (*pageCount) += chunkPageCount;
     }
@@ -579,9 +666,10 @@ parser_error_t _toStringVecCall(
     /* Then iterate until we can print the corresponding chunk*/
     parser_init(&ctx, v->_ptr, v->_lenBuffer);
     for (uint16_t i = 0; i < v->_len; i++) {
-        pd_Method_t _method;
-        CHECK_ERROR(_readCallImpl(&ctx, &_call, &_method));
-
+        ctx.tx_obj->nestCallIdx._ptr = NULL;
+        ctx.tx_obj->nestCallIdx._nextPtr = NULL;
+        ctx.tx_obj->nestCallIdx.slotIdx = 0;
+        CHECK_ERROR(_readCallImpl(&ctx, &_call, (pd_MethodNested_t*)&_txObj.method));
         chunkPageCount = 1;
         currentPage = 0;
         while (currentPage < chunkPageCount) {
@@ -614,7 +702,7 @@ parser_error_t _toStringHash(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount){
+    uint8_t* pageCount) {
     GEN_DEF_TOSTRING_ARRAY(32)
 }
 
@@ -634,7 +722,7 @@ parser_error_t _toStringVecHeader(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount){
+    uint8_t* pageCount) {
     GEN_DEF_TOSTRING_VECTOR(Header)
 }
 

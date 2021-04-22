@@ -23,6 +23,14 @@ extern "C" {
 #include <stddef.h>
 #include "substrate_methods.h"
 
+#ifdef TARGET_NANOX
+#define MAX_CALL_NESTING_SIZE 6
+#define MAX_CALL_VEC_SIZE 6
+#else
+#define MAX_CALL_NESTING_SIZE 2
+#define MAX_CALL_VEC_SIZE 5
+#endif
+
 typedef struct {
     pd_CallIndex_t   callIndex;
     pd_Method_t method;
@@ -35,6 +43,8 @@ typedef struct {
 
     pd_Hash_t genesisHash;
     pd_Hash_t blockHash;
+
+    pd_NestCallIdx_t nestCallIdx;
 } parser_tx_t;
 
 #ifdef __cplusplus

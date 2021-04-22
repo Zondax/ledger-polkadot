@@ -27,22 +27,22 @@ parser_error_t _readMethod(
     pd_Method_t* method)
 {
     switch (c->tx_obj->transactionVersion) {
+    case 7:
+        return _readMethod_V7(c, moduleIdx, callIdx, &method->V7);
     case 6:
         return _readMethod_V6(c, moduleIdx, callIdx, &method->V6);
-    case 5:
-        return _readMethod_V5(c, moduleIdx, callIdx, &method->V5);
     default:
         return parser_not_supported;
     }
 }
 
-uint8_t _getMethod_NumItems(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, pd_Method_t* method)
+uint8_t _getMethod_NumItems(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx)
 {
     switch (transactionVersion) {
+    case 7:
+        return _getMethod_NumItems_V7(moduleIdx, callIdx);
     case 6:
-        return _getMethod_NumItems_V6(moduleIdx, callIdx, &method->V6);
-    case 5:
-        return _getMethod_NumItems_V5(moduleIdx, callIdx, &method->V5);
+        return _getMethod_NumItems_V6(moduleIdx, callIdx);
     default:
         return parser_not_supported;
     }
@@ -51,10 +51,10 @@ uint8_t _getMethod_NumItems(uint32_t transactionVersion, uint8_t moduleIdx, uint
 const char* _getMethod_ModuleName(uint32_t transactionVersion, uint8_t moduleIdx)
 {
     switch (transactionVersion) {
+    case 7:
+        return _getMethod_ModuleName_V7(moduleIdx);
     case 6:
         return _getMethod_ModuleName_V6(moduleIdx);
-    case 5:
-        return _getMethod_ModuleName_V5(moduleIdx);
     default:
         return NULL;
     }
@@ -63,10 +63,10 @@ const char* _getMethod_ModuleName(uint32_t transactionVersion, uint8_t moduleIdx
 const char* _getMethod_Name(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx)
 {
     switch (transactionVersion) {
+    case 7:
+        return _getMethod_Name_V7(moduleIdx, callIdx);
     case 6:
         return _getMethod_Name_V6(moduleIdx, callIdx);
-    case 5:
-        return _getMethod_Name_V5(moduleIdx, callIdx);
     default:
         return 0;
     }
@@ -75,10 +75,10 @@ const char* _getMethod_Name(uint32_t transactionVersion, uint8_t moduleIdx, uint
 const char* _getMethod_ItemName(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx)
 {
     switch (transactionVersion) {
+    case 7:
+        return _getMethod_ItemName_V7(moduleIdx, callIdx, itemIdx);
     case 6:
         return _getMethod_ItemName_V6(moduleIdx, callIdx, itemIdx);
-    case 5:
-        return _getMethod_ItemName_V5(moduleIdx, callIdx, itemIdx);
     default:
         return NULL;
     }
@@ -89,11 +89,11 @@ parser_error_t _getMethod_ItemValue(uint32_t transactionVersion, pd_Method_t* m,
     uint8_t pageIdx, uint8_t* pageCount)
 {
     switch (transactionVersion) {
+    case 7:
+        return _getMethod_ItemValue_V7(&m->V7, moduleIdx, callIdx, itemIdx, outValue,
+            outValueLen, pageIdx, pageCount);
     case 6:
         return _getMethod_ItemValue_V6(&m->V6, moduleIdx, callIdx, itemIdx, outValue,
-            outValueLen, pageIdx, pageCount);
-    case 5:
-        return _getMethod_ItemValue_V5(&m->V5, moduleIdx, callIdx, itemIdx, outValue,
             outValueLen, pageIdx, pageCount);
     default:
         return parser_not_supported;
@@ -103,10 +103,10 @@ parser_error_t _getMethod_ItemValue(uint32_t transactionVersion, pd_Method_t* m,
 bool _getMethod_ItemIsExpert(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx)
 {
     switch (transactionVersion) {
+    case 7:
+        return _getMethod_ItemIsExpert_V7(moduleIdx, callIdx, itemIdx);
     case 6:
         return _getMethod_ItemIsExpert_V6(moduleIdx, callIdx, itemIdx);
-    case 5:
-        return _getMethod_ItemIsExpert_V5(moduleIdx, callIdx, itemIdx);
     default:
         return false;
     }
@@ -115,10 +115,10 @@ bool _getMethod_ItemIsExpert(uint32_t transactionVersion, uint8_t moduleIdx, uin
 bool _getMethod_IsNestingSupported(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx)
 {
     switch (transactionVersion) {
+    case 7:
+        return _getMethod_IsNestingSupported_V7(moduleIdx, callIdx);
     case 6:
         return _getMethod_IsNestingSupported_V6(moduleIdx, callIdx);
-    case 5:
-        return _getMethod_IsNestingSupported_V5(moduleIdx, callIdx);
     default:
         return false;
     }
@@ -137,15 +137,15 @@ parser_error_t parser_validate_staking_targets(parser_context_t* c)
     uint64_t targets_len;
 
     switch (c->tx_obj->transactionVersion) {
-    case 6: {
-        pd_VecLookupSource_V6_t targets = c->tx_obj->method.V6.basic.staking_nominate_V6.targets;
+    case 7: {
+        pd_VecLookupSource_V7_t targets = c->tx_obj->method.V7.basic.staking_nominate_V7.targets;
         targets_ptr = targets._ptr;
         targets_lenBuffer = targets._lenBuffer;
         targets_len = targets._len;
         break;
     }
-    case 5: {
-        pd_VecLookupSource_V5_t targets = c->tx_obj->method.V5.basic.staking_nominate_V5.targets;
+    case 6: {
+        pd_VecLookupSource_V6_t targets = c->tx_obj->method.V6.basic.staking_nominate_V6.targets;
         targets_ptr = targets._ptr;
         targets_lenBuffer = targets._lenBuffer;
         targets_len = targets._len;
@@ -158,6 +158,19 @@ parser_error_t parser_validate_staking_targets(parser_context_t* c)
     parser_context_t ctx;
     parser_init(&ctx, targets_ptr, targets_lenBuffer);
     switch (c->tx_obj->transactionVersion) {
+    case 7: {
+        for (uint16_t i = 0; i < targets_len; i++) {
+            pd_LookupSource_V7_t lookupSource;
+            CHECK_ERROR(_readLookupSource_V7(&ctx, &lookupSource));
+            char buffer[100];
+            uint8_t dummy;
+            CHECK_ERROR(_toStringLookupSource_V7(&lookupSource, buffer, sizeof(buffer), 0, &dummy));
+            if (!allowlist_item_validate(buffer)) {
+                return parser_not_allowed;
+            }
+        }
+        break;
+    }
     case 6: {
         for (uint16_t i = 0; i < targets_len; i++) {
             pd_LookupSource_V6_t lookupSource;
@@ -171,19 +184,6 @@ parser_error_t parser_validate_staking_targets(parser_context_t* c)
         }
         break;
     }
-    case 5: {
-        for (uint16_t i = 0; i < targets_len; i++) {
-            pd_LookupSource_V5_t lookupSource;
-            CHECK_ERROR(_readLookupSource_V5(&ctx, &lookupSource));
-            char buffer[100];
-            uint8_t dummy;
-            CHECK_ERROR(_toStringLookupSource_V5(&lookupSource, buffer, sizeof(buffer), 0, &dummy));
-            if (!allowlist_item_validate(buffer)) {
-                return parser_not_allowed;
-            }
-        }
-        break;
-    }
 
     default:
         return parser_not_supported;
@@ -191,7 +191,6 @@ parser_error_t parser_validate_staking_targets(parser_context_t* c)
 
     return parser_ok;
 }
-#endif
 
 GEN_DEF_GETCALL(STAKING);
 GEN_DEF_GETCALL(STAKING_VALIDATE);
@@ -201,3 +200,4 @@ GEN_DEF_GETCALL(STAKING_NOMINATE);
 GEN_DEF_GETCALL(SESSION);
 GEN_DEF_GETCALL(SESSION_SET_KEYS);
 GEN_DEF_GETCALL(SESSION_PURGE_KEYS);
+#endif

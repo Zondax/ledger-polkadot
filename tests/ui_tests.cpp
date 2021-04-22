@@ -68,13 +68,9 @@ std::vector<testcase_t> GetJsonTestCases(std::string jsonFile) {
     Json::CharReaderBuilder builder;
     Json::Value obj;
 
-    std::ifstream inFile(jsonFile);
-    EXPECT_TRUE(inFile.is_open())
-                        << "\n"
-                        << "******************\n"
-                        << "Check that your working directory points to the tests directory\n"
-                        << "In CLion use $PROJECT_DIR$\\tests\n"
-                        << "******************\n";
+    std::string fullPathJsonFile = std::string(TESTVECTORS_DIR) + jsonFile;
+
+    std::ifstream inFile(fullPathJsonFile);
     if (!inFile.is_open()) {
         return answer;
     }

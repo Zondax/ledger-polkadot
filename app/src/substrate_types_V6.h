@@ -302,6 +302,11 @@ typedef struct {
 } pd_Percent_V6_t;
 
 typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_RawSolution_V6_t;
+
+typedef struct {
     uint32_t value;
 } pd_RegistrarIndex_V6_t;
 
@@ -317,6 +322,11 @@ typedef struct {
 typedef struct {
     const uint8_t* _ptr;
 } pd_Signature_V6_t;
+
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_SolutionOrSnapshotSize_V6_t;
 
 typedef struct {
     uint64_t _len;
