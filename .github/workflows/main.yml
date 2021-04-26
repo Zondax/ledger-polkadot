@@ -62,6 +62,7 @@ jobs:
       image: zondax/builder-bolos:latest
       options: --user ${{ needs.configure.outputs.uid_gid }}
     env:
+      BOLOS_SDK: ${{ github.workspace }}/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
       HOME: /home/zondax_circle
     steps:
@@ -79,22 +80,16 @@ jobs:
       - name: Build Standard app
         shell: bash -l {0}
         run: |
-          export BOLOS_SDK=$GITHUB_WORKSPACE/deps/nanos-secure-sdk
-          echo $BOLOS_SDK
           source $HOME/.cargo/env
           make
       - name: Build SR25519 app
         shell: bash -l {0}
         run: |
-          export BOLOS_SDK=$GITHUB_WORKSPACE/deps/nanos-secure-sdk
-          echo $BOLOS_SDK
           source $HOME/.cargo/env
           SUPPORT_SR25519=1 make
       - name: Build Ledgeracio
         shell: bash -l {0}
         run: |
-          export BOLOS_SDK=$GITHUB_WORKSPACE/deps/nanos-secure-sdk
-          echo $BOLOS_SDK
           source $HOME/.cargo/env
           COIN=Ledgeracio make
 
