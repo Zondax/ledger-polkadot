@@ -66,6 +66,13 @@ extern "C" {
     }                                                                                   \
     return parser_ok;
 
+#define GEN_DEF_TOSTRING_ENUM(NAME) \
+(*pageCount)++;                                    \
+if(pageIdx == 0) { snprintf(outValue, outValueLen, NAME );            \
+return parser_ok;                                                     \
+}                                                                     \
+pageIdx--;                                                            \
+
 #define GEN_DEC_READFIX_UNSIGNED(BITS) parser_error_t _readUInt ## BITS(parser_context_t *ctx, uint ## BITS ##_t *value)
 #define GEN_DEF_READFIX_UNSIGNED(BITS) parser_error_t _readUInt ## BITS(parser_context_t *ctx, uint ## BITS ##_t *value) \
 {                                                                                           \
@@ -122,6 +129,11 @@ GEN_DEC_READFIX_UNSIGNED(64);
     parser_context_t ctx;                                   \
     uint8_t chunkPageCount;                                 \
     uint16_t currentPage, currentTotalPage = 0;             \
+    if(v->_len == 0) {                                      \
+        *pageCount = 1;                                     \
+        snprintf(outValue, outValueLen, "<Empty>");         \
+        return parser_ok;                                   \
+    }                                                       \
     /* We need to do it twice because there is no memory to keep intermediate results*/ \
     /* First count*/ \
     parser_init(&ctx, v->_ptr, v->_lenBuffer);\

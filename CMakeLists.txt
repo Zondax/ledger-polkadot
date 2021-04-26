@@ -29,13 +29,19 @@ string(APPEND CMAKE_CXX_FLAGS " -fno-omit-frame-pointer -g")
 string(APPEND CMAKE_LINKER_FLAGS " -fno-omit-frame-pointer -g")
 
 add_definitions(-DAPP_STANDARD)
+add_definitions(-DSUBSTRATE_PARSER_FULL)
 
 if(ENABLE_FUZZING)
     add_definitions(-DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION=1)
     SET(ENABLE_SANITIZERS ON CACHE BOOL "Sanitizer automatically enabled" FORCE)
     SET(CMAKE_BUILD_TYPE Debug)
 
-    set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,bugprone-*,cert-*,clang-analyzer-*,-cert-err58-cpp,misc-*)
+    if (DEFINED ENV{FUZZ_LOGGING})
+        add_definitions(-DFUZZING_LOGGING)
+        message(FATAL_ERROR "Fuzz logging enabled")
+    endif()
+
+    set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,bugprone-*,cert-*,clang-analyzer-*,-cert-err58-cpp,misc-*,-bugprone-suspicious-include)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         # require at least clang 3.2
@@ -90,7 +96,6 @@ message(STATUS "LEDGER_MAJOR_VERSION [${MAJOR_RESULT}]: ${MAJOR_VERSION}" )
 message(STATUS "LEDGER_MINOR_VERSION [${MINOR_RESULT}]: ${MINOR_VERSION}" )
 
 add_definitions(
-    -DAPP_STANDARD
     -DLEDGER_MAJOR_VERSION=${MAJOR_VERSION}
     -DLEDGER_MINOR_VERSION=${MINOR_VERSION}
 )
@@ -113,7 +118,6 @@ file(GLOB_RECURSE LIB_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_impl.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_txdef.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate*.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate*.h
         )
 
 add_library(app_lib STATIC ${LIB_SRC})
@@ -147,6 +151,7 @@ target_link_libraries(unittests PRIVATE
         CONAN_PKG::fmt
         CONAN_PKG::jsoncpp)
 
+add_compile_definitions(TESTVECTORS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/")
 add_test(unittests ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unittests)
 set_tests_properties(unittests PROPERTIES WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 

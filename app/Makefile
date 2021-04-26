@@ -53,6 +53,11 @@ DEFINES += SUPPORT_SR25519
 $(info ************  SR25519 ENABLED ************)
 endif
 
+ifeq ($(SUBSTRATE_PARSER_FULL),1)
+DEFINES += SUBSTRATE_PARSER_FULL
+$(info ************ FULL PARSER ENABLED ************)
+endif
+
 ifndef COIN
 COIN=DOT
 endif
@@ -63,11 +68,20 @@ $(info COIN  = [$(COIN)])
 ifeq ($(COIN),DOT)
 # Main app configuration
 DEFINES += APP_STANDARD
+ifeq ($(TARGET_NAME),TARGET_NANOX)
+DEFINES += SUBSTRATE_PARSER_FULL
+endif
 APPNAME = "Polkadot"
 APPPATH = "44'/354'"  --path "44'/434'"
 
+else ifeq ($(COIN),DOT_XL)
+# XXL app configuration
+DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
+APPNAME = "Polkadot XL"
+APPPATH = "44'/354'"  --path "44'/434'"
+
 else ifeq ($(COIN),Ledgeracio)
-DEFINES += APP_RESTRICTED
+DEFINES += APP_RESTRICTED SUBSTRATE_PARSER_FULL
 APPNAME = "Polkadot_sec"
 APPPATH = "44'/354'"
 
@@ -205,6 +219,12 @@ rust:
 # Before linking, we need to be sure rust lib is there
 bin/app.elf: rust
 
+build_full_parser_s: SUBSTRATE_PARSER_FULL=1
+build_full_parser_s: buildS
+
+build_full_parser_x: SUBSTRATE_PARSER_FULL=1
+build_full_parser_x: buildX
+
 .PHONY: rust_clean
 rust_clean:
 	cd rust && CARGO_HOME="$(CURDIR)/rust/.cargo" cargo clean
@@ -228,4 +248,8 @@ dep/%.d: %.c Makefile
 
 .PHONY: listvariants
 listvariants:
+ifeq ($(TARGET_NAME),TARGET_NANOS)
+	@echo VARIANTS COIN DOT DOT_XL Ledgeracio
+else ifeq ($(TARGET_NAME),TARGET_NANOX)
 	@echo VARIANTS COIN DOT Ledgeracio
+endif

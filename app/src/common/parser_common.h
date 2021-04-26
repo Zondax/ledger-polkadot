@@ -50,6 +50,8 @@ typedef enum {
     parser_unexpected_callIndex,
     parser_unexpected_unparsed_bytes,
     parser_print_not_supported,
+    parser_tx_nesting_limit_reached,
+    parser_tx_call_vec_too_large,
 } parser_error_t;
 
 typedef struct {

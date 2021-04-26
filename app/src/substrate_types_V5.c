@@ -116,6 +116,11 @@ parser_error_t _readAccountVote_V5(parser_context_t* c, pd_AccountVote_V5_t* v)
     return parser_ok;
 }
 
+parser_error_t _readBabeEquivocationProof_V5(parser_context_t* c, pd_BabeEquivocationProof_V5_t* v)
+{
+    return parser_not_supported;
+}
+
 parser_error_t _readCallHashOf_V5(parser_context_t* c, pd_CallHashOf_V5_t* v) {
     GEN_DEF_READARRAY(32)
 }
@@ -125,6 +130,11 @@ parser_error_t _readChangesTrieConfiguration_V5(parser_context_t* c, pd_ChangesT
     CHECK_ERROR(_readu32(c, &v->digest_interval))
     CHECK_ERROR(_readu32(c, &v->digest_levels))
     return parser_ok;
+}
+
+parser_error_t _readCompactAccountIndex_V5(parser_context_t* c, pd_CompactAccountIndex_V5_t* v)
+{
+    return _readCompactInt(c, &v->value);
 }
 
 parser_error_t _readCompactPerBill_V5(parser_context_t* c, pd_CompactPerBill_V5_t* v)
@@ -165,11 +175,6 @@ parser_error_t _readElectionSize_V5(parser_context_t* c, pd_ElectionSize_V5_t* v
     return parser_ok;
 }
 
-parser_error_t _readEquivocationProof_V5(parser_context_t* c, pd_EquivocationProof_V5_t* v)
-{
-    return parser_not_supported;
-}
-
 parser_error_t _readEraIndex_V5(parser_context_t* c, pd_EraIndex_V5_t* v)
 {
     return _readUInt32(c, &v->value);
@@ -177,6 +182,11 @@ parser_error_t _readEraIndex_V5(parser_context_t* c, pd_EraIndex_V5_t* v)
 
 parser_error_t _readEthereumAddress_V5(parser_context_t* c, pd_EthereumAddress_V5_t* v) {
     GEN_DEF_READARRAY(20)
+}
+
+parser_error_t _readGrandpaEquivocationProof_V5(parser_context_t* c, pd_GrandpaEquivocationProof_V5_t* v)
+{
+    return parser_not_supported;
 }
 
 parser_error_t _readIdentityFields_V5(parser_context_t* c, pd_IdentityFields_V5_t* v)
@@ -198,7 +208,7 @@ parser_error_t _readIdentityInfo_V5(parser_context_t* c, pd_IdentityInfo_V5_t* v
     return parser_ok;
 }
 
-parser_error_t _readJudgement_V5(parser_context_t* c, pd_Judgement_V5_t* v)
+parser_error_t _readIdentityJudgement_V5(parser_context_t* c, pd_IdentityJudgement_V5_t* v)
 {
     return parser_not_supported;
 }
@@ -221,9 +231,29 @@ parser_error_t _readKeys_V5(parser_context_t* c, pd_Keys_V5_t* v)
     return parser_not_supported;
 }
 
-parser_error_t _readLookupSource_V5(parser_context_t* c, pd_LookupSource_V5_t* v) {
+parser_error_t _readLookupSource_V5(parser_context_t* c, pd_LookupSource_V5_t* v)
+{
+    CHECK_INPUT();
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0: // Id
+        CHECK_ERROR(_readAccountId_V5(c, &v->id))
+        break;
+    case 1: // Index
+        CHECK_ERROR(_readCompactAccountIndex_V5(c, &v->index))
+        break;
+    case 2: // Raw
+        CHECK_ERROR(_readBytes(c, &v->raw))
+        break;
+    case 3: // Address32
+        GEN_DEF_READARRAY(32)
+    case 4: // Address20
+        GEN_DEF_READARRAY(20)
+    default:
+        return parser_unexpected_value;
+    }
 
-    GEN_DEF_READARRAY(32)
+    return parser_ok;
 }
 
 parser_error_t _readMemberCount_V5(parser_context_t* c, pd_MemberCount_V5_t* v)
@@ -348,7 +378,6 @@ parser_error_t _readValidatorPrefs_V5(parser_context_t* c, pd_ValidatorPrefs_V5_
 {
     CHECK_INPUT();
     CHECK_ERROR(_readCompactPerBill_V5(c, &v->commission));
-    CHECK_ERROR(_readUInt8(c, &v->blocked));
     return parser_ok;
 }
 
@@ -731,6 +760,17 @@ parser_error_t _toStringAccountVote_V5(
     return parser_ok;
 }
 
+parser_error_t _toStringBabeEquivocationProof_V5(
+    const pd_BabeEquivocationProof_V5_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    return parser_print_not_supported;
+}
+
 parser_error_t _toStringCallHashOf_V5(
     const pd_CallHashOf_V5_t* v,
     char* outValue,
@@ -769,6 +809,16 @@ parser_error_t _toStringChangesTrieConfiguration_V5(
     }
 
     return parser_display_idx_out_of_range;
+}
+
+parser_error_t _toStringCompactAccountIndex_V5(
+    const pd_CompactAccountIndex_V5_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    return _toStringCompactInt(&v->value, 0, 0, "", outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringCompactPerBill_V5(
@@ -880,17 +930,6 @@ parser_error_t _toStringElectionSize_V5(
     return parser_display_idx_out_of_range;
 }
 
-parser_error_t _toStringEquivocationProof_V5(
-    const pd_EquivocationProof_V5_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
-}
-
 parser_error_t _toStringEraIndex_V5(
     const pd_EraIndex_V5_t* v,
     char* outValue,
@@ -908,6 +947,17 @@ parser_error_t _toStringEthereumAddress_V5(
     uint8_t pageIdx,
     uint8_t* pageCount) {
     GEN_DEF_TOSTRING_ARRAY(20)
+}
+
+parser_error_t _toStringGrandpaEquivocationProof_V5(
+    const pd_GrandpaEquivocationProof_V5_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    return parser_print_not_supported;
 }
 
 parser_error_t _toStringIdentityFields_V5(
@@ -1032,8 +1082,8 @@ parser_error_t _toStringIdentityInfo_V5(
     return parser_display_idx_out_of_range;
 }
 
-parser_error_t _toStringJudgement_V5(
-    const pd_Judgement_V5_t* v,
+parser_error_t _toStringIdentityJudgement_V5(
+    const pd_IdentityJudgement_V5_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -1096,7 +1146,30 @@ parser_error_t _toStringLookupSource_V5(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringPubkeyAsAddress(v->_ptr, outValue, outValueLen, pageIdx, pageCount);
+    CLEAN_AND_CHECK()
+    switch (v->value) {
+    case 0: // Id
+        CHECK_ERROR(_toStringAccountId_V5(&v->id, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 1: // Index
+        CHECK_ERROR(_toStringCompactAccountIndex_V5(&v->index, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 2: // Raw
+        CHECK_ERROR(_toStringBytes(&v->raw, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 3: // Address32
+    {
+        GEN_DEF_TOSTRING_ARRAY(32)
+    }
+    case 4: // Address20
+    {
+        GEN_DEF_TOSTRING_ARRAY(20)
+    }
+    default:
+        return parser_not_supported;
+    }
+
+    return parser_ok;
 }
 
 parser_error_t _toStringMemberCount_V5(
@@ -1170,7 +1243,6 @@ parser_error_t _toStringPriority_V5(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-
     // Get all pages first
     uint8_t pages[2];
     CHECK_ERROR(_toStringu32(&v->stream_id, outValue, outValueLen, 0, &pages[0]))
@@ -1450,30 +1522,7 @@ parser_error_t _toStringValidatorPrefs_V5(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
-
-    // Index + count pages
-    uint8_t pages[2];
-    CHECK_ERROR(_toStringCompactPerBill_V5(&v->commission, outValue, outValueLen, 0, &pages[0]))
-    CHECK_ERROR(_toStringbool(&v->blocked, outValue, outValueLen, 0, &pages[1]))
-
-    *pageCount = pages[0] + pages[1];
-    if (pageIdx > *pageCount) {
-        return parser_display_idx_out_of_range;
-    }
-
-    if (pageIdx < pages[0]) {
-        CHECK_ERROR(_toStringCompactPerBill_V5(&v->commission, outValue, outValueLen, pageIdx, &pages[0]))
-        return parser_ok;
-    }
-    pageIdx -= pages[0];
-
-    //////
-    if (pageIdx < pages[1]) {
-        CHECK_ERROR(_toStringbool(&v->blocked, outValue, outValueLen, pageIdx, &pages[1]))
-        return parser_ok;
-    }
-
-    return parser_display_idx_out_of_range;
+    return _toStringCompactPerBill_V5(&v->commission, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringVestingInfo_V5(

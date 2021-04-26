@@ -84,6 +84,10 @@ const char *parser_getErrorDescription(parser_error_t err) {
             return "Unexpected unparsed bytes";
         case parser_print_not_supported:
             return "Value cannot be printed";
+        case parser_tx_nesting_limit_reached:
+            return "Max nested calls reached";
+    case parser_tx_call_vec_too_large:
+            return "Call vector exceeds limit";
         default:
             return "Unrecognized error code";
     }
@@ -127,6 +131,7 @@ parser_error_t _readCompactInt(parser_context_t *c, compactInt_t *v) {
         case 0:         // single byte
             v->len = 1;
             CTX_CHECK_AND_ADVANCE(c, v->len)
+            _getValue(v, &tmp);
             break;
         case 1:         // 2-byte
             v->len = 2;

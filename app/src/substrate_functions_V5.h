@@ -31,8 +31,10 @@ parser_error_t _readAccountIndex_V5(parser_context_t* c, pd_AccountIndex_V5_t* v
 parser_error_t _readAccountVoteSplit_V5(parser_context_t* c, pd_AccountVoteSplit_V5_t* v);
 parser_error_t _readAccountVoteStandard_V5(parser_context_t* c, pd_AccountVoteStandard_V5_t* v);
 parser_error_t _readAccountVote_V5(parser_context_t* c, pd_AccountVote_V5_t* v);
+parser_error_t _readBabeEquivocationProof_V5(parser_context_t* c, pd_BabeEquivocationProof_V5_t* v);
 parser_error_t _readCallHashOf_V5(parser_context_t* c, pd_CallHashOf_V5_t* v);
 parser_error_t _readChangesTrieConfiguration_V5(parser_context_t* c, pd_ChangesTrieConfiguration_V5_t* v);
+parser_error_t _readCompactAccountIndex_V5(parser_context_t* c, pd_CompactAccountIndex_V5_t* v);
 parser_error_t _readCompactAssignments_V5(parser_context_t* c, pd_CompactAssignments_V5_t* v);
 parser_error_t _readCompactBountyIndex_V5(parser_context_t* c, pd_CompactBountyIndex_V5_t* v);
 parser_error_t _readCompactEraIndex_V5(parser_context_t* c, pd_CompactEraIndex_V5_t* v);
@@ -49,12 +51,12 @@ parser_error_t _readDefunctVoter_V5(parser_context_t* c, pd_DefunctVoter_V5_t* v
 parser_error_t _readEcdsaSignature_V5(parser_context_t* c, pd_EcdsaSignature_V5_t* v);
 parser_error_t _readElectionScore_V5(parser_context_t* c, pd_ElectionScore_V5_t* v);
 parser_error_t _readElectionSize_V5(parser_context_t* c, pd_ElectionSize_V5_t* v);
-parser_error_t _readEquivocationProof_V5(parser_context_t* c, pd_EquivocationProof_V5_t* v);
 parser_error_t _readEraIndex_V5(parser_context_t* c, pd_EraIndex_V5_t* v);
 parser_error_t _readEthereumAddress_V5(parser_context_t* c, pd_EthereumAddress_V5_t* v);
+parser_error_t _readGrandpaEquivocationProof_V5(parser_context_t* c, pd_GrandpaEquivocationProof_V5_t* v);
 parser_error_t _readIdentityFields_V5(parser_context_t* c, pd_IdentityFields_V5_t* v);
 parser_error_t _readIdentityInfo_V5(parser_context_t* c, pd_IdentityInfo_V5_t* v);
-parser_error_t _readJudgement_V5(parser_context_t* c, pd_Judgement_V5_t* v);
+parser_error_t _readIdentityJudgement_V5(parser_context_t* c, pd_IdentityJudgement_V5_t* v);
 parser_error_t _readKeyOwnerProof_V5(parser_context_t* c, pd_KeyOwnerProof_V5_t* v);
 parser_error_t _readKeyValue_V5(parser_context_t* c, pd_KeyValue_V5_t* v);
 parser_error_t _readKey_V5(parser_context_t* c, pd_Key_V5_t* v);
@@ -134,6 +136,13 @@ parser_error_t _toStringAccountVote_V5(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringBabeEquivocationProof_V5(
+    const pd_BabeEquivocationProof_V5_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringCallHashOf_V5(
     const pd_CallHashOf_V5_t* v,
     char* outValue,
@@ -143,6 +152,13 @@ parser_error_t _toStringCallHashOf_V5(
 
 parser_error_t _toStringChangesTrieConfiguration_V5(
     const pd_ChangesTrieConfiguration_V5_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringCompactAccountIndex_V5(
+    const pd_CompactAccountIndex_V5_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -260,13 +276,6 @@ parser_error_t _toStringElectionSize_V5(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringEquivocationProof_V5(
-    const pd_EquivocationProof_V5_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
 parser_error_t _toStringEraIndex_V5(
     const pd_EraIndex_V5_t* v,
     char* outValue,
@@ -276,6 +285,13 @@ parser_error_t _toStringEraIndex_V5(
 
 parser_error_t _toStringEthereumAddress_V5(
     const pd_EthereumAddress_V5_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringGrandpaEquivocationProof_V5(
+    const pd_GrandpaEquivocationProof_V5_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -295,8 +311,8 @@ parser_error_t _toStringIdentityInfo_V5(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringJudgement_V5(
-    const pd_Judgement_V5_t* v,
+parser_error_t _toStringIdentityJudgement_V5(
+    const pd_IdentityJudgement_V5_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

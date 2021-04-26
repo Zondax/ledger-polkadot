@@ -52,24 +52,24 @@ jobs:
       # Docker entrypoint is not considered
       - run: git submodule update --init --recursive
       - run:
-          name: Build Standard app
+          name: Build Standard light parser app
           command: |
             source /home/zondax/.cargo/env
             make
+      - run:
+          name: Build Standard full parser app
+          command: |
+            source /home/zondax/.cargo/env
+            SUPPORT_SR25519=1 SUBSTRATE_PARSER_FULL=1 make
       - run:
           name: Build SR25519 app
           command: |
             source /home/zondax/.cargo/env
             SUPPORT_SR25519=1 make
-      - run:
-          name: Build Ledgeracio
-          command: |
-            source /home/zondax/.cargo/env
-            COIN=Ledgeracio make
 
   test_zemu:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202101-01
     resource_class: large
     working_directory: ~/repo
     environment:
@@ -94,9 +94,9 @@ jobs:
       - run:
           name: Build Ledger app
           command: |
-            make buildS
+            SUBSTRATE_PARSER_FULL=1 make buildS
             make clean
-            make buildX
+            SUBSTRATE_PARSER_FULL=1 make buildX
       - run:
           name: Build/Install build js deps
           command: |
@@ -112,7 +112,7 @@ jobs:
 
   test_zemu_ledgeracio:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202101-01
     resource_class: large
     working_directory: ~/repo
     environment:
@@ -153,7 +153,7 @@ jobs:
 
   test_zemu_sr25519:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202101-01
     resource_class: large
     working_directory: ~/repo
     environment:
@@ -178,7 +178,7 @@ jobs:
       - run:
           name: Build Ledger app
           command: |
-            make build_sr25519
+            make SUBSTRATE_PARSER_FULL=1 build_sr25519
       - run:
           name: Build/Install build js deps
           command: |
@@ -243,14 +243,14 @@ workflows:
       - build_ledger
       - test_zemu
       - test_zemu_ledgeracio
-#      - test_zemu_sr25519
+      - test_zemu_sr25519
       - build_package:
           requires:
             - build
             - build_ledger
             - test_zemu
             - test_zemu_ledgeracio
-#            - test_zemu_sr25519
+            - test_zemu_sr25519
           filters:
             branches:
               only:
@@ -261,7 +261,7 @@ workflows:
             - build_ledger
             - test_zemu
             - test_zemu_ledgeracio
-#            - test_zemu_sr25519
+            - test_zemu_sr25519
           filters:
             branches:
               only:
