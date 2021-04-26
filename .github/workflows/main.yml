@@ -62,7 +62,7 @@ jobs:
       image: zondax/builder-bolos:latest
       options: --user ${{ needs.configure.outputs.uid_gid }}
     env:
-      BOLOS_SDK: /__w/ledger-polkadot/ledger-polkadot/deps/nanos-secure-sdk
+      BOLOS_SDK: ./deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
       HOME: /home/zondax_circle
     steps:
@@ -70,6 +70,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Some test
+        run: |
+          echo $HOME
+          echo $GITHUB_WORKSPACE
+          pwd
+
       - name: Build Standard app
         shell: bash -l {0}
         run: |
