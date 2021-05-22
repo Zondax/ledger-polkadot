@@ -1,5 +1,3 @@
-// noinspection DuplicatedCode,SpellCheckingInspection
-
 /** ******************************************************************************
  *  (c) 2020 Zondax GmbH
  *
@@ -29,7 +27,7 @@ const defaultOptions = {
     ...DEFAULT_START_OPTIONS,
     logging: true,
     custom: `-s "${APP_SEED}"`,
-    X11: true,
+    X11: false,
 };
 
 jest.setTimeout(60000)

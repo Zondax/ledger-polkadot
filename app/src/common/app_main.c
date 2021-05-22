@@ -33,6 +33,8 @@
 unsigned char G_io_seproxyhal_spi_buffer[IO_SEPROXYHAL_BUFFER_SIZE_B];
 
 unsigned char io_event(unsigned char channel) {
+    UNUSED(channel);
+
     switch (G_io_seproxyhal_spi_buffer[0]) {
         case SEPROXYHAL_TAG_FINGER_EVENT: //
             UX_FINGER_EVENT(G_io_seproxyhal_spi_buffer);
@@ -93,7 +95,9 @@ unsigned short io_exchange_al(unsigned char channel, unsigned short tx_len) {
 }
 
 void handle_generic_apdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    if (rx > 4 && os_memcmp(G_io_apdu_buffer, "\xE0\x01\x00\x00", 4) == 0) {
+    UNUSED(flags);
+
+    if (rx > 4 && MEMCMP(G_io_apdu_buffer, "\xE0\x01\x00\x00", 4) == 0) {
         // Respond to get device info command
         uint8_t *p = G_io_apdu_buffer;
         // Target ID        4 bytes

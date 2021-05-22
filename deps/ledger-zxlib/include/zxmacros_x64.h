@@ -15,6 +15,24 @@
 ********************************************************************************/
 #pragma once
 
-#define ZXLIB_MAJOR     8
-#define ZXLIB_MINOR     0
-#define ZXLIB_PATCH     0
+#if !defined (TARGET_NANOS) && !defined(TARGET_NANOX)
+
+#define MEMMOVE memmove
+#define MEMSET memset
+#define MEMCPY memcpy
+#define MEMCMP memcmp
+#define MEMCPY_NV memcpy
+
+#define PIC(x) (x)
+#define CHECK_APP_CANARY() {}
+//#define CX_ECCINFO_PARITY_ODD 1u
+//#define CX_ECCINFO_xGTn 2u
+
+#ifndef __APPLE__
+#define MEMZERO explicit_bzero
+#else
+__Z_INLINE void __memzero(void *buffer, size_t s) { memset(buffer, 0, s); }
+#define MEMZERO __memzero
+#endif
+
+#endif

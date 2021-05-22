@@ -42,6 +42,7 @@ void h_secret_click();
 ux_state_t ux;
 
 void os_exit(uint32_t id) {
+    (void)id;
     os_sched_exit(0);
 }
 
@@ -86,6 +87,7 @@ static const bagl_element_t view_error[] = {
 };
 
 static unsigned int view_error_button(unsigned int button_mask, unsigned int button_mask_counter) {
+    UNUSED(button_mask_counter);
     switch (button_mask) {
         case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
         case BUTTON_EVT_RELEASED | BUTTON_LEFT:
@@ -98,6 +100,7 @@ static unsigned int view_error_button(unsigned int button_mask, unsigned int but
 }
 
 static unsigned int view_message_button(unsigned int button_mask, unsigned int button_mask_counter) {
+    UNUSED(button_mask_counter);
     switch (button_mask) {
         case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
         case BUTTON_EVT_RELEASED | BUTTON_LEFT:
@@ -108,6 +111,7 @@ static unsigned int view_message_button(unsigned int button_mask, unsigned int b
 }
 
 static unsigned int view_review_button(unsigned int button_mask, unsigned int button_mask_counter) {
+    UNUSED(button_mask_counter);
     switch (button_mask) {
         case BUTTON_EVT_RELEASED | BUTTON_LEFT | BUTTON_RIGHT:
             h_review_button_both();

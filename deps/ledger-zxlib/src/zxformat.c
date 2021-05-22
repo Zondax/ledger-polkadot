@@ -24,6 +24,11 @@ uint8_t intstr_to_fpstr_inplace(char *number, size_t number_max_size, uint8_t de
         return 0;
     }
 
+    if (number_max_size <= numChars) {
+        // No space to do anything
+        return 0;
+    }
+
     if (numChars == 0) {
         // Empty number, make a zero
         snprintf(number, number_max_size, "0");
