@@ -33,14 +33,11 @@ default:
 	COIN=$(COIN) $(MAKE) -C app $@
 endif
 
-build_ledgeracio: COIN=Ledgeracio		# Alternative app purpose
-build_ledgeracio: buildS
-	cp $(CURDIR)/app/bin/app.elf $(CURDIR)/app/output/app_ledgeracio.elf
-
-build_sr25519: SUPPORT_SR25519=1		# Alternative app purpose
+build_sr25519: SUPPORT_SR25519=1       # Alternative app purpose
+build_sr25519: SUBSTRATE_PARSER_FULL=1 # Use full parser
 build_sr25519: buildS
 	cp $(CURDIR)/app/bin/app.elf $(CURDIR)/app/output/app_sr25519.elf
-
+	cp $(CURDIR)/app/bin/app.elf $(CURDIR)/app/bin/app_sr25519.elf
 
 build_full_parser_s: SUBSTRATE_PARSER_FULL=1
 build_full_parser_s: buildS

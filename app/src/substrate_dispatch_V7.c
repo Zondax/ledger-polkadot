@@ -769,44 +769,44 @@ __Z_INLINE parser_error_t _readMethod_technicalcommittee_disapprove_proposal_V7(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_electionsphragmen_vote_V7(
-    parser_context_t* c, pd_electionsphragmen_vote_V7_t* m)
+__Z_INLINE parser_error_t _readMethod_phragmenelection_vote_V7(
+    parser_context_t* c, pd_phragmenelection_vote_V7_t* m)
 {
     CHECK_ERROR(_readVecAccountId_V7(c, &m->votes))
     CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_electionsphragmen_remove_voter_V7(
-    parser_context_t* c, pd_electionsphragmen_remove_voter_V7_t* m)
+__Z_INLINE parser_error_t _readMethod_phragmenelection_remove_voter_V7(
+    parser_context_t* c, pd_phragmenelection_remove_voter_V7_t* m)
 {
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_electionsphragmen_submit_candidacy_V7(
-    parser_context_t* c, pd_electionsphragmen_submit_candidacy_V7_t* m)
+__Z_INLINE parser_error_t _readMethod_phragmenelection_submit_candidacy_V7(
+    parser_context_t* c, pd_phragmenelection_submit_candidacy_V7_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->candidate_count))
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_electionsphragmen_renounce_candidacy_V7(
-    parser_context_t* c, pd_electionsphragmen_renounce_candidacy_V7_t* m)
+__Z_INLINE parser_error_t _readMethod_phragmenelection_renounce_candidacy_V7(
+    parser_context_t* c, pd_phragmenelection_renounce_candidacy_V7_t* m)
 {
     CHECK_ERROR(_readRenouncing_V7(c, &m->renouncing))
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_electionsphragmen_remove_member_V7(
-    parser_context_t* c, pd_electionsphragmen_remove_member_V7_t* m)
+__Z_INLINE parser_error_t _readMethod_phragmenelection_remove_member_V7(
+    parser_context_t* c, pd_phragmenelection_remove_member_V7_t* m)
 {
     CHECK_ERROR(_readLookupSource_V7(c, &m->who))
     CHECK_ERROR(_readbool(c, &m->has_replacement))
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_electionsphragmen_clean_defunct_voters_V7(
-    parser_context_t* c, pd_electionsphragmen_clean_defunct_voters_V7_t* m)
+__Z_INLINE parser_error_t _readMethod_phragmenelection_clean_defunct_voters_V7(
+    parser_context_t* c, pd_phragmenelection_clean_defunct_voters_V7_t* m)
 {
     CHECK_ERROR(_readu32(c, &m->_num_voters))
     CHECK_ERROR(_readu32(c, &m->_num_defunct))
@@ -1635,22 +1635,22 @@ parser_error_t _readMethod_V7(
         CHECK_ERROR(_readMethod_technicalcommittee_disapprove_proposal_V7(c, &method->basic.technicalcommittee_disapprove_proposal_V7))
         break;
     case 4352: /* module 17 call 0 */
-        CHECK_ERROR(_readMethod_electionsphragmen_vote_V7(c, &method->basic.electionsphragmen_vote_V7))
+        CHECK_ERROR(_readMethod_phragmenelection_vote_V7(c, &method->basic.phragmenelection_vote_V7))
         break;
     case 4353: /* module 17 call 1 */
-        CHECK_ERROR(_readMethod_electionsphragmen_remove_voter_V7(c, &method->basic.electionsphragmen_remove_voter_V7))
+        CHECK_ERROR(_readMethod_phragmenelection_remove_voter_V7(c, &method->basic.phragmenelection_remove_voter_V7))
         break;
     case 4354: /* module 17 call 2 */
-        CHECK_ERROR(_readMethod_electionsphragmen_submit_candidacy_V7(c, &method->basic.electionsphragmen_submit_candidacy_V7))
+        CHECK_ERROR(_readMethod_phragmenelection_submit_candidacy_V7(c, &method->basic.phragmenelection_submit_candidacy_V7))
         break;
     case 4355: /* module 17 call 3 */
-        CHECK_ERROR(_readMethod_electionsphragmen_renounce_candidacy_V7(c, &method->basic.electionsphragmen_renounce_candidacy_V7))
+        CHECK_ERROR(_readMethod_phragmenelection_renounce_candidacy_V7(c, &method->basic.phragmenelection_renounce_candidacy_V7))
         break;
     case 4356: /* module 17 call 4 */
-        CHECK_ERROR(_readMethod_electionsphragmen_remove_member_V7(c, &method->basic.electionsphragmen_remove_member_V7))
+        CHECK_ERROR(_readMethod_phragmenelection_remove_member_V7(c, &method->basic.phragmenelection_remove_member_V7))
         break;
     case 4357: /* module 17 call 5 */
-        CHECK_ERROR(_readMethod_electionsphragmen_clean_defunct_voters_V7(c, &method->basic.electionsphragmen_clean_defunct_voters_V7))
+        CHECK_ERROR(_readMethod_phragmenelection_clean_defunct_voters_V7(c, &method->basic.phragmenelection_clean_defunct_voters_V7))
         break;
     case 4608: /* module 18 call 0 */
         CHECK_ERROR(_readMethod_technicalmembership_add_member_V7(c, &method->basic.technicalmembership_add_member_V7))
@@ -1899,7 +1899,7 @@ const char* _getMethod_ModuleName_V7(uint8_t moduleIdx)
     case 16:
         return STR_MO_TECHNICALCOMMITTEE;
     case 17:
-        return STR_MO_ELECTIONSPHRAGMEN;
+        return STR_MO_PHRAGMENELECTION;
     case 18:
         return STR_MO_TECHNICALMEMBERSHIP;
     case 19:
@@ -5382,14 +5382,14 @@ parser_error_t _getMethod_ItemValue_V7(
         }
     case 4352: /* module 17 call 0 */
         switch (itemIdx) {
-        case 0: /* electionsphragmen_vote_V7 - votes */;
+        case 0: /* phragmenelection_vote_V7 - votes */;
             return _toStringVecAccountId_V7(
-                &m->basic.electionsphragmen_vote_V7.votes,
+                &m->basic.phragmenelection_vote_V7.votes,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* electionsphragmen_vote_V7 - value */;
+        case 1: /* phragmenelection_vote_V7 - value */;
             return _toStringCompactBalanceOf(
-                &m->basic.electionsphragmen_vote_V7.value,
+                &m->basic.phragmenelection_vote_V7.value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5402,9 +5402,9 @@ parser_error_t _getMethod_ItemValue_V7(
         }
     case 4354: /* module 17 call 2 */
         switch (itemIdx) {
-        case 0: /* electionsphragmen_submit_candidacy_V7 - candidate_count */;
+        case 0: /* phragmenelection_submit_candidacy_V7 - candidate_count */;
             return _toStringCompactu32(
-                &m->basic.electionsphragmen_submit_candidacy_V7.candidate_count,
+                &m->basic.phragmenelection_submit_candidacy_V7.candidate_count,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5412,9 +5412,9 @@ parser_error_t _getMethod_ItemValue_V7(
         }
     case 4355: /* module 17 call 3 */
         switch (itemIdx) {
-        case 0: /* electionsphragmen_renounce_candidacy_V7 - renouncing */;
+        case 0: /* phragmenelection_renounce_candidacy_V7 - renouncing */;
             return _toStringRenouncing_V7(
-                &m->basic.electionsphragmen_renounce_candidacy_V7.renouncing,
+                &m->basic.phragmenelection_renounce_candidacy_V7.renouncing,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5422,14 +5422,14 @@ parser_error_t _getMethod_ItemValue_V7(
         }
     case 4356: /* module 17 call 4 */
         switch (itemIdx) {
-        case 0: /* electionsphragmen_remove_member_V7 - who */;
+        case 0: /* phragmenelection_remove_member_V7 - who */;
             return _toStringLookupSource_V7(
-                &m->basic.electionsphragmen_remove_member_V7.who,
+                &m->basic.phragmenelection_remove_member_V7.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* electionsphragmen_remove_member_V7 - has_replacement */;
+        case 1: /* phragmenelection_remove_member_V7 - has_replacement */;
             return _toStringbool(
-                &m->basic.electionsphragmen_remove_member_V7.has_replacement,
+                &m->basic.phragmenelection_remove_member_V7.has_replacement,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5437,14 +5437,14 @@ parser_error_t _getMethod_ItemValue_V7(
         }
     case 4357: /* module 17 call 5 */
         switch (itemIdx) {
-        case 0: /* electionsphragmen_clean_defunct_voters_V7 - _num_voters */;
+        case 0: /* phragmenelection_clean_defunct_voters_V7 - _num_voters */;
             return _toStringu32(
-                &m->basic.electionsphragmen_clean_defunct_voters_V7._num_voters,
+                &m->basic.phragmenelection_clean_defunct_voters_V7._num_voters,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* electionsphragmen_clean_defunct_voters_V7 - _num_defunct */;
+        case 1: /* phragmenelection_clean_defunct_voters_V7 - _num_defunct */;
             return _toStringu32(
-                &m->basic.electionsphragmen_clean_defunct_voters_V7._num_defunct,
+                &m->basic.phragmenelection_clean_defunct_voters_V7._num_defunct,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6518,12 +6518,12 @@ bool _getMethod_IsNestingSupported_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 4099: // TechnicalCommittee:Vote
     case 4100: // TechnicalCommittee:Close
     case 4101: // TechnicalCommittee:Disapprove proposal
-    case 4352: // ElectionsPhragmen:Vote
-    case 4353: // ElectionsPhragmen:Remove voter
-    case 4354: // ElectionsPhragmen:Submit candidacy
-    case 4355: // ElectionsPhragmen:Renounce candidacy
-    case 4356: // ElectionsPhragmen:Remove member
-    case 4357: // ElectionsPhragmen:Clean defunct voters
+    case 4352: // PhragmenElection:Vote
+    case 4353: // PhragmenElection:Remove voter
+    case 4354: // PhragmenElection:Submit candidacy
+    case 4355: // PhragmenElection:Renounce candidacy
+    case 4356: // PhragmenElection:Remove member
+    case 4357: // PhragmenElection:Clean defunct voters
     case 4608: // TechnicalMembership:Add member
     case 4609: // TechnicalMembership:Remove member
     case 4610: // TechnicalMembership:Swap member

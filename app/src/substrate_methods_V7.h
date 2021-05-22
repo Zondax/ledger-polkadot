@@ -42,7 +42,7 @@ extern "C" {
 #define PD_CALL_DEMOCRACY_V7 14
 #define PD_CALL_COUNCIL_V7 15
 #define PD_CALL_TECHNICALCOMMITTEE_V7 16
-#define PD_CALL_ELECTIONSPHRAGMEN_V7 17
+#define PD_CALL_PHRAGMENELECTION_V7 17
 #define PD_CALL_TECHNICALMEMBERSHIP_V7 18
 #define PD_CALL_TREASURY_V7 19
 #define PD_CALL_CLAIMS_V7 24
@@ -537,37 +537,37 @@ typedef struct {
     pd_Hash_t proposal_hash;
 } pd_technicalcommittee_disapprove_proposal_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_VOTE_V7 0
+#define PD_CALL_PHRAGMENELECTION_VOTE_V7 0
 typedef struct {
     pd_VecAccountId_V7_t votes;
     pd_CompactBalanceOf_t value;
-} pd_electionsphragmen_vote_V7_t;
+} pd_phragmenelection_vote_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_REMOVE_VOTER_V7 1
+#define PD_CALL_PHRAGMENELECTION_REMOVE_VOTER_V7 1
 typedef struct {
-} pd_electionsphragmen_remove_voter_V7_t;
+} pd_phragmenelection_remove_voter_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_SUBMIT_CANDIDACY_V7 2
+#define PD_CALL_PHRAGMENELECTION_SUBMIT_CANDIDACY_V7 2
 typedef struct {
     pd_Compactu32_t candidate_count;
-} pd_electionsphragmen_submit_candidacy_V7_t;
+} pd_phragmenelection_submit_candidacy_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_RENOUNCE_CANDIDACY_V7 3
+#define PD_CALL_PHRAGMENELECTION_RENOUNCE_CANDIDACY_V7 3
 typedef struct {
     pd_Renouncing_V7_t renouncing;
-} pd_electionsphragmen_renounce_candidacy_V7_t;
+} pd_phragmenelection_renounce_candidacy_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_REMOVE_MEMBER_V7 4
+#define PD_CALL_PHRAGMENELECTION_REMOVE_MEMBER_V7 4
 typedef struct {
     pd_LookupSource_V7_t who;
     pd_bool_t has_replacement;
-} pd_electionsphragmen_remove_member_V7_t;
+} pd_phragmenelection_remove_member_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_CLEAN_DEFUNCT_VOTERS_V7 5
+#define PD_CALL_PHRAGMENELECTION_CLEAN_DEFUNCT_VOTERS_V7 5
 typedef struct {
     pd_u32_t _num_voters;
     pd_u32_t _num_defunct;
-} pd_electionsphragmen_clean_defunct_voters_V7_t;
+} pd_phragmenelection_clean_defunct_voters_V7_t;
 
 #define PD_CALL_TECHNICALMEMBERSHIP_ADD_MEMBER_V7 0
 typedef struct {
@@ -1001,12 +1001,12 @@ typedef union {
     pd_technicalcommittee_vote_V7_t technicalcommittee_vote_V7;
     pd_technicalcommittee_close_V7_t technicalcommittee_close_V7;
     pd_technicalcommittee_disapprove_proposal_V7_t technicalcommittee_disapprove_proposal_V7;
-    pd_electionsphragmen_vote_V7_t electionsphragmen_vote_V7;
-    pd_electionsphragmen_remove_voter_V7_t electionsphragmen_remove_voter_V7;
-    pd_electionsphragmen_submit_candidacy_V7_t electionsphragmen_submit_candidacy_V7;
-    pd_electionsphragmen_renounce_candidacy_V7_t electionsphragmen_renounce_candidacy_V7;
-    pd_electionsphragmen_remove_member_V7_t electionsphragmen_remove_member_V7;
-    pd_electionsphragmen_clean_defunct_voters_V7_t electionsphragmen_clean_defunct_voters_V7;
+    pd_phragmenelection_vote_V7_t phragmenelection_vote_V7;
+    pd_phragmenelection_remove_voter_V7_t phragmenelection_remove_voter_V7;
+    pd_phragmenelection_submit_candidacy_V7_t phragmenelection_submit_candidacy_V7;
+    pd_phragmenelection_renounce_candidacy_V7_t phragmenelection_renounce_candidacy_V7;
+    pd_phragmenelection_remove_member_V7_t phragmenelection_remove_member_V7;
+    pd_phragmenelection_clean_defunct_voters_V7_t phragmenelection_clean_defunct_voters_V7;
     pd_technicalmembership_add_member_V7_t technicalmembership_add_member_V7;
     pd_technicalmembership_remove_member_V7_t technicalmembership_remove_member_V7;
     pd_technicalmembership_swap_member_V7_t technicalmembership_swap_member_V7;

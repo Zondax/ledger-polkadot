@@ -80,11 +80,6 @@ jobs:
         run: |
           source $HOME/.cargo/env
           SUPPORT_SR25519=1 make
-      - name: Build Ledgeracio
-        shell: bash -l {0}
-        run: |
-          source $HOME/.cargo/env
-          COIN=Ledgeracio make
 
   test_zemu:
     runs-on: ubuntu-latest
@@ -124,38 +119,6 @@ jobs:
         run: |
           export PATH=~/.cargo/bin:$PATH
           make zemu_test
-
-  test_zemu_ledgeracio:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: true
-      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
-      - name: Install rust
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake binutils-dev libcurl4-openssl-dev libiberty-dev libelf-dev libdw-dev
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain none -y;
-      - name: Install node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14.4.0'
-      - name: Install yarn
-        run: |
-          npm install -g yarn
-      - name: Build Ledger app
-        run: |
-          make build_ledgeracio
-      - name: Build/Install build js deps
-        run: |
-          export PATH=~/.cargo/bin:$PATH
-          make zemu_install
-      - name: Run zemu tests for Ledgeracio app
-        run: |
-          export PATH=~/.cargo/bin:$PATH
-          COIN=Ledgeracio make zemu_test
 
   test_zemu_sr25519:
     runs-on: ubuntu-latest
