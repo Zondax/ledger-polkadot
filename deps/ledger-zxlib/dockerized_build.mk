@@ -73,9 +73,10 @@ define run_docker
 endef
 
 all:
-	@$(MAKE) clean
+	@$(MAKE) clean_output
+	@$(MAKE) clean_build
 	@$(MAKE) buildS
-	@$(MAKE) clean
+	@$(MAKE) clean_build
 	@$(MAKE) buildX
 
 .PHONY: check_python
@@ -112,24 +113,17 @@ buildS: build_rustS
 buildX: build_rustX
 	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -j $(NPROC) -C $(DOCKER_APP_SRC))
 
-.PHONY: clean
-clean: cleanS cleanX
+.PHONY: clean_output
+clean_output:
+	@echo "Removing output files"
+	@rm -f app/output/app* || true
 
-.PHONY: cleanS
-cleanS:
+.PHONY: clean
+clean_build:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) clean)
 
-.PHONY: cleanX
-cleanX:
-	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) clean)
-
-.PHONY: clean_rustS
-clean_rustS:
-	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) rust_clean)
-
-.PHONY: clean_rustX
-clean_rustX:
-	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) rust_clean)
+.PHONY: clean
+clean: clean_output clean_build
 
 .PHONY: listvariants
 listvariants:

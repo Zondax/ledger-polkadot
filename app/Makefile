@@ -42,14 +42,17 @@ include $(BOLOS_SDK)/Makefile.defines
 
 DEFINES += APP_SECRET_MODE_ENABLED
 
+$(info ************ TARGET_NAME  = [$(TARGET_NAME)])
+
 ifeq ($(APP_TESTING),1)
 DEFINES += APP_TESTING
 DEFINES += ZEMU_LOGGING
-$(info ************  LOGGING ENABLED ************)
+$(info ************ LOGGING ENABLED ************)
 endif
 
 ifeq ($(SUPPORT_SR25519),1)
 DEFINES += SUPPORT_SR25519
+OUTPUT_ELF ?= $(CURDIR)/output/app_sr25519.elf
 $(info ************  SR25519 ENABLED ************)
 endif
 
@@ -65,6 +68,7 @@ endif
 include $(CURDIR)/Makefile.version
 
 $(info COIN  = [$(COIN)])
+
 ifeq ($(COIN),DOT)
 # Main app configuration
 DEFINES += APP_STANDARD
@@ -94,10 +98,10 @@ endif
 APP_LOAD_PARAMS = --appFlags 0x200 --delete $(COMMON_LOAD_PARAMS) --path $(APPPATH)
 
 ifeq ($(TARGET_NAME),TARGET_NANOS)
-APP_STACK_SIZE:=2820
+APP_STACK_SIZE:=3472
 ICONNAME:=$(CURDIR)/nanos_icon.gif
-OUTPUT_ELF:= $(CURDIR)/output/app_s.elf
-OUTPUT_INSTALLER:= $(CURDIR)/pkg/installer_s.sh
+OUTPUT_ELF ?= $(CURDIR)/output/app_s.elf
+OUTPUT_INSTALLER := $(CURDIR)/pkg/installer_s.sh
 endif
 
 ifeq ($(TARGET_NAME),TARGET_NANOX)
@@ -106,7 +110,6 @@ OUTPUT_ELF:= $(CURDIR)/output/app_x.elf
 OUTPUT_INSTALLER:= $(CURDIR)/pkg/installer_x.sh
 endif
 
-$(info TARGET_NAME  = [$(TARGET_NAME)])
 $(info ICONNAME  = [$(ICONNAME)])
 
 ifndef ICONNAME
@@ -212,12 +215,6 @@ rust:
 
 # Before linking, we need to be sure rust lib is there
 bin/app.elf: rust
-
-build_full_parser_s: SUBSTRATE_PARSER_FULL=1
-build_full_parser_s: buildS
-
-build_full_parser_x: SUBSTRATE_PARSER_FULL=1
-build_full_parser_x: buildX
 
 .PHONY: rust_clean
 rust_clean:
