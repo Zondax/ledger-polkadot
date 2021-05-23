@@ -172,7 +172,8 @@ jobs:
             source /home/zondax/.cargo/env
             cd /home/zondax/project
             make SUBSTRATE_PARSER_FULL=1
-      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(/home/zondax/project/app/pkg/installer_s.sh version) /home/zondax/project/app/pkg/installer_XL_s.sh
+            cp /home/zondax/project/app/pkg/installer_s.sh /home/zondax/project/app/pkg/installer_XL_s.sh
+      - run: /home/zondax/go/bin/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(/home/zondax/project/app/pkg/installer_XL_s.sh version) /home/zondax/project/app/pkg/installer_XL_s.sh
 
 workflows:
   version: 2

@@ -18,8 +18,8 @@
     "testSR25519": "jest --detectOpenHandles --runInBand tests/sr25519.test.ts"
   },
   "dependencies": {
-    "@zondax/ledger-polkadot": "^0.13.6",
-    "@zondax/zemu": "^0.13.0"
+    "@zondax/ledger-polkadot": "^0.13.8",
+    "@zondax/zemu": "^0.14.2"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
