@@ -58,13 +58,7 @@ typedef enum {
 
 #define COIN_SECRET_REQUIRED_CLICKS         10
 
-#if defined(APP_STANDARD)
 #include "coin_standard.h"
-#elif defined(APP_RESTRICTED)
-#include "coin_restricted.h"
-#else
-#error "APP VARIANT IS NOT SUPPORTED"
-#endif
 
 #ifdef __cplusplus
 }

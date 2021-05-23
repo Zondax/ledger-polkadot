@@ -239,7 +239,10 @@ zxerr_t h_review_update_data() {
         if (viewdata.pageCount > 1) {
             uint8_t keyLen = strlen(viewdata.key);
             if (keyLen < MAX_CHARS_PER_KEY_LINE) {
-                snprintf(viewdata.key + keyLen, MAX_CHARS_PER_KEY_LINE - keyLen, " [%d/%d]", viewdata.pageIdx + 1,
+                snprintf(viewdata.key + keyLen,
+                         MAX_CHARS_PER_KEY_LINE - keyLen,
+                         " [%d/%d]",
+                         viewdata.pageIdx + 1,
                          viewdata.pageCount);
             }
         }

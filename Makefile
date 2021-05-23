@@ -23,6 +23,9 @@
 
 ifeq ($(BOLOS_SDK),)
 # In this case, there is not predefined SDK and we run dockerized
+# When not using the SDK, we override and build the XL complete app
+
+SUBSTRATE_PARSER_FULL ?= 1
 include $(CURDIR)/deps/ledger-zxlib/dockerized_build.mk
 
 else
@@ -32,21 +35,6 @@ default:
 	$(info "Calling app Makefile for target $@")
 	COIN=$(COIN) $(MAKE) -C app $@
 endif
-
-build_ledgeracio: COIN=Ledgeracio		# Alternative app purpose
-build_ledgeracio: buildS
-	cp $(CURDIR)/app/bin/app.elf $(CURDIR)/app/output/app_ledgeracio.elf
-
-build_sr25519: SUPPORT_SR25519=1		# Alternative app purpose
-build_sr25519: buildS
-	cp $(CURDIR)/app/bin/app.elf $(CURDIR)/app/output/app_sr25519.elf
-
-
-build_full_parser_s: SUBSTRATE_PARSER_FULL=1
-build_full_parser_s: buildS
-
-build_full_parser_x: SUBSTRATE_PARSER_FULL=1
-build_full_parser_x: buildX
 
 tests_tools_build:
 	cd tests_tools/neon && yarn install

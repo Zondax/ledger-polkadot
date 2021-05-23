@@ -4,8 +4,8 @@
 # set auto-load local-gdbinit on
 # add-auto-load-safe-path /
 
-set architecture arm
-handle SIGILL nostop pass noprint
-add-symbol-file app/bin/app.elf 0x40000000
-set backtrace limit 20
-b *0x40000000
+# set architecture arm
+# handle SIGILL nostop pass noprint
+# add-symbol-file app/bin/app.elf 0x40000000
+# set backtrace limit 20
+# b *0x40000000

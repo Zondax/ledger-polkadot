@@ -40,7 +40,7 @@ $(info EXAMPLE_VUE_DIR       : $(EXAMPLE_VUE_DIR))
 $(info TESTS_JS_DIR          : $(TESTS_JS_DIR))
 $(info TESTS_JS_PACKAGE      : $(TESTS_JS_PACKAGE))
 
-DOCKER_IMAGE=zondax/builder-bolos@sha256:979f4893b07ab8c37cc96e70c78124a5bbcf665cc9aa510b89e0ec317527b47f
+DOCKER_IMAGE=zondax/builder-bolos@sha256:e43b2ece1e42ca09cb9ccf90466982d95d3f1842e1b9aac18cd8d5762b308eeb
 
 ifdef INTERACTIVE
 INTERACTIVE_SETTING:="-i"
@@ -48,6 +48,14 @@ TTY_SETTING:="-t"
 else
 INTERACTIVE_SETTING:=
 TTY_SETTING:=
+endif
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	NPROC=$(shell nproc)
+endif
+ifeq ($(UNAME_S),Darwin)
+	NPROC=$(shell sysctl -n hw.physicalcpu)
 endif
 
 define run_docker
@@ -65,7 +73,10 @@ define run_docker
 endef
 
 all:
+	@$(MAKE) clean_output
+	@$(MAKE) clean_build
 	@$(MAKE) buildS
+	@$(MAKE) clean_build
 	@$(MAKE) buildX
 
 .PHONY: check_python
@@ -95,31 +106,24 @@ convert_icon:
 	@convert $(LEDGER_SRC)/nanos_icon.gif -crop 14x14+1+1 +repage -negate $(LEDGER_SRC)/nanox_icon.gif
 
 .PHONY: buildS
-buildS: clean build_rustS
-	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -j `nproc` -C $(DOCKER_APP_SRC))
+buildS: build_rustS
+	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -j $(NPROC) -C $(DOCKER_APP_SRC))
 
 .PHONY: buildX
-buildX: clean build_rustX
-	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -j `nproc` -C $(DOCKER_APP_SRC))
+buildX: build_rustX
+	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -j $(NPROC) -C $(DOCKER_APP_SRC))
+
+.PHONY: clean_output
+clean_output:
+	@echo "Removing output files"
+	@rm -f app/output/app* || true
 
 .PHONY: clean
-clean: cleanS cleanX
-
-.PHONY: cleanS
-cleanS:
+clean_build:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) clean)
 
-.PHONY: cleanX
-cleanX:
-	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) clean)
-
-.PHONY: clean_rustS
-clean_rustS:
-	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) rust_clean)
-
-.PHONY: clean_rustX
-clean_rustX:
-	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) rust_clean)
+.PHONY: clean
+clean: clean_output clean_build
 
 .PHONY: listvariants
 listvariants:
@@ -274,7 +278,7 @@ cpp_test:
 
 .PHONY: fuzz_build
 fuzz_build:
-	cmake -B build -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DENABLE_FUZZING=1 -DENABLE_SANITIZERS=1 .
+	cmake -B build -DCMAKE_C_COMPILER=clang-11 -DCMAKE_CXX_COMPILER=clang++-11 -DCMAKE_BUILD_TYPE=Debug -DENABLE_FUZZING=1 -DENABLE_SANITIZERS=1 .
 	make -C build
 
 .PHONY: fuzz
@@ -282,5 +286,6 @@ fuzz: fuzz_build
 	./fuzz/run-fuzzers.py
 
 .PHONY: fuzz_crash
+fuzz_crash: FUZZ_LOGGING=1
 fuzz_crash: fuzz_build
 	./fuzz/run-fuzz-crashes.py

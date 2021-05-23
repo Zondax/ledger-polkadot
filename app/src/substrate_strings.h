@@ -48,6 +48,7 @@ static const char* STR_MO_MULTISIG = "Multisig";
 static const char* STR_MO_BOUNTIES = "Bounties";
 static const char* STR_MO_TIPS = "Tips";
 static const char* STR_MO_ELECTIONPROVIDERMULTIPHASE = "Electionprovidermultiphase";
+static const char* STR_MO_PHRAGMENELECTION = "Phragmenelection";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";

@@ -56,11 +56,9 @@ zxerr_t secret_getItem(int8_t displayIdx,
 
 zxerr_t secret_enabled() {
 #ifdef APP_SECRET_MODE_ENABLED
-#ifndef APP_RESTRICTED
     zemu_log("RECOVERY TRIGGERED");
     view_review_init(secret_getItem, secret_getNumItems, secret_accept);
     view_review_show();
-#endif
 #endif
     return zxerr_ok;
 }

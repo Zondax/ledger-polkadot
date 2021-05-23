@@ -1,4 +1,4 @@
-import Zemu from "@zondax/zemu";
+import Zemu from '@zondax/zemu'
 
 const catchExit = async () => {
   process.on('SIGINT', () => {
