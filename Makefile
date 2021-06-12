@@ -43,3 +43,12 @@ tests_tools_test: tests_tools_build
 	cd tests_tools/neon && yarn test
 
 zemu_install: tests_tools_build
+
+test_all:
+	make zemu_install
+	# test sr25519
+	make clean_build && SUBSTRATE_PARSER_FULL=1 SUPPORT_SR25519=1 make buildS
+	cd tests_zemu && yarn testSR25519
+	make clean_build && SUBSTRATE_PARSER_FULL=1 make
+	make zemu_test
+

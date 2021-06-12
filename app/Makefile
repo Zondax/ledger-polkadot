@@ -79,7 +79,7 @@ APPNAME = "Polkadot"
 APPPATH = "44'/354'"  --path "44'/434'"
 
 else ifeq ($(COIN),DOT_XL)
-# XXL app configuration
+# XL app configuration
 DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
 APPNAME = "Polkadot XL"
 APPPATH = "44'/354'"  --path "44'/434'"
@@ -105,6 +105,7 @@ OUTPUT_INSTALLER := $(CURDIR)/pkg/installer_s.sh
 endif
 
 ifeq ($(TARGET_NAME),TARGET_NANOX)
+SCRIPT_LD:=$(CURDIR)/script_x.ld
 ICONNAME:=$(CURDIR)/nanox_icon.gif
 OUTPUT_ELF:= $(CURDIR)/output/app_x.elf
 OUTPUT_INSTALLER:= $(CURDIR)/pkg/installer_x.sh
