@@ -92,6 +92,13 @@ __Z_INLINE parser_error_t _readMethod_staking_set_payee_V7(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_staking_set_controller_V7(
+    parser_context_t* c, pd_staking_set_controller_V7_t* m)
+{
+    CHECK_ERROR(_readLookupSource_V7(c, &m->controller))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_staking_payout_stakers_V7(
     parser_context_t* c, pd_staking_payout_stakers_V7_t* m)
 {
@@ -354,13 +361,6 @@ __Z_INLINE parser_error_t _readMethod_authorship_set_uncles_V7(
     parser_context_t* c, pd_authorship_set_uncles_V7_t* m)
 {
     CHECK_ERROR(_readVecHeader(c, &m->new_uncles))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_staking_set_controller_V7(
-    parser_context_t* c, pd_staking_set_controller_V7_t* m)
-{
-    CHECK_ERROR(_readLookupSource_V7(c, &m->controller))
     return parser_ok;
 }
 
@@ -1368,6 +1368,9 @@ parser_error_t _readMethod_V7(
     case 1799: /* module 7 call 7 */
         CHECK_ERROR(_readMethod_staking_set_payee_V7(c, &method->basic.staking_set_payee_V7))
         break;
+    case 1800: /* module 7 call 8 */
+        CHECK_ERROR(_readMethod_staking_set_controller_V7(c, &method->basic.staking_set_controller_V7))
+        break;
     case 1810: /* module 7 call 18 */
         CHECK_ERROR(_readMethod_staking_payout_stakers_V7(c, &method->basic.staking_payout_stakers_V7))
         break;
@@ -1471,9 +1474,6 @@ parser_error_t _readMethod_V7(
         break;
     case 1536: /* module 6 call 0 */
         CHECK_ERROR(_readMethod_authorship_set_uncles_V7(c, &method->basic.authorship_set_uncles_V7))
-        break;
-    case 1800: /* module 7 call 8 */
-        CHECK_ERROR(_readMethod_staking_set_controller_V7(c, &method->basic.staking_set_controller_V7))
         break;
     case 1801: /* module 7 call 9 */
         CHECK_ERROR(_readMethod_staking_set_validator_count_V7(c, &method->basic.staking_set_validator_count_V7))
@@ -1953,6 +1953,8 @@ const char* _getMethod_Name_V7(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_CHILL;
     case 1799: /* module 7 call 7 */
         return STR_ME_SET_PAYEE;
+    case 1800: /* module 7 call 8 */
+        return STR_ME_SET_CONTROLLER;
     case 1810: /* module 7 call 18 */
         return STR_ME_PAYOUT_STAKERS;
     case 1811: /* module 7 call 19 */
@@ -2022,8 +2024,6 @@ const char* _getMethod_Name_V7(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_FORCE_TRANSFER;
     case 1536: /* module 6 call 0 */
         return STR_ME_SET_UNCLES;
-    case 1800: /* module 7 call 8 */
-        return STR_ME_SET_CONTROLLER;
     case 1801: /* module 7 call 9 */
         return STR_ME_SET_VALIDATOR_COUNT;
     case 1802: /* module 7 call 10 */
@@ -2305,6 +2305,8 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 0;
     case 1799: /* module 7 call 7 */
         return 1;
+    case 1800: /* module 7 call 8 */
+        return 1;
     case 1810: /* module 7 call 18 */
         return 2;
     case 1811: /* module 7 call 19 */
@@ -2373,8 +2375,6 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 1282: /* module 5 call 2 */
         return 3;
     case 1536: /* module 6 call 0 */
-        return 1;
-    case 1800: /* module 7 call 8 */
         return 1;
     case 1801: /* module 7 call 9 */
         return 1;
@@ -2713,6 +2713,13 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+    case 1800: /* module 7 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_controller;
+        default:
+            return NULL;
+        }
     case 1810: /* module 7 call 18 */
         switch (itemIdx) {
         case 0:
@@ -3001,13 +3008,6 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         switch (itemIdx) {
         case 0:
             return STR_IT_new_uncles;
-        default:
-            return NULL;
-        }
-    case 1800: /* module 7 call 8 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_controller;
         default:
             return NULL;
         }
@@ -4199,6 +4199,16 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
+    case 1800: /* module 7 call 8 */
+        switch (itemIdx) {
+        case 0: /* staking_set_controller_V7 - controller */;
+            return _toStringLookupSource_V7(
+                &m->basic.staking_set_controller_V7.controller,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 1810: /* module 7 call 18 */
         switch (itemIdx) {
         case 0: /* staking_payout_stakers_V7 - validator_stash */;
@@ -4665,16 +4675,6 @@ parser_error_t _getMethod_ItemValue_V7(
         case 0: /* authorship_set_uncles_V7 - new_uncles */;
             return _toStringVecHeader(
                 &m->basic.authorship_set_uncles_V7.new_uncles,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 1800: /* module 7 call 8 */
-        switch (itemIdx) {
-        case 0: /* staking_set_controller_V7 - controller */;
-            return _toStringLookupSource_V7(
-                &m->basic.staking_set_controller_V7.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:

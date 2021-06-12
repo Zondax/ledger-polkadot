@@ -96,6 +96,11 @@ typedef struct {
     pd_RewardDestination_V7_t payee;
 } pd_staking_set_payee_V7_t;
 
+#define PD_CALL_STAKING_SET_CONTROLLER_V7 8
+typedef struct {
+    pd_LookupSource_V7_t controller;
+} pd_staking_set_controller_V7_t;
+
 #define PD_CALL_STAKING_PAYOUT_STAKERS_V7 18
 typedef struct {
     pd_AccountId_V7_t validator_stash;
@@ -232,11 +237,6 @@ typedef struct {
 typedef struct {
     pd_VecHeader_t new_uncles;
 } pd_authorship_set_uncles_V7_t;
-
-#define PD_CALL_STAKING_SET_CONTROLLER_V7 8
-typedef struct {
-    pd_LookupSource_V7_t controller;
-} pd_staking_set_controller_V7_t;
 
 #define PD_CALL_STAKING_SET_VALIDATOR_COUNT_V7 9
 typedef struct {
@@ -923,6 +923,7 @@ typedef union {
     pd_staking_nominate_V7_t staking_nominate_V7;
     pd_staking_chill_V7_t staking_chill_V7;
     pd_staking_set_payee_V7_t staking_set_payee_V7;
+    pd_staking_set_controller_V7_t staking_set_controller_V7;
     pd_staking_payout_stakers_V7_t staking_payout_stakers_V7;
     pd_staking_rebond_V7_t staking_rebond_V7;
     pd_session_set_keys_V7_t session_set_keys_V7;
@@ -947,7 +948,6 @@ typedef union {
     pd_indices_force_transfer_V7_t indices_force_transfer_V7;
     pd_indices_freeze_V7_t indices_freeze_V7;
     pd_authorship_set_uncles_V7_t authorship_set_uncles_V7;
-    pd_staking_set_controller_V7_t staking_set_controller_V7;
     pd_staking_set_validator_count_V7_t staking_set_validator_count_V7;
     pd_staking_increase_validator_count_V7_t staking_increase_validator_count_V7;
     pd_staking_scale_validator_count_V7_t staking_scale_validator_count_V7;
