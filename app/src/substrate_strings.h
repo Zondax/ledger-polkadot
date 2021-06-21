@@ -209,6 +209,11 @@ static const char* STR_ME_SLASH_TIP = "Slash tip";
 static const char* STR_ME_SUBMIT_UNSIGNED = "Submit unsigned";
 static const char* STR_ME_REMARK_WITH_EVENT = "Remark with event";
 static const char* STR_ME_PLAN_CONFIG_CHANGE = "Plan config change";
+static const char* STR_ME_TRANSFER_ALL = "Transfer all";
+static const char* STR_ME_UPDATE_STAKING_LIMITS = "Update staking limits";
+static const char* STR_ME_CHILL_OTHER = "Chill other";
+static const char* STR_ME_SET_MINIMUM_UNTRUSTED_SCORE = "Set minimum untrusted score";
+static const char* STR_ME_SET_EMERGENCY_ELECTION_RESULT = "Set emergency election result";
 
 // Items names
 static const char* STR_IT__ratio = "Ratio";
@@ -337,6 +342,12 @@ static const char* STR_IT_solution = "Solution";
 static const char* STR_IT_witness = "Witness";
 static const char* STR_IT_remark = "Remark";
 static const char* STR_IT_config = "Config";
+static const char* STR_IT_keep_alive = "Keep alive";
+static const char* STR_IT_min_nominator_bond = "Min nominator bond";
+static const char* STR_IT_min_validator_bond = "Min validator bond";
+static const char* STR_IT_max_nominator_count = "Max nominator count";
+static const char* STR_IT_max_validator_count = "Max validator count";
+static const char* STR_IT_maybe_next_score = "Maybe next score";
 
 #ifdef __cplusplus
 }

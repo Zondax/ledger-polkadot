@@ -63,6 +63,11 @@ typedef struct {
 } pd_CompactPerBill_V7_t;
 
 typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_ElectionScore_V7_t;
+
+typedef struct {
     const uint8_t* _ptr;
 } pd_KeyValue_V7_t;
 
@@ -264,6 +269,11 @@ typedef struct {
 
 typedef struct {
     uint8_t some;
+    pd_ElectionScore_V7_t contained;
+} pd_OptionElectionScore_V7_t;
+
+typedef struct {
+    uint8_t some;
     pd_Period_V7_t contained;
 } pd_OptionPeriod_V7_t;
 
@@ -294,6 +304,11 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_RawSolution_V7_t;
+
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_ReadySolution_V7_t;
 
 typedef struct {
     uint32_t value;

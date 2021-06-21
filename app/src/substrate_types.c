@@ -274,6 +274,15 @@ parser_error_t _readOptionu8_array_20(parser_context_t* c, pd_Optionu8_array_20_
     return parser_ok;
 }
 
+parser_error_t _readOptionu32(parser_context_t* c, pd_Optionu32_t* v)
+{
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readu32(c, &v->contained))
+    }
+    return parser_ok;
+}
+
 ///////////////////////////////////
 ///////////////////////////////////
 ///////////////////////////////////
@@ -778,6 +787,27 @@ parser_error_t _toStringOptionu8_array_20(
     *pageCount = 1;
     if (v->some > 0) {
         CHECK_ERROR(_toStringu8_array_20(
+            &v->contained,
+            outValue, outValueLen,
+            pageIdx, pageCount));
+    } else {
+        snprintf(outValue, outValueLen, "None");
+    }
+    return parser_ok;
+}
+
+parser_error_t _toStringOptionu32(
+    const pd_Optionu32_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    *pageCount = 1;
+    if (v->some > 0) {
+        CHECK_ERROR(_toStringu32(
             &v->contained,
             outValue, outValueLen,
             pageIdx, pageCount));
