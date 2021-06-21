@@ -357,6 +357,14 @@ __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V7(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_balances_transfer_all_V7(
+    parser_context_t* c, pd_balances_transfer_all_V7_t* m)
+{
+    CHECK_ERROR(_readLookupSource_V7(c, &m->dest))
+    CHECK_ERROR(_readbool(c, &m->keep_alive))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_authorship_set_uncles_V7(
     parser_context_t* c, pd_authorship_set_uncles_V7_t* m)
 {
@@ -446,6 +454,23 @@ __Z_INLINE parser_error_t _readMethod_staking_kick_V7(
     parser_context_t* c, pd_staking_kick_V7_t* m)
 {
     CHECK_ERROR(_readVecLookupSource_V7(c, &m->who))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_staking_update_staking_limits_V7(
+    parser_context_t* c, pd_staking_update_staking_limits_V7_t* m)
+{
+    CHECK_ERROR(_readBalanceOf(c, &m->min_nominator_bond))
+    CHECK_ERROR(_readBalanceOf(c, &m->min_validator_bond))
+    CHECK_ERROR(_readOptionu32(c, &m->max_nominator_count))
+    CHECK_ERROR(_readOptionu32(c, &m->max_validator_count))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_staking_chill_other_V7(
+    parser_context_t* c, pd_staking_chill_other_V7_t* m)
+{
+    CHECK_ERROR(_readAccountId_V7(c, &m->controller))
     return parser_ok;
 }
 
@@ -1326,6 +1351,20 @@ __Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_submit_unsigned
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_set_minimum_untrusted_score_V7(
+    parser_context_t* c, pd_electionprovidermultiphase_set_minimum_untrusted_score_V7_t* m)
+{
+    CHECK_ERROR(_readOptionElectionScore_V7(c, &m->maybe_next_score))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_set_emergency_election_result_V7(
+    parser_context_t* c, pd_electionprovidermultiphase_set_emergency_election_result_V7_t* m)
+{
+    CHECK_ERROR(_readReadySolution_V7(c, &m->solution))
+    return parser_ok;
+}
+
 #endif
 
 parser_error_t _readMethod_V7(
@@ -1472,6 +1511,9 @@ parser_error_t _readMethod_V7(
     case 1282: /* module 5 call 2 */
         CHECK_ERROR(_readMethod_balances_force_transfer_V7(c, &method->nested.balances_force_transfer_V7))
         break;
+    case 1284: /* module 5 call 4 */
+        CHECK_ERROR(_readMethod_balances_transfer_all_V7(c, &method->basic.balances_transfer_all_V7))
+        break;
     case 1536: /* module 6 call 0 */
         CHECK_ERROR(_readMethod_authorship_set_uncles_V7(c, &method->basic.authorship_set_uncles_V7))
         break;
@@ -1510,6 +1552,12 @@ parser_error_t _readMethod_V7(
         break;
     case 1814: /* module 7 call 22 */
         CHECK_ERROR(_readMethod_staking_kick_V7(c, &method->basic.staking_kick_V7))
+        break;
+    case 1815: /* module 7 call 23 */
+        CHECK_ERROR(_readMethod_staking_update_staking_limits_V7(c, &method->basic.staking_update_staking_limits_V7))
+        break;
+    case 1816: /* module 7 call 24 */
+        CHECK_ERROR(_readMethod_staking_chill_other_V7(c, &method->basic.staking_chill_other_V7))
         break;
     case 2816: /* module 11 call 0 */
         CHECK_ERROR(_readMethod_grandpa_report_equivocation_V7(c, &method->basic.grandpa_report_equivocation_V7))
@@ -1847,6 +1895,12 @@ parser_error_t _readMethod_V7(
     case 9216: /* module 36 call 0 */
         CHECK_ERROR(_readMethod_electionprovidermultiphase_submit_unsigned_V7(c, &method->basic.electionprovidermultiphase_submit_unsigned_V7))
         break;
+    case 9217: /* module 36 call 1 */
+        CHECK_ERROR(_readMethod_electionprovidermultiphase_set_minimum_untrusted_score_V7(c, &method->basic.electionprovidermultiphase_set_minimum_untrusted_score_V7))
+        break;
+    case 9218: /* module 36 call 2 */
+        CHECK_ERROR(_readMethod_electionprovidermultiphase_set_emergency_election_result_V7(c, &method->basic.electionprovidermultiphase_set_emergency_election_result_V7))
+        break;
 #endif
     default:
         return parser_not_supported;
@@ -2022,6 +2076,8 @@ const char* _getMethod_Name_V7(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_BALANCE;
     case 1282: /* module 5 call 2 */
         return STR_ME_FORCE_TRANSFER;
+    case 1284: /* module 5 call 4 */
+        return STR_ME_TRANSFER_ALL;
     case 1536: /* module 6 call 0 */
         return STR_ME_SET_UNCLES;
     case 1801: /* module 7 call 9 */
@@ -2048,6 +2104,10 @@ const char* _getMethod_Name_V7(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_REAP_STASH;
     case 1814: /* module 7 call 22 */
         return STR_ME_KICK;
+    case 1815: /* module 7 call 23 */
+        return STR_ME_UPDATE_STAKING_LIMITS;
+    case 1816: /* module 7 call 24 */
+        return STR_ME_CHILL_OTHER;
     case 2816: /* module 11 call 0 */
         return STR_ME_REPORT_EQUIVOCATION;
     case 2817: /* module 11 call 1 */
@@ -2272,6 +2332,10 @@ const char* _getMethod_Name_V7(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SLASH_TIP;
     case 9216: /* module 36 call 0 */
         return STR_ME_SUBMIT_UNSIGNED;
+    case 9217: /* module 36 call 1 */
+        return STR_ME_SET_MINIMUM_UNTRUSTED_SCORE;
+    case 9218: /* module 36 call 2 */
+        return STR_ME_SET_EMERGENCY_ELECTION_RESULT;
 #endif
     default:
         return NULL;
@@ -2374,6 +2438,8 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 3;
     case 1282: /* module 5 call 2 */
         return 3;
+    case 1284: /* module 5 call 4 */
+        return 2;
     case 1536: /* module 6 call 0 */
         return 1;
     case 1801: /* module 7 call 9 */
@@ -2399,6 +2465,10 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 1813: /* module 7 call 21 */
         return 2;
     case 1814: /* module 7 call 22 */
+        return 1;
+    case 1815: /* module 7 call 23 */
+        return 4;
+    case 1816: /* module 7 call 24 */
         return 1;
     case 2816: /* module 11 call 0 */
         return 2;
@@ -2624,6 +2694,10 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 9216: /* module 36 call 0 */
         return 2;
+    case 9217: /* module 36 call 1 */
+        return 1;
+    case 9218: /* module 36 call 2 */
+        return 1;
 #endif
     default:
         return 0;
@@ -3004,6 +3078,15 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+    case 1284: /* module 5 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_dest;
+        case 1:
+            return STR_IT_keep_alive;
+        default:
+            return NULL;
+        }
     case 1536: /* module 6 call 0 */
         switch (itemIdx) {
         case 0:
@@ -3094,6 +3177,26 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         switch (itemIdx) {
         case 0:
             return STR_IT_who;
+        default:
+            return NULL;
+        }
+    case 1815: /* module 7 call 23 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_min_nominator_bond;
+        case 1:
+            return STR_IT_min_validator_bond;
+        case 2:
+            return STR_IT_max_nominator_count;
+        case 3:
+            return STR_IT_max_validator_count;
+        default:
+            return NULL;
+        }
+    case 1816: /* module 7 call 24 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_controller;
         default:
             return NULL;
         }
@@ -4067,6 +4170,20 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+    case 9217: /* module 36 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_maybe_next_score;
+        default:
+            return NULL;
+        }
+    case 9218: /* module 36 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_solution;
+        default:
+            return NULL;
+        }
 #endif
     default:
         return NULL;
@@ -4670,6 +4787,21 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
+    case 1284: /* module 5 call 4 */
+        switch (itemIdx) {
+        case 0: /* balances_transfer_all_V7 - dest */;
+            return _toStringLookupSource_V7(
+                &m->basic.balances_transfer_all_V7.dest,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* balances_transfer_all_V7 - keep_alive */;
+            return _toStringbool(
+                &m->basic.balances_transfer_all_V7.keep_alive,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 1536: /* module 6 call 0 */
         switch (itemIdx) {
         case 0: /* authorship_set_uncles_V7 - new_uncles */;
@@ -4800,6 +4932,41 @@ parser_error_t _getMethod_ItemValue_V7(
         case 0: /* staking_kick_V7 - who */;
             return _toStringVecLookupSource_V7(
                 &m->basic.staking_kick_V7.who,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 1815: /* module 7 call 23 */
+        switch (itemIdx) {
+        case 0: /* staking_update_staking_limits_V7 - min_nominator_bond */;
+            return _toStringBalanceOf(
+                &m->basic.staking_update_staking_limits_V7.min_nominator_bond,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* staking_update_staking_limits_V7 - min_validator_bond */;
+            return _toStringBalanceOf(
+                &m->basic.staking_update_staking_limits_V7.min_validator_bond,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* staking_update_staking_limits_V7 - max_nominator_count */;
+            return _toStringOptionu32(
+                &m->basic.staking_update_staking_limits_V7.max_nominator_count,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* staking_update_staking_limits_V7 - max_validator_count */;
+            return _toStringOptionu32(
+                &m->basic.staking_update_staking_limits_V7.max_validator_count,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 1816: /* module 7 call 24 */
+        switch (itemIdx) {
+        case 0: /* staking_chill_other_V7 - controller */;
+            return _toStringAccountId_V7(
+                &m->basic.staking_chill_other_V7.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6390,6 +6557,26 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
+    case 9217: /* module 36 call 1 */
+        switch (itemIdx) {
+        case 0: /* electionprovidermultiphase_set_minimum_untrusted_score_V7 - maybe_next_score */;
+            return _toStringOptionElectionScore_V7(
+                &m->basic.electionprovidermultiphase_set_minimum_untrusted_score_V7.maybe_next_score,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 9218: /* module 36 call 2 */
+        switch (itemIdx) {
+        case 0: /* electionprovidermultiphase_set_emergency_election_result_V7 - solution */;
+            return _toStringReadySolution_V7(
+                &m->basic.electionprovidermultiphase_set_emergency_election_result_V7.solution,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
 #endif
     default:
         return parser_ok;
@@ -6451,6 +6638,7 @@ bool _getMethod_IsNestingSupported_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 1026: // Indices:Free
     case 1027: // Indices:Force transfer
     case 1028: // Indices:Freeze
+    case 1284: // Balances:Transfer all
     case 1536: // Authorship:Set uncles
     case 1792: // Staking:Bond
     case 1793: // Staking:Bond extra
@@ -6475,6 +6663,8 @@ bool _getMethod_IsNestingSupported_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 1812: // Staking:Set history depth
     case 1813: // Staking:Reap stash
     case 1814: // Staking:Kick
+    case 1815: // Staking:Update staking limits
+    case 1816: // Staking:Chill other
     case 2304: // Session:Set keys
     case 2305: // Session:Purge keys
     case 2816: // Grandpa:Report equivocation
@@ -6586,6 +6776,8 @@ bool _getMethod_IsNestingSupported_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 8964: // Tips:Close tip
     case 8965: // Tips:Slash tip
     case 9216: // ElectionProviderMultiPhase:Submit unsigned
+    case 9217: // ElectionProviderMultiPhase:Set minimum untrusted score
+    case 9218: // ElectionProviderMultiPhase:Set emergency election result
         return false;
     default:
         return true;

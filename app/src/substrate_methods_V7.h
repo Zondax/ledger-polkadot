@@ -233,6 +233,12 @@ typedef struct {
     pd_AccountIndex_V7_t index;
 } pd_indices_freeze_V7_t;
 
+#define PD_CALL_BALANCES_TRANSFER_ALL_V7 4
+typedef struct {
+    pd_LookupSource_V7_t dest;
+    pd_bool_t keep_alive;
+} pd_balances_transfer_all_V7_t;
+
 #define PD_CALL_AUTHORSHIP_SET_UNCLES_V7 0
 typedef struct {
     pd_VecHeader_t new_uncles;
@@ -298,6 +304,19 @@ typedef struct {
 typedef struct {
     pd_VecLookupSource_V7_t who;
 } pd_staking_kick_V7_t;
+
+#define PD_CALL_STAKING_UPDATE_STAKING_LIMITS_V7 23
+typedef struct {
+    pd_BalanceOf_t min_nominator_bond;
+    pd_BalanceOf_t min_validator_bond;
+    pd_Optionu32_t max_nominator_count;
+    pd_Optionu32_t max_validator_count;
+} pd_staking_update_staking_limits_V7_t;
+
+#define PD_CALL_STAKING_CHILL_OTHER_V7 24
+typedef struct {
+    pd_AccountId_V7_t controller;
+} pd_staking_chill_other_V7_t;
 
 #define PD_CALL_GRANDPA_REPORT_EQUIVOCATION_V7 0
 typedef struct {
@@ -912,6 +931,16 @@ typedef struct {
     pd_SolutionOrSnapshotSize_V7_t witness;
 } pd_electionprovidermultiphase_submit_unsigned_V7_t;
 
+#define PD_CALL_ELECTIONPROVIDERMULTIPHASE_SET_MINIMUM_UNTRUSTED_SCORE_V7 1
+typedef struct {
+    pd_OptionElectionScore_V7_t maybe_next_score;
+} pd_electionprovidermultiphase_set_minimum_untrusted_score_V7_t;
+
+#define PD_CALL_ELECTIONPROVIDERMULTIPHASE_SET_EMERGENCY_ELECTION_RESULT_V7 2
+typedef struct {
+    pd_ReadySolution_V7_t solution;
+} pd_electionprovidermultiphase_set_emergency_election_result_V7_t;
+
 #endif
 
 typedef union {
@@ -947,6 +976,7 @@ typedef union {
     pd_indices_free_V7_t indices_free_V7;
     pd_indices_force_transfer_V7_t indices_force_transfer_V7;
     pd_indices_freeze_V7_t indices_freeze_V7;
+    pd_balances_transfer_all_V7_t balances_transfer_all_V7;
     pd_authorship_set_uncles_V7_t authorship_set_uncles_V7;
     pd_staking_set_validator_count_V7_t staking_set_validator_count_V7;
     pd_staking_increase_validator_count_V7_t staking_increase_validator_count_V7;
@@ -960,6 +990,8 @@ typedef union {
     pd_staking_set_history_depth_V7_t staking_set_history_depth_V7;
     pd_staking_reap_stash_V7_t staking_reap_stash_V7;
     pd_staking_kick_V7_t staking_kick_V7;
+    pd_staking_update_staking_limits_V7_t staking_update_staking_limits_V7;
+    pd_staking_chill_other_V7_t staking_chill_other_V7;
     pd_grandpa_report_equivocation_V7_t grandpa_report_equivocation_V7;
     pd_grandpa_report_equivocation_unsigned_V7_t grandpa_report_equivocation_unsigned_V7;
     pd_grandpa_note_stalled_V7_t grandpa_note_stalled_V7;
@@ -1067,6 +1099,8 @@ typedef union {
     pd_tips_close_tip_V7_t tips_close_tip_V7;
     pd_tips_slash_tip_V7_t tips_slash_tip_V7;
     pd_electionprovidermultiphase_submit_unsigned_V7_t electionprovidermultiphase_submit_unsigned_V7;
+    pd_electionprovidermultiphase_set_minimum_untrusted_score_V7_t electionprovidermultiphase_set_minimum_untrusted_score_V7;
+    pd_electionprovidermultiphase_set_emergency_election_result_V7_t electionprovidermultiphase_set_emergency_election_result_V7;
 #endif
 } pd_MethodBasic_V7_t;
 
