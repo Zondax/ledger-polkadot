@@ -1,5 +1,5 @@
 /*******************************************************************************
-*  (c) 2019 Zondax GmbH
+*   (c) 2018 Zondax GmbH
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -15,25 +15,24 @@
 ********************************************************************************/
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
+#if !defined (TARGET_NANOS) && !defined(TARGET_NANOX)
+
+#define MEMMOVE memmove
+#define MEMSET memset
+#define MEMCPY memcpy
+#define MEMCMP memcmp
+#define MEMCPY_NV memcpy
+
+#define PIC(x) (x)
+#define CHECK_APP_CANARY() {}
+//#define CX_ECCINFO_PARITY_ODD 1u
+//#define CX_ECCINFO_xGTn 2u
+
+#ifndef __APPLE__
+#define MEMZERO explicit_bzero
+#else
+__Z_INLINE void __memzero(void *buffer, size_t s) { memset(buffer, 0, s); }
+#define MEMZERO __memzero
 #endif
 
-#include <stdint.h>
-#include <stddef.h>
-#include "coin_ss58.h"
-
-#define HDPATH_2_STASH       (0x80000000u | 0u)
-#define HDPATH_2_VALIDATOR   (0x80000000u | 1u)
-#define HDPATH_3_DEFAULT     (0x80000000u)
-#define HDPATH_4_DEFAULT     (0x80000000u)
-
-#define MENU_MAIN_APP_LINE1                 "Polkadot | sec"
-#define MENU_MAIN_APP_LINE2                 "Ledgeracio"
-#define MENU_MAIN_APP_LINE2_SECRET          "??????????"
-#define APPVERSION_LINE1                    "Polkadot | sec"
-#define APPVERSION_LINE2                    "v" APPVERSION
-
-#ifdef __cplusplus
-}
 #endif

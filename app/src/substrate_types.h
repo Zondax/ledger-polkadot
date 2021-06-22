@@ -32,6 +32,7 @@ extern "C" {
 #define Data_e_SHATHREE256_U8_32 37
 
 typedef uint8_t pd_bool_t;
+typedef uint8_t pd_u8_t;
 typedef uint16_t pd_u16_t;
 typedef uint32_t pd_u32_t;
 typedef uint64_t pd_u64_t;
@@ -154,6 +155,11 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Heartbeat_t;
+
+typedef struct {
+    uint8_t some;
+    pd_u32_t contained;
+} pd_Optionu32_t;
 
 typedef struct {
     uint64_t _len;

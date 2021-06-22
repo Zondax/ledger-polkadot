@@ -311,7 +311,7 @@ parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
                                        char *outValue, uint16_t outValueLen,
                                        uint8_t pageIdx, uint8_t *pageCount) {
     CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, COIN_TICKER, outValue, outValueLen, pageIdx, pageCount))
-    number_inplace_trimming(outValue);
+    number_inplace_trimming(outValue, 1);
     return parser_ok;
 }
 

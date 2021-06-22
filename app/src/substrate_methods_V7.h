@@ -42,7 +42,7 @@ extern "C" {
 #define PD_CALL_DEMOCRACY_V7 14
 #define PD_CALL_COUNCIL_V7 15
 #define PD_CALL_TECHNICALCOMMITTEE_V7 16
-#define PD_CALL_ELECTIONSPHRAGMEN_V7 17
+#define PD_CALL_PHRAGMENELECTION_V7 17
 #define PD_CALL_TECHNICALMEMBERSHIP_V7 18
 #define PD_CALL_TREASURY_V7 19
 #define PD_CALL_CLAIMS_V7 24
@@ -54,18 +54,6 @@ extern "C" {
 #define PD_CALL_BOUNTIES_V7 34
 #define PD_CALL_TIPS_V7 35
 #define PD_CALL_ELECTIONPROVIDERMULTIPHASE_V7 36
-
-#define PD_CALL_BALANCES_TRANSFER_V7 0
-typedef struct {
-    pd_LookupSource_V7_t dest;
-    pd_CompactBalance_t value;
-} pd_balances_transfer_V7_t;
-
-#define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE_V7 3
-typedef struct {
-    pd_LookupSource_V7_t dest;
-    pd_CompactBalance_t value;
-} pd_balances_transfer_keep_alive_V7_t;
 
 #define PD_CALL_STAKING_BOND_V7 0
 typedef struct {
@@ -108,6 +96,11 @@ typedef struct {
     pd_RewardDestination_V7_t payee;
 } pd_staking_set_payee_V7_t;
 
+#define PD_CALL_STAKING_SET_CONTROLLER_V7 8
+typedef struct {
+    pd_LookupSource_V7_t controller;
+} pd_staking_set_controller_V7_t;
+
 #define PD_CALL_STAKING_PAYOUT_STAKERS_V7 18
 typedef struct {
     pd_AccountId_V7_t validator_stash;
@@ -140,52 +133,6 @@ typedef struct {
 } pd_utility_batch_all_V7_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
-#define PD_CALL_SYSTEM_FILL_BLOCK_V7 0
-typedef struct {
-    pd_Perbill_V7_t _ratio;
-} pd_system_fill_block_V7_t;
-
-#define PD_CALL_SYSTEM_REMARK_V7 1
-typedef struct {
-    pd_Bytes_t _remark;
-} pd_system_remark_V7_t;
-
-#define PD_CALL_SYSTEM_SET_HEAP_PAGES_V7 2
-typedef struct {
-    pd_u64_t pages;
-} pd_system_set_heap_pages_V7_t;
-
-#define PD_CALL_SYSTEM_SET_CODE_V7 3
-typedef struct {
-    pd_Bytes_t code;
-} pd_system_set_code_V7_t;
-
-#define PD_CALL_SYSTEM_SET_CODE_WITHOUT_CHECKS_V7 4
-typedef struct {
-    pd_Bytes_t code;
-} pd_system_set_code_without_checks_V7_t;
-
-#define PD_CALL_SYSTEM_SET_CHANGES_TRIE_CONFIG_V7 5
-typedef struct {
-    pd_OptionChangesTrieConfiguration_V7_t changes_trie_config;
-} pd_system_set_changes_trie_config_V7_t;
-
-#define PD_CALL_SYSTEM_SET_STORAGE_V7 6
-typedef struct {
-    pd_VecKeyValue_V7_t items;
-} pd_system_set_storage_V7_t;
-
-#define PD_CALL_SYSTEM_KILL_STORAGE_V7 7
-typedef struct {
-    pd_VecKey_V7_t keys;
-} pd_system_kill_storage_V7_t;
-
-#define PD_CALL_SYSTEM_KILL_PREFIX_V7 8
-typedef struct {
-    pd_Key_V7_t prefix;
-    pd_u32_t _subkeys;
-} pd_system_kill_prefix_V7_t;
-
 #define PD_CALL_SYSTEM_REMARK_WITH_EVENT_V7 9
 typedef struct {
     pd_Bytes_t remark;
@@ -286,29 +233,16 @@ typedef struct {
     pd_AccountIndex_V7_t index;
 } pd_indices_freeze_V7_t;
 
-#define PD_CALL_BALANCES_SET_BALANCE_V7 1
+#define PD_CALL_BALANCES_TRANSFER_ALL_V7 4
 typedef struct {
-    pd_LookupSource_V7_t who;
-    pd_CompactBalance_t new_free;
-    pd_CompactBalance_t new_reserved;
-} pd_balances_set_balance_V7_t;
-
-#define PD_CALL_BALANCES_FORCE_TRANSFER_V7 2
-typedef struct {
-    pd_LookupSource_V7_t source;
     pd_LookupSource_V7_t dest;
-    pd_CompactBalance_t value;
-} pd_balances_force_transfer_V7_t;
+    pd_bool_t keep_alive;
+} pd_balances_transfer_all_V7_t;
 
 #define PD_CALL_AUTHORSHIP_SET_UNCLES_V7 0
 typedef struct {
     pd_VecHeader_t new_uncles;
 } pd_authorship_set_uncles_V7_t;
-
-#define PD_CALL_STAKING_SET_CONTROLLER_V7 8
-typedef struct {
-    pd_LookupSource_V7_t controller;
-} pd_staking_set_controller_V7_t;
 
 #define PD_CALL_STAKING_SET_VALIDATOR_COUNT_V7 9
 typedef struct {
@@ -370,6 +304,19 @@ typedef struct {
 typedef struct {
     pd_VecLookupSource_V7_t who;
 } pd_staking_kick_V7_t;
+
+#define PD_CALL_STAKING_UPDATE_STAKING_LIMITS_V7 23
+typedef struct {
+    pd_BalanceOf_t min_nominator_bond;
+    pd_BalanceOf_t min_validator_bond;
+    pd_Optionu32_t max_nominator_count;
+    pd_Optionu32_t max_validator_count;
+} pd_staking_update_staking_limits_V7_t;
+
+#define PD_CALL_STAKING_CHILL_OTHER_V7 24
+typedef struct {
+    pd_AccountId_V7_t controller;
+} pd_staking_chill_other_V7_t;
 
 #define PD_CALL_GRANDPA_REPORT_EQUIVOCATION_V7 0
 typedef struct {
@@ -609,37 +556,37 @@ typedef struct {
     pd_Hash_t proposal_hash;
 } pd_technicalcommittee_disapprove_proposal_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_VOTE_V7 0
+#define PD_CALL_PHRAGMENELECTION_VOTE_V7 0
 typedef struct {
     pd_VecAccountId_V7_t votes;
     pd_CompactBalanceOf_t value;
-} pd_electionsphragmen_vote_V7_t;
+} pd_phragmenelection_vote_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_REMOVE_VOTER_V7 1
+#define PD_CALL_PHRAGMENELECTION_REMOVE_VOTER_V7 1
 typedef struct {
-} pd_electionsphragmen_remove_voter_V7_t;
+} pd_phragmenelection_remove_voter_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_SUBMIT_CANDIDACY_V7 2
+#define PD_CALL_PHRAGMENELECTION_SUBMIT_CANDIDACY_V7 2
 typedef struct {
     pd_Compactu32_t candidate_count;
-} pd_electionsphragmen_submit_candidacy_V7_t;
+} pd_phragmenelection_submit_candidacy_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_RENOUNCE_CANDIDACY_V7 3
+#define PD_CALL_PHRAGMENELECTION_RENOUNCE_CANDIDACY_V7 3
 typedef struct {
     pd_Renouncing_V7_t renouncing;
-} pd_electionsphragmen_renounce_candidacy_V7_t;
+} pd_phragmenelection_renounce_candidacy_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_REMOVE_MEMBER_V7 4
+#define PD_CALL_PHRAGMENELECTION_REMOVE_MEMBER_V7 4
 typedef struct {
     pd_LookupSource_V7_t who;
     pd_bool_t has_replacement;
-} pd_electionsphragmen_remove_member_V7_t;
+} pd_phragmenelection_remove_member_V7_t;
 
-#define PD_CALL_ELECTIONSPHRAGMEN_CLEAN_DEFUNCT_VOTERS_V7 5
+#define PD_CALL_PHRAGMENELECTION_CLEAN_DEFUNCT_VOTERS_V7 5
 typedef struct {
     pd_u32_t _num_voters;
     pd_u32_t _num_defunct;
-} pd_electionsphragmen_clean_defunct_voters_V7_t;
+} pd_phragmenelection_clean_defunct_voters_V7_t;
 
 #define PD_CALL_TECHNICALMEMBERSHIP_ADD_MEMBER_V7 0
 typedef struct {
@@ -834,13 +781,6 @@ typedef struct {
 typedef struct {
 } pd_identity_quit_sub_V7_t;
 
-#define PD_CALL_PROXY_PROXY_V7 0
-typedef struct {
-    pd_AccountId_V7_t real;
-    pd_OptionProxyType_V7_t force_proxy_type;
-    pd_Call_t call;
-} pd_proxy_proxy_V7_t;
-
 #define PD_CALL_PROXY_ADD_PROXY_V7 1
 typedef struct {
     pd_AccountId_V7_t delegate;
@@ -900,39 +840,6 @@ typedef struct {
     pd_OptionProxyType_V7_t force_proxy_type;
     pd_Call_t call;
 } pd_proxy_proxy_announced_V7_t;
-
-#define PD_CALL_MULTISIG_AS_MULTI_THRESHOLD_1_V7 0
-typedef struct {
-    pd_VecAccountId_V7_t other_signatories;
-    pd_Call_t call;
-} pd_multisig_as_multi_threshold_1_V7_t;
-
-#define PD_CALL_MULTISIG_AS_MULTI_V7 1
-typedef struct {
-    pd_u16_t threshold;
-    pd_VecAccountId_V7_t other_signatories;
-    pd_OptionTimepoint_V7_t maybe_timepoint;
-    pd_OpaqueCall_V7_t call;
-    pd_bool_t store_call;
-    pd_Weight_V7_t max_weight;
-} pd_multisig_as_multi_V7_t;
-
-#define PD_CALL_MULTISIG_APPROVE_AS_MULTI_V7 2
-typedef struct {
-    pd_u16_t threshold;
-    pd_VecAccountId_V7_t other_signatories;
-    pd_OptionTimepoint_V7_t maybe_timepoint;
-    pd_u8_array_32_V7_t call_hash;
-    pd_Weight_V7_t max_weight;
-} pd_multisig_approve_as_multi_V7_t;
-
-#define PD_CALL_MULTISIG_CANCEL_AS_MULTI_V7 3
-typedef struct {
-    pd_u16_t threshold;
-    pd_VecAccountId_V7_t other_signatories;
-    pd_Timepoint_V7_t timepoint;
-    pd_u8_array_32_V7_t call_hash;
-} pd_multisig_cancel_as_multi_V7_t;
 
 #define PD_CALL_BOUNTIES_PROPOSE_BOUNTY_V7 0
 typedef struct {
@@ -1024,11 +931,19 @@ typedef struct {
     pd_SolutionOrSnapshotSize_V7_t witness;
 } pd_electionprovidermultiphase_submit_unsigned_V7_t;
 
+#define PD_CALL_ELECTIONPROVIDERMULTIPHASE_SET_MINIMUM_UNTRUSTED_SCORE_V7 1
+typedef struct {
+    pd_OptionElectionScore_V7_t maybe_next_score;
+} pd_electionprovidermultiphase_set_minimum_untrusted_score_V7_t;
+
+#define PD_CALL_ELECTIONPROVIDERMULTIPHASE_SET_EMERGENCY_ELECTION_RESULT_V7 2
+typedef struct {
+    pd_ReadySolution_V7_t solution;
+} pd_electionprovidermultiphase_set_emergency_election_result_V7_t;
+
 #endif
 
 typedef union {
-    pd_balances_transfer_V7_t balances_transfer_V7;
-    pd_balances_transfer_keep_alive_V7_t balances_transfer_keep_alive_V7;
     pd_staking_bond_V7_t staking_bond_V7;
     pd_staking_bond_extra_V7_t staking_bond_extra_V7;
     pd_staking_unbond_V7_t staking_unbond_V7;
@@ -1037,6 +952,7 @@ typedef union {
     pd_staking_nominate_V7_t staking_nominate_V7;
     pd_staking_chill_V7_t staking_chill_V7;
     pd_staking_set_payee_V7_t staking_set_payee_V7;
+    pd_staking_set_controller_V7_t staking_set_controller_V7;
     pd_staking_payout_stakers_V7_t staking_payout_stakers_V7;
     pd_staking_rebond_V7_t staking_rebond_V7;
     pd_session_set_keys_V7_t session_set_keys_V7;
@@ -1044,15 +960,6 @@ typedef union {
     pd_utility_batch_V7_t utility_batch_V7;
     pd_utility_batch_all_V7_t utility_batch_all_V7;
 #ifdef SUBSTRATE_PARSER_FULL
-    pd_system_fill_block_V7_t system_fill_block_V7;
-    pd_system_remark_V7_t system_remark_V7;
-    pd_system_set_heap_pages_V7_t system_set_heap_pages_V7;
-    pd_system_set_code_V7_t system_set_code_V7;
-    pd_system_set_code_without_checks_V7_t system_set_code_without_checks_V7;
-    pd_system_set_changes_trie_config_V7_t system_set_changes_trie_config_V7;
-    pd_system_set_storage_V7_t system_set_storage_V7;
-    pd_system_kill_storage_V7_t system_kill_storage_V7;
-    pd_system_kill_prefix_V7_t system_kill_prefix_V7;
     pd_system_remark_with_event_V7_t system_remark_with_event_V7;
     pd_scheduler_schedule_V7_t scheduler_schedule_V7;
     pd_scheduler_cancel_V7_t scheduler_cancel_V7;
@@ -1069,10 +976,8 @@ typedef union {
     pd_indices_free_V7_t indices_free_V7;
     pd_indices_force_transfer_V7_t indices_force_transfer_V7;
     pd_indices_freeze_V7_t indices_freeze_V7;
-    pd_balances_set_balance_V7_t balances_set_balance_V7;
-    pd_balances_force_transfer_V7_t balances_force_transfer_V7;
+    pd_balances_transfer_all_V7_t balances_transfer_all_V7;
     pd_authorship_set_uncles_V7_t authorship_set_uncles_V7;
-    pd_staking_set_controller_V7_t staking_set_controller_V7;
     pd_staking_set_validator_count_V7_t staking_set_validator_count_V7;
     pd_staking_increase_validator_count_V7_t staking_increase_validator_count_V7;
     pd_staking_scale_validator_count_V7_t staking_scale_validator_count_V7;
@@ -1085,6 +990,8 @@ typedef union {
     pd_staking_set_history_depth_V7_t staking_set_history_depth_V7;
     pd_staking_reap_stash_V7_t staking_reap_stash_V7;
     pd_staking_kick_V7_t staking_kick_V7;
+    pd_staking_update_staking_limits_V7_t staking_update_staking_limits_V7;
+    pd_staking_chill_other_V7_t staking_chill_other_V7;
     pd_grandpa_report_equivocation_V7_t grandpa_report_equivocation_V7;
     pd_grandpa_report_equivocation_unsigned_V7_t grandpa_report_equivocation_unsigned_V7;
     pd_grandpa_note_stalled_V7_t grandpa_note_stalled_V7;
@@ -1126,12 +1033,12 @@ typedef union {
     pd_technicalcommittee_vote_V7_t technicalcommittee_vote_V7;
     pd_technicalcommittee_close_V7_t technicalcommittee_close_V7;
     pd_technicalcommittee_disapprove_proposal_V7_t technicalcommittee_disapprove_proposal_V7;
-    pd_electionsphragmen_vote_V7_t electionsphragmen_vote_V7;
-    pd_electionsphragmen_remove_voter_V7_t electionsphragmen_remove_voter_V7;
-    pd_electionsphragmen_submit_candidacy_V7_t electionsphragmen_submit_candidacy_V7;
-    pd_electionsphragmen_renounce_candidacy_V7_t electionsphragmen_renounce_candidacy_V7;
-    pd_electionsphragmen_remove_member_V7_t electionsphragmen_remove_member_V7;
-    pd_electionsphragmen_clean_defunct_voters_V7_t electionsphragmen_clean_defunct_voters_V7;
+    pd_phragmenelection_vote_V7_t phragmenelection_vote_V7;
+    pd_phragmenelection_remove_voter_V7_t phragmenelection_remove_voter_V7;
+    pd_phragmenelection_submit_candidacy_V7_t phragmenelection_submit_candidacy_V7;
+    pd_phragmenelection_renounce_candidacy_V7_t phragmenelection_renounce_candidacy_V7;
+    pd_phragmenelection_remove_member_V7_t phragmenelection_remove_member_V7;
+    pd_phragmenelection_clean_defunct_voters_V7_t phragmenelection_clean_defunct_voters_V7;
     pd_technicalmembership_add_member_V7_t technicalmembership_add_member_V7;
     pd_technicalmembership_remove_member_V7_t technicalmembership_remove_member_V7;
     pd_technicalmembership_swap_member_V7_t technicalmembership_swap_member_V7;
@@ -1167,7 +1074,6 @@ typedef union {
     pd_identity_rename_sub_V7_t identity_rename_sub_V7;
     pd_identity_remove_sub_V7_t identity_remove_sub_V7;
     pd_identity_quit_sub_V7_t identity_quit_sub_V7;
-    pd_proxy_proxy_V7_t proxy_proxy_V7;
     pd_proxy_add_proxy_V7_t proxy_add_proxy_V7;
     pd_proxy_remove_proxy_V7_t proxy_remove_proxy_V7;
     pd_proxy_remove_proxies_V7_t proxy_remove_proxies_V7;
@@ -1177,10 +1083,6 @@ typedef union {
     pd_proxy_remove_announcement_V7_t proxy_remove_announcement_V7;
     pd_proxy_reject_announcement_V7_t proxy_reject_announcement_V7;
     pd_proxy_proxy_announced_V7_t proxy_proxy_announced_V7;
-    pd_multisig_as_multi_threshold_1_V7_t multisig_as_multi_threshold_1_V7;
-    pd_multisig_as_multi_V7_t multisig_as_multi_V7;
-    pd_multisig_approve_as_multi_V7_t multisig_approve_as_multi_V7;
-    pd_multisig_cancel_as_multi_V7_t multisig_cancel_as_multi_V7;
     pd_bounties_propose_bounty_V7_t bounties_propose_bounty_V7;
     pd_bounties_approve_bounty_V7_t bounties_approve_bounty_V7;
     pd_bounties_propose_curator_V7_t bounties_propose_curator_V7;
@@ -1197,14 +1099,146 @@ typedef union {
     pd_tips_close_tip_V7_t tips_close_tip_V7;
     pd_tips_slash_tip_V7_t tips_slash_tip_V7;
     pd_electionprovidermultiphase_submit_unsigned_V7_t electionprovidermultiphase_submit_unsigned_V7;
+    pd_electionprovidermultiphase_set_minimum_untrusted_score_V7_t electionprovidermultiphase_set_minimum_untrusted_score_V7;
+    pd_electionprovidermultiphase_set_emergency_election_result_V7_t electionprovidermultiphase_set_emergency_election_result_V7;
 #endif
 } pd_MethodBasic_V7_t;
 
+#define PD_CALL_BALANCES_TRANSFER_V7 0
+typedef struct {
+    pd_LookupSource_V7_t dest;
+    pd_CompactBalance_t value;
+} pd_balances_transfer_V7_t;
+
+#define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE_V7 3
+typedef struct {
+    pd_LookupSource_V7_t dest;
+    pd_CompactBalance_t value;
+} pd_balances_transfer_keep_alive_V7_t;
+
 #ifdef SUBSTRATE_PARSER_FULL
+#define PD_CALL_SYSTEM_FILL_BLOCK_V7 0
+typedef struct {
+    pd_Perbill_V7_t _ratio;
+} pd_system_fill_block_V7_t;
+
+#define PD_CALL_SYSTEM_REMARK_V7 1
+typedef struct {
+    pd_Bytes_t _remark;
+} pd_system_remark_V7_t;
+
+#define PD_CALL_SYSTEM_SET_HEAP_PAGES_V7 2
+typedef struct {
+    pd_u64_t pages;
+} pd_system_set_heap_pages_V7_t;
+
+#define PD_CALL_SYSTEM_SET_CODE_V7 3
+typedef struct {
+    pd_Bytes_t code;
+} pd_system_set_code_V7_t;
+
+#define PD_CALL_SYSTEM_SET_CODE_WITHOUT_CHECKS_V7 4
+typedef struct {
+    pd_Bytes_t code;
+} pd_system_set_code_without_checks_V7_t;
+
+#define PD_CALL_SYSTEM_SET_CHANGES_TRIE_CONFIG_V7 5
+typedef struct {
+    pd_OptionChangesTrieConfiguration_V7_t changes_trie_config;
+} pd_system_set_changes_trie_config_V7_t;
+
+#define PD_CALL_SYSTEM_SET_STORAGE_V7 6
+typedef struct {
+    pd_VecKeyValue_V7_t items;
+} pd_system_set_storage_V7_t;
+
+#define PD_CALL_SYSTEM_KILL_STORAGE_V7 7
+typedef struct {
+    pd_VecKey_V7_t keys;
+} pd_system_kill_storage_V7_t;
+
+#define PD_CALL_SYSTEM_KILL_PREFIX_V7 8
+typedef struct {
+    pd_Key_V7_t prefix;
+    pd_u32_t _subkeys;
+} pd_system_kill_prefix_V7_t;
+
+#define PD_CALL_BALANCES_SET_BALANCE_V7 1
+typedef struct {
+    pd_LookupSource_V7_t who;
+    pd_CompactBalance_t new_free;
+    pd_CompactBalance_t new_reserved;
+} pd_balances_set_balance_V7_t;
+
+#define PD_CALL_BALANCES_FORCE_TRANSFER_V7 2
+typedef struct {
+    pd_LookupSource_V7_t source;
+    pd_LookupSource_V7_t dest;
+    pd_CompactBalance_t value;
+} pd_balances_force_transfer_V7_t;
+
+#define PD_CALL_PROXY_PROXY_V7 0
+typedef struct {
+    pd_AccountId_V7_t real;
+    pd_OptionProxyType_V7_t force_proxy_type;
+    pd_Call_t call;
+} pd_proxy_proxy_V7_t;
+
+#define PD_CALL_MULTISIG_AS_MULTI_THRESHOLD_1_V7 0
+typedef struct {
+    pd_VecAccountId_V7_t other_signatories;
+    pd_Call_t call;
+} pd_multisig_as_multi_threshold_1_V7_t;
+
+#define PD_CALL_MULTISIG_AS_MULTI_V7 1
+typedef struct {
+    pd_u16_t threshold;
+    pd_VecAccountId_V7_t other_signatories;
+    pd_OptionTimepoint_V7_t maybe_timepoint;
+    pd_OpaqueCall_V7_t call;
+    pd_bool_t store_call;
+    pd_Weight_V7_t max_weight;
+} pd_multisig_as_multi_V7_t;
+
+#define PD_CALL_MULTISIG_APPROVE_AS_MULTI_V7 2
+typedef struct {
+    pd_u16_t threshold;
+    pd_VecAccountId_V7_t other_signatories;
+    pd_OptionTimepoint_V7_t maybe_timepoint;
+    pd_u8_array_32_V7_t call_hash;
+    pd_Weight_V7_t max_weight;
+} pd_multisig_approve_as_multi_V7_t;
+
+#define PD_CALL_MULTISIG_CANCEL_AS_MULTI_V7 3
+typedef struct {
+    pd_u16_t threshold;
+    pd_VecAccountId_V7_t other_signatories;
+    pd_Timepoint_V7_t timepoint;
+    pd_u8_array_32_V7_t call_hash;
+} pd_multisig_cancel_as_multi_V7_t;
+
 #endif
 
 typedef union {
+    pd_balances_transfer_V7_t balances_transfer_V7;
+    pd_balances_transfer_keep_alive_V7_t balances_transfer_keep_alive_V7;
 #ifdef SUBSTRATE_PARSER_FULL
+    pd_system_fill_block_V7_t system_fill_block_V7;
+    pd_system_remark_V7_t system_remark_V7;
+    pd_system_set_heap_pages_V7_t system_set_heap_pages_V7;
+    pd_system_set_code_V7_t system_set_code_V7;
+    pd_system_set_code_without_checks_V7_t system_set_code_without_checks_V7;
+    pd_system_set_changes_trie_config_V7_t system_set_changes_trie_config_V7;
+    pd_system_set_storage_V7_t system_set_storage_V7;
+    pd_system_kill_storage_V7_t system_kill_storage_V7;
+    pd_system_kill_prefix_V7_t system_kill_prefix_V7;
+    pd_balances_set_balance_V7_t balances_set_balance_V7;
+    pd_balances_force_transfer_V7_t balances_force_transfer_V7;
+    pd_proxy_proxy_V7_t proxy_proxy_V7;
+    pd_multisig_as_multi_threshold_1_V7_t multisig_as_multi_threshold_1_V7;
+    pd_multisig_as_multi_V7_t multisig_as_multi_V7;
+    pd_multisig_approve_as_multi_V7_t multisig_approve_as_multi_V7;
+    pd_multisig_cancel_as_multi_V7_t multisig_cancel_as_multi_V7;
 #endif
 } pd_MethodNested_V7_t;
 

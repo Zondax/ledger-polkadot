@@ -202,13 +202,12 @@ __Z_INLINE uint8_t fpstr_to_str(char *out, uint16_t outLen, const char *number, 
 __Z_INLINE uint16_t fpuint64_to_str(char *out, uint16_t outLen, const uint64_t value, uint8_t decimals) {
     char buffer[30];
     MEMZERO(buffer, sizeof(buffer));
-    int64_to_str(buffer, sizeof(buffer), value);
+    uint64_to_str(buffer, sizeof(buffer), value);
     fpstr_to_str(out, outLen, buffer, decimals);
-    uint16_t len = (uint16_t) strlen(out);
-    return len;
+    return (uint16_t) strlen(out);
 }
 
-__Z_INLINE void number_inplace_trimming(char *s) {
+__Z_INLINE void number_inplace_trimming(char *s, uint8_t non_trimmed) {
     const size_t len = strlen(s);
     if (len == 0 || len == 1 || len > 1024) {
         return;
@@ -224,7 +223,8 @@ __Z_INLINE void number_inplace_trimming(char *s) {
         return;
     }
 
-    for (int16_t i = (int16_t) (len - 1); i > (dec_point + 1) && s[i] == '0'; i--) {
+    const size_t limit = (size_t) dec_point + non_trimmed;
+    for (size_t i = (len - 1); i > limit && s[i] == '0'; i--) {
         s[i] = 0;
     }
 }

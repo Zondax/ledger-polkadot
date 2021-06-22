@@ -25,6 +25,7 @@ extern "C" {
 // Common read functions
 
 parser_error_t _readbool(parser_context_t* c, pd_bool_t* v);
+parser_error_t _readu8(parser_context_t* c, pd_u8_t* v);
 parser_error_t _readu16(parser_context_t* c, pd_u16_t* v);
 parser_error_t _readu32(parser_context_t* c, pd_u32_t* v);
 parser_error_t _readu64(parser_context_t* c, pd_u64_t* v);
@@ -49,10 +50,18 @@ parser_error_t _readCompactBalanceOf(parser_context_t* c, pd_CompactBalanceOf_t*
 parser_error_t _readCompactBlockNumber(parser_context_t* c, pd_CompactBlockNumber_t* v);
 parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v);
 parser_error_t _readHeartbeat(parser_context_t* c, pd_Heartbeat_t* v);
+parser_error_t _readOptionu32(parser_context_t* c, pd_Optionu32_t* v);
 parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v);
 parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v);
 
 // Common toString functions
+
+parser_error_t _toStringu8(
+    const pd_u8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
 
 parser_error_t _toStringu16(
     const pd_u16_t* v,
@@ -203,6 +212,13 @@ parser_error_t _toStringHash(
 
 parser_error_t _toStringHeartbeat(
     const pd_Heartbeat_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringOptionu32(
+    const pd_Optionu32_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

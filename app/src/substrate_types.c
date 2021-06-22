@@ -29,6 +29,11 @@ parser_error_t _readbool(parser_context_t* c, pd_bool_t* v)
     return _readUInt8(c, v);
 }
 
+parser_error_t _readu8(parser_context_t* c, pd_u8_t* v)
+{
+    return _readUInt8(c, v);
+}
+
 parser_error_t _readu16(parser_context_t* c, pd_u16_t* v)
 {
     return _readUInt16(c, v);
@@ -269,6 +274,15 @@ parser_error_t _readOptionu8_array_20(parser_context_t* c, pd_Optionu8_array_20_
     return parser_ok;
 }
 
+parser_error_t _readOptionu32(parser_context_t* c, pd_Optionu32_t* v)
+{
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readu32(c, &v->contained))
+    }
+    return parser_ok;
+}
+
 ///////////////////////////////////
 ///////////////////////////////////
 ///////////////////////////////////
@@ -293,6 +307,21 @@ parser_error_t _toStringbool(
     }
 
     return parser_not_supported;
+}
+
+parser_error_t _toStringu8(
+    const pd_u8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    char bufferUI[50];
+
+    uint64_to_str(bufferUI, sizeof(bufferUI), *v);
+    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
+    return parser_ok;
 }
 
 parser_error_t _toStringu16(
@@ -401,7 +430,7 @@ parser_error_t _toStringBalance(
         return parser_unexpected_value;
     }
 
-    number_inplace_trimming(bufferUI);
+    number_inplace_trimming(bufferUI, 1);
     size_t size = strlen(bufferUI) + strlen(COIN_TICKER) + 2;
     char _tmpBuffer[200];
     MEMZERO(_tmpBuffer, sizeof(_tmpBuffer));
@@ -693,7 +722,7 @@ parser_error_t _toStringCompactBalanceOf(
     uint8_t* pageCount)
 {
     CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, COIN_TICKER, outValue, outValueLen, pageIdx, pageCount))
-    number_inplace_trimming(outValue);
+    number_inplace_trimming(outValue, 1);
     return parser_ok;
 }
 
@@ -758,6 +787,27 @@ parser_error_t _toStringOptionu8_array_20(
     *pageCount = 1;
     if (v->some > 0) {
         CHECK_ERROR(_toStringu8_array_20(
+            &v->contained,
+            outValue, outValueLen,
+            pageIdx, pageCount));
+    } else {
+        snprintf(outValue, outValueLen, "None");
+    }
+    return parser_ok;
+}
+
+parser_error_t _toStringOptionu32(
+    const pd_Optionu32_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    *pageCount = 1;
+    if (v->some > 0) {
+        CHECK_ERROR(_toStringu32(
             &v->contained,
             outValue, outValueLen,
             pageIdx, pageCount));

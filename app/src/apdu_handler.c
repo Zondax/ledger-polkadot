@@ -32,10 +32,6 @@
 #include "secret.h"
 #include "app_mode.h"
 
-#if defined(APP_RESTRICTED)
-#include "allowlist.h"
-#endif
-
 void extractHDPath(uint32_t rx, uint32_t offset) {
     if ((rx - offset) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT) {
         THROW(APDU_CODE_WRONG_LENGTH);
@@ -50,17 +46,7 @@ void extractHDPath(uint32_t rx, uint32_t offset) {
         THROW(APDU_CODE_DATA_INVALID);
     }
 
-#if defined(APP_RESTRICTED)
-    if (hdPath[2] != HDPATH_2_STASH && hdPath[2] != HDPATH_2_VALIDATOR ) {
-        THROW(APDU_CODE_DATA_INVALID);
-    }
-    if (hdPath[3] != HDPATH_3_DEFAULT ) {
-        THROW(APDU_CODE_DATA_INVALID);
-    }
-    if (hdPath[4] < 0x80000000 ) {
-        THROW(APDU_CODE_DATA_INVALID);
-    }
-#else
+#ifdef APP_SECRET_MODE_ENABLED
     if (app_mode_secret()) {
         hdPath[1] = HDPATH_1_RECOVERY;
     }
@@ -106,46 +92,11 @@ __Z_INLINE bool process_chunk(volatile uint32_t *tx, uint32_t rx) {
     THROW(APDU_CODE_INVALIDP1P2);
 }
 
-#if defined(APP_RESTRICTED)
-__Z_INLINE bool process_chunk_update(volatile uint32_t *tx, uint32_t rx) {
-    const uint8_t payloadType = G_io_apdu_buffer[OFFSET_PAYLOAD_TYPE];
-
-    if (G_io_apdu_buffer[OFFSET_P2] != 0) {
-        THROW(APDU_CODE_INVALIDP1P2);
-    }
-
-    if (rx < OFFSET_DATA) {
-        THROW(APDU_CODE_WRONG_LENGTH);
-    }
-
-    if (payloadType > 2) {
-        THROW(APDU_CODE_INVALIDP1P2);
-    }
-
-    if (payloadType == 0) {
-        tx_initialize();
-        tx_reset();
-        return false;
-    }
-
-    uint32_t added = tx_append(&(G_io_apdu_buffer[OFFSET_DATA]), rx - OFFSET_DATA);
-    if (added != rx - OFFSET_DATA) {
-        THROW(APDU_CODE_OUTPUT_BUFFER_TOO_SMALL);
-    }
-
-    return payloadType == 2;
-}
-#endif
-
 __Z_INLINE void handle_getversion(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
     G_io_apdu_buffer[0] = 0;
 
 #if defined(APP_TESTING)
     G_io_apdu_buffer[0] = 0x01;
-#endif
-
-#if defined(APP_RESTRICTED)
-    G_io_apdu_buffer[0] = 0x02;
 #endif
 
     G_io_apdu_buffer[1] = (LEDGER_MAJOR_VERSION >> 8) & 0xFF;
@@ -235,11 +186,9 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
     if (!process_chunk(tx, rx)) {
         THROW(APDU_CODE_OK);
     }
-#ifndef APP_RESTRICTED
     if (app_mode_secret()) {
         app_mode_set_secret(false);
     }
-#endif
     const uint8_t addr_type = G_io_apdu_buffer[OFFSET_P2];
     const key_kind_e key_type = get_key_type(addr_type);
 
@@ -258,94 +207,6 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
         }
     }
 }
-
-#if defined(APP_RESTRICTED)
-__Z_INLINE void handleAllowlistGetMasterkey(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    if (!allowlist_pubkey_is_set()) {
-        // has not been set yet
-        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
-    }
-
-    if (!allowlist_pubkey_get(G_io_apdu_buffer, 32)) {
-        THROW(APDU_CODE_EXECUTION_ERROR);
-    }
-
-    *tx = 32;
-    THROW(APDU_CODE_OK);
-}
-
-void app_allowlist_SetPublicKey() {
-    if (!allowlist_pubkey_set(G_io_apdu_buffer + OFFSET_DATA, 32)) {
-        set_code(G_io_apdu_buffer, 0, APDU_CODE_EXECUTION_ERROR);
-        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
-    }
-    zemu_log_stack("allowlist: pubkey updated");
-
-    set_code(G_io_apdu_buffer, 0, APDU_CODE_OK);
-    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
-}
-
-__Z_INLINE void handleAllowlistSetPublicKey(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    if (allowlist_pubkey_is_set()) {
-        // Can only be set once
-        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);  // 0x6986
-    }
-
-    if (rx != OFFSET_DATA + 32) {
-        THROW(APDU_CODE_WRONG_LENGTH);  // 0x6700
-    }
-
-    zemu_log_stack("allowlist: try update pubkey");
-
-    view_review_init(allowlist_getItem, allowlist_getNumItems, app_allowlist_SetPublicKey);
-    view_review_show();
-    *flags |= IO_ASYNCH_REPLY;
-}
-
-__Z_INLINE void handleAllowlistGetHash(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    if (!allowlist_is_active()) {
-        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
-    }
-
-    allowlist_hash(G_io_apdu_buffer);
-    *tx = 32;
-    THROW(APDU_CODE_OK);
-}
-
-void app_allowlist_Upload() {
-    zemu_log_stack("allowlist: try update");
-    if (!allowlist_upgrade(tx_get_buffer(), tx_get_buffer_length())) {
-        set_code(G_io_apdu_buffer, 0, APDU_CODE_EXECUTION_ERROR);
-        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
-    }
-
-    zemu_log_stack("allowlist: updated");
-    set_code(G_io_apdu_buffer, 0, APDU_CODE_OK);
-    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
-}
-
-__Z_INLINE void handleAllowlistUpload(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    if (!allowlist_pubkey_is_set()) {
-        zemu_log_stack("allowlist: pubkey has not been set");
-        THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
-    }
-
-    zemu_log_stack("allowlist: update chunk");
-    if (!process_chunk_update(tx, rx)) {
-        THROW(APDU_CODE_OK);
-    }
-    CHECK_APP_CANARY()
-
-    if (!allowlist_list_validate(tx_get_buffer(), tx_get_buffer_length())) {
-        // conditions to update allowlist are not satisfied
-        THROW(APDU_CODE_EXECUTION_ERROR);
-    }
-
-    view_review_init(allowlist_getItem, allowlist_getNumItems, app_allowlist_Upload);
-    view_review_show();
-    *flags |= IO_ASYNCH_REPLY;
-}
-#endif
 
 #if defined(APP_TESTING)
 void handleTest(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
@@ -390,40 +251,6 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                     break;
                 }
 
-#if defined(APP_RESTRICTED)
-                    // Allow list commands
-                    case INS_ALLOWLIST_GET_PUBKEY: {
-                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
-                            THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
-                        }
-                        handleAllowlistGetMasterkey(flags, tx, rx);
-                        break;
-                    }
-
-                    case INS_ALLOWLIST_SET_PUBKEY: {
-                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
-                            THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
-                        }
-                        handleAllowlistSetPublicKey(flags, tx, rx);
-                        break;
-                    }
-
-                    case INS_ALLOWLIST_GET_HASH: {
-                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
-                            THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
-                        }
-                        handleAllowlistGetHash(flags, tx, rx);
-                        break;
-                    }
-
-                    case INS_ALLOWLIST_UPLOAD: {
-                        if( os_global_pin_is_validated() != BOLOS_UX_OK ) {
-                            THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
-                        }
-                        handleAllowlistUpload(flags, tx, rx);
-                        break;
-                    }
-#endif
 #if defined(APP_TESTING)
                     case INS_TEST: {
                     handleTest(flags, tx, rx);

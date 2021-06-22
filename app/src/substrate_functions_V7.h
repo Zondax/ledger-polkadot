@@ -47,6 +47,7 @@ parser_error_t _readCompactRegistrarIndex_V7(parser_context_t* c, pd_CompactRegi
 parser_error_t _readCompactWeight_V7(parser_context_t* c, pd_CompactWeight_V7_t* v);
 parser_error_t _readConviction_V7(parser_context_t* c, pd_Conviction_V7_t* v);
 parser_error_t _readEcdsaSignature_V7(parser_context_t* c, pd_EcdsaSignature_V7_t* v);
+parser_error_t _readElectionScore_V7(parser_context_t* c, pd_ElectionScore_V7_t* v);
 parser_error_t _readEraIndex_V7(parser_context_t* c, pd_EraIndex_V7_t* v);
 parser_error_t _readEthereumAddress_V7(parser_context_t* c, pd_EthereumAddress_V7_t* v);
 parser_error_t _readGrandpaEquivocationProof_V7(parser_context_t* c, pd_GrandpaEquivocationProof_V7_t* v);
@@ -63,6 +64,7 @@ parser_error_t _readNextConfigDescriptor_V7(parser_context_t* c, pd_NextConfigDe
 parser_error_t _readOpaqueCall_V7(parser_context_t* c, pd_OpaqueCall_V7_t* v);
 parser_error_t _readOptionAccountId_V7(parser_context_t* c, pd_OptionAccountId_V7_t* v);
 parser_error_t _readOptionChangesTrieConfiguration_V7(parser_context_t* c, pd_OptionChangesTrieConfiguration_V7_t* v);
+parser_error_t _readOptionElectionScore_V7(parser_context_t* c, pd_OptionElectionScore_V7_t* v);
 parser_error_t _readOptionPeriod_V7(parser_context_t* c, pd_OptionPeriod_V7_t* v);
 parser_error_t _readOptionProxyType_V7(parser_context_t* c, pd_OptionProxyType_V7_t* v);
 parser_error_t _readOptionReferendumIndex_V7(parser_context_t* c, pd_OptionReferendumIndex_V7_t* v);
@@ -75,6 +77,7 @@ parser_error_t _readPeriod_V7(parser_context_t* c, pd_Period_V7_t* v);
 parser_error_t _readPriority_V7(parser_context_t* c, pd_Priority_V7_t* v);
 parser_error_t _readProxyType_V7(parser_context_t* c, pd_ProxyType_V7_t* v);
 parser_error_t _readRawSolution_V7(parser_context_t* c, pd_RawSolution_V7_t* v);
+parser_error_t _readReadySolution_V7(parser_context_t* c, pd_ReadySolution_V7_t* v);
 parser_error_t _readReferendumIndex_V7(parser_context_t* c, pd_ReferendumIndex_V7_t* v);
 parser_error_t _readRegistrarIndex_V7(parser_context_t* c, pd_RegistrarIndex_V7_t* v);
 parser_error_t _readRenouncing_V7(parser_context_t* c, pd_Renouncing_V7_t* v);
@@ -245,6 +248,13 @@ parser_error_t _toStringEcdsaSignature_V7(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringElectionScore_V7(
+    const pd_ElectionScore_V7_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringEraIndex_V7(
     const pd_EraIndex_V7_t* v,
     char* outValue,
@@ -357,6 +367,13 @@ parser_error_t _toStringOptionChangesTrieConfiguration_V7(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringOptionElectionScore_V7(
+    const pd_OptionElectionScore_V7_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringOptionPeriod_V7(
     const pd_OptionPeriod_V7_t* v,
     char* outValue,
@@ -436,6 +453,13 @@ parser_error_t _toStringProxyType_V7(
 
 parser_error_t _toStringRawSolution_V7(
     const pd_RawSolution_V7_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringReadySolution_V7(
+    const pd_ReadySolution_V7_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

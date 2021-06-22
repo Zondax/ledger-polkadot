@@ -152,6 +152,11 @@ parser_error_t _readEcdsaSignature_V7(parser_context_t* c, pd_EcdsaSignature_V7_
     GEN_DEF_READARRAY(65)
 }
 
+parser_error_t _readElectionScore_V7(parser_context_t* c, pd_ElectionScore_V7_t* v)
+{
+    return parser_not_supported;
+}
+
 parser_error_t _readEraIndex_V7(parser_context_t* c, pd_EraIndex_V7_t* v)
 {
     return _readUInt32(c, &v->value);
@@ -285,6 +290,11 @@ parser_error_t _readProxyType_V7(parser_context_t* c, pd_ProxyType_V7_t* v)
 }
 
 parser_error_t _readRawSolution_V7(parser_context_t* c, pd_RawSolution_V7_t* v)
+{
+    return parser_not_supported;
+}
+
+parser_error_t _readReadySolution_V7(parser_context_t* c, pd_ReadySolution_V7_t* v)
 {
     return parser_not_supported;
 }
@@ -433,6 +443,15 @@ parser_error_t _readOptionChangesTrieConfiguration_V7(parser_context_t* c, pd_Op
     CHECK_ERROR(_readUInt8(c, &v->some))
     if (v->some > 0) {
         CHECK_ERROR(_readChangesTrieConfiguration_V7(c, &v->contained))
+    }
+    return parser_ok;
+}
+
+parser_error_t _readOptionElectionScore_V7(parser_context_t* c, pd_OptionElectionScore_V7_t* v)
+{
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readElectionScore_V7(c, &v->contained))
     }
     return parser_ok;
 }
@@ -848,6 +867,17 @@ parser_error_t _toStringEcdsaSignature_V7(
     GEN_DEF_TOSTRING_ARRAY(65)
 }
 
+parser_error_t _toStringElectionScore_V7(
+    const pd_ElectionScore_V7_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    return parser_print_not_supported;
+}
+
 parser_error_t _toStringEraIndex_V7(
     const pd_EraIndex_V7_t* v,
     char* outValue,
@@ -1226,6 +1256,17 @@ parser_error_t _toStringProxyType_V7(
 
 parser_error_t _toStringRawSolution_V7(
     const pd_RawSolution_V7_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    return parser_print_not_supported;
+}
+
+parser_error_t _toStringReadySolution_V7(
+    const pd_ReadySolution_V7_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -1654,6 +1695,27 @@ parser_error_t _toStringOptionChangesTrieConfiguration_V7(
     *pageCount = 1;
     if (v->some > 0) {
         CHECK_ERROR(_toStringChangesTrieConfiguration_V7(
+            &v->contained,
+            outValue, outValueLen,
+            pageIdx, pageCount));
+    } else {
+        snprintf(outValue, outValueLen, "None");
+    }
+    return parser_ok;
+}
+
+parser_error_t _toStringOptionElectionScore_V7(
+    const pd_OptionElectionScore_V7_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    *pageCount = 1;
+    if (v->some > 0) {
+        CHECK_ERROR(_toStringElectionScore_V7(
             &v->contained,
             outValue, outValueLen,
             pageIdx, pageCount));
