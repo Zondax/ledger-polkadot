@@ -88,7 +88,7 @@ parser_error_t _readCallImpl(parser_context_t* c, pd_Call_t* v, pd_MethodNested_
     CHECK_ERROR(_readCallIndex(c, &v->callIndex));
 
     if (!_getMethod_IsNestingSupported(c->tx_obj->transactionVersion, v->callIndex.moduleIdx, v->callIndex.idx)) {
-        return parser_not_supported;
+        return parser_tx_nesting_not_supported;
     }
 
     // Read and check the contained method on this Call

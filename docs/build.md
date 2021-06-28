@@ -46,7 +46,7 @@ then run:
 
     - The current repository keeps track of Ledger's SDK but it is possible to override it by changing the git submodule.
 
-*Warning*: Some IDEs may not use the same python interpreter or virtual enviroment as the one you used when running `pip`.
+*Warning*: Some IDEs may not use the same python interpreter or virtual environment as the one you used when running `pip`.
 If you see conan is not found, check that you installed the package in the same interpreter as the one that launches `cmake`.
 
 ## How to build ?
@@ -56,7 +56,7 @@ If you see conan is not found, check that you installed the package in the same 
 
 - Building the app itself
 
-  If you installed the what is described above, just run:
+  If you installed what is described above, just run:
     ```bash
     make
     ```
@@ -65,14 +65,14 @@ If you see conan is not found, check that you installed the package in the same 
 
 - Running rust tests (x64)
 
-  If you installed the what is described above, just run:
+  If you installed what is described above, just run:
     ```bash
     make rust_test
     ```
 
 - Running C/C++ tests (x64)
 
-  If you installed the what is described above, just run:
+  If you installed what is described above, just run:
     ```bash
     make cpp_test
     ```
@@ -179,4 +179,4 @@ The Makefile will build the firmware in a docker container and leave the binary 
 
 ## APDU Specifications
 
-- [APDU Protocol](docs/APDUSPEC.md)
+- [APDU Protocol](APDUSPEC.md)
