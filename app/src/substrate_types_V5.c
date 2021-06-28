@@ -1166,7 +1166,7 @@ parser_error_t _toStringLookupSource_V5(
         GEN_DEF_TOSTRING_ARRAY(20)
     }
     default:
-        return parser_not_supported;
+        return parser_unexpected_address_type;
     }
 
     return parser_ok;

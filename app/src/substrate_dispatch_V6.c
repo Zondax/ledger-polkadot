@@ -1857,7 +1857,7 @@ parser_error_t _readMethod_V6(
         break;
 #endif
     default:
-        return parser_not_supported;
+        return parser_unexpected_callIndex;
     }
 
     return parser_ok;
