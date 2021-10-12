@@ -21,6 +21,7 @@
 #include "tx.h"
 #include "view.h"
 #include "app_mode.h"
+#include "zxformat.h"
 
 void secret_accept() {
 #ifdef APP_SECRET_MODE_ENABLED

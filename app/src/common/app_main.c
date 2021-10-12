@@ -32,9 +32,7 @@
 
 unsigned char G_io_seproxyhal_spi_buffer[IO_SEPROXYHAL_BUFFER_SIZE_B];
 
-unsigned char io_event(unsigned char channel) {
-    UNUSED(channel);
-
+unsigned char io_event(__Z_UNUSED unsigned char channel) {
     switch (G_io_seproxyhal_spi_buffer[0]) {
         case SEPROXYHAL_TAG_FINGER_EVENT: //
             UX_FINGER_EVENT(G_io_seproxyhal_spi_buffer);
@@ -94,12 +92,10 @@ unsigned short io_exchange_al(unsigned char channel, unsigned short tx_len) {
     return 0;
 }
 
-void handle_generic_apdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
-    UNUSED(flags);
-
-    if (rx > 4 && MEMCMP(G_io_apdu_buffer, "\xE0\x01\x00\x00", 4) == 0) {
+void handle_generic_apdu(__Z_UNUSED volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
+    if (rx > 4 && memcmp(G_io_apdu_buffer, "\xE0\x01\x00\x00", 4) == 0) {
         // Respond to get device info command
-        uint8_t *p = G_io_apdu_buffer;
+        uint8_t * p = G_io_apdu_buffer;
         // Target ID        4 bytes
         p[0] = (TARGET_ID >> 24) & 0xFF;
         p[1] = (TARGET_ID >> 16) & 0xFF;
@@ -132,7 +128,9 @@ void app_init() {
     USB_power(0);
     USB_power(1);
     app_mode_reset();
+#ifdef SUPPORT_SR25519
     zeroize_sr25519_signdata();
+#endif
     view_idle_show(0, NULL);
 
 #ifdef HAVE_BLE

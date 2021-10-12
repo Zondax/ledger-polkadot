@@ -61,7 +61,7 @@ uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
     uint8_t hash[64];
 
     unencoded[0] = addressType;                  // address type
-    MEMCPY(unencoded + 1, pubkey, 32);           // account id
+    memcpy(unencoded + 1, pubkey, 32);           // account id
     ss58hash((uint8_t *) unencoded, 33, hash, 64);
     unencoded[33] = hash[0];
     unencoded[34] = hash[1];

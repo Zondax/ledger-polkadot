@@ -98,7 +98,7 @@ endif
 APP_LOAD_PARAMS = --appFlags 0x200 --delete $(COMMON_LOAD_PARAMS) --path $(APPPATH)
 
 ifeq ($(TARGET_NAME),TARGET_NANOS)
-APP_STACK_SIZE:=3472
+APP_STACK_SIZE:=3216
 ICONNAME:=$(CURDIR)/nanos_icon.gif
 OUTPUT_ELF ?= $(CURDIR)/output/app_s.elf
 OUTPUT_INSTALLER := $(CURDIR)/pkg/installer_s.sh
@@ -107,10 +107,11 @@ endif
 ifeq ($(TARGET_NAME),TARGET_NANOX)
 SCRIPT_LD:=$(CURDIR)/script_x.ld
 ICONNAME:=$(CURDIR)/nanox_icon.gif
-OUTPUT_ELF:= $(CURDIR)/output/app_x.elf
+OUTPUT_ELF ?= $(CURDIR)/output/app_x.elf
 OUTPUT_INSTALLER:= $(CURDIR)/pkg/installer_x.sh
 endif
 
+$(info TARGET_NAME  = [$(TARGET_NAME)])
 $(info ICONNAME  = [$(ICONNAME)])
 
 ifndef ICONNAME
@@ -120,7 +121,6 @@ endif
 ############
 # Platform
 
-DEFINES       += UNUSED\(x\)=\(void\)x
 DEFINES       += PRINTF\(...\)=
 
 APPVERSION=$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)
@@ -160,6 +160,8 @@ endif
 
 # X specific
 
+# App specific
+
 #Feature temporarily disabled
 DEFINES   += LEDGER_SPECIFIC
 
@@ -184,7 +186,7 @@ endif
 #########################
 
 CC := $(CLANGPATH)clang
-CFLAGS += -O3 -Os -Wno-unknown-pragmas -Wno-unused-parameter
+CFLAGS += -O3 -Os -Wno-unknown-pragmas -Wno-unused-parameter -Wvla
 
 AS := $(GCCPATH)arm-none-eabi-gcc
 AFLAGS +=

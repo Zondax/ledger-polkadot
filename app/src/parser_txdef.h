@@ -32,7 +32,7 @@ extern "C" {
 #endif
 
 typedef struct {
-    pd_CallIndex_t   callIndex;
+    pd_CallIndex_t callIndex;
     pd_Method_t method;
 
     pd_ExtrinsicEra_t era;

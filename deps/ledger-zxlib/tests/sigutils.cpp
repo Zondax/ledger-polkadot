@@ -18,6 +18,7 @@
 #include <string>
 #include <hexutils.h>
 #include <zxmacros.h>
+#include <zxformat.h>
 
 #include "sigutils.h"
 

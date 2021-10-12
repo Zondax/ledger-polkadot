@@ -22,29 +22,25 @@
 
 #define MEMCPY_NV nvm_write
 
+// This macros are kept for backwards compatibility
+// the most recent SDK has unified implementations and deprecated the original os_***
+#define MEMCPY memmove
+#define MEMMOVE memmove
+#define MEMSET memset
+#define MEMCMP memcmp
+#define MEMZERO explicit_bzero
+
 #if defined(TARGET_NANOX)
-    #include "ux.h"
-    #define NV_CONST const
-    #define NV_VOLATILE volatile
-    #define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
-
-    #define MEMMOVE os_memmove
-    #define MEMSET os_memset
-    #define MEMCPY os_memcpy
-    #define MEMCMP os_memcmp
-    #define MEMZERO explicit_bzero
+#include "ux.h"
+#define NV_CONST const
+#define NV_VOLATILE volatile
+#define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
 #else
-    #include "os_io_seproxyhal.h"
-    #define NV_CONST
-    #define NV_VOLATILE
-    #define IS_UX_ALLOWED (ux.params.len != BOLOS_UX_IGNORE && ux.params.len != BOLOS_UX_CONTINUE)
-
-    #define MEMCPY memmove
-    #define MEMMOVE memmove
-    #define MEMSET memset
-    #define MEMCMP memcmp
-    #define MEMZERO explicit_bzero
-
+#include "ux.h"
+#include "os_io_seproxyhal.h"
+#define NV_CONST
+#define NV_VOLATILE
+#define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
 #endif
 
 #define CHECK_APP_CANARY() check_app_canary();
@@ -58,5 +54,4 @@ extern unsigned int app_stack_canary;
     WAIT_EVENT(); \
     io_seproxyhal_general_status(); \
     WAIT_EVENT()
-
 #endif

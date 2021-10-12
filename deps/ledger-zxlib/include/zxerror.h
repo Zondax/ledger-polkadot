@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include "zxmacros.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -34,6 +36,38 @@ typedef enum {
     zxerr_invalid_crypto_settings = 0b00001100,
     zxerr_ledger_api_error = 0b00001111,
 } zxerr_t;
+
+__Z_INLINE uint8_t getErrorMessage(char *buffer, uint16_t bufferLen, zxerr_t err) {
+    MEMZERO(buffer, bufferLen);
+
+    switch (err) {
+        case zxerr_unknown:
+            snprintf(buffer, bufferLen, "zxerr_unknown");
+            break;
+        case zxerr_ok:
+            snprintf(buffer, bufferLen, "zxerr_ok");
+            break;
+        case zxerr_no_data:
+            snprintf(buffer, bufferLen, "zxerr_no_data");
+            break;
+        case zxerr_out_of_bounds:
+            snprintf(buffer, bufferLen, "zxerr_out_of_bounds");
+            break;
+        case zxerr_encoding_failed:
+            snprintf(buffer, bufferLen, "zxerr_encoding_failed");
+            break;
+        case zxerr_invalid_crypto_settings:
+            snprintf(buffer, bufferLen, "zxerr_invalid_crypto_settings");
+            break;
+        case zxerr_ledger_api_error:
+            snprintf(buffer, bufferLen, "zxerr_ledger_api_error");
+            break;
+        default:
+            snprintf(buffer, bufferLen, "err N/A");
+    }
+
+    return strlen(buffer);
+}
 
 //0b00000000
 //0b00000011

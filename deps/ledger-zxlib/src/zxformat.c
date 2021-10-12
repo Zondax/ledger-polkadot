@@ -14,6 +14,30 @@
 *  limitations under the License.
 ********************************************************************************/
 #include "zxformat.h"
+#include <string.h>
+#include <zxerror.h>
+#include "utf8.h"
+
+size_t asciify(char *utf8_in_ascii_out) {
+    return asciify_ext(utf8_in_ascii_out, utf8_in_ascii_out);
+}
+
+size_t asciify_ext(const char *utf8_in, char *ascii_only_out) {
+    void *p = (void *) utf8_in;
+    char *q = ascii_only_out;
+
+    // utf8valid returns zero on success
+    while (*((char *) p) && utf8valid(p) == 0) {
+        utf8_int32_t tmp_codepoint = 0;
+        p = utf8codepoint(p, &tmp_codepoint);
+        *q = (char) ((tmp_codepoint >= 32 && tmp_codepoint <= (int32_t) 0x7F) ? tmp_codepoint : '.');
+        q++;
+    }
+
+    // Terminate string
+    *q = 0;
+    return q - ascii_only_out;
+}
 
 uint8_t intstr_to_fpstr_inplace(char *number, size_t number_max_size, uint8_t decimalPlaces) {
     uint16_t numChars = strnlen(number, number_max_size);
@@ -85,4 +109,36 @@ uint8_t intstr_to_fpstr_inplace(char *number, size_t number_max_size, uint8_t de
 
     numChars = strlen(number);
     return numChars;
+}
+
+size_t z_strlen(const char *buffer, size_t maxSize) {
+    if (buffer == NULL) return 0;
+    const size_t tmp = strlen(buffer);
+    return tmp < maxSize ? tmp : maxSize;
+}
+
+zxerr_t z_str3join(char *buffer, size_t bufferSize, const char *prefix, const char *suffix) {
+    size_t messageSize = z_strlen(buffer, bufferSize);
+    const size_t prefixSize = z_strlen(prefix, bufferSize);
+    const size_t suffixSize = z_strlen(suffix, bufferSize);
+
+    size_t requiredSize = 1 /* termination */ + messageSize + prefixSize + suffixSize;
+
+    if (bufferSize < requiredSize) {
+        snprintf(buffer, bufferSize, "ERR???");
+        return zxerr_buffer_too_small;
+    }
+
+    if (suffixSize > 0) {
+        memmove(buffer + messageSize, suffix, suffixSize);
+        buffer[messageSize + suffixSize] = 0;
+    }
+
+    // shift and add prefix
+    if (prefixSize > 0) {
+        memmove(buffer + prefixSize, buffer, messageSize + suffixSize + 1);
+        memmove(buffer, prefix, prefixSize);
+    }
+
+    return zxerr_ok;
 }

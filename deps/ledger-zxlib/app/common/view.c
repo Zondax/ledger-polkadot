@@ -37,10 +37,9 @@
 
 view_t viewdata;
 
-void h_approve(unsigned int _) {
+void h_approve(__Z_UNUSED unsigned int _) {
     zemu_log_stack("h_approve");
 
-    UNUSED(_);
     view_idle_show(0, NULL);
     UX_WAIT();
     if (viewdata.viewfuncAccept != NULL) {
@@ -48,17 +47,15 @@ void h_approve(unsigned int _) {
     }
 }
 
-void h_reject(unsigned int _) {
+void h_reject(__Z_UNUSED unsigned int _) {
     zemu_log_stack("h_reject");
 
-    UNUSED(_);
     view_idle_show(0, NULL);
     UX_WAIT();
     app_reject();
 }
 
-void h_error_accept(unsigned int _) {
-    UNUSED(_);
+void h_error_accept(__Z_UNUSED unsigned int _) {
     view_idle_show(0, NULL);
     UX_WAIT();
     app_reply_error();

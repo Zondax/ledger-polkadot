@@ -15,6 +15,7 @@
 ********************************************************************************/
 #include <gmock/gmock.h>
 #include <zxmacros.h>
+#include <zxformat.h>
 
 namespace {
     TEST(FORMAT, array_to_hexstr) {
@@ -108,7 +109,7 @@ namespace {
 
         fpstr_to_str(output, sizeof(output), "", 6);
         printf("%10s\n", output);
-        EXPECT_EQ(std::string(output), "0.000000");
+        EXPECT_EQ(std::string(output), "ERR");
 
         fpstr_to_str(output, sizeof(output), "", 7);
         printf("%10s\n", output);
@@ -129,7 +130,7 @@ namespace {
 
         fpstr_to_str(output, sizeof(output), "123", 6);
         printf("%10s\n", output);
-        EXPECT_EQ(std::string(output), "0.000123");
+        EXPECT_EQ(std::string(output), "ERR");
 
         fpstr_to_str(output, sizeof(output), "123", 7);
         printf("%10s\n", output);
@@ -150,7 +151,7 @@ namespace {
 
         fpstr_to_str(output, sizeof(output), "123456", 6);
         printf("%10s\n", output);
-        EXPECT_EQ(std::string(output), "0.123456");
+        EXPECT_EQ(std::string(output), "ERR");
 
         fpstr_to_str(output, sizeof(output), "123456", 7);
         printf("%10s\n", output);
@@ -170,11 +171,17 @@ namespace {
 
         fpstr_to_str(output, sizeof(output), "1234567", 2);
         printf("%10s\n", output);
-        EXPECT_EQ(std::string(output), "12345.67");
+        EXPECT_EQ(std::string(output), "ERR");
 
         fpstr_to_str(output, sizeof(output), "12345678", 2);
         printf("%10s\n", output);
         EXPECT_EQ(std::string(output), "ERR");
+
+        fpstr_to_str(output, sizeof(output), "1234567890", 0);
+        EXPECT_EQ(std::string(output), "ERR");
+
+        fpstr_to_str(output, sizeof(output), "123456", 0);
+        EXPECT_EQ(std::string(output), "123456");
     }
 
     TEST(FORMAT, fpuint64_to_str_zeros) {
@@ -201,36 +208,36 @@ namespace {
     TEST(FORMAT, number_trimming) {
         char output[100];
 
-        strcpy(output, "0");
-        number_inplace_trimming(output);
+        snprintf(output, sizeof(output), "0");
+        number_inplace_trimming(output, 1);
         EXPECT_EQ(std::string(output), "0");
 
-        strcpy(output, "10");
-        number_inplace_trimming(output);
+        snprintf(output, sizeof(output), "10");
+        number_inplace_trimming(output, 1);
         EXPECT_EQ(std::string(output), "10");
 
-        strcpy(output, "10.10");
-        number_inplace_trimming(output);
+        snprintf(output, sizeof(output), "10.10");
+        number_inplace_trimming(output, 1);
         EXPECT_EQ(std::string(output), "10.1");
 
-        strcpy(output, "0.0");
-        number_inplace_trimming(output);
+        snprintf(output, sizeof(output), "0.0");
+        number_inplace_trimming(output, 1);
         EXPECT_EQ(std::string(output), "0.0");
 
-        strcpy(output, "0.00");
-        number_inplace_trimming(output);
+        snprintf(output, sizeof(output), "0.00");
+        number_inplace_trimming(output, 1);
         EXPECT_EQ(std::string(output), "0.0");
 
-        strcpy(output, "0.01");
-        number_inplace_trimming(output);
+        snprintf(output, sizeof(output), "0.01");
+        number_inplace_trimming(output, 1);
         EXPECT_EQ(std::string(output), "0.01");
 
-        strcpy(output, "0.010");
-        number_inplace_trimming(output);
+        snprintf(output, sizeof(output), "0.010");
+        number_inplace_trimming(output, 1);
         EXPECT_EQ(std::string(output), "0.01");
 
-        strcpy(output, "0.010000");
-        number_inplace_trimming(output);
+        snprintf(output, sizeof(output), "0.010000");
+        number_inplace_trimming(output, 1);
         EXPECT_EQ(std::string(output), "0.01");
     }
 
@@ -238,27 +245,27 @@ namespace {
         char number[100];
         printf("\n");
 
-        strcpy(number, "0");
+        snprintf(number, sizeof(number), "0");
         intstr_to_fpstr_inplace(number, sizeof(number), 0);
         EXPECT_EQ(std::string(number), "0");
 
-        strcpy(number, "00");
+        snprintf(number, sizeof(number), "00");
         intstr_to_fpstr_inplace(number, sizeof(number), 0);
         EXPECT_EQ(std::string(number), "0");
 
-        strcpy(number, "0000");
+        snprintf(number, sizeof(number), "0000");
         intstr_to_fpstr_inplace(number, sizeof(number), 0);
         EXPECT_EQ(std::string(number), "0");
 
-        strcpy(number, "00001");
+        snprintf(number, sizeof(number), "00001");
         intstr_to_fpstr_inplace(number, sizeof(number), 0);
         EXPECT_EQ(std::string(number), "1");
 
-        strcpy(number, "000011");
+        snprintf(number, sizeof(number), "000011");
         intstr_to_fpstr_inplace(number, sizeof(number), 0);
         EXPECT_EQ(std::string(number), "11");
 
-        strcpy(number, "10000");
+        snprintf(number, sizeof(number), "10000");
         intstr_to_fpstr_inplace(number, sizeof(number), 0);
         EXPECT_EQ(std::string(number), "10000");
     }
@@ -267,15 +274,15 @@ namespace {
         char number[100];
         printf("\n");
 
-        strcpy(number, "");
+        MEMZERO(number, sizeof(number));
         intstr_to_fpstr_inplace(number, sizeof(number), 0);
         EXPECT_EQ(std::string(number), "0");
 
-        strcpy(number, "");
+        MEMZERO(number, sizeof(number));
         intstr_to_fpstr_inplace(number, sizeof(number), 5);
         EXPECT_EQ(std::string(number), "0.00000");
 
-        strcpy(number, "");
+        MEMZERO(number, sizeof(number));
         intstr_to_fpstr_inplace(number, sizeof(number), 10);
         EXPECT_EQ(std::string(number), "0.0000000000");
     }
@@ -284,35 +291,35 @@ namespace {
         char number[100];
         printf("\n");
 
-        strcpy(number, "1");
+        snprintf(number, sizeof(number), "1");
         intstr_to_fpstr_inplace(number, sizeof(number), 0);
         EXPECT_EQ(std::string(number), "1");
 
-        strcpy(number, "123");
+        snprintf(number, sizeof(number), "123");
         intstr_to_fpstr_inplace(number, sizeof(number), 0);
         EXPECT_EQ(std::string(number), "123");
 
-        strcpy(number, "0");
+        snprintf(number, sizeof(number), "0");
         intstr_to_fpstr_inplace(number, sizeof(number), 5);
         EXPECT_EQ(std::string(number), "0.00000");
 
-        strcpy(number, "123");
+        snprintf(number, sizeof(number), "123");
         intstr_to_fpstr_inplace(number, sizeof(number), 5);
         EXPECT_EQ(std::string(number), "0.00123");
 
-        strcpy(number, "1234");
+        snprintf(number, sizeof(number), "1234");
         intstr_to_fpstr_inplace(number, sizeof(number), 5);
         EXPECT_EQ(std::string(number), "0.01234");
 
-        strcpy(number, "12345");
+        snprintf(number, sizeof(number), "12345");
         intstr_to_fpstr_inplace(number, sizeof(number), 5);
         EXPECT_EQ(std::string(number), "0.12345");
 
-        strcpy(number, "123456");
+        snprintf(number, sizeof(number), "123456");
         intstr_to_fpstr_inplace(number, sizeof(number), 5);
         EXPECT_EQ(std::string(number), "1.23456");
 
-        strcpy(number, "1234567");
+        snprintf(number, sizeof(number), "1234567");
         intstr_to_fpstr_inplace(number, sizeof(number), 5);
         EXPECT_EQ(std::string(number), "12.34567");
     }

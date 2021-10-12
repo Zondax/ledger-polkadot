@@ -27,7 +27,7 @@ bool_t bignumLittleEndian_bcdprint(char *outBuffer, uint16_t outBufferLen,
     }
 
     if (inBCDLen * 2 > outBufferLen) {
-        strcpy(outBuffer, "ERR");
+        snprintf(outBuffer, outBufferLen, "ERR");
         return bool_false;
     }
 
@@ -44,7 +44,7 @@ bool_t bignumLittleEndian_bcdprint(char *outBuffer, uint16_t outBufferLen,
     }
 
     if (!started) {
-        strcpy(outBuffer, "0");
+        snprintf(outBuffer, outBufferLen, "0");
     }
 
     return bool_true;
@@ -92,7 +92,7 @@ bool_t bignumBigEndian_bcdprint(char *outBuffer, uint16_t outBufferLen,
     }
 
     if (bcdInLen * 2 > outBufferLen) {
-        strcpy(outBuffer, "ERR");
+        snprintf(outBuffer, outBufferLen, "ERR");
         return bool_false;
     }
 
@@ -110,7 +110,7 @@ bool_t bignumBigEndian_bcdprint(char *outBuffer, uint16_t outBufferLen,
     }
 
     if (!started) {
-        strcpy(outBuffer, "0");
+        snprintf(outBuffer, outBufferLen, "0");
     }
 
     return bool_true;
