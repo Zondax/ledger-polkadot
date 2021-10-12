@@ -86,6 +86,10 @@ typedef struct {
 } pd_LookupSource_V7_t;
 
 typedef struct {
+    compactInt_t value;
+} pd_Percent_V7_t;
+
+typedef struct {
     uint64_t value;
 } pd_Period_V7_t;
 
@@ -274,6 +278,11 @@ typedef struct {
 
 typedef struct {
     uint8_t some;
+    pd_Percent_V7_t contained;
+} pd_OptionPercent_V7_t;
+
+typedef struct {
+    uint8_t some;
     pd_Period_V7_t contained;
 } pd_OptionPeriod_V7_t;
 
@@ -297,18 +306,9 @@ typedef struct {
 } pd_Perbill_V7_t;
 
 typedef struct {
-    compactInt_t value;
-} pd_Percent_V7_t;
-
-typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_RawSolution_V7_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_ReadySolution_V7_t;
 
 typedef struct {
     uint32_t value;
@@ -331,6 +331,11 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_SolutionOrSnapshotSize_V7_t;
+
+typedef struct {
+    // TODO: Not implemented
+    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+} pd_Supports_V7_t;
 
 typedef struct {
     uint64_t _len;

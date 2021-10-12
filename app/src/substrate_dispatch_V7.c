@@ -457,13 +457,14 @@ __Z_INLINE parser_error_t _readMethod_staking_kick_V7(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_staking_update_staking_limits_V7(
-    parser_context_t* c, pd_staking_update_staking_limits_V7_t* m)
+__Z_INLINE parser_error_t _readMethod_staking_set_staking_limits_V7(
+    parser_context_t* c, pd_staking_set_staking_limits_V7_t* m)
 {
     CHECK_ERROR(_readBalanceOf(c, &m->min_nominator_bond))
     CHECK_ERROR(_readBalanceOf(c, &m->min_validator_bond))
     CHECK_ERROR(_readOptionu32(c, &m->max_nominator_count))
     CHECK_ERROR(_readOptionu32(c, &m->max_validator_count))
+    CHECK_ERROR(_readOptionPercent_V7(c, &m->threshold))
     return parser_ok;
 }
 
@@ -1361,7 +1362,15 @@ __Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_set_minimum_unt
 __Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_set_emergency_election_result_V7(
     parser_context_t* c, pd_electionprovidermultiphase_set_emergency_election_result_V7_t* m)
 {
-    CHECK_ERROR(_readReadySolution_V7(c, &m->solution))
+    CHECK_ERROR(_readSupports_V7(c, &m->supports))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_submit_V7(
+    parser_context_t* c, pd_electionprovidermultiphase_submit_V7_t* m)
+{
+    CHECK_ERROR(_readRawSolution_V7(c, &m->solution))
+    CHECK_ERROR(_readu32(c, &m->num_signed_submissions))
     return parser_ok;
 }
 
@@ -1554,7 +1563,7 @@ parser_error_t _readMethod_V7(
         CHECK_ERROR(_readMethod_staking_kick_V7(c, &method->basic.staking_kick_V7))
         break;
     case 1815: /* module 7 call 23 */
-        CHECK_ERROR(_readMethod_staking_update_staking_limits_V7(c, &method->basic.staking_update_staking_limits_V7))
+        CHECK_ERROR(_readMethod_staking_set_staking_limits_V7(c, &method->basic.staking_set_staking_limits_V7))
         break;
     case 1816: /* module 7 call 24 */
         CHECK_ERROR(_readMethod_staking_chill_other_V7(c, &method->basic.staking_chill_other_V7))
@@ -1901,6 +1910,9 @@ parser_error_t _readMethod_V7(
     case 9218: /* module 36 call 2 */
         CHECK_ERROR(_readMethod_electionprovidermultiphase_set_emergency_election_result_V7(c, &method->basic.electionprovidermultiphase_set_emergency_election_result_V7))
         break;
+    case 9219: /* module 36 call 3 */
+        CHECK_ERROR(_readMethod_electionprovidermultiphase_submit_V7(c, &method->basic.electionprovidermultiphase_submit_V7))
+        break;
 #endif
     default:
         return parser_not_supported;
@@ -1938,14 +1950,10 @@ const char* _getMethod_ModuleName_V7(uint8_t moduleIdx)
         return STR_MO_INDICES;
     case 6:
         return STR_MO_AUTHORSHIP;
-    case 8:
-        return STR_MO_OFFENCES;
     case 11:
         return STR_MO_GRANDPA;
     case 12:
         return STR_MO_IMONLINE;
-    case 13:
-        return STR_MO_AUTHORITYDISCOVERY;
     case 14:
         return STR_MO_DEMOCRACY;
     case 15:
@@ -2105,7 +2113,7 @@ const char* _getMethod_Name_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 1814: /* module 7 call 22 */
         return STR_ME_KICK;
     case 1815: /* module 7 call 23 */
-        return STR_ME_UPDATE_STAKING_LIMITS;
+        return STR_ME_SET_STAKING_LIMITS;
     case 1816: /* module 7 call 24 */
         return STR_ME_CHILL_OTHER;
     case 2816: /* module 11 call 0 */
@@ -2336,6 +2344,8 @@ const char* _getMethod_Name_V7(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_MINIMUM_UNTRUSTED_SCORE;
     case 9218: /* module 36 call 2 */
         return STR_ME_SET_EMERGENCY_ELECTION_RESULT;
+    case 9219: /* module 36 call 3 */
+        return STR_ME_SUBMIT;
 #endif
     default:
         return NULL;
@@ -2467,7 +2477,7 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 1814: /* module 7 call 22 */
         return 1;
     case 1815: /* module 7 call 23 */
-        return 4;
+        return 5;
     case 1816: /* module 7 call 24 */
         return 1;
     case 2816: /* module 11 call 0 */
@@ -2698,6 +2708,8 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 9218: /* module 36 call 2 */
         return 1;
+    case 9219: /* module 36 call 3 */
+        return 2;
 #endif
     default:
         return 0;
@@ -3190,6 +3202,8 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_max_nominator_count;
         case 3:
             return STR_IT_max_validator_count;
+        case 4:
+            return STR_IT_threshold;
         default:
             return NULL;
         }
@@ -4180,7 +4194,16 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 9218: /* module 36 call 2 */
         switch (itemIdx) {
         case 0:
+            return STR_IT_supports;
+        default:
+            return NULL;
+        }
+    case 9219: /* module 36 call 3 */
+        switch (itemIdx) {
+        case 0:
             return STR_IT_solution;
+        case 1:
+            return STR_IT_num_signed_submissions;
         default:
             return NULL;
         }
@@ -4939,24 +4962,29 @@ parser_error_t _getMethod_ItemValue_V7(
         }
     case 1815: /* module 7 call 23 */
         switch (itemIdx) {
-        case 0: /* staking_update_staking_limits_V7 - min_nominator_bond */;
+        case 0: /* staking_set_staking_limits_V7 - min_nominator_bond */;
             return _toStringBalanceOf(
-                &m->basic.staking_update_staking_limits_V7.min_nominator_bond,
+                &m->basic.staking_set_staking_limits_V7.min_nominator_bond,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* staking_update_staking_limits_V7 - min_validator_bond */;
+        case 1: /* staking_set_staking_limits_V7 - min_validator_bond */;
             return _toStringBalanceOf(
-                &m->basic.staking_update_staking_limits_V7.min_validator_bond,
+                &m->basic.staking_set_staking_limits_V7.min_validator_bond,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 2: /* staking_update_staking_limits_V7 - max_nominator_count */;
+        case 2: /* staking_set_staking_limits_V7 - max_nominator_count */;
             return _toStringOptionu32(
-                &m->basic.staking_update_staking_limits_V7.max_nominator_count,
+                &m->basic.staking_set_staking_limits_V7.max_nominator_count,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 3: /* staking_update_staking_limits_V7 - max_validator_count */;
+        case 3: /* staking_set_staking_limits_V7 - max_validator_count */;
             return _toStringOptionu32(
-                &m->basic.staking_update_staking_limits_V7.max_validator_count,
+                &m->basic.staking_set_staking_limits_V7.max_validator_count,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 4: /* staking_set_staking_limits_V7 - threshold */;
+            return _toStringOptionPercent_V7(
+                &m->basic.staking_set_staking_limits_V7.threshold,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6569,9 +6597,24 @@ parser_error_t _getMethod_ItemValue_V7(
         }
     case 9218: /* module 36 call 2 */
         switch (itemIdx) {
-        case 0: /* electionprovidermultiphase_set_emergency_election_result_V7 - solution */;
-            return _toStringReadySolution_V7(
-                &m->basic.electionprovidermultiphase_set_emergency_election_result_V7.solution,
+        case 0: /* electionprovidermultiphase_set_emergency_election_result_V7 - supports */;
+            return _toStringSupports_V7(
+                &m->basic.electionprovidermultiphase_set_emergency_election_result_V7.supports,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 9219: /* module 36 call 3 */
+        switch (itemIdx) {
+        case 0: /* electionprovidermultiphase_submit_V7 - solution */;
+            return _toStringRawSolution_V7(
+                &m->basic.electionprovidermultiphase_submit_V7.solution,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* electionprovidermultiphase_submit_V7 - num_signed_submissions */;
+            return _toStringu32(
+                &m->basic.electionprovidermultiphase_submit_V7.num_signed_submissions,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6663,7 +6706,7 @@ bool _getMethod_IsNestingSupported_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 1812: // Staking:Set history depth
     case 1813: // Staking:Reap stash
     case 1814: // Staking:Kick
-    case 1815: // Staking:Update staking limits
+    case 1815: // Staking:Set staking limits
     case 1816: // Staking:Chill other
     case 2304: // Session:Set keys
     case 2305: // Session:Purge keys
@@ -6778,6 +6821,7 @@ bool _getMethod_IsNestingSupported_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 9216: // ElectionProviderMultiPhase:Submit unsigned
     case 9217: // ElectionProviderMultiPhase:Set minimum untrusted score
     case 9218: // ElectionProviderMultiPhase:Set emergency election result
+    case 9219: // ElectionProviderMultiPhase:Submit
         return false;
     default:
         return true;

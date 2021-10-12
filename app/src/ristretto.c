@@ -101,7 +101,7 @@ void fe25519_neg_sdk(fe25519_sdk h, const fe25519_sdk f)
 
 void fe25519_copy_sdk(const fe25519_sdk h, const fe25519_sdk f)
 {
-    MEMCPY((void *) h, f, sizeof(fe25519_sdk));
+    memcpy((void *) h, f, sizeof(fe25519_sdk));
 }
 
 //TODO: check this for constant-time
@@ -135,7 +135,7 @@ void fe25519_abs_sdk(fe25519_sdk h, const fe25519_sdk f)
 void fe25519_tobytes_sdk(unsigned char *s, const fe25519_sdk f)
 {
     uint8_t tmp = 0;
-    MEMCPY(s, f, sizeof(fe25519_sdk));
+    memcpy(s, f, sizeof(fe25519_sdk));
     SWAP_ENDIAN(&s[0], tmp);
 }
 
@@ -254,8 +254,8 @@ int crypto_scalarmult_ristretto255_base_sdk(unsigned char *q,const unsigned char
 
     ge25519_p3_sdk Q_sdk;
     MEMZERO(&Q_sdk, sizeof(ge25519_p3_sdk));
-    MEMCPY(Q_sdk.X, &Pxy[1],ED25519_SCALAR_BYTES);
-    MEMCPY(Q_sdk.Y, &Pxy[1+ED25519_SCALAR_BYTES],ED25519_SCALAR_BYTES);
+    memcpy(Q_sdk.X, &Pxy[1],ED25519_SCALAR_BYTES);
+    memcpy(Q_sdk.Y, &Pxy[1+ED25519_SCALAR_BYTES],ED25519_SCALAR_BYTES);
     fe25519_1_sdk(Q_sdk.Z);
     fe25519_mul_sdk(Q_sdk.T, Q_sdk.X,Q_sdk.Y);
 

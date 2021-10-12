@@ -15,7 +15,7 @@
  ******************************************************************************* */
 
 import Zemu, { DEFAULT_START_OPTIONS } from '@zondax/zemu'
-import { newPolkadotApp } from '@zondax/ledger-polkadot'
+import { newPolkadotApp } from '@zondax/ledger-substrate'
 import { APP_SEED, models } from './common'
 
 const defaultOptions = {
@@ -26,6 +26,10 @@ const defaultOptions = {
 }
 
 jest.setTimeout(60000)
+
+beforeAll(async () => {
+  await Zemu.checkAndPullImage()
+})
 
 async function activateSecretMode(sim: any) {
   // Get to Zondax.ch menu

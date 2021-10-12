@@ -34,11 +34,9 @@ extern "C" {
 #define PD_CALL_BALANCES_V7 5
 #define PD_CALL_AUTHORSHIP_V7 6
 #define PD_CALL_STAKING_V7 7
-#define PD_CALL_OFFENCES_V7 8
 #define PD_CALL_SESSION_V7 9
 #define PD_CALL_GRANDPA_V7 11
 #define PD_CALL_IMONLINE_V7 12
-#define PD_CALL_AUTHORITYDISCOVERY_V7 13
 #define PD_CALL_DEMOCRACY_V7 14
 #define PD_CALL_COUNCIL_V7 15
 #define PD_CALL_TECHNICALCOMMITTEE_V7 16
@@ -305,13 +303,14 @@ typedef struct {
     pd_VecLookupSource_V7_t who;
 } pd_staking_kick_V7_t;
 
-#define PD_CALL_STAKING_UPDATE_STAKING_LIMITS_V7 23
+#define PD_CALL_STAKING_SET_STAKING_LIMITS_V7 23
 typedef struct {
     pd_BalanceOf_t min_nominator_bond;
     pd_BalanceOf_t min_validator_bond;
     pd_Optionu32_t max_nominator_count;
     pd_Optionu32_t max_validator_count;
-} pd_staking_update_staking_limits_V7_t;
+    pd_OptionPercent_V7_t threshold;
+} pd_staking_set_staking_limits_V7_t;
 
 #define PD_CALL_STAKING_CHILL_OTHER_V7 24
 typedef struct {
@@ -938,8 +937,14 @@ typedef struct {
 
 #define PD_CALL_ELECTIONPROVIDERMULTIPHASE_SET_EMERGENCY_ELECTION_RESULT_V7 2
 typedef struct {
-    pd_ReadySolution_V7_t solution;
+    pd_Supports_V7_t supports;
 } pd_electionprovidermultiphase_set_emergency_election_result_V7_t;
+
+#define PD_CALL_ELECTIONPROVIDERMULTIPHASE_SUBMIT_V7 3
+typedef struct {
+    pd_RawSolution_V7_t solution;
+    pd_u32_t num_signed_submissions;
+} pd_electionprovidermultiphase_submit_V7_t;
 
 #endif
 
@@ -990,7 +995,7 @@ typedef union {
     pd_staking_set_history_depth_V7_t staking_set_history_depth_V7;
     pd_staking_reap_stash_V7_t staking_reap_stash_V7;
     pd_staking_kick_V7_t staking_kick_V7;
-    pd_staking_update_staking_limits_V7_t staking_update_staking_limits_V7;
+    pd_staking_set_staking_limits_V7_t staking_set_staking_limits_V7;
     pd_staking_chill_other_V7_t staking_chill_other_V7;
     pd_grandpa_report_equivocation_V7_t grandpa_report_equivocation_V7;
     pd_grandpa_report_equivocation_unsigned_V7_t grandpa_report_equivocation_unsigned_V7;
@@ -1101,6 +1106,7 @@ typedef union {
     pd_electionprovidermultiphase_submit_unsigned_V7_t electionprovidermultiphase_submit_unsigned_V7;
     pd_electionprovidermultiphase_set_minimum_untrusted_score_V7_t electionprovidermultiphase_set_minimum_untrusted_score_V7;
     pd_electionprovidermultiphase_set_emergency_election_result_V7_t electionprovidermultiphase_set_emergency_election_result_V7;
+    pd_electionprovidermultiphase_submit_V7_t electionprovidermultiphase_submit_V7;
 #endif
 } pd_MethodBasic_V7_t;
 

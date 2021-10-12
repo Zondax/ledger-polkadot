@@ -57,11 +57,11 @@ int segwit_addr_encode(
  *  Returns 1 if successful.
  */
 int segwit_addr_decode(
-        int* ver,
-        uint8_t* prog,
-        size_t* prog_len,
-        const char* hrp,
-        const char* addr
+        int *ver,
+        uint8_t *prog,
+        size_t *prog_len,
+        const char *hrp,
+        const char *addr
 );
 
 /** Encode a Bech32 string

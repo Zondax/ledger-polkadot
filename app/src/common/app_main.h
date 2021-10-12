@@ -28,16 +28,15 @@
 
 #define APDU_MIN_LENGTH                 5
 
+#define P1_INIT                         0  //< P1
+#define P1_ADD                          1  //< P1
+#define P1_LAST                         2  //< P1
+
 #define OFFSET_PAYLOAD_TYPE             OFFSET_P1
 
 #define INS_GET_VERSION                 0x00
 #define INS_GET_ADDR                    0x01
 #define INS_SIGN                        0x02
-
-#define INS_ALLOWLIST_GET_PUBKEY        0x90
-#define INS_ALLOWLIST_SET_PUBKEY        0x91
-#define INS_ALLOWLIST_GET_HASH          0x92
-#define INS_ALLOWLIST_UPLOAD            0x93
 
 #if defined(APP_TESTING)
 #define INS_TEST                        0xFF

@@ -65,6 +65,7 @@ parser_error_t _readOpaqueCall_V7(parser_context_t* c, pd_OpaqueCall_V7_t* v);
 parser_error_t _readOptionAccountId_V7(parser_context_t* c, pd_OptionAccountId_V7_t* v);
 parser_error_t _readOptionChangesTrieConfiguration_V7(parser_context_t* c, pd_OptionChangesTrieConfiguration_V7_t* v);
 parser_error_t _readOptionElectionScore_V7(parser_context_t* c, pd_OptionElectionScore_V7_t* v);
+parser_error_t _readOptionPercent_V7(parser_context_t* c, pd_OptionPercent_V7_t* v);
 parser_error_t _readOptionPeriod_V7(parser_context_t* c, pd_OptionPeriod_V7_t* v);
 parser_error_t _readOptionProxyType_V7(parser_context_t* c, pd_OptionProxyType_V7_t* v);
 parser_error_t _readOptionReferendumIndex_V7(parser_context_t* c, pd_OptionReferendumIndex_V7_t* v);
@@ -77,7 +78,6 @@ parser_error_t _readPeriod_V7(parser_context_t* c, pd_Period_V7_t* v);
 parser_error_t _readPriority_V7(parser_context_t* c, pd_Priority_V7_t* v);
 parser_error_t _readProxyType_V7(parser_context_t* c, pd_ProxyType_V7_t* v);
 parser_error_t _readRawSolution_V7(parser_context_t* c, pd_RawSolution_V7_t* v);
-parser_error_t _readReadySolution_V7(parser_context_t* c, pd_ReadySolution_V7_t* v);
 parser_error_t _readReferendumIndex_V7(parser_context_t* c, pd_ReferendumIndex_V7_t* v);
 parser_error_t _readRegistrarIndex_V7(parser_context_t* c, pd_RegistrarIndex_V7_t* v);
 parser_error_t _readRenouncing_V7(parser_context_t* c, pd_Renouncing_V7_t* v);
@@ -86,6 +86,7 @@ parser_error_t _readSignature_V7(parser_context_t* c, pd_Signature_V7_t* v);
 parser_error_t _readSolutionOrSnapshotSize_V7(parser_context_t* c, pd_SolutionOrSnapshotSize_V7_t* v);
 parser_error_t _readStatementKind_V7(parser_context_t* c, pd_StatementKind_V7_t* v);
 parser_error_t _readStreamDependency_V7(parser_context_t* c, pd_StreamDependency_V7_t* v);
+parser_error_t _readSupports_V7(parser_context_t* c, pd_Supports_V7_t* v);
 parser_error_t _readTimepoint_V7(parser_context_t* c, pd_Timepoint_V7_t* v);
 parser_error_t _readTupleAccountIdData_V7(parser_context_t* c, pd_TupleAccountIdData_V7_t* v);
 parser_error_t _readTupleBalanceOfBalanceOfBlockNumber_V7(parser_context_t* c, pd_TupleBalanceOfBalanceOfBlockNumber_V7_t* v);
@@ -374,6 +375,13 @@ parser_error_t _toStringOptionElectionScore_V7(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringOptionPercent_V7(
+    const pd_OptionPercent_V7_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringOptionPeriod_V7(
     const pd_OptionPeriod_V7_t* v,
     char* outValue,
@@ -458,13 +466,6 @@ parser_error_t _toStringRawSolution_V7(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringReadySolution_V7(
-    const pd_ReadySolution_V7_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
 parser_error_t _toStringReferendumIndex_V7(
     const pd_ReferendumIndex_V7_t* v,
     char* outValue,
@@ -516,6 +517,13 @@ parser_error_t _toStringStatementKind_V7(
 
 parser_error_t _toStringStreamDependency_V7(
     const pd_StreamDependency_V7_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringSupports_V7(
+    const pd_Supports_V7_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
