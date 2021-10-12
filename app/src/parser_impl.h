@@ -30,7 +30,7 @@ extern "C" {
 
 // Checks that there are at least SIZE bytes available in the buffer
 #define CTX_CHECK_AVAIL(CTX, SIZE) \
-    if ( (CTX) == NULL || ((CTX)->offset + SIZE) > (CTX)->bufferLen) { return parser_unexpected_buffer_end; }
+    if ( (CTX) == NULL || ((CTX)->offset + (SIZE)) > (CTX)->bufferLen) { return parser_unexpected_buffer_end; }
 
 #define CTX_CHECK_AND_ADVANCE(CTX, SIZE) \
     CTX_CHECK_AVAIL((CTX), (SIZE))   \
@@ -54,11 +54,12 @@ extern "C" {
     CLEAN_AND_CHECK();                                                                  \
     if (v->_ptr == NULL || outValueLen == 0 ) return parser_unexpected_buffer_end;      \
     const uint16_t outLenNormalized = (outValueLen - 1) / 2;                            \
-    *pageCount = SIZE / outLenNormalized;                                               \
-    if (SIZE % outLenNormalized != 0) *pageCount+=1;                                    \
+    if (outLenNormalized == 0 ) return parser_unexpected_buffer_end;                    \
+    *pageCount = (SIZE) / outLenNormalized;                                             \
+    if ((SIZE) % outLenNormalized != 0) *pageCount+=1;                                  \
     const uint16_t pageOffset = pageIdx * outLenNormalized;                             \
     uint16_t loopmax = outLenNormalized;                                                \
-    if (loopmax > SIZE - pageOffset)  loopmax = SIZE - pageOffset;                      \
+    if (loopmax > (SIZE) - pageOffset)  loopmax = (SIZE) - pageOffset;                  \
     for (uint16_t i = 0; i < loopmax; i++) {                                            \
         const uint16_t offset = i << 1u;                                                \
         const uint8_t *c = v->_ptr + pageOffset;                                        \
@@ -114,11 +115,11 @@ GEN_DEC_READFIX_UNSIGNED(64);
 
 #define GEN_DEF_READVECTOR_ITEM(VEC, TYPE, INDEX, VALUE)            \
     parser_context_t ctx;                                           \
-    parser_init(&ctx, VEC._ptr, VEC._lenBuffer);                    \
+    parser_init(&ctx, (VEC)._ptr, (VEC)._lenBuffer);                \
     compactInt_t clen;                                              \
     CHECK_PARSER_ERR(_readCompactInt(&ctx, &clen));                 \
-    if ((INDEX) >= VEC._len) return parser_no_data;                 \
-    for (uint64_t i = 0; i < VEC._len; i++ ) CHECK_PARSER_ERR(_read_cro_##TYPE(&ctx, &VALUE));  \
+    if ((INDEX) >= (VEC)._len) return parser_no_data;               \
+    for (uint64_t i = 0; i < (VEC)._len; i++ ) CHECK_PARSER_ERR(_read_cro_##TYPE(&ctx, &(VALUE));  \
     return parser_ok;
 
 #define GEN_DEF_TOSTRING_VECTOR(TYPE) \
@@ -176,7 +177,7 @@ parser_error_t _readTx(parser_context_t *c, parser_tx_t *v);
 uint8_t _getAddressType();
 
 parser_error_t _toStringCompactInt(const compactInt_t *c, uint8_t decimalPlaces,
-                                   char postfix,
+                                   char postfix[],
                                    char prefix[],
                                    char *outValue, uint16_t outValueLen,
                                    uint8_t pageIdx, uint8_t *pageCount);

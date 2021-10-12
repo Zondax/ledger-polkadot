@@ -118,7 +118,7 @@ void check_testcase(const testcase_t &tc, bool expert_mode) {
     err = parser_parse(&ctx, buffer, bufferLen, &tx_obj);
     ASSERT_EQ(err, parser_ok) << parser_getErrorDescription(err);
 
-    auto output = dumpUI(&ctx, 40, 40);
+    auto output = dumpUI(&ctx, 39, 39);
 
     std::cout << std::endl;
     for (const auto &i : output) {

@@ -17,6 +17,8 @@
 
 #if !defined (TARGET_NANOS) && !defined(TARGET_NANOX)
 
+// This macros are kept for backwards compatibility
+// the most recent SDK has unified implementations and deprecated the original os_***
 #define MEMMOVE memmove
 #define MEMSET memset
 #define MEMCPY memcpy
@@ -25,8 +27,8 @@
 
 #define PIC(x) (x)
 #define CHECK_APP_CANARY() {}
-//#define CX_ECCINFO_PARITY_ODD 1u
-//#define CX_ECCINFO_xGTn 2u
+#define CX_ECCINFO_PARITY_ODD 1u
+#define CX_ECCINFO_xGTn 2u
 
 #ifndef __APPLE__
 #define MEMZERO explicit_bzero

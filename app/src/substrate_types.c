@@ -21,7 +21,7 @@
 #include "substrate_dispatch.h"
 #include <stddef.h>
 #include <stdint.h>
-#include <zbuffer.h>
+#include <zxformat.h>
 #include <zxmacros.h>
 
 parser_error_t _readbool(parser_context_t* c, pd_bool_t* v)
@@ -386,7 +386,7 @@ parser_error_t _toStringCompactu32(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, "", outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, "", "", outValue, outValueLen, pageIdx, pageCount);
 }
 
 ///////////////////////////////////
@@ -400,7 +400,7 @@ parser_error_t _toStringCompactBlockNumber(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringCompactInt(v, 0, 0, "", outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(v, 0, "", "", outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringBalance(
@@ -413,8 +413,8 @@ parser_error_t _toStringBalance(
     CLEAN_AND_CHECK()
 
     char bufferUI[200];
-    MEMSET(outValue, 0, outValueLen);
-    MEMSET(bufferUI, 0, sizeof(bufferUI));
+    memset(outValue, 0, outValueLen);
+    memset(bufferUI, 0, sizeof(bufferUI));
     *pageCount = 1;
 
     uint8_t bcdOut[100];
@@ -431,15 +431,10 @@ parser_error_t _toStringBalance(
     }
 
     number_inplace_trimming(bufferUI, 1);
-    size_t size = strlen(bufferUI) + strlen(COIN_TICKER) + 2;
-    char _tmpBuffer[200];
-    MEMZERO(_tmpBuffer, sizeof(_tmpBuffer));
-    strcat(_tmpBuffer, COIN_TICKER);
-    strcat(_tmpBuffer, " ");
-    strcat(_tmpBuffer, bufferUI);
-    // print length: strlen(value) + strlen(COIN_TICKER) + strlen(" ") + nullChar
-    MEMZERO(bufferUI, sizeof(bufferUI));
-    snprintf(bufferUI, size, "%s", _tmpBuffer);
+    number_inplace_trimming(bufferUI, 1);
+    if (z_str3join(bufferUI, sizeof(bufferUI), COIN_TICKER, "") != zxerr_ok) {
+        return parser_print_not_supported;
+    }
 
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
@@ -537,7 +532,7 @@ parser_error_t _toStringTupleDataData(
         CHECK_ERROR(_toStringData(&v->data2, outValue, outValueLen, pageIdx, &pages[1]))
         return parser_ok;
     }
-    pageIdx -= pages[1];
+    // pageIdx -= pages[1];
 
     return parser_display_idx_out_of_range;
 }
@@ -601,8 +596,6 @@ parser_error_t _toStringCall(
             outValue, outValueLen, 0, &itemPages);
         (*pageCount) += itemPages;
     }
-
-    zb_check_canary();
 
     if (pageIdx == 0) {
         snprintf(outValue, outValueLen, "%s", _getMethod_Name(*v->_txVerPtr, v->callIndex.moduleIdx, v->callIndex.idx));
@@ -721,7 +714,7 @@ parser_error_t _toStringCompactBalanceOf(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, COIN_TICKER, outValue, outValueLen, pageIdx, pageCount))
+    CHECK_ERROR(_toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, "", COIN_TICKER, outValue, outValueLen, pageIdx, pageCount))
     number_inplace_trimming(outValue, 1);
     return parser_ok;
 }
