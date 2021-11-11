@@ -28,78 +28,78 @@ extern "C" {
 // Read functions
 parser_error_t _readAccountId_V8(parser_context_t* c, pd_AccountId_V8_t* v);
 parser_error_t _readAccountIndex_V8(parser_context_t* c, pd_AccountIndex_V8_t* v);
-parser_error_t _readAccountVoteSplit_V8(parser_context_t* c, pd_AccountVoteSplit_V8_t* v);
-parser_error_t _readAccountVoteStandard_V8(parser_context_t* c, pd_AccountVoteStandard_V8_t* v);
-parser_error_t _readAccountVote_V8(parser_context_t* c, pd_AccountVote_V8_t* v);
-parser_error_t _readBabeEquivocationProof_V8(parser_context_t* c, pd_BabeEquivocationProof_V8_t* v);
-parser_error_t _readCallHashOf_V8(parser_context_t* c, pd_CallHashOf_V8_t* v);
+parser_error_t _readAccountVoteBalanceOfT_V8(parser_context_t* c, pd_AccountVoteBalanceOfT_V8_t* v);
+parser_error_t _readAuthorityIdasRuntimeAppPublicSignature_V8(parser_context_t* c, pd_AuthorityIdasRuntimeAppPublicSignature_V8_t* v);
+parser_error_t _readBoxEquivocationProofHashBlockNumber_V8(parser_context_t* c, pd_BoxEquivocationProofHashBlockNumber_V8_t* v);
+parser_error_t _readBoxEquivocationProofHeader_V8(parser_context_t* c, pd_BoxEquivocationProofHeader_V8_t* v);
+parser_error_t _readBoxIdentityInfoMaxAdditionalFields_V8(parser_context_t* c, pd_BoxIdentityInfoMaxAdditionalFields_V8_t* v);
+parser_error_t _readBoxRawSolutionSolutionOfT_V8(parser_context_t* c, pd_BoxRawSolutionSolutionOfT_V8_t* v);
+parser_error_t _readBoxTasConfigIProposal_V8(parser_context_t* c, pd_BoxTasConfigIProposal_V8_t* v);
+parser_error_t _readCallHashOfT_V8(parser_context_t* c, pd_CallHashOfT_V8_t* v);
 parser_error_t _readChangesTrieConfiguration_V8(parser_context_t* c, pd_ChangesTrieConfiguration_V8_t* v);
 parser_error_t _readCompactAccountIndex_V8(parser_context_t* c, pd_CompactAccountIndex_V8_t* v);
-parser_error_t _readCompactBountyIndex_V8(parser_context_t* c, pd_CompactBountyIndex_V8_t* v);
-parser_error_t _readCompactEraIndex_V8(parser_context_t* c, pd_CompactEraIndex_V8_t* v);
-parser_error_t _readCompactMemberCount_V8(parser_context_t* c, pd_CompactMemberCount_V8_t* v);
-parser_error_t _readCompactMoment_V8(parser_context_t* c, pd_CompactMoment_V8_t* v);
 parser_error_t _readCompactPerBill_V8(parser_context_t* c, pd_CompactPerBill_V8_t* v);
-parser_error_t _readCompactPropIndex_V8(parser_context_t* c, pd_CompactPropIndex_V8_t* v);
-parser_error_t _readCompactProposalIndex_V8(parser_context_t* c, pd_CompactProposalIndex_V8_t* v);
-parser_error_t _readCompactReferendumIndex_V8(parser_context_t* c, pd_CompactReferendumIndex_V8_t* v);
-parser_error_t _readCompactRegistrarIndex_V8(parser_context_t* c, pd_CompactRegistrarIndex_V8_t* v);
-parser_error_t _readCompactWeight_V8(parser_context_t* c, pd_CompactWeight_V8_t* v);
 parser_error_t _readConviction_V8(parser_context_t* c, pd_Conviction_V8_t* v);
 parser_error_t _readEcdsaSignature_V8(parser_context_t* c, pd_EcdsaSignature_V8_t* v);
 parser_error_t _readElectionScore_V8(parser_context_t* c, pd_ElectionScore_V8_t* v);
 parser_error_t _readEraIndex_V8(parser_context_t* c, pd_EraIndex_V8_t* v);
 parser_error_t _readEthereumAddress_V8(parser_context_t* c, pd_EthereumAddress_V8_t* v);
-parser_error_t _readGrandpaEquivocationProof_V8(parser_context_t* c, pd_GrandpaEquivocationProof_V8_t* v);
+parser_error_t _readHeadData_V8(parser_context_t* c, pd_HeadData_V8_t* v);
+parser_error_t _readHeartbeatBlockNumber_V8(parser_context_t* c, pd_HeartbeatBlockNumber_V8_t* v);
+parser_error_t _readHrmpChannelId_V8(parser_context_t* c, pd_HrmpChannelId_V8_t* v);
 parser_error_t _readIdentityFields_V8(parser_context_t* c, pd_IdentityFields_V8_t* v);
-parser_error_t _readIdentityInfo_V8(parser_context_t* c, pd_IdentityInfo_V8_t* v);
-parser_error_t _readIdentityJudgement_V8(parser_context_t* c, pd_IdentityJudgement_V8_t* v);
+parser_error_t _readJudgementBalanceOfT_V8(parser_context_t* c, pd_JudgementBalanceOfT_V8_t* v);
 parser_error_t _readKeyOwnerProof_V8(parser_context_t* c, pd_KeyOwnerProof_V8_t* v);
 parser_error_t _readKeyValue_V8(parser_context_t* c, pd_KeyValue_V8_t* v);
 parser_error_t _readKey_V8(parser_context_t* c, pd_Key_V8_t* v);
 parser_error_t _readKeys_V8(parser_context_t* c, pd_Keys_V8_t* v);
-parser_error_t _readLookupSource_V8(parser_context_t* c, pd_LookupSource_V8_t* v);
+parser_error_t _readLeasePeriodOfT_V8(parser_context_t* c, pd_LeasePeriodOfT_V8_t* v);
+parser_error_t _readLookupasStaticLookupSource_V8(parser_context_t* c, pd_LookupasStaticLookupSource_V8_t* v);
 parser_error_t _readMemberCount_V8(parser_context_t* c, pd_MemberCount_V8_t* v);
+parser_error_t _readMultiSignature_V8(parser_context_t* c, pd_MultiSignature_V8_t* v);
+parser_error_t _readMultiSigner_V8(parser_context_t* c, pd_MultiSigner_V8_t* v);
 parser_error_t _readNextConfigDescriptor_V8(parser_context_t* c, pd_NextConfigDescriptor_V8_t* v);
 parser_error_t _readOpaqueCall_V8(parser_context_t* c, pd_OpaqueCall_V8_t* v);
 parser_error_t _readOptionAccountId_V8(parser_context_t* c, pd_OptionAccountId_V8_t* v);
 parser_error_t _readOptionChangesTrieConfiguration_V8(parser_context_t* c, pd_OptionChangesTrieConfiguration_V8_t* v);
 parser_error_t _readOptionElectionScore_V8(parser_context_t* c, pd_OptionElectionScore_V8_t* v);
+parser_error_t _readOptionMultiSignature_V8(parser_context_t* c, pd_OptionMultiSignature_V8_t* v);
+parser_error_t _readOptionMultiSigner_V8(parser_context_t* c, pd_OptionMultiSigner_V8_t* v);
 parser_error_t _readOptionPercent_V8(parser_context_t* c, pd_OptionPercent_V8_t* v);
-parser_error_t _readOptionPeriod_V8(parser_context_t* c, pd_OptionPeriod_V8_t* v);
 parser_error_t _readOptionProxyType_V8(parser_context_t* c, pd_OptionProxyType_V8_t* v);
 parser_error_t _readOptionReferendumIndex_V8(parser_context_t* c, pd_OptionReferendumIndex_V8_t* v);
 parser_error_t _readOptionStatementKind_V8(parser_context_t* c, pd_OptionStatementKind_V8_t* v);
 parser_error_t _readOptionTimepoint_V8(parser_context_t* c, pd_OptionTimepoint_V8_t* v);
-parser_error_t _readOptionTupleBalanceOfBalanceOfBlockNumber_V8(parser_context_t* c, pd_OptionTupleBalanceOfBalanceOfBlockNumber_V8_t* v);
+parser_error_t _readOptionTupleBalanceOfTBalanceOfTBlockNumber_V8(parser_context_t* c, pd_OptionTupleBalanceOfTBalanceOfTBlockNumber_V8_t* v);
+parser_error_t _readOptionschedulePeriodBlockNumber_V8(parser_context_t* c, pd_OptionschedulePeriodBlockNumber_V8_t* v);
+parser_error_t _readOverweightIndex_V8(parser_context_t* c, pd_OverweightIndex_V8_t* v);
+parser_error_t _readParaId_V8(parser_context_t* c, pd_ParaId_V8_t* v);
+parser_error_t _readParachainsInherentDataHeader_V8(parser_context_t* c, pd_ParachainsInherentDataHeader_V8_t* v);
 parser_error_t _readPerbill_V8(parser_context_t* c, pd_Perbill_V8_t* v);
 parser_error_t _readPercent_V8(parser_context_t* c, pd_Percent_V8_t* v);
-parser_error_t _readPeriod_V8(parser_context_t* c, pd_Period_V8_t* v);
-parser_error_t _readPriority_V8(parser_context_t* c, pd_Priority_V8_t* v);
 parser_error_t _readProxyType_V8(parser_context_t* c, pd_ProxyType_V8_t* v);
-parser_error_t _readRawSolution_V8(parser_context_t* c, pd_RawSolution_V8_t* v);
 parser_error_t _readReferendumIndex_V8(parser_context_t* c, pd_ReferendumIndex_V8_t* v);
 parser_error_t _readRegistrarIndex_V8(parser_context_t* c, pd_RegistrarIndex_V8_t* v);
 parser_error_t _readRenouncing_V8(parser_context_t* c, pd_Renouncing_V8_t* v);
 parser_error_t _readRewardDestination_V8(parser_context_t* c, pd_RewardDestination_V8_t* v);
-parser_error_t _readSignature_V8(parser_context_t* c, pd_Signature_V8_t* v);
+parser_error_t _readSessionIndex_V8(parser_context_t* c, pd_SessionIndex_V8_t* v);
 parser_error_t _readSolutionOrSnapshotSize_V8(parser_context_t* c, pd_SolutionOrSnapshotSize_V8_t* v);
 parser_error_t _readStatementKind_V8(parser_context_t* c, pd_StatementKind_V8_t* v);
-parser_error_t _readStreamDependency_V8(parser_context_t* c, pd_StreamDependency_V8_t* v);
-parser_error_t _readSupports_V8(parser_context_t* c, pd_Supports_V8_t* v);
+parser_error_t _readSupportsAccountId_V8(parser_context_t* c, pd_SupportsAccountId_V8_t* v);
 parser_error_t _readTimepoint_V8(parser_context_t* c, pd_Timepoint_V8_t* v);
 parser_error_t _readTupleAccountIdData_V8(parser_context_t* c, pd_TupleAccountIdData_V8_t* v);
-parser_error_t _readTupleBalanceOfBalanceOfBlockNumber_V8(parser_context_t* c, pd_TupleBalanceOfBalanceOfBlockNumber_V8_t* v);
+parser_error_t _readTupleBalanceOfTBalanceOfTBlockNumber_V8(parser_context_t* c, pd_TupleBalanceOfTBalanceOfTBlockNumber_V8_t* v);
+parser_error_t _readValidationCode_V8(parser_context_t* c, pd_ValidationCode_V8_t* v);
 parser_error_t _readValidatorPrefs_V8(parser_context_t* c, pd_ValidatorPrefs_V8_t* v);
 parser_error_t _readVecAccountId_V8(parser_context_t* c, pd_VecAccountId_V8_t* v);
 parser_error_t _readVecKeyValue_V8(parser_context_t* c, pd_VecKeyValue_V8_t* v);
 parser_error_t _readVecKey_V8(parser_context_t* c, pd_VecKey_V8_t* v);
-parser_error_t _readVecLookupSource_V8(parser_context_t* c, pd_VecLookupSource_V8_t* v);
+parser_error_t _readVecLookupasStaticLookupSource_V8(parser_context_t* c, pd_VecLookupasStaticLookupSource_V8_t* v);
 parser_error_t _readVecTupleAccountIdData_V8(parser_context_t* c, pd_VecTupleAccountIdData_V8_t* v);
-parser_error_t _readVestingInfo_V8(parser_context_t* c, pd_VestingInfo_V8_t* v);
-parser_error_t _readVote_V8(parser_context_t* c, pd_Vote_V8_t* v);
+parser_error_t _readVestingInfoBalanceOfTBlockNumber_V8(parser_context_t* c, pd_VestingInfoBalanceOfTBlockNumber_V8_t* v);
 parser_error_t _readWeight_V8(parser_context_t* c, pd_Weight_V8_t* v);
-parser_error_t _readu8_array_32_V8(parser_context_t* c, pd_u8_array_32_V8_t* v);
+parser_error_t _readschedulePeriodBlockNumber_V8(parser_context_t* c, pd_schedulePeriodBlockNumber_V8_t* v);
+parser_error_t _readschedulePriority_V8(parser_context_t* c, pd_schedulePriority_V8_t* v);
 
 // toString functions
 parser_error_t _toStringAccountId_V8(
@@ -116,36 +116,57 @@ parser_error_t _toStringAccountIndex_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringAccountVoteSplit_V8(
-    const pd_AccountVoteSplit_V8_t* v,
+parser_error_t _toStringAccountVoteBalanceOfT_V8(
+    const pd_AccountVoteBalanceOfT_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringAccountVoteStandard_V8(
-    const pd_AccountVoteStandard_V8_t* v,
+parser_error_t _toStringAuthorityIdasRuntimeAppPublicSignature_V8(
+    const pd_AuthorityIdasRuntimeAppPublicSignature_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringAccountVote_V8(
-    const pd_AccountVote_V8_t* v,
+parser_error_t _toStringBoxEquivocationProofHashBlockNumber_V8(
+    const pd_BoxEquivocationProofHashBlockNumber_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringBabeEquivocationProof_V8(
-    const pd_BabeEquivocationProof_V8_t* v,
+parser_error_t _toStringBoxEquivocationProofHeader_V8(
+    const pd_BoxEquivocationProofHeader_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringCallHashOf_V8(
-    const pd_CallHashOf_V8_t* v,
+parser_error_t _toStringBoxIdentityInfoMaxAdditionalFields_V8(
+    const pd_BoxIdentityInfoMaxAdditionalFields_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringBoxRawSolutionSolutionOfT_V8(
+    const pd_BoxRawSolutionSolutionOfT_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringBoxTasConfigIProposal_V8(
+    const pd_BoxTasConfigIProposal_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringCallHashOfT_V8(
+    const pd_CallHashOfT_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -165,71 +186,8 @@ parser_error_t _toStringCompactAccountIndex_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringCompactBountyIndex_V8(
-    const pd_CompactBountyIndex_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringCompactEraIndex_V8(
-    const pd_CompactEraIndex_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringCompactMemberCount_V8(
-    const pd_CompactMemberCount_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringCompactMoment_V8(
-    const pd_CompactMoment_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
 parser_error_t _toStringCompactPerBill_V8(
     const pd_CompactPerBill_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringCompactPropIndex_V8(
-    const pd_CompactPropIndex_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringCompactProposalIndex_V8(
-    const pd_CompactProposalIndex_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringCompactReferendumIndex_V8(
-    const pd_CompactReferendumIndex_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringCompactRegistrarIndex_V8(
-    const pd_CompactRegistrarIndex_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringCompactWeight_V8(
-    const pd_CompactWeight_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -270,8 +228,22 @@ parser_error_t _toStringEthereumAddress_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringGrandpaEquivocationProof_V8(
-    const pd_GrandpaEquivocationProof_V8_t* v,
+parser_error_t _toStringHeadData_V8(
+    const pd_HeadData_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringHeartbeatBlockNumber_V8(
+    const pd_HeartbeatBlockNumber_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringHrmpChannelId_V8(
+    const pd_HrmpChannelId_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -284,15 +256,8 @@ parser_error_t _toStringIdentityFields_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringIdentityInfo_V8(
-    const pd_IdentityInfo_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringIdentityJudgement_V8(
-    const pd_IdentityJudgement_V8_t* v,
+parser_error_t _toStringJudgementBalanceOfT_V8(
+    const pd_JudgementBalanceOfT_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -326,8 +291,15 @@ parser_error_t _toStringKeys_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringLookupSource_V8(
-    const pd_LookupSource_V8_t* v,
+parser_error_t _toStringLeasePeriodOfT_V8(
+    const pd_LeasePeriodOfT_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringLookupasStaticLookupSource_V8(
+    const pd_LookupasStaticLookupSource_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -335,6 +307,20 @@ parser_error_t _toStringLookupSource_V8(
 
 parser_error_t _toStringMemberCount_V8(
     const pd_MemberCount_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringMultiSignature_V8(
+    const pd_MultiSignature_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringMultiSigner_V8(
+    const pd_MultiSigner_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -375,15 +361,22 @@ parser_error_t _toStringOptionElectionScore_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringOptionPercent_V8(
-    const pd_OptionPercent_V8_t* v,
+parser_error_t _toStringOptionMultiSignature_V8(
+    const pd_OptionMultiSignature_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringOptionPeriod_V8(
-    const pd_OptionPeriod_V8_t* v,
+parser_error_t _toStringOptionMultiSigner_V8(
+    const pd_OptionMultiSigner_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringOptionPercent_V8(
+    const pd_OptionPercent_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -417,8 +410,36 @@ parser_error_t _toStringOptionTimepoint_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringOptionTupleBalanceOfBalanceOfBlockNumber_V8(
-    const pd_OptionTupleBalanceOfBalanceOfBlockNumber_V8_t* v,
+parser_error_t _toStringOptionTupleBalanceOfTBalanceOfTBlockNumber_V8(
+    const pd_OptionTupleBalanceOfTBalanceOfTBlockNumber_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringOptionschedulePeriodBlockNumber_V8(
+    const pd_OptionschedulePeriodBlockNumber_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringOverweightIndex_V8(
+    const pd_OverweightIndex_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringParaId_V8(
+    const pd_ParaId_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringParachainsInherentDataHeader_V8(
+    const pd_ParachainsInherentDataHeader_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -438,29 +459,8 @@ parser_error_t _toStringPercent_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringPeriod_V8(
-    const pd_Period_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringPriority_V8(
-    const pd_Priority_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
 parser_error_t _toStringProxyType_V8(
     const pd_ProxyType_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringRawSolution_V8(
-    const pd_RawSolution_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -494,8 +494,8 @@ parser_error_t _toStringRewardDestination_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringSignature_V8(
-    const pd_Signature_V8_t* v,
+parser_error_t _toStringSessionIndex_V8(
+    const pd_SessionIndex_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -515,15 +515,8 @@ parser_error_t _toStringStatementKind_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringStreamDependency_V8(
-    const pd_StreamDependency_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringSupports_V8(
-    const pd_Supports_V8_t* v,
+parser_error_t _toStringSupportsAccountId_V8(
+    const pd_SupportsAccountId_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -543,8 +536,15 @@ parser_error_t _toStringTupleAccountIdData_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringTupleBalanceOfBalanceOfBlockNumber_V8(
-    const pd_TupleBalanceOfBalanceOfBlockNumber_V8_t* v,
+parser_error_t _toStringTupleBalanceOfTBalanceOfTBlockNumber_V8(
+    const pd_TupleBalanceOfTBalanceOfTBlockNumber_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringValidationCode_V8(
+    const pd_ValidationCode_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -578,8 +578,8 @@ parser_error_t _toStringVecKey_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringVecLookupSource_V8(
-    const pd_VecLookupSource_V8_t* v,
+parser_error_t _toStringVecLookupasStaticLookupSource_V8(
+    const pd_VecLookupasStaticLookupSource_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -592,15 +592,8 @@ parser_error_t _toStringVecTupleAccountIdData_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringVestingInfo_V8(
-    const pd_VestingInfo_V8_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringVote_V8(
-    const pd_Vote_V8_t* v,
+parser_error_t _toStringVestingInfoBalanceOfTBlockNumber_V8(
+    const pd_VestingInfoBalanceOfTBlockNumber_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -613,8 +606,15 @@ parser_error_t _toStringWeight_V8(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringu8_array_32_V8(
-    const pd_u8_array_32_V8_t* v,
+parser_error_t _toStringschedulePeriodBlockNumber_V8(
+    const pd_schedulePeriodBlockNumber_V8_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringschedulePriority_V8(
+    const pd_schedulePriority_V8_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
