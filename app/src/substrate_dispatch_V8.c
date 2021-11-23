@@ -6315,6 +6315,7 @@ bool _getMethod_IsNestingSupported_V8(uint8_t moduleIdx, uint8_t callIdx)
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
     switch (callPrivIdx) {
+    case 1: // System:Remark
     case 9: // System:Remark with event
     case 768: // Timestamp:Set
     case 1024: // Indices:Claim
