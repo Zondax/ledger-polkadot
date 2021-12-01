@@ -53,6 +53,12 @@ extern "C" {
 #define PD_CALL_REGISTRAR_V8 70
 #define PD_CALL_AUCTIONS_V8 72
 
+#define PD_CALL_BALANCES_TRANSFER_ALL_V8 4
+typedef struct {
+    pd_LookupasStaticLookupSource_V8_t dest;
+    pd_bool_t keep_alive;
+} pd_balances_transfer_all_V8_t;
+
 #define PD_CALL_STAKING_BOND_V8 0
 typedef struct {
     pd_LookupasStaticLookupSource_V8_t controller;
@@ -60,10 +66,20 @@ typedef struct {
     pd_RewardDestination_V8_t payee;
 } pd_staking_bond_V8_t;
 
+#define PD_CALL_STAKING_BOND_EXTRA_V8 1
+typedef struct {
+    pd_CompactBalance_t Amount;
+} pd_staking_bond_extra_V8_t;
+
 #define PD_CALL_STAKING_UNBOND_V8 2
 typedef struct {
     pd_CompactBalance_t Amount;
 } pd_staking_unbond_V8_t;
+
+#define PD_CALL_STAKING_WITHDRAW_UNBONDED_V8 3
+typedef struct {
+    pd_u32_t num_slashing_spans;
+} pd_staking_withdraw_unbonded_V8_t;
 
 #define PD_CALL_STAKING_VALIDATE_V8 4
 typedef struct {
@@ -79,15 +95,46 @@ typedef struct {
 typedef struct {
 } pd_staking_chill_V8_t;
 
+#define PD_CALL_STAKING_SET_PAYEE_V8 7
+typedef struct {
+    pd_RewardDestination_V8_t payee;
+} pd_staking_set_payee_V8_t;
+
+#define PD_CALL_STAKING_SET_CONTROLLER_V8 8
+typedef struct {
+    pd_LookupasStaticLookupSource_V8_t controller;
+} pd_staking_set_controller_V8_t;
+
+#define PD_CALL_STAKING_PAYOUT_STAKERS_V8 18
+typedef struct {
+    pd_AccountId_V8_t validator_stash;
+    pd_EraIndex_V8_t era;
+} pd_staking_payout_stakers_V8_t;
+
 #define PD_CALL_STAKING_REBOND_V8 19
 typedef struct {
     pd_CompactBalance_t Amount;
 } pd_staking_rebond_V8_t;
 
+#define PD_CALL_SESSION_SET_KEYS_V8 0
+typedef struct {
+    pd_Keys_V8_t keys;
+    pd_Bytes_t proof;
+} pd_session_set_keys_V8_t;
+
+#define PD_CALL_SESSION_PURGE_KEYS_V8 1
+typedef struct {
+} pd_session_purge_keys_V8_t;
+
 #define PD_CALL_UTILITY_BATCH_V8 0
 typedef struct {
     pd_VecCall_t calls;
 } pd_utility_batch_V8_t;
+
+#define PD_CALL_UTILITY_BATCH_ALL_V8 2
+typedef struct {
+    pd_VecCall_t calls;
+} pd_utility_batch_all_V8_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
 #define PD_CALL_SYSTEM_REMARK_WITH_EVENT_V8 9
@@ -122,37 +169,11 @@ typedef struct {
     pd_AccountIndex_V8_t index;
 } pd_indices_freeze_V8_t;
 
-#define PD_CALL_BALANCES_TRANSFER_ALL_V8 4
-typedef struct {
-    pd_LookupasStaticLookupSource_V8_t dest;
-    pd_bool_t keep_alive;
-} pd_balances_transfer_all_V8_t;
-
 #define PD_CALL_BALANCES_FORCE_UNRESERVE_V8 5
 typedef struct {
     pd_LookupasStaticLookupSource_V8_t who;
     pd_Balance_t amount;
 } pd_balances_force_unreserve_V8_t;
-
-#define PD_CALL_STAKING_BOND_EXTRA_V8 1
-typedef struct {
-    pd_CompactBalance_t max_additional;
-} pd_staking_bond_extra_V8_t;
-
-#define PD_CALL_STAKING_WITHDRAW_UNBONDED_V8 3
-typedef struct {
-    pd_u32_t num_slashing_spans;
-} pd_staking_withdraw_unbonded_V8_t;
-
-#define PD_CALL_STAKING_SET_PAYEE_V8 7
-typedef struct {
-    pd_RewardDestination_V8_t payee;
-} pd_staking_set_payee_V8_t;
-
-#define PD_CALL_STAKING_SET_CONTROLLER_V8 8
-typedef struct {
-    pd_LookupasStaticLookupSource_V8_t controller;
-} pd_staking_set_controller_V8_t;
 
 #define PD_CALL_STAKING_SET_VALIDATOR_COUNT_V8 9
 typedef struct {
@@ -182,12 +203,6 @@ typedef struct {
 typedef struct {
 } pd_staking_force_new_era_always_V8_t;
 
-#define PD_CALL_STAKING_PAYOUT_STAKERS_V8 18
-typedef struct {
-    pd_AccountId_V8_t validator_stash;
-    pd_EraIndex_V8_t era;
-} pd_staking_payout_stakers_V8_t;
-
 #define PD_CALL_STAKING_SET_HISTORY_DEPTH_V8 20
 typedef struct {
     pd_Compactu32_t new_history_depth;
@@ -209,16 +224,6 @@ typedef struct {
 typedef struct {
     pd_AccountId_V8_t controller;
 } pd_staking_chill_other_V8_t;
-
-#define PD_CALL_SESSION_SET_KEYS_V8 0
-typedef struct {
-    pd_Keys_V8_t keys;
-    pd_Bytes_t proof;
-} pd_session_set_keys_V8_t;
-
-#define PD_CALL_SESSION_PURGE_KEYS_V8 1
-typedef struct {
-} pd_session_purge_keys_V8_t;
 
 #define PD_CALL_GRANDPA_NOTE_STALLED_V8 2
 typedef struct {
@@ -493,11 +498,6 @@ typedef struct {
     pd_u32_t schedule1_index;
     pd_u32_t schedule2_index;
 } pd_vesting_merge_schedules_V8_t;
-
-#define PD_CALL_UTILITY_BATCH_ALL_V8 2
-typedef struct {
-    pd_VecCall_t calls;
-} pd_utility_batch_all_V8_t;
 
 #define PD_CALL_IDENTITY_ADD_REGISTRAR_V8 0
 typedef struct {
@@ -910,13 +910,22 @@ typedef struct {
 #endif
 
 typedef union {
+    pd_balances_transfer_all_V8_t balances_transfer_all_V8;
     pd_staking_bond_V8_t staking_bond_V8;
+    pd_staking_bond_extra_V8_t staking_bond_extra_V8;
     pd_staking_unbond_V8_t staking_unbond_V8;
+    pd_staking_withdraw_unbonded_V8_t staking_withdraw_unbonded_V8;
     pd_staking_validate_V8_t staking_validate_V8;
     pd_staking_nominate_V8_t staking_nominate_V8;
     pd_staking_chill_V8_t staking_chill_V8;
+    pd_staking_set_payee_V8_t staking_set_payee_V8;
+    pd_staking_set_controller_V8_t staking_set_controller_V8;
+    pd_staking_payout_stakers_V8_t staking_payout_stakers_V8;
     pd_staking_rebond_V8_t staking_rebond_V8;
+    pd_session_set_keys_V8_t session_set_keys_V8;
+    pd_session_purge_keys_V8_t session_purge_keys_V8;
     pd_utility_batch_V8_t utility_batch_V8;
+    pd_utility_batch_all_V8_t utility_batch_all_V8;
 #ifdef SUBSTRATE_PARSER_FULL
     pd_system_remark_with_event_V8_t system_remark_with_event_V8;
     pd_timestamp_set_V8_t timestamp_set_V8;
@@ -924,25 +933,17 @@ typedef union {
     pd_indices_free_V8_t indices_free_V8;
     pd_indices_force_transfer_V8_t indices_force_transfer_V8;
     pd_indices_freeze_V8_t indices_freeze_V8;
-    pd_balances_transfer_all_V8_t balances_transfer_all_V8;
     pd_balances_force_unreserve_V8_t balances_force_unreserve_V8;
-    pd_staking_bond_extra_V8_t staking_bond_extra_V8;
-    pd_staking_withdraw_unbonded_V8_t staking_withdraw_unbonded_V8;
-    pd_staking_set_payee_V8_t staking_set_payee_V8;
-    pd_staking_set_controller_V8_t staking_set_controller_V8;
     pd_staking_set_validator_count_V8_t staking_set_validator_count_V8;
     pd_staking_increase_validator_count_V8_t staking_increase_validator_count_V8;
     pd_staking_force_no_eras_V8_t staking_force_no_eras_V8;
     pd_staking_force_new_era_V8_t staking_force_new_era_V8;
     pd_staking_force_unstake_V8_t staking_force_unstake_V8;
     pd_staking_force_new_era_always_V8_t staking_force_new_era_always_V8;
-    pd_staking_payout_stakers_V8_t staking_payout_stakers_V8;
     pd_staking_set_history_depth_V8_t staking_set_history_depth_V8;
     pd_staking_reap_stash_V8_t staking_reap_stash_V8;
     pd_staking_kick_V8_t staking_kick_V8;
     pd_staking_chill_other_V8_t staking_chill_other_V8;
-    pd_session_set_keys_V8_t session_set_keys_V8;
-    pd_session_purge_keys_V8_t session_purge_keys_V8;
     pd_grandpa_note_stalled_V8_t grandpa_note_stalled_V8;
     pd_democracy_second_V8_t democracy_second_V8;
     pd_democracy_emergency_cancel_V8_t democracy_emergency_cancel_V8;
@@ -993,7 +994,6 @@ typedef union {
     pd_vesting_vest_V8_t vesting_vest_V8;
     pd_vesting_vest_other_V8_t vesting_vest_other_V8;
     pd_vesting_merge_schedules_V8_t vesting_merge_schedules_V8;
-    pd_utility_batch_all_V8_t utility_batch_all_V8;
     pd_identity_add_registrar_V8_t identity_add_registrar_V8;
     pd_identity_clear_identity_V8_t identity_clear_identity_V8;
     pd_identity_request_judgement_V8_t identity_request_judgement_V8;
@@ -1080,6 +1080,19 @@ typedef struct {
     pd_CompactBalance_t Amount;
 } pd_balances_transfer_V8_t;
 
+#define PD_CALL_BALANCES_FORCE_TRANSFER_V8 2
+typedef struct {
+    pd_LookupasStaticLookupSource_V8_t source;
+    pd_LookupasStaticLookupSource_V8_t dest;
+    pd_CompactBalance_t Amount;
+} pd_balances_force_transfer_V8_t;
+
+#define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE_V8 3
+typedef struct {
+    pd_LookupasStaticLookupSource_V8_t dest;
+    pd_CompactBalance_t Amount;
+} pd_balances_transfer_keep_alive_V8_t;
+
 #ifdef SUBSTRATE_PARSER_FULL
 #define PD_CALL_SYSTEM_FILL_BLOCK_V8 0
 typedef struct {
@@ -1112,19 +1125,6 @@ typedef struct {
     pd_CompactBalance_t new_free;
     pd_CompactBalance_t new_reserved;
 } pd_balances_set_balance_V8_t;
-
-#define PD_CALL_BALANCES_FORCE_TRANSFER_V8 2
-typedef struct {
-    pd_LookupasStaticLookupSource_V8_t source;
-    pd_LookupasStaticLookupSource_V8_t dest;
-    pd_CompactBalance_t Amount;
-} pd_balances_force_transfer_V8_t;
-
-#define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE_V8 3
-typedef struct {
-    pd_LookupasStaticLookupSource_V8_t dest;
-    pd_CompactBalance_t Amount;
-} pd_balances_transfer_keep_alive_V8_t;
 
 #define PD_CALL_PROXY_PROXY_V8 0
 typedef struct {
@@ -1164,6 +1164,8 @@ typedef struct {
 
 typedef union {
     pd_balances_transfer_V8_t balances_transfer_V8;
+    pd_balances_force_transfer_V8_t balances_force_transfer_V8;
+    pd_balances_transfer_keep_alive_V8_t balances_transfer_keep_alive_V8;
 #ifdef SUBSTRATE_PARSER_FULL
     pd_system_fill_block_V8_t system_fill_block_V8;
     pd_system_remark_V8_t system_remark_V8;
@@ -1171,8 +1173,6 @@ typedef union {
     pd_system_set_code_V8_t system_set_code_V8;
     pd_system_set_code_without_checks_V8_t system_set_code_without_checks_V8;
     pd_balances_set_balance_V8_t balances_set_balance_V8;
-    pd_balances_force_transfer_V8_t balances_force_transfer_V8;
-    pd_balances_transfer_keep_alive_V8_t balances_transfer_keep_alive_V8;
     pd_proxy_proxy_V8_t proxy_proxy_V8;
     pd_multisig_as_multi_V8_t multisig_as_multi_V8;
     pd_multisig_approve_as_multi_V8_t multisig_approve_as_multi_V8;
