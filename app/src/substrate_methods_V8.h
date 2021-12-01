@@ -62,18 +62,18 @@ typedef struct {
 #define PD_CALL_STAKING_BOND_V8 0
 typedef struct {
     pd_LookupasStaticLookupSource_V8_t controller;
-    pd_CompactBalance_t Amount;
+    pd_CompactBalance_t amount;
     pd_RewardDestination_V8_t payee;
 } pd_staking_bond_V8_t;
 
 #define PD_CALL_STAKING_BOND_EXTRA_V8 1
 typedef struct {
-    pd_CompactBalance_t Amount;
+    pd_CompactBalance_t amount;
 } pd_staking_bond_extra_V8_t;
 
 #define PD_CALL_STAKING_UNBOND_V8 2
 typedef struct {
-    pd_CompactBalance_t Amount;
+    pd_CompactBalance_t amount;
 } pd_staking_unbond_V8_t;
 
 #define PD_CALL_STAKING_WITHDRAW_UNBONDED_V8 3
@@ -113,7 +113,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_REBOND_V8 19
 typedef struct {
-    pd_CompactBalance_t Amount;
+    pd_CompactBalance_t amount;
 } pd_staking_rebond_V8_t;
 
 #define PD_CALL_SESSION_SET_KEYS_V8 0
@@ -445,7 +445,7 @@ typedef struct {
 
 #define PD_CALL_TREASURY_PROPOSE_SPEND_V8 0
 typedef struct {
-    pd_CompactBalance_t Amount;
+    pd_CompactBalance_t amount;
     pd_LookupasStaticLookupSource_V8_t beneficiary;
 } pd_treasury_propose_spend_V8_t;
 
@@ -589,7 +589,7 @@ typedef struct {
 
 #define PD_CALL_BOUNTIES_PROPOSE_BOUNTY_V8 0
 typedef struct {
-    pd_CompactBalance_t Amount;
+    pd_CompactBalance_t amount;
     pd_Bytes_t description;
 } pd_bounties_propose_bounty_V8_t;
 
@@ -1077,20 +1077,20 @@ typedef union {
 #define PD_CALL_BALANCES_TRANSFER_V8 0
 typedef struct {
     pd_LookupasStaticLookupSource_V8_t dest;
-    pd_CompactBalance_t Amount;
+    pd_CompactBalance_t amount;
 } pd_balances_transfer_V8_t;
 
 #define PD_CALL_BALANCES_FORCE_TRANSFER_V8 2
 typedef struct {
     pd_LookupasStaticLookupSource_V8_t source;
     pd_LookupasStaticLookupSource_V8_t dest;
-    pd_CompactBalance_t Amount;
+    pd_CompactBalance_t amount;
 } pd_balances_force_transfer_V8_t;
 
 #define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE_V8 3
 typedef struct {
     pd_LookupasStaticLookupSource_V8_t dest;
-    pd_CompactBalance_t Amount;
+    pd_CompactBalance_t amount;
 } pd_balances_transfer_keep_alive_V8_t;
 
 #ifdef SUBSTRATE_PARSER_FULL

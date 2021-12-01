@@ -23,7 +23,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_V8(
     parser_context_t* c, pd_balances_transfer_V8_t* m)
 {
     CHECK_ERROR(_readLookupasStaticLookupSource_V8(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->Amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -32,7 +32,7 @@ __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V8(
 {
     CHECK_ERROR(_readLookupasStaticLookupSource_V8(c, &m->source))
     CHECK_ERROR(_readLookupasStaticLookupSource_V8(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->Amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -40,7 +40,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive_V8(
     parser_context_t* c, pd_balances_transfer_keep_alive_V8_t* m)
 {
     CHECK_ERROR(_readLookupasStaticLookupSource_V8(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->Amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -56,7 +56,7 @@ __Z_INLINE parser_error_t _readMethod_staking_bond_V8(
     parser_context_t* c, pd_staking_bond_V8_t* m)
 {
     CHECK_ERROR(_readLookupasStaticLookupSource_V8(c, &m->controller))
-    CHECK_ERROR(_readCompactBalance(c, &m->Amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     CHECK_ERROR(_readRewardDestination_V8(c, &m->payee))
     return parser_ok;
 }
@@ -64,14 +64,14 @@ __Z_INLINE parser_error_t _readMethod_staking_bond_V8(
 __Z_INLINE parser_error_t _readMethod_staking_bond_extra_V8(
     parser_context_t* c, pd_staking_bond_extra_V8_t* m)
 {
-    CHECK_ERROR(_readCompactBalance(c, &m->Amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_unbond_V8(
     parser_context_t* c, pd_staking_unbond_V8_t* m)
 {
-    CHECK_ERROR(_readCompactBalance(c, &m->Amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -127,7 +127,7 @@ __Z_INLINE parser_error_t _readMethod_staking_payout_stakers_V8(
 __Z_INLINE parser_error_t _readMethod_staking_rebond_V8(
     parser_context_t* c, pd_staking_rebond_V8_t* m)
 {
-    CHECK_ERROR(_readCompactBalance(c, &m->Amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -627,7 +627,7 @@ __Z_INLINE parser_error_t _readMethod_technicalmembership_clear_prime_V8(
 __Z_INLINE parser_error_t _readMethod_treasury_propose_spend_V8(
     parser_context_t* c, pd_treasury_propose_spend_V8_t* m)
 {
-    CHECK_ERROR(_readCompactBalance(c, &m->Amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     CHECK_ERROR(_readLookupasStaticLookupSource_V8(c, &m->beneficiary))
     return parser_ok;
 }
@@ -863,7 +863,7 @@ __Z_INLINE parser_error_t _readMethod_multisig_cancel_as_multi_V8(
 __Z_INLINE parser_error_t _readMethod_bounties_propose_bounty_V8(
     parser_context_t* c, pd_bounties_propose_bounty_V8_t* m)
 {
-    CHECK_ERROR(_readCompactBalance(c, &m->Amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     CHECK_ERROR(_readBytes(c, &m->description))
     return parser_ok;
 }
@@ -2804,7 +2804,7 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 0:
             return STR_IT_dest;
         case 1:
-            return STR_IT_Amount;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -2815,7 +2815,7 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 1:
             return STR_IT_dest;
         case 2:
-            return STR_IT_Amount;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -2824,7 +2824,7 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 0:
             return STR_IT_dest;
         case 1:
-            return STR_IT_Amount;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -2842,7 +2842,7 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 0:
             return STR_IT_controller;
         case 1:
-            return STR_IT_Amount;
+            return STR_IT_amount;
         case 2:
             return STR_IT_payee;
         default:
@@ -2851,14 +2851,14 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 1793: /* module 7 call 1 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_Amount;
+            return STR_IT_amount;
         default:
             return NULL;
         }
     case 1794: /* module 7 call 2 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_Amount;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -2914,7 +2914,7 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 1811: /* module 7 call 19 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_Amount;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -3437,7 +3437,7 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 4864: /* module 19 call 0 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_Amount;
+            return STR_IT_amount;
         case 1:
             return STR_IT_beneficiary;
         default:
@@ -3706,7 +3706,7 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 8704: /* module 34 call 0 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_Amount;
+            return STR_IT_amount;
         case 1:
             return STR_IT_description;
         default:
@@ -4181,9 +4181,9 @@ parser_error_t _getMethod_ItemValue_V8(
                 &m->nested.balances_transfer_V8.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* balances_transfer_V8 - Amount */;
+        case 1: /* balances_transfer_V8 - amount */;
             return _toStringCompactBalance(
-                &m->nested.balances_transfer_V8.Amount,
+                &m->nested.balances_transfer_V8.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4201,9 +4201,9 @@ parser_error_t _getMethod_ItemValue_V8(
                 &m->nested.balances_force_transfer_V8.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 2: /* balances_force_transfer_V8 - Amount */;
+        case 2: /* balances_force_transfer_V8 - amount */;
             return _toStringCompactBalance(
-                &m->nested.balances_force_transfer_V8.Amount,
+                &m->nested.balances_force_transfer_V8.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4216,9 +4216,9 @@ parser_error_t _getMethod_ItemValue_V8(
                 &m->nested.balances_transfer_keep_alive_V8.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* balances_transfer_keep_alive_V8 - Amount */;
+        case 1: /* balances_transfer_keep_alive_V8 - amount */;
             return _toStringCompactBalance(
-                &m->nested.balances_transfer_keep_alive_V8.Amount,
+                &m->nested.balances_transfer_keep_alive_V8.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4246,9 +4246,9 @@ parser_error_t _getMethod_ItemValue_V8(
                 &m->basic.staking_bond_V8.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* staking_bond_V8 - Amount */;
+        case 1: /* staking_bond_V8 - amount */;
             return _toStringCompactBalance(
-                &m->basic.staking_bond_V8.Amount,
+                &m->basic.staking_bond_V8.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* staking_bond_V8 - payee */;
@@ -4261,9 +4261,9 @@ parser_error_t _getMethod_ItemValue_V8(
         }
     case 1793: /* module 7 call 1 */
         switch (itemIdx) {
-        case 0: /* staking_bond_extra_V8 - Amount */;
+        case 0: /* staking_bond_extra_V8 - amount */;
             return _toStringCompactBalance(
-                &m->basic.staking_bond_extra_V8.Amount,
+                &m->basic.staking_bond_extra_V8.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4271,9 +4271,9 @@ parser_error_t _getMethod_ItemValue_V8(
         }
     case 1794: /* module 7 call 2 */
         switch (itemIdx) {
-        case 0: /* staking_unbond_V8 - Amount */;
+        case 0: /* staking_unbond_V8 - amount */;
             return _toStringCompactBalance(
-                &m->basic.staking_unbond_V8.Amount,
+                &m->basic.staking_unbond_V8.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4351,9 +4351,9 @@ parser_error_t _getMethod_ItemValue_V8(
         }
     case 1811: /* module 7 call 19 */
         switch (itemIdx) {
-        case 0: /* staking_rebond_V8 - Amount */;
+        case 0: /* staking_rebond_V8 - amount */;
             return _toStringCompactBalance(
-                &m->basic.staking_rebond_V8.Amount,
+                &m->basic.staking_rebond_V8.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5147,9 +5147,9 @@ parser_error_t _getMethod_ItemValue_V8(
         }
     case 4864: /* module 19 call 0 */
         switch (itemIdx) {
-        case 0: /* treasury_propose_spend_V8 - Amount */;
+        case 0: /* treasury_propose_spend_V8 - amount */;
             return _toStringCompactBalance(
-                &m->basic.treasury_propose_spend_V8.Amount,
+                &m->basic.treasury_propose_spend_V8.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_spend_V8 - beneficiary */;
@@ -5602,9 +5602,9 @@ parser_error_t _getMethod_ItemValue_V8(
         }
     case 8704: /* module 34 call 0 */
         switch (itemIdx) {
-        case 0: /* bounties_propose_bounty_V8 - Amount */;
+        case 0: /* bounties_propose_bounty_V8 - amount */;
             return _toStringCompactBalance(
-                &m->basic.bounties_propose_bounty_V8.Amount,
+                &m->basic.bounties_propose_bounty_V8.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* bounties_propose_bounty_V8 - description */;
