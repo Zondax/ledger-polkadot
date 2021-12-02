@@ -40,7 +40,7 @@ Please:
 |Set storage |    |   |   | `VecKeyValue` items <br/> | 
 |Kill storage |    |   |   | `VecKey` keys <br/> | 
 |Kill prefix |    |   |   | `Key` prefix <br/>`u32` subkeys <br/> | 
-|Remark with event |    | :heavy_check_mark: |   | `Vecu8` remark <br/> | 
+|Remark with event |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
 
 ## Scheduler
 

@@ -1391,7 +1391,7 @@ parser_error_t _readMethod_V8(
         CHECK_ERROR(_readMethod_system_set_code_without_checks_V8(c, &method->nested.system_set_code_without_checks_V8))
         break;
     case 9: /* module 0 call 9 */
-        CHECK_ERROR(_readMethod_system_remark_with_event_V8(c, &method->basic.system_remark_with_event_V8))
+        CHECK_ERROR(_readMethod_system_remark_with_event_V8(c, &method->nested.system_remark_with_event_V8))
         break;
     case 768: /* module 3 call 0 */
         CHECK_ERROR(_readMethod_timestamp_set_V8(c, &method->basic.timestamp_set_V8))
@@ -4454,7 +4454,7 @@ parser_error_t _getMethod_ItemValue_V8(
         switch (itemIdx) {
         case 0: /* system_remark_with_event_V8 - remark */;
             return _toStringVecu8(
-                &m->basic.system_remark_with_event_V8.remark,
+                &m->nested.system_remark_with_event_V8.remark,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6315,7 +6315,6 @@ bool _getMethod_IsNestingSupported_V8(uint8_t moduleIdx, uint8_t callIdx)
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
     switch (callPrivIdx) {
-    case 9: // System:Remark with event
     case 768: // Timestamp:Set
     case 1024: // Indices:Claim
     case 1026: // Indices:Free
