@@ -5,7 +5,7 @@
 | Name        | Light | XL | Nesting | Arguments | 
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Fill block |    | :heavy_check_mark: | :heavy_check_mark: | `Perbill` ratio <br/> | 
-|Remark |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
+|Remark | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
 |Set heap pages |    | :heavy_check_mark: | :heavy_check_mark: | `u64` pages <br/> | 
 |Set code |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` code <br/> | 
 |Set code without checks |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` code <br/> | 
@@ -13,7 +13,7 @@
 |Set storage |    |   |   | `VecKeyValue` items <br/> | 
 |Kill storage |    |   |   | `VecKey` keys <br/> | 
 |Kill prefix |    |   |   | `Key` prefix <br/>`u32` subkeys <br/> | 
-|Remark with event |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
+|Remark with event | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
 
 ## Scheduler
 

@@ -19,6 +19,20 @@
 #include "zxmacros.h"
 #include <stdint.h>
 
+__Z_INLINE parser_error_t _readMethod_system_remark_V8(
+    parser_context_t* c, pd_system_remark_V8_t* m)
+{
+    CHECK_ERROR(_readVecu8(c, &m->remark))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_system_remark_with_event_V8(
+    parser_context_t* c, pd_system_remark_with_event_V8_t* m)
+{
+    CHECK_ERROR(_readVecu8(c, &m->remark))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_balances_transfer_V8(
     parser_context_t* c, pd_balances_transfer_V8_t* m)
 {
@@ -167,13 +181,6 @@ __Z_INLINE parser_error_t _readMethod_system_fill_block_V8(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_system_remark_V8(
-    parser_context_t* c, pd_system_remark_V8_t* m)
-{
-    CHECK_ERROR(_readVecu8(c, &m->remark))
-    return parser_ok;
-}
-
 __Z_INLINE parser_error_t _readMethod_system_set_heap_pages_V8(
     parser_context_t* c, pd_system_set_heap_pages_V8_t* m)
 {
@@ -192,13 +199,6 @@ __Z_INLINE parser_error_t _readMethod_system_set_code_without_checks_V8(
     parser_context_t* c, pd_system_set_code_without_checks_V8_t* m)
 {
     CHECK_ERROR(_readVecu8(c, &m->code))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_system_remark_with_event_V8(
-    parser_context_t* c, pd_system_remark_with_event_V8_t* m)
-{
-    CHECK_ERROR(_readVecu8(c, &m->remark))
     return parser_ok;
 }
 
@@ -1316,6 +1316,12 @@ parser_error_t _readMethod_V8(
 
     switch (callPrivIdx) {
 
+    case 1: /* module 0 call 1 */
+        CHECK_ERROR(_readMethod_system_remark_V8(c, &method->nested.system_remark_V8))
+        break;
+    case 9: /* module 0 call 9 */
+        CHECK_ERROR(_readMethod_system_remark_with_event_V8(c, &method->nested.system_remark_with_event_V8))
+        break;
     case 1280: /* module 5 call 0 */
         CHECK_ERROR(_readMethod_balances_transfer_V8(c, &method->nested.balances_transfer_V8))
         break;
@@ -1378,9 +1384,6 @@ parser_error_t _readMethod_V8(
     case 0: /* module 0 call 0 */
         CHECK_ERROR(_readMethod_system_fill_block_V8(c, &method->nested.system_fill_block_V8))
         break;
-    case 1: /* module 0 call 1 */
-        CHECK_ERROR(_readMethod_system_remark_V8(c, &method->nested.system_remark_V8))
-        break;
     case 2: /* module 0 call 2 */
         CHECK_ERROR(_readMethod_system_set_heap_pages_V8(c, &method->nested.system_set_heap_pages_V8))
         break;
@@ -1389,9 +1392,6 @@ parser_error_t _readMethod_V8(
         break;
     case 4: /* module 0 call 4 */
         CHECK_ERROR(_readMethod_system_set_code_without_checks_V8(c, &method->nested.system_set_code_without_checks_V8))
-        break;
-    case 9: /* module 0 call 9 */
-        CHECK_ERROR(_readMethod_system_remark_with_event_V8(c, &method->nested.system_remark_with_event_V8))
         break;
     case 768: /* module 3 call 0 */
         CHECK_ERROR(_readMethod_timestamp_set_V8(c, &method->basic.timestamp_set_V8))
@@ -1853,6 +1853,8 @@ parser_error_t _readMethod_V8(
 const char* _getMethod_ModuleName_V8(uint8_t moduleIdx)
 {
     switch (moduleIdx) {
+    case 0:
+        return STR_MO_SYSTEM;
     case 5:
         return STR_MO_BALANCES;
     case 7:
@@ -1862,8 +1864,6 @@ const char* _getMethod_ModuleName_V8(uint8_t moduleIdx)
     case 26:
         return STR_MO_UTILITY;
 #ifdef SUBSTRATE_PARSER_FULL
-    case 0:
-        return STR_MO_SYSTEM;
     case 3:
         return STR_MO_TIMESTAMP;
     case 4:
@@ -1919,6 +1919,10 @@ const char* _getMethod_Name_V8(uint8_t moduleIdx, uint8_t callIdx)
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
     switch (callPrivIdx) {
+    case 1: /* module 0 call 1 */
+        return STR_ME_REMARK;
+    case 9: /* module 0 call 9 */
+        return STR_ME_REMARK_WITH_EVENT;
     case 1280: /* module 5 call 0 */
         return STR_ME_TRANSFER;
     case 1282: /* module 5 call 2 */
@@ -1960,8 +1964,6 @@ const char* _getMethod_Name_V8(uint8_t moduleIdx, uint8_t callIdx)
 #ifdef SUBSTRATE_PARSER_FULL
     case 0: /* module 0 call 0 */
         return STR_ME_FILL_BLOCK;
-    case 1: /* module 0 call 1 */
-        return STR_ME_REMARK;
     case 2: /* module 0 call 2 */
         return STR_ME_SET_HEAP_PAGES;
     case 3: /* module 0 call 3 */
@@ -1976,8 +1978,6 @@ const char* _getMethod_Name_V8(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_KILL_STORAGE;
     case 8: /* module 0 call 8 */
         return STR_ME_KILL_PREFIX;
-    case 9: /* module 0 call 9 */
-        return STR_ME_REMARK_WITH_EVENT;
     case 256: /* module 1 call 0 */
         return STR_ME_SCHEDULE;
     case 257: /* module 1 call 1 */
@@ -2439,6 +2439,10 @@ uint8_t _getMethod_NumItems_V8(uint8_t moduleIdx, uint8_t callIdx)
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
     switch (callPrivIdx) {
+    case 1: /* module 0 call 1 */
+        return 1;
+    case 9: /* module 0 call 9 */
+        return 1;
     case 1280: /* module 5 call 0 */
         return 2;
     case 1282: /* module 5 call 2 */
@@ -2480,15 +2484,11 @@ uint8_t _getMethod_NumItems_V8(uint8_t moduleIdx, uint8_t callIdx)
 #ifdef SUBSTRATE_PARSER_FULL
     case 0: /* module 0 call 0 */
         return 1;
-    case 1: /* module 0 call 1 */
-        return 1;
     case 2: /* module 0 call 2 */
         return 1;
     case 3: /* module 0 call 3 */
         return 1;
     case 4: /* module 0 call 4 */
-        return 1;
-    case 9: /* module 0 call 9 */
         return 1;
     case 768: /* module 3 call 0 */
         return 1;
@@ -2799,6 +2799,20 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
     switch (callPrivIdx) {
+    case 1: /* module 0 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_remark;
+        default:
+            return NULL;
+        }
+    case 9: /* module 0 call 9 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_remark;
+        default:
+            return NULL;
+        }
     case 1280: /* module 5 call 0 */
         switch (itemIdx) {
         case 0:
@@ -2954,13 +2968,6 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 1: /* module 0 call 1 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_remark;
-        default:
-            return NULL;
-        }
     case 2: /* module 0 call 2 */
         switch (itemIdx) {
         case 0:
@@ -2979,13 +2986,6 @@ const char* _getMethod_ItemName_V8(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         switch (itemIdx) {
         case 0:
             return STR_IT_code;
-        default:
-            return NULL;
-        }
-    case 9: /* module 0 call 9 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_remark;
         default:
             return NULL;
         }
@@ -4174,6 +4174,26 @@ parser_error_t _getMethod_ItemValue_V8(
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
     switch (callPrivIdx) {
+    case 1: /* module 0 call 1 */
+        switch (itemIdx) {
+        case 0: /* system_remark_V8 - remark */;
+            return _toStringVecu8(
+                &m->nested.system_remark_V8.remark,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 9: /* module 0 call 9 */
+        switch (itemIdx) {
+        case 0: /* system_remark_with_event_V8 - remark */;
+            return _toStringVecu8(
+                &m->nested.system_remark_with_event_V8.remark,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 1280: /* module 5 call 0 */
         switch (itemIdx) {
         case 0: /* balances_transfer_V8 - dest */;
@@ -4410,16 +4430,6 @@ parser_error_t _getMethod_ItemValue_V8(
         default:
             return parser_no_data;
         }
-    case 1: /* module 0 call 1 */
-        switch (itemIdx) {
-        case 0: /* system_remark_V8 - remark */;
-            return _toStringVecu8(
-                &m->nested.system_remark_V8.remark,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
     case 2: /* module 0 call 2 */
         switch (itemIdx) {
         case 0: /* system_set_heap_pages_V8 - pages */;
@@ -4445,16 +4455,6 @@ parser_error_t _getMethod_ItemValue_V8(
         case 0: /* system_set_code_without_checks_V8 - code */;
             return _toStringVecu8(
                 &m->nested.system_set_code_without_checks_V8.code,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 9: /* module 0 call 9 */
-        switch (itemIdx) {
-        case 0: /* system_remark_with_event_V8 - remark */;
-            return _toStringVecu8(
-                &m->nested.system_remark_with_event_V8.remark,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:

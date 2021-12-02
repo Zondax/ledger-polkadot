@@ -1069,6 +1069,16 @@ typedef union {
 #endif
 } pd_MethodBasic_V8_t;
 
+#define PD_CALL_SYSTEM_REMARK_V8 1
+typedef struct {
+    pd_Vecu8_t remark;
+} pd_system_remark_V8_t;
+
+#define PD_CALL_SYSTEM_REMARK_WITH_EVENT_V8 9
+typedef struct {
+    pd_Vecu8_t remark;
+} pd_system_remark_with_event_V8_t;
+
 #define PD_CALL_BALANCES_TRANSFER_V8 0
 typedef struct {
     pd_LookupasStaticLookupSource_V8_t dest;
@@ -1094,11 +1104,6 @@ typedef struct {
     pd_Perbill_V8_t ratio;
 } pd_system_fill_block_V8_t;
 
-#define PD_CALL_SYSTEM_REMARK_V8 1
-typedef struct {
-    pd_Vecu8_t remark;
-} pd_system_remark_V8_t;
-
 #define PD_CALL_SYSTEM_SET_HEAP_PAGES_V8 2
 typedef struct {
     pd_u64_t pages;
@@ -1113,11 +1118,6 @@ typedef struct {
 typedef struct {
     pd_Vecu8_t code;
 } pd_system_set_code_without_checks_V8_t;
-
-#define PD_CALL_SYSTEM_REMARK_WITH_EVENT_V8 9
-typedef struct {
-    pd_Vecu8_t remark;
-} pd_system_remark_with_event_V8_t;
 
 #define PD_CALL_BALANCES_SET_BALANCE_V8 1
 typedef struct {
@@ -1163,16 +1163,16 @@ typedef struct {
 #endif
 
 typedef union {
+    pd_system_remark_V8_t system_remark_V8;
+    pd_system_remark_with_event_V8_t system_remark_with_event_V8;
     pd_balances_transfer_V8_t balances_transfer_V8;
     pd_balances_force_transfer_V8_t balances_force_transfer_V8;
     pd_balances_transfer_keep_alive_V8_t balances_transfer_keep_alive_V8;
 #ifdef SUBSTRATE_PARSER_FULL
     pd_system_fill_block_V8_t system_fill_block_V8;
-    pd_system_remark_V8_t system_remark_V8;
     pd_system_set_heap_pages_V8_t system_set_heap_pages_V8;
     pd_system_set_code_V8_t system_set_code_V8;
     pd_system_set_code_without_checks_V8_t system_set_code_without_checks_V8;
-    pd_system_remark_with_event_V8_t system_remark_with_event_V8;
     pd_balances_set_balance_V8_t balances_set_balance_V8;
     pd_proxy_proxy_V8_t proxy_proxy_V8;
     pd_multisig_as_multi_V8_t multisig_as_multi_V8;
