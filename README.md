@@ -1,4 +1,5 @@
 # Ledger Polkadot app
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GithubActions](https://github.com/zondax/ledger-polkadot/actions/workflows/main.yml/badge.svg)](https://github.com/Zondax/ledger-polkadot/blob/main/.github/workflows/main.yaml)
 
@@ -8,7 +9,8 @@
 
 _Please visit our website at [zondax.ch](zondax.ch)_
 
-------------------
+---
+
 This project contains the Kusama app (https://kusama.network/) for Ledger Nano S and X.
 
 - Ledger Nano S/X BOLOS app
@@ -25,22 +27,22 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot  8.9122.x
+
+# Polkadot  9.9140.x
 
 ## System
 
 | Name        | Light | XL | Nesting | Arguments | 
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Fill block |    | :heavy_check_mark: | :heavy_check_mark: | `Perbill` ratio <br/> | 
-|Remark | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
+|Remark |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
 |Set heap pages |    | :heavy_check_mark: | :heavy_check_mark: | `u64` pages <br/> | 
 |Set code |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` code <br/> | 
 |Set code without checks |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` code <br/> | 
-|Set changes trie config |    |   |   | `OptionChangesTrieConfiguration` changes_trie_config <br/> | 
 |Set storage |    |   |   | `VecKeyValue` items <br/> | 
 |Kill storage |    |   |   | `VecKey` keys <br/> | 
 |Kill prefix |    |   |   | `Key` prefix <br/>`u32` subkeys <br/> | 
-|Remark with event | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
+|Remark with event |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
 
 ## Scheduler
 
@@ -151,7 +153,7 @@ Please:
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Propose |    |   |   | `Hash` proposal_hash <br/>`Compactu128` amount <br/> | 
 |Second |    | :heavy_check_mark: |   | `Compactu32` proposal <br/>`Compactu32` seconds_upper_bound <br/> | 
-|Vote |    |   |   | `Compactu32` ref_index <br/>`AccountVoteBalanceOfT` vote <br/> | 
+|Vote |    |   |   | `Compactu32` ref_index <br/>`AccountVoteBalanceOf` vote <br/> | 
 |Emergency cancel |    | :heavy_check_mark: |   | `ReferendumIndex` ref_index <br/> | 
 |External propose |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> | 
 |External propose majority |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> | 
@@ -236,7 +238,7 @@ Please:
 |Mint claim |    |   |   | `EthereumAddress` who <br/>`Balance` amount <br/>`OptionTupleBalanceOfTBalanceOfTBlockNumber` vesting_schedule <br/>`OptionStatementKind` statement <br/> | 
 |Claim attest |    | :heavy_check_mark: |   | `AccountId` dest <br/>`EcdsaSignature` ethereum_signature <br/>`Bytes` statement <br/> | 
 |Attest |    | :heavy_check_mark: |   | `Bytes` statement <br/> | 
-|Move claim |    | :heavy_check_mark: |   | `EthereumAddress` old <br/>`EthereumAddress` new_ <br/>`OptionAccountId` maybe_preclaim <br/> | 
+|Move claim |    |   |   | `EthereumAddress` old <br/>`EthereumAddress` new_ <br/>`OptionAccountId` maybe_preclaim <br/> | 
 
 ## Vesting
 
@@ -255,6 +257,7 @@ Please:
 |Batch | :heavy_check_mark:  | :heavy_check_mark: |   | `VecCall` calls <br/> | 
 |As derivative |    |   |   | `u16` index <br/>`Call` call <br/> | 
 |Batch all | :heavy_check_mark:  | :heavy_check_mark: |   | `VecCall` calls <br/> | 
+|Dispatch as |    |   |   | `BoxPalletsOrigin` as_origin <br/>`Call` call <br/> | 
 
 ## Identity
 
@@ -286,9 +289,9 @@ Please:
 |Remove proxies |    | :heavy_check_mark: |   |  | 
 |Anonymous |    | :heavy_check_mark: |   | `ProxyType` proxy_type <br/>`BlockNumber` delay <br/>`u16` index <br/> | 
 |Kill anonymous |    | :heavy_check_mark: |   | `AccountId` spawner <br/>`ProxyType` proxy_type <br/>`u16` index <br/>`Compactu32` height <br/>`Compactu32` ext_index <br/> | 
-|Announce |    |   |   | `AccountId` real <br/>`CallHashOfT` call_hash <br/> | 
-|Remove announcement |    |   |   | `AccountId` real <br/>`CallHashOfT` call_hash <br/> | 
-|Reject announcement |    |   |   | `AccountId` delegate <br/>`CallHashOfT` call_hash <br/> | 
+|Announce |    |   |   | `AccountId` real <br/>`CallHashOf` call_hash <br/> | 
+|Remove announcement |    |   |   | `AccountId` real <br/>`CallHashOf` call_hash <br/> | 
+|Reject announcement |    |   |   | `AccountId` delegate <br/>`CallHashOf` call_hash <br/> | 
 |Proxy announced |    | :heavy_check_mark: |   | `AccountId` delegate <br/>`AccountId` real <br/>`OptionProxyType` force_proxy_type <br/>`Call` call <br/> | 
 
 ## Multisig
@@ -296,7 +299,7 @@ Please:
 | Name        | Light | XL | Nesting | Arguments | 
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |As multi threshold 1 |    |   |   | `VecAccountId` other_signatories <br/>`Call` call <br/> | 
-|As multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`OpaqueCall` call <br/>`bool` store_call <br/>`Weight` max_weight <br/> | 
+|As multi |    |   |   | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`OpaqueCallT` call <br/>`bool` store_call <br/>`Weight` max_weight <br/> | 
 |Approve as multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`H256` call_hash <br/>`Weight` max_weight <br/> | 
 |Cancel as multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`Timepoint` timepoint <br/>`H256` call_hash <br/> | 
 
@@ -333,6 +336,12 @@ Please:
 |Set minimum untrusted score |    |   |   | `OptionElectionScore` maybe_next_score <br/> | 
 |Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> | 
 |Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`u32` num_signed_submissions <br/> | 
+
+## BagsList
+
+| Name        | Light | XL | Nesting | Arguments | 
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Rebag |    | :heavy_check_mark: |   | `AccountId` dislocated <br/> | 
 
 ## Configuration
 
@@ -474,4 +483,19 @@ Please:
 |Edit |    |   |   | `Compactu32` index <br/>`Compactu128` cap <br/>`Compactu32` first_period <br/>`Compactu32` last_period <br/>`Compactu32` end <br/>`OptionMultiSigner` verifier <br/> | 
 |Add memo |    |   |   | `ParaId` index <br/>`Vecu8` memo <br/> | 
 |Poke |    |   |   | `ParaId` index <br/> | 
+
+## XcmPallet
+
+| Name        | Light | XL | Nesting | Arguments | 
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Send |    |   |   | `BoxVersionedMultiLocation` dest <br/>`BoxVersionedXcmTuple` message <br/> | 
+|Teleport assets |    |   |   | `BoxVersionedMultiLocation` dest <br/>`BoxVersionedMultiLocation` beneficiary <br/>`BoxVersionedMultiAssets` assets <br/>`u32` fee_asset_item <br/> | 
+|Reserve transfer assets |    |   |   | `BoxVersionedMultiLocation` dest <br/>`BoxVersionedMultiLocation` beneficiary <br/>`BoxVersionedMultiAssets` assets <br/>`u32` fee_asset_item <br/> | 
+|Execute |    |   |   | `BoxVersionedXcmTasSysConfigCall` message <br/>`Weight` max_weight <br/> | 
+|Force xcm version |    |   |   | `BoxMultiLocation` location <br/>`XcmVersion` xcm_version <br/> | 
+|Force default xcm version |    |   |   | `OptionXcmVersion` maybe_xcm_version <br/> | 
+|Force subscribe version notify |    |   |   | `BoxVersionedMultiLocation` location <br/> | 
+|Force unsubscribe version notify |    |   |   | `BoxVersionedMultiLocation` location <br/> | 
+|Limited reserve transfer assets |    |   |   | `BoxVersionedMultiLocation` dest <br/>`BoxVersionedMultiLocation` beneficiary <br/>`BoxVersionedMultiAssets` assets <br/>`u32` fee_asset_item <br/>`WeightLimit` weight_limit <br/> | 
+|Limited teleport assets |    |   |   | `BoxVersionedMultiLocation` dest <br/>`BoxVersionedMultiLocation` beneficiary <br/>`BoxVersionedMultiAssets` assets <br/>`u32` fee_asset_item <br/>`WeightLimit` weight_limit <br/> | 
 

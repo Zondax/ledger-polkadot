@@ -1,18 +1,18 @@
 /*******************************************************************************
-*  (c) 2021 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *  (c) 2021 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 #pragma once
 
 #ifdef __cplusplus
@@ -46,6 +46,8 @@ static const char* STR_MO_INITIALIZER = "Initializer";
 static const char* STR_MO_HRMP = "Hrmp";
 static const char* STR_MO_REGISTRAR = "Registrar";
 static const char* STR_MO_AUCTIONS = "Auctions";
+static const char* STR_MO_BAGSLIST = "Bagslist";
+static const char* STR_MO_XCMPALLET = "Xcmpallet";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";
@@ -286,6 +288,17 @@ static const char* STR_ME_DISSOLVE = "Dissolve";
 static const char* STR_ME_EDIT = "Edit";
 static const char* STR_ME_ADD_MEMO = "Add memo";
 static const char* STR_ME_POKE = "Poke";
+static const char* STR_ME_DISPATCH_AS = "Dispatch as";
+static const char* STR_ME_REBAG = "Rebag";
+static const char* STR_ME_SEND = "Send";
+static const char* STR_ME_TELEPORT_ASSETS = "Teleport assets";
+static const char* STR_ME_RESERVE_TRANSFER_ASSETS = "Reserve transfer assets";
+static const char* STR_ME_FORCE_XCM_VERSION = "Force xcm version";
+static const char* STR_ME_FORCE_DEFAULT_XCM_VERSION = "Force default xcm version";
+static const char* STR_ME_FORCE_SUBSCRIBE_VERSION_NOTIFY = "Force subscribe version notify";
+static const char* STR_ME_FORCE_UNSUBSCRIBE_VERSION_NOTIFY = "Force unsubscribe version notify";
+static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
+static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
@@ -422,6 +435,15 @@ static const char* STR_IT_lease_period_index = "Lease period index";
 static const char* STR_IT_auction_index = "Auction index";
 static const char* STR_IT_first_slot = "First slot";
 static const char* STR_IT_last_slot = "Last slot";
+static const char* STR_IT_as_origin = "As origin";
+static const char* STR_IT_dislocated = "Dislocated";
+static const char* STR_IT_message = "Message";
+static const char* STR_IT_assets = "Assets";
+static const char* STR_IT_fee_asset_item = "Fee asset item";
+static const char* STR_IT_location = "Location";
+static const char* STR_IT_xcm_version = "Xcm version";
+static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
+static const char* STR_IT_weight_limit = "Weight limit";
 
 #ifdef __cplusplus
 }

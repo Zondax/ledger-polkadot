@@ -84,7 +84,8 @@ void handle_stack_overflow();
 
 void zemu_log_stack(const char *ctx);
 
-#if defined(ZEMU_LOGGING) && (defined (TARGET_NANOS) || defined(TARGET_NANOX))
+#if (defined (TARGET_NANOS) || defined(TARGET_NANOX))
+#if defined(ZEMU_LOGGING)
 __Z_INLINE void zemu_log(const char *buf)
 {
     asm volatile (
@@ -95,11 +96,15 @@ __Z_INLINE void zemu_log(const char *buf)
     );
 }
 #else
-
 __Z_INLINE void zemu_log(__Z_UNUSED const char *_) {}
-
+#endif
+#else
+__Z_INLINE void zemu_log(__Z_UNUSED const char *msg) {
+    printf("%s\n", msg);
+}
 #endif
 
+#define ZEMU_LOGF(SIZE, ...) { char tmp[(SIZE)]; snprintf(tmp, (SIZE), __VA_ARGS__); zemu_log(tmp); }
 
 #ifdef __cplusplus
 }
