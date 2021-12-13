@@ -18,8 +18,8 @@
 # BOLOS_SDK IS  DEFINED	 	We use the plain Makefile for Ledger
 # BOLOS_SDK NOT DEFINED		We use a containerized build approach
 
-#TESTS_JS_PACKAGE = "@zondax/ledger-polkadot"
-#TESTS_JS_DIR = $(CURDIR)/../ledger-polkadot-js
+#TESTS_JS_PACKAGE = "@zondax/ledger-substrate"
+#TESTS_JS_DIR = $(CURDIR)/../ledger-substrate-js
 
 ifeq ($(BOLOS_SDK),)
 # In this case, there is not predefined SDK and we run dockerized
@@ -51,4 +51,3 @@ test_all:
 	cd tests_zemu && yarn testSR25519
 	make clean_build && SUBSTRATE_PARSER_FULL=1 make
 	make zemu_test
-
