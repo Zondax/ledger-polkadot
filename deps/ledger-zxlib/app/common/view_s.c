@@ -23,17 +23,24 @@
 #include "bagl.h"
 #include "zxmacros.h"
 #include "view_templates.h"
+#include "zxutils_ledger.h"
 
 #include <string.h>
 #include <stdio.h>
 
 #if defined(TARGET_NANOS)
 
+#define BAGL_WIDTH 128
+#define BAGL_HEIGHT 32
+#define BAGL_WIDTH_MARGIN 10
+
 void h_expert_toggle();
 void h_expert_update();
 void h_review_button_left();
 void h_review_button_right();
 void h_review_button_both();
+
+bool exceed_pixel_in_display(const uint8_t length);
 
 #ifdef APP_SECRET_MODE_ENABLED
 void h_secret_click();
@@ -189,11 +196,40 @@ void h_review_button_both() {
 
 void splitValueField() {
     print_value2("");
-    uint16_t vlen = strlen(viewdata.value);
+    const uint16_t vlen = strlen(viewdata.value);
     if (vlen > MAX_CHARS_PER_VALUE2_LINE - 1) {
         snprintf(viewdata.value2, MAX_CHARS_PER_VALUE2_LINE, "%s", viewdata.value + MAX_CHARS_PER_VALUE_LINE);
         viewdata.value[MAX_CHARS_PER_VALUE_LINE] = 0;
     }
+}
+void splitValueAddress() {
+    uint8_t len = MAX_CHARS_PER_VALUE_LINE;
+    bool exceeding_max = exceed_pixel_in_display(len);
+    while(exceeding_max && len--) {
+        exceeding_max = exceed_pixel_in_display(len);
+    }
+    print_value2("");
+    const uint16_t vlen = strlen(viewdata.value);
+    //if viewdata.value == NULL --> len = 0
+    if (vlen > len && len > 0) {
+        snprintf(viewdata.value2, MAX_CHARS_PER_VALUE2_LINE, "%s", viewdata.value + len);
+        viewdata.value[len] = 0;
+    }
+}
+
+max_char_display get_max_char_per_line() {
+    uint8_t len = MAX_CHARS_PER_VALUE_LINE;
+    bool exceeding_max = exceed_pixel_in_display(len);
+    while(exceeding_max && len--) {
+        exceeding_max = exceed_pixel_in_display(len);
+    }
+    //MAX_CHARS_PER_VALUE1_LINE is defined this way
+    return (len > 0) ? (2 * len + 1) : len;
+}
+
+bool exceed_pixel_in_display(const uint8_t length) {
+    const unsigned short strWidth = zx_compute_line_width_light(viewdata.value, length);
+    return (strWidth >= (BAGL_WIDTH - BAGL_WIDTH_MARGIN));
 }
 
 //////////////////////////

@@ -44,8 +44,10 @@
 #if defined(TARGET_NANOS)
 #define INCLUDE_ACTIONS_AS_ITEMS 2
 #define INCLUDE_ACTIONS_COUNT (INCLUDE_ACTIONS_AS_ITEMS-1)
+typedef uint8_t max_char_display;
 #else
 #define INCLUDE_ACTIONS_COUNT 0
+typedef int max_char_display;
 #endif
 
 typedef struct {
@@ -86,6 +88,8 @@ extern view_t viewdata;
 #endif
 
 void splitValueField();
+void splitValueAddress();
+max_char_display get_max_char_per_line();
 
 ///////////////////////////////////////////////
 ///////////////////////////////////////////////

@@ -330,7 +330,7 @@ __Z_INLINE zxerr_t formatBufferData(
     char bufferUI[500 + 1];
     MEMZERO(bufferUI, sizeof(bufferUI));
     MEMZERO(outValue, 0);
-    CHECK_APP_CANARY();
+    CHECK_APP_CANARY()
 
     if (len >= sizeof(bufferUI)) {
         return zxerr_buffer_too_small;
