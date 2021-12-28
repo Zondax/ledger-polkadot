@@ -1,5 +1,4 @@
 # Ledger Polkadot app
-
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GithubActions](https://github.com/zondax/ledger-polkadot/actions/workflows/main.yml/badge.svg)](https://github.com/Zondax/ledger-polkadot/blob/main/.github/workflows/main.yaml)
 
@@ -9,8 +8,7 @@
 
 _Please visit our website at [zondax.ch](zondax.ch)_
 
----
-
+------------------
 This project contains the Kusama app (https://kusama.network/) for Ledger Nano S and X.
 
 - Ledger Nano S/X BOLOS app
@@ -27,7 +25,6 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-
 # Polkadot  9.9140.x
 
 ## System
@@ -238,7 +235,7 @@ Please:
 |Mint claim |    |   |   | `EthereumAddress` who <br/>`Balance` amount <br/>`OptionTupleBalanceOfTBalanceOfTBlockNumber` vesting_schedule <br/>`OptionStatementKind` statement <br/> | 
 |Claim attest |    | :heavy_check_mark: |   | `AccountId` dest <br/>`EcdsaSignature` ethereum_signature <br/>`Bytes` statement <br/> | 
 |Attest |    | :heavy_check_mark: |   | `Bytes` statement <br/> | 
-|Move claim |    |   |   | `EthereumAddress` old <br/>`EthereumAddress` new_ <br/>`OptionAccountId` maybe_preclaim <br/> | 
+|Move claim |    | :heavy_check_mark: |   | `EthereumAddress` old <br/>`EthereumAddress` new_ <br/>`OptionAccountId` maybe_preclaim <br/> | 
 
 ## Vesting
 
