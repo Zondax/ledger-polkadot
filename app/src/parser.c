@@ -20,7 +20,6 @@
 #include "app_mode.h"
 #include "parser.h"
 #include "coin.h"
-#include "coin_ss58.h"
 #include "substrate_dispatch.h"
 
 #if defined(TARGET_NANOX)
