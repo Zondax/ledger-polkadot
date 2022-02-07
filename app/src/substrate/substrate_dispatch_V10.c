@@ -347,18 +347,6 @@ __Z_INLINE parser_error_t _readMethod_staking_kick_V10(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_staking_set_staking_configs_V10(
-    parser_context_t* c, pd_staking_set_staking_configs_V10_t* m)
-{
-    CHECK_ERROR(_readBalance(c, &m->min_nominator_bond))
-    CHECK_ERROR(_readBalance(c, &m->min_validator_bond))
-    CHECK_ERROR(_readOptionu32(c, &m->max_nominator_count))
-    CHECK_ERROR(_readOptionu32(c, &m->max_validator_count))
-    CHECK_ERROR(_readOptionPercent_V10(c, &m->chill_threshold))
-    CHECK_ERROR(_readPerbill_V10(c, &m->min_commission))
-    return parser_ok;
-}
-
 __Z_INLINE parser_error_t _readMethod_staking_chill_other_V10(
     parser_context_t* c, pd_staking_chill_other_V10_t* m)
 {
@@ -1523,9 +1511,6 @@ parser_error_t _readMethod_V10(
     case 1814: /* module 7 call 22 */
         CHECK_ERROR(_readMethod_staking_kick_V10(c, &method->basic.staking_kick_V10))
         break;
-    case 1815: /* module 7 call 23 */
-        CHECK_ERROR(_readMethod_staking_set_staking_configs_V10(c, &method->basic.staking_set_staking_configs_V10))
-        break;
     case 1816: /* module 7 call 24 */
         CHECK_ERROR(_readMethod_staking_chill_other_V10(c, &method->basic.staking_chill_other_V10))
         break;
@@ -2682,8 +2667,6 @@ uint8_t _getMethod_NumItems_V10(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 1814: /* module 7 call 22 */
         return 1;
-    case 1815: /* module 7 call 23 */
-        return 6;
     case 1816: /* module 7 call 24 */
         return 1;
     case 2818: /* module 11 call 2 */
@@ -3308,23 +3291,6 @@ const char* _getMethod_ItemName_V10(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         switch (itemIdx) {
         case 0:
             return STR_IT_who;
-        default:
-            return NULL;
-        }
-    case 1815: /* module 7 call 23 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_min_nominator_bond;
-        case 1:
-            return STR_IT_min_validator_bond;
-        case 2:
-            return STR_IT_max_nominator_count;
-        case 3:
-            return STR_IT_max_validator_count;
-        case 4:
-            return STR_IT_chill_threshold;
-        case 5:
-            return STR_IT_min_commission;
         default:
             return NULL;
         }
@@ -4922,41 +4888,6 @@ parser_error_t _getMethod_ItemValue_V10(
         case 0: /* staking_kick_V10 - who */;
             return _toStringVecLookupasStaticLookupSource_V10(
                 &m->basic.staking_kick_V10.who,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 1815: /* module 7 call 23 */
-        switch (itemIdx) {
-        case 0: /* staking_set_staking_configs_V10 - min_nominator_bond */;
-            return _toStringBalance(
-                &m->basic.staking_set_staking_configs_V10.min_nominator_bond,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* staking_set_staking_configs_V10 - min_validator_bond */;
-            return _toStringBalance(
-                &m->basic.staking_set_staking_configs_V10.min_validator_bond,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 2: /* staking_set_staking_configs_V10 - max_nominator_count */;
-            return _toStringOptionu32(
-                &m->basic.staking_set_staking_configs_V10.max_nominator_count,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 3: /* staking_set_staking_configs_V10 - max_validator_count */;
-            return _toStringOptionu32(
-                &m->basic.staking_set_staking_configs_V10.max_validator_count,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 4: /* staking_set_staking_configs_V10 - chill_threshold */;
-            return _toStringOptionPercent_V10(
-                &m->basic.staking_set_staking_configs_V10.chill_threshold,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 5: /* staking_set_staking_configs_V10 - min_commission */;
-            return _toStringPerbill_V10(
-                &m->basic.staking_set_staking_configs_V10.min_commission,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6688,7 +6619,6 @@ bool _getMethod_IsNestingSupported_V10(uint8_t moduleIdx, uint8_t callIdx)
     case 1812: // Staking:Set history depth
     case 1813: // Staking:Reap stash
     case 1814: // Staking:Kick
-    case 1815: // Staking:Set staking configs
     case 1816: // Staking:Chill other
     case 2304: // Session:Set keys
     case 2305: // Session:Purge keys

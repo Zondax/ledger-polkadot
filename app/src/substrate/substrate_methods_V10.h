@@ -238,16 +238,6 @@ typedef struct {
     pd_VecLookupasStaticLookupSource_V10_t who;
 } pd_staking_kick_V10_t;
 
-#define PD_CALL_STAKING_SET_STAKING_CONFIGS_V10 23
-typedef struct {
-    pd_Balance_t min_nominator_bond;
-    pd_Balance_t min_validator_bond;
-    pd_Optionu32_t max_nominator_count;
-    pd_Optionu32_t max_validator_count;
-    pd_OptionPercent_V10_t chill_threshold;
-    pd_Perbill_V10_t min_commission;
-} pd_staking_set_staking_configs_V10_t;
-
 #define PD_CALL_STAKING_CHILL_OTHER_V10 24
 typedef struct {
     pd_AccountId_V10_t controller;
@@ -1004,7 +994,6 @@ typedef union {
     pd_staking_set_history_depth_V10_t staking_set_history_depth_V10;
     pd_staking_reap_stash_V10_t staking_reap_stash_V10;
     pd_staking_kick_V10_t staking_kick_V10;
-    pd_staking_set_staking_configs_V10_t staking_set_staking_configs_V10;
     pd_staking_chill_other_V10_t staking_chill_other_V10;
     pd_grandpa_note_stalled_V10_t grandpa_note_stalled_V10;
     pd_democracy_second_V10_t democracy_second_V10;
