@@ -21,7 +21,6 @@
 #include "coin.h"
 #include "crypto_helper.h"
 #include "bignum.h"
-#include "coin_ss58.h"
 #include "substrate_types.h"
 #include "substrate_dispatch.h"
 
