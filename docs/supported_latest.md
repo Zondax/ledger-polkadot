@@ -102,7 +102,7 @@
 |Set history depth |    | :heavy_check_mark: |   | `Compactu32` new_history_depth <br/>`Compactu32` era_items_deleted <br/> |
 |Reap stash |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> |
 |Kick |    | :heavy_check_mark: |   | `VecLookupasStaticLookupSource` who <br/> |
-|Set staking configs |    | :heavy_check_mark: |   | `Balance` min_nominator_bond <br/>`Balance` min_validator_bond <br/>`Optionu32` max_nominator_count <br/>`Optionu32` max_validator_count <br/>`OptionPercent` chill_threshold <br/>`Perbill` min_commission <br/> |
+|Set staking configs |    |   |   | `Balance` min_nominator_bond <br/>`Balance` min_validator_bond <br/>`Optionu32` max_nominator_count <br/>`Optionu32` max_validator_count <br/>`OptionPercent` chill_threshold <br/>`Perbill` min_commission <br/> |
 |Chill other |    | :heavy_check_mark: |   | `AccountId` controller <br/> |
 
 ## Session
