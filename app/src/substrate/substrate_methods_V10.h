@@ -1195,6 +1195,16 @@ typedef struct {
     pd_Call_t call;
 } pd_proxy_proxy_V10_t;
 
+#define PD_CALL_MULTISIG_AS_MULTI_V10 1
+typedef struct {
+    pd_u16_t threshold;
+    pd_VecAccountId_V10_t other_signatories;
+    pd_OptionTimepoint_V10_t maybe_timepoint;
+    pd_OpaqueCall_V10_t call;
+    pd_bool_t store_call;
+    pd_Weight_V10_t max_weight;
+} pd_multisig_as_multi_V10_t;
+
 #define PD_CALL_MULTISIG_APPROVE_AS_MULTI_V10 2
 typedef struct {
     pd_u16_t threshold;
@@ -1227,6 +1237,7 @@ typedef union {
     pd_system_remark_with_event_V10_t system_remark_with_event_V10;
     pd_balances_set_balance_V10_t balances_set_balance_V10;
     pd_proxy_proxy_V10_t proxy_proxy_V10;
+    pd_multisig_as_multi_V10_t multisig_as_multi_V10;
     pd_multisig_approve_as_multi_V10_t multisig_approve_as_multi_V10;
     pd_multisig_cancel_as_multi_V10_t multisig_cancel_as_multi_V10;
 #endif

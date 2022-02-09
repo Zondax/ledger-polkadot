@@ -239,9 +239,12 @@ parser_error_t _readNextConfigDescriptor_V10(parser_context_t* c, pd_NextConfigD
     return parser_not_supported;
 }
 
-parser_error_t _readOpaqueCallT_V10(parser_context_t* c, pd_OpaqueCallT_V10_t* v)
+parser_error_t _readOpaqueCall_V10(parser_context_t* c, pd_OpaqueCall_V10_t* v)
 {
-    return parser_not_supported;
+    // Encoded as Byte[], array size comes first
+    uint8_t size;
+    CHECK_ERROR(_readUInt8(c, &size))
+    return _readCall(c, &v->call);
 }
 
 parser_error_t _readOverweightIndex_V10(parser_context_t* c, pd_OverweightIndex_V10_t* v)
@@ -1000,15 +1003,14 @@ parser_error_t _toStringNextConfigDescriptor_V10(
     return parser_print_not_supported;
 }
 
-parser_error_t _toStringOpaqueCallT_V10(
-    const pd_OpaqueCallT_V10_t* v,
+parser_error_t _toStringOpaqueCall_V10(
+    const pd_OpaqueCall_V10_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+    return _toStringCall(&v->call, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringOverweightIndex_V10(
