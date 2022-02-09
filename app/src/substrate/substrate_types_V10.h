@@ -114,6 +114,10 @@ typedef struct {
 } pd_schedulePeriodBlockNumber_V10_t;
 
 typedef struct {
+    pd_Call_t call;
+} pd_OpaqueCall_V10_t;
+
+typedef struct {
     uint8_t some;
     pd_Timepoint_V10_t contained;
 } pd_OptionTimepoint_V10_t;
@@ -270,11 +274,6 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_NextConfigDescriptor_V10_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_OpaqueCallT_V10_t;
 
 typedef struct {
     uint8_t some;

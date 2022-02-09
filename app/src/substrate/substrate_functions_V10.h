@@ -65,7 +65,7 @@ parser_error_t _readMemberCount_V10(parser_context_t* c, pd_MemberCount_V10_t* v
 parser_error_t _readMultiSignature_V10(parser_context_t* c, pd_MultiSignature_V10_t* v);
 parser_error_t _readMultiSigner_V10(parser_context_t* c, pd_MultiSigner_V10_t* v);
 parser_error_t _readNextConfigDescriptor_V10(parser_context_t* c, pd_NextConfigDescriptor_V10_t* v);
-parser_error_t _readOpaqueCallT_V10(parser_context_t* c, pd_OpaqueCallT_V10_t* v);
+parser_error_t _readOpaqueCall_V10(parser_context_t* c, pd_OpaqueCall_V10_t* v);
 parser_error_t _readOptionAccountId_V10(parser_context_t* c, pd_OptionAccountId_V10_t* v);
 parser_error_t _readOptionElectionScore_V10(parser_context_t* c, pd_OptionElectionScore_V10_t* v);
 parser_error_t _readOptionMultiSignature_V10(parser_context_t* c, pd_OptionMultiSignature_V10_t* v);
@@ -386,8 +386,8 @@ parser_error_t _toStringNextConfigDescriptor_V10(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringOpaqueCallT_V10(
-    const pd_OpaqueCallT_V10_t* v,
+parser_error_t _toStringOpaqueCall_V10(
+    const pd_OpaqueCall_V10_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
