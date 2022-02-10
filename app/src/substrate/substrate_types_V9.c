@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2019 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2019 - 2022 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 #include "bignum.h"
 #include "coin.h"
 #include "parser_impl.h"
@@ -234,9 +234,12 @@ parser_error_t _readNextConfigDescriptor_V9(parser_context_t* c, pd_NextConfigDe
     return parser_not_supported;
 }
 
-parser_error_t _readOpaqueCallT_V9(parser_context_t* c, pd_OpaqueCallT_V9_t* v)
+parser_error_t _readOpaqueCall_V9(parser_context_t* c, pd_OpaqueCall_V9_t* v)
 {
-    return parser_not_supported;
+    // Encoded as Byte[], array size comes first
+    uint8_t size;
+    CHECK_ERROR(_readUInt8(c, &size))
+    return _readCall(c, &v->call);
 }
 
 parser_error_t _readOverweightIndex_V9(parser_context_t* c, pd_OverweightIndex_V9_t* v)
@@ -305,7 +308,7 @@ parser_error_t _readRewardDestination_V9(parser_context_t* c, pd_RewardDestinati
 
 parser_error_t _readSessionIndex_V9(parser_context_t* c, pd_SessionIndex_V9_t* v)
 {
-    return parser_not_supported;
+    return _readUInt32(c, &v->value);
 }
 
 parser_error_t _readSolutionOrSnapshotSize_V9(parser_context_t* c, pd_SolutionOrSnapshotSize_V9_t* v)
@@ -920,7 +923,7 @@ parser_error_t _toStringLookupasStaticLookupSource_V9(
         GEN_DEF_TOSTRING_ARRAY(20)
     }
     default:
-        return parser_not_supported;
+        return parser_unexpected_address_type;
     }
 
     return parser_ok;
@@ -969,15 +972,14 @@ parser_error_t _toStringNextConfigDescriptor_V9(
     return parser_print_not_supported;
 }
 
-parser_error_t _toStringOpaqueCallT_V9(
-    const pd_OpaqueCallT_V9_t* v,
+parser_error_t _toStringOpaqueCall_V9(
+    const pd_OpaqueCall_V9_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+    return _toStringCall(&v->call, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringOverweightIndex_V9(
@@ -1142,8 +1144,7 @@ parser_error_t _toStringSessionIndex_V9(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+    return _toStringu32(&v->value, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringSolutionOrSnapshotSize_V9(

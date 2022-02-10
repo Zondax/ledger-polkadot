@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2021 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2019 - 2022 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 #pragma once
 
 #ifdef __cplusplus
@@ -48,6 +48,7 @@ static const char* STR_MO_REGISTRAR = "Registrar";
 static const char* STR_MO_AUCTIONS = "Auctions";
 static const char* STR_MO_BAGSLIST = "Bagslist";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
+static const char* STR_MO_PREIMAGE = "Preimage";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";
@@ -299,6 +300,20 @@ static const char* STR_ME_FORCE_SUBSCRIBE_VERSION_NOTIFY = "Force subscribe vers
 static const char* STR_ME_FORCE_UNSUBSCRIBE_VERSION_NOTIFY = "Force unsubscribe version notify";
 static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
 static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
+static const char* STR_ME_UNNOTE_PREIMAGE = "Unnote preimage";
+static const char* STR_ME_REQUEST_PREIMAGE = "Request preimage";
+static const char* STR_ME_UNREQUEST_PREIMAGE = "Unrequest preimage";
+static const char* STR_ME_SET_STAKING_CONFIGS = "Set staking configs";
+static const char* STR_ME_PUT_IN_FRONT_OF = "Put in front of";
+static const char* STR_ME_SET_VALIDATION_UPGRADE_COOLDOWN = "Set validation upgrade cooldown";
+static const char* STR_ME_SET_PVF_CHECKING_ENABLED = "Set pvf checking enabled";
+static const char* STR_ME_SET_PVF_VOTING_TTL = "Set pvf voting ttl";
+static const char* STR_ME_SET_MINIMUM_VALIDATION_UPGRADE_DELAY = "Set minimum validation upgrade delay";
+static const char* STR_ME_SET_BYPASS_CONSISTENCY_CHECK = "Set bypass consistency check";
+static const char* STR_ME_ADD_TRUSTED_VALIDATION_CODE = "Add trusted validation code";
+static const char* STR_ME_POKE_UNUSED_VALIDATION_CODE = "Poke unused validation code";
+static const char* STR_ME_INCLUDE_PVF_CHECK_STATEMENT = "Include pvf check statement";
+static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
@@ -444,6 +459,10 @@ static const char* STR_IT_location = "Location";
 static const char* STR_IT_xcm_version = "Xcm version";
 static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
 static const char* STR_IT_weight_limit = "Weight limit";
+static const char* STR_IT_bytes = "Bytes";
+static const char* STR_IT_chill_threshold = "Chill threshold";
+static const char* STR_IT_min_commission = "Min commission";
+static const char* STR_IT_lighter = "Lighter";
 
 #ifdef __cplusplus
 }

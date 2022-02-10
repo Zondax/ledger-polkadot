@@ -21,7 +21,6 @@
 #include "coin.h"
 #include "crypto_helper.h"
 #include "bignum.h"
-#include "coin_ss58.h"
 #include "substrate_types.h"
 #include "substrate_dispatch.h"
 
@@ -85,6 +84,8 @@ const char *parser_getErrorDescription(parser_error_t err) {
             return "Unexpected unparsed bytes";
         case parser_print_not_supported:
             return "Value cannot be printed";
+        case parser_tx_nesting_not_supported:
+            return "Call nesting not supported";
         case parser_tx_nesting_limit_reached:
             return "Max nested calls reached";
         case parser_tx_call_vec_too_large:
@@ -316,7 +317,7 @@ parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
 parser_error_t _checkVersions(parser_context_t *c) {
     // Methods are not length delimited so in order to retrieve the specVersion
     // it is necessary to parse from the back.
-    // The transaction is expect to end in
+    // The transaction is expected to end in
     // [4 bytes] specVersion
     // [4 bytes] transactionVersion
     // [32 bytes] genesisHash

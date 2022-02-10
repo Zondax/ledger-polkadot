@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2019 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2019 - 2022 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 
 #include "substrate_dispatch_V9.h"
 #include "substrate_strings.h"
@@ -670,6 +670,15 @@ __Z_INLINE parser_error_t _readMethod_claims_attest_V9(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_claims_move_claim_V9(
+    parser_context_t* c, pd_claims_move_claim_V9_t* m)
+{
+    CHECK_ERROR(_readEthereumAddress_V9(c, &m->old))
+    CHECK_ERROR(_readEthereumAddress_V9(c, &m->new_))
+    CHECK_ERROR(_readOptionAccountId_V9(c, &m->maybe_preclaim))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_vesting_vest_V9(
     parser_context_t* c, pd_vesting_vest_V9_t* m)
 {
@@ -815,6 +824,18 @@ __Z_INLINE parser_error_t _readMethod_proxy_proxy_announced_V9(
     CHECK_ERROR(_readAccountId_V9(c, &m->real))
     CHECK_ERROR(_readOptionProxyType_V9(c, &m->force_proxy_type))
     CHECK_ERROR(_readCall(c, &m->call))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multisig_as_multi_V9(
+    parser_context_t* c, pd_multisig_as_multi_V9_t* m)
+{
+    CHECK_ERROR(_readu16(c, &m->threshold))
+    CHECK_ERROR(_readVecAccountId_V9(c, &m->other_signatories))
+    CHECK_ERROR(_readOptionTimepoint_V9(c, &m->maybe_timepoint))
+    CHECK_ERROR(_readOpaqueCall_V9(c, &m->call))
+    CHECK_ERROR(_readbool(c, &m->store_call))
+    CHECK_ERROR(_readWeight_V9(c, &m->max_weight))
     return parser_ok;
 }
 
@@ -1568,6 +1589,9 @@ parser_error_t _readMethod_V9(
     case 6147: /* module 24 call 3 */
         CHECK_ERROR(_readMethod_claims_attest_V9(c, &method->basic.claims_attest_V9))
         break;
+    case 6148: /* module 24 call 4 */
+        CHECK_ERROR(_readMethod_claims_move_claim_V9(c, &method->basic.claims_move_claim_V9))
+        break;
     case 6400: /* module 25 call 0 */
         CHECK_ERROR(_readMethod_vesting_vest_V9(c, &method->basic.vesting_vest_V9))
         break;
@@ -1624,6 +1648,9 @@ parser_error_t _readMethod_V9(
         break;
     case 7433: /* module 29 call 9 */
         CHECK_ERROR(_readMethod_proxy_proxy_announced_V9(c, &method->basic.proxy_proxy_announced_V9))
+        break;
+    case 7681: /* module 30 call 1 */
+        CHECK_ERROR(_readMethod_multisig_as_multi_V9(c, &method->nested.multisig_as_multi_V9))
         break;
     case 7682: /* module 30 call 2 */
         CHECK_ERROR(_readMethod_multisig_approve_as_multi_V9(c, &method->nested.multisig_approve_as_multi_V9))
@@ -1822,7 +1849,7 @@ parser_error_t _readMethod_V9(
         break;
 #endif
     default:
-        return parser_not_supported;
+        return parser_unexpected_callIndex;
     }
 
     return parser_ok;
@@ -2623,6 +2650,8 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
         return 3;
     case 6147: /* module 24 call 3 */
         return 1;
+    case 6148: /* module 24 call 4 */
+        return 3;
     case 6400: /* module 25 call 0 */
         return 0;
     case 6401: /* module 25 call 1 */
@@ -2661,6 +2690,8 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
         return 5;
     case 7433: /* module 29 call 9 */
         return 4;
+    case 7681: /* module 30 call 1 */
+        return 6;
     case 7682: /* module 30 call 2 */
         return 5;
     case 7683: /* module 30 call 3 */
@@ -3489,6 +3520,17 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+    case 6148: /* module 24 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_old;
+        case 1:
+            return STR_IT_new_;
+        case 2:
+            return STR_IT_maybe_preclaim;
+        default:
+            return NULL;
+        }
     case 6400: /* module 25 call 0 */
         switch (itemIdx) {
         default:
@@ -3649,6 +3691,23 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_force_proxy_type;
         case 3:
             return STR_IT_call;
+        default:
+            return NULL;
+        }
+    case 7681: /* module 30 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_threshold;
+        case 1:
+            return STR_IT_other_signatories;
+        case 2:
+            return STR_IT_maybe_timepoint;
+        case 3:
+            return STR_IT_call;
+        case 4:
+            return STR_IT_store_call;
+        case 5:
+            return STR_IT_max_weight;
         default:
             return NULL;
         }
@@ -5209,6 +5268,26 @@ parser_error_t _getMethod_ItemValue_V9(
         default:
             return parser_no_data;
         }
+    case 6148: /* module 24 call 4 */
+        switch (itemIdx) {
+        case 0: /* claims_move_claim_V9 - old */;
+            return _toStringEthereumAddress_V9(
+                &m->basic.claims_move_claim_V9.old,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* claims_move_claim_V9 - new_ */;
+            return _toStringEthereumAddress_V9(
+                &m->basic.claims_move_claim_V9.new_,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* claims_move_claim_V9 - maybe_preclaim */;
+            return _toStringOptionAccountId_V9(
+                &m->basic.claims_move_claim_V9.maybe_preclaim,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 6400: /* module 25 call 0 */
         switch (itemIdx) {
         default:
@@ -5469,6 +5548,41 @@ parser_error_t _getMethod_ItemValue_V9(
         case 3: /* proxy_proxy_announced_V9 - call */;
             return _toStringCall(
                 &m->basic.proxy_proxy_announced_V9.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7681: /* module 30 call 1 */
+        switch (itemIdx) {
+        case 0: /* multisig_as_multi_V9 - threshold */;
+            return _toStringu16(
+                &m->nested.multisig_as_multi_V9.threshold,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* multisig_as_multi_V9 - other_signatories */;
+            return _toStringVecAccountId_V9(
+                &m->nested.multisig_as_multi_V9.other_signatories,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* multisig_as_multi_V9 - maybe_timepoint */;
+            return _toStringOptionTimepoint_V9(
+                &m->nested.multisig_as_multi_V9.maybe_timepoint,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* multisig_as_multi_V9 - call */;
+            return _toStringOpaqueCall_V9(
+                &m->nested.multisig_as_multi_V9.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 4: /* multisig_as_multi_V9 - store_call */;
+            return _toStringbool(
+                &m->nested.multisig_as_multi_V9.store_call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 5: /* multisig_as_multi_V9 - max_weight */;
+            return _toStringWeight_V9(
+                &m->nested.multisig_as_multi_V9.max_weight,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6330,6 +6444,7 @@ bool _getMethod_IsNestingSupported_V9(uint8_t moduleIdx, uint8_t callIdx)
     case 6144: // Claims:Claim
     case 6146: // Claims:Claim attest
     case 6147: // Claims:Attest
+    case 6148: // Claims:Move claim
     case 6400: // Vesting:Vest
     case 6401: // Vesting:Vest other
     case 6404: // Vesting:Merge schedules
