@@ -1,4 +1,4 @@
-# Polkadot  11.9170.x
+# Polkadot  9.9151.x
 
 ## System
 
@@ -18,21 +18,12 @@
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Schedule |    |   |   | `BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
+|Schedule |    |   |   | `BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`Call` call <br/> |
 |Cancel |    |   |   | `BlockNumber` when <br/>`u32` index <br/> |
-|Schedule named |    |   |   | `Vecu8` id <br/>`BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
+|Schedule named |    |   |   | `Vecu8` id <br/>`BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`Call` call <br/> |
 |Cancel named |    |   |   | `Vecu8` id <br/> |
-|Schedule after |    |   |   | `BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
-|Schedule named after |    |   |   | `Vecu8` id <br/>`BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
-
-## Preimage
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Note preimage |    | :heavy_check_mark: |   | `Vecu8` bytes <br/> |
-|Unnote preimage |    | :heavy_check_mark: |   | `Hash` hash <br/> |
-|Request preimage |    | :heavy_check_mark: |   | `Hash` hash <br/> |
-|Unrequest preimage |    | :heavy_check_mark: |   | `Hash` hash <br/> |
+|Schedule after |    |   |   | `BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`Call` call <br/> |
+|Schedule named after |    |   |   | `Vecu8` id <br/>`BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`Call` call <br/> |
 
 ## Babe
 
@@ -102,9 +93,8 @@
 |Set history depth |    | :heavy_check_mark: |   | `Compactu32` new_history_depth <br/>`Compactu32` era_items_deleted <br/> |
 |Reap stash |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> |
 |Kick |    | :heavy_check_mark: |   | `VecLookupasStaticLookupSource` who <br/> |
-|Set staking configs |    |   |   | `Balance` min_nominator_bond <br/>`Balance` min_validator_bond <br/>`Optionu32` max_nominator_count <br/>`Optionu32` max_validator_count <br/>`OptionPercent` chill_threshold <br/>`Perbill` min_commission <br/> |
+|Set staking limits |    |   |   | `Balance` min_nominator_bond <br/>`Balance` min_validator_bond <br/>`Optionu32` max_nominator_count <br/>`Optionu32` max_validator_count <br/>`OptionPercent` threshold <br/> |
 |Chill other |    | :heavy_check_mark: |   | `AccountId` controller <br/> |
-|Force apply min commission |    | :heavy_check_mark: |   | `AccountId` validator_stash <br/> |
 
 ## Session
 
@@ -278,8 +268,8 @@
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|As multi threshold 1 |    | :heavy_check_mark: | :heavy_check_mark: | `VecAccountId` other_signatories <br/>`Call` call <br/> |
-|As multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`OpaqueCall` call <br/>`bool` store_call <br/>`Weight` max_weight <br/> |
+|As multi threshold 1 |    |   |   | `VecAccountId` other_signatories <br/>`Call` call <br/> |
+|As multi |    |   |   | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`OpaqueCall` call <br/>`bool` store_call <br/>`Weight` max_weight <br/> |
 |Approve as multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`H256` call_hash <br/>`Weight` max_weight <br/> |
 |Cancel as multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`Timepoint` timepoint <br/>`H256` call_hash <br/> |
 
@@ -316,20 +306,18 @@
 |Set minimum untrusted score |    |   |   | `OptionElectionScore` maybe_next_score <br/> |
 |Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> |
 |Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`u32` num_signed_submissions <br/> |
-|Governance fallback |    | :heavy_check_mark: |   | `Optionu32` maybe_max_voters <br/>`Optionu32` maybe_max_targets <br/> |
 
 ## BagsList
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Rebag |    | :heavy_check_mark: |   | `AccountId` dislocated <br/> |
-|Put in front of |    | :heavy_check_mark: |   | `AccountId` lighter <br/> |
 
 ## Configuration
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Set validation upgrade cooldown |    | :heavy_check_mark: |   | `BlockNumber` new_ <br/> |
+|Set validation upgrade frequency |    | :heavy_check_mark: |   | `BlockNumber` new_ <br/> |
 |Set validation upgrade delay |    | :heavy_check_mark: |   | `BlockNumber` new_ <br/> |
 |Set code retention period |    | :heavy_check_mark: |   | `BlockNumber` new_ <br/> |
 |Set max code size |    | :heavy_check_mark: |   | `u32` new_ <br/> |
@@ -370,10 +358,6 @@
 |Set hrmp max parathread outbound channels |    | :heavy_check_mark: |   | `u32` new_ <br/> |
 |Set hrmp max message num per candidate |    | :heavy_check_mark: |   | `u32` new_ <br/> |
 |Set ump max individual weight |    | :heavy_check_mark: |   | `Weight` new_ <br/> |
-|Set pvf checking enabled |    | :heavy_check_mark: |   | `bool` new_ <br/> |
-|Set pvf voting ttl |    | :heavy_check_mark: |   | `SessionIndex` new_ <br/> |
-|Set minimum validation upgrade delay |    | :heavy_check_mark: |   | `BlockNumber` new_ <br/> |
-|Set bypass consistency check |    | :heavy_check_mark: |   | `bool` new_ <br/> |
 
 ## ParasShared
 
@@ -400,9 +384,6 @@
 |Force schedule code upgrade |    |   |   | `ParaId` para <br/>`ValidationCode` new_code <br/>`BlockNumber` relay_parent_number <br/> |
 |Force note new head |    |   |   | `ParaId` para <br/>`HeadData` new_head <br/> |
 |Force queue action |    |   |   | `ParaId` para <br/> |
-|Add trusted validation code |    |   |   | `ValidationCode` validation_code <br/> |
-|Poke unused validation code |    |   |   | `ValidationCodeHash` validation_code_hash <br/> |
-|Include pvf check statement |    |   |   | `PvfCheckStatement` stmt <br/>`ValidatorSignature` signature <br/> |
 
 ## Initializer
 
@@ -428,10 +409,10 @@
 |Hrmp init open channel |    |   |   | `ParaId` recipient <br/>`u32` proposed_max_capacity <br/>`u32` proposed_max_message_size <br/> |
 |Hrmp accept open channel |    |   |   | `ParaId` sender <br/> |
 |Hrmp close channel |    |   |   | `HrmpChannelId` channel_id <br/> |
-|Force clean hrmp |    |   |   | `ParaId` para <br/>`u32` inbound <br/>`u32` outbound <br/> |
-|Force process hrmp open |    | :heavy_check_mark: |   | `u32` channels <br/> |
-|Force process hrmp close |    | :heavy_check_mark: |   | `u32` channels <br/> |
-|Hrmp cancel open request |    |   |   | `HrmpChannelId` channel_id <br/>`u32` open_requests <br/> |
+|Force clean hrmp |    |   |   | `ParaId` para <br/> |
+|Force process hrmp open |    | :heavy_check_mark: |   |  |
+|Force process hrmp close |    | :heavy_check_mark: |   |  |
+|Hrmp cancel open request |    |   |   | `HrmpChannelId` channel_id <br/> |
 
 ## Registrar
 
@@ -472,7 +453,6 @@
 |Edit |    |   |   | `Compactu32` index <br/>`Compactu128` cap <br/>`Compactu32` first_period <br/>`Compactu32` last_period <br/>`Compactu32` end <br/>`OptionMultiSigner` verifier <br/> |
 |Add memo |    |   |   | `ParaId` index <br/>`Vecu8` memo <br/> |
 |Poke |    |   |   | `ParaId` index <br/> |
-|Contribute all |    |   |   | `Compactu32` index <br/>`OptionMultiSignature` signature <br/> |
 
 ## XcmPallet
 
