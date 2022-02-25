@@ -39,7 +39,7 @@ async function activateSecretMode(sim: any) {
 
   // Activate secret features
   for (let i = 0; i < 10; i += 1) {
-    await sim.clickBoth()
+    await sim.clickBoth('', false)
   }
 
   let reviewSteps = 7

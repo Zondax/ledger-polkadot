@@ -249,3 +249,7 @@ ifeq ($(TARGET_NAME),TARGET_NANOS)
 else ifeq ($(TARGET_NAME),TARGET_NANOX)
 	@echo VARIANTS COIN DOT
 endif
+
+.PHONY: version
+version:
+	@echo "v$(APPVERSION)" > app.version
