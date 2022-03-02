@@ -126,8 +126,11 @@
         NULL,   /* over             */                      \
 }
 
+#define UI_BACKGROUND \
+        UI_FillRectangle(0, 0, 0, UI_SCREEN_WIDTH, UI_SCREEN_HEIGHT, 0x000000, 0xFFFFFF)
+
 #define UI_BACKGROUND_LEFT_RIGHT_ICONS \
-        UI_FillRectangle(0, 0, 0, UI_SCREEN_WIDTH, UI_SCREEN_HEIGHT, 0x000000, 0xFFFFFF), \
+        UI_BACKGROUND, \
         UI_Icon(UIID_ICONLEFT, 2, 28, 4, 7, BAGL_GLYPH_ICON_LEFT), \
         UI_Icon(UIID_ICONRIGHT, 122, 28, 4, 7, BAGL_GLYPH_ICON_RIGHT)
 
@@ -155,8 +158,11 @@
         NULL,   /* text             */                      \
 }
 
+#define UI_BACKGROUND \
+        UI_FillRectangle(0, 0, 0, UI_SCREEN_WIDTH, UI_SCREEN_HEIGHT, 0x000000, 0xFFFFFF)
+
 #define UI_BACKGROUND_LEFT_RIGHT_ICONS \
-        UI_FillRectangle(0, 0, 0, UI_SCREEN_WIDTH, UI_SCREEN_HEIGHT, 0x000000, 0xFFFFFF), \
+        UI_BACKGROUND, \
         UI_Icon(UIID_ICONLEFT, 0, 0, 7, 7, BAGL_GLYPH_ICON_LEFT), \
         UI_Icon(UIID_ICONRIGHT, 128 - 7, 0, 7, 7, BAGL_GLYPH_ICON_RIGHT)
 #endif

@@ -1,0 +1,208 @@
+name: Build
+on: [ push ]
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    outputs:
+      uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "::set-output name=uid_gid::$(id -u):$(id -g)"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: |
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+          make deps
+          brew install conan
+      - run: cmake -DCMAKE_BUILD_TYPE=Debug . && make
+      - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
+
+  build_only_rust:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - name: rustfmt
+        run: |
+          cd ./app/rust
+          cargo fmt --version
+          cargo fmt -- --check
+      - name: clippy
+        run: |
+          cd ./app/rust
+          cargo clippy --version
+          cargo clippy --all-features --all-targets || true
+#      - name: audit
+#        run: |
+#          cd ./app/rust
+#          cargo audit --version
+#          cargo audit
+      - name: run tests
+        run: |
+          cd ./app/rust
+          cargo test
+
+  build_ledger:
+    needs: configure
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/builder-bolos:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    env:
+      BOLOS_SDK: ${{ github.workspace }}/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+      HOME: /home/zondax_circle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build Standard app
+        shell: bash -l {0}
+        run: |
+          source $HOME/.cargo/env
+          make
+      - name: Build SR25519 app
+        shell: bash -l {0}
+        run: |
+          source $HOME/.cargo/env
+          SUPPORT_SR25519=1 make
+
+  test_zemu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: |
+          id
+          echo $HOME
+          echo $DISPLAY
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+      - name: Install rust
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake binutils-dev libcurl4-openssl-dev libiberty-dev libelf-dev libdw-dev
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain none -y;
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.17.0'
+      - name: Install yarn
+        run: |
+          npm install -g yarn
+      - name: Build Ledger app
+        run: |
+          make SUBSTRATE_PARSER_FULL=1
+      - name: Build/Install build js deps
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          make zemu_install
+      - name: Run zemu tests
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          make zemu_test
+
+  test_zemu_sr25519:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+      - name: Install rust
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake binutils-dev libcurl4-openssl-dev libiberty-dev libelf-dev libdw-dev
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path --default-toolchain none -y;
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.17.0'
+      - name: Install yarn
+        run: |
+          npm install -g yarn
+      - name: Build Ledger app
+        run: |
+          make clean_build && SUBSTRATE_PARSER_FULL=1 SUPPORT_SR25519=1 make buildS
+      - name: Build/Install build js deps
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          make zemu_install
+      - name: Run zemu tests for sr25519
+        run: |
+          export PATH=~/.cargo/bin:$PATH
+          cd tests_zemu && yarn testSR25519
+
+  build_package:
+    needs: [ configure, build, build_ledger, test_zemu, test_zemu_sr25519 ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/builder-bolos:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    env:
+      BOLOS_SDK: ${{ github.workspace }}/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+      HOME: /home/zondax_circle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+      - name: Build
+        shell: bash -l {0}
+        run: |
+          source $HOME/.cargo/env
+          make SUBSTRATE_PARSER_FULL=0
+      - name: Set tag name var (1)
+        id: vars_1
+        run: echo ::set-output name=tag_name::$(./app/pkg/installer_s.sh version)
+      - name: Create or Update Release (1)
+        id: create_release_1
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: ./app/pkg/installer_s.sh
+          tag_name: ${{ steps.vars_1.outputs.tag_name }}
+          draft: false
+          prerelease: false
+      - name: Clear and rebuild XL version
+        shell: bash -l {0}
+        run: |
+          source $HOME/.cargo/env
+          make SUBSTRATE_PARSER_FULL=1
+          cp rust/app/pkg/installer_s.sh rust/app/pkg/installer_baking_s.sh
+          cp app/pkg/installer_s.sh app/pkg/installer_XL_s.sh
+      - name: Set tag name var (2)
+        id: vars_2
+        run: echo ::set-output name=tag_name::$(./app/pkg/installer_XL_s.sh version)
+      - name: Create or Update Release (2)
+        id: create_release_2
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: ./app/pkg/installer_XL_s.sh
+          tag_name: ${{ steps.vars_2.outputs.tag_name }}
+          draft: false
+          prerelease: false

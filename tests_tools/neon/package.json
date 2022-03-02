@@ -1,0 +1,16 @@
+{
+  "name": "@zondax/test_tools",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "author": "Zondax GmbH <info@zondax.ch>",
+  "license": "Apache-2.0",
+  "private": true,
+  "dependencies": {
+    "neon-cli": "^0.5.1"
+  },
+  "scripts": {
+    "install": "node_modules/.bin/neon build",
+    "test": "node -e 'require(\"./\")'"
+  }
+}

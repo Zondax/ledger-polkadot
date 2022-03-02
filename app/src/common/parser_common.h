@@ -39,6 +39,7 @@ typedef enum {
     // Coin specific
     parser_unexpected_address_type,
     parser_spec_not_supported,
+    parser_tx_version_not_supported,
     parser_not_allowed,
     parser_not_supported,
     parser_unexpected_buffer_end,
@@ -49,6 +50,9 @@ typedef enum {
     parser_unexpected_callIndex,
     parser_unexpected_unparsed_bytes,
     parser_print_not_supported,
+    parser_tx_nesting_not_supported,
+    parser_tx_nesting_limit_reached,
+    parser_tx_call_vec_too_large,
 } parser_error_t;
 
 typedef struct {

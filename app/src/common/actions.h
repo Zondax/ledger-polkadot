@@ -21,41 +21,85 @@
 #include "apdu_codes.h"
 #include <os_io_seproxyhal.h>
 #include "coin.h"
+#include "zxerror.h"
 
-extern uint8_t action_addr_len;
+extern uint16_t action_addrResponseLen;
 
-__Z_INLINE void app_sign() {
+#ifdef SUPPORT_SR25519
+__Z_INLINE zxerr_t app_sign_sr25519() {
     const uint8_t *message = tx_get_buffer();
     const uint16_t messageLength = tx_get_buffer_length();
-    const uint8_t replyLen = crypto_sign(G_io_apdu_buffer, IO_APDU_BUFFER_SIZE - 3, message, messageLength);
+    return crypto_sign_sr25519(message, messageLength);
+}
+#endif
 
-    if (replyLen > 0) {
-        set_code(G_io_apdu_buffer, replyLen, APDU_CODE_OK);
-        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, replyLen + 2);
-    } else {
+__Z_INLINE void app_sign_ed25519() {
+    const uint8_t *message = tx_get_buffer();
+    const uint16_t messageLength = tx_get_buffer_length();
+
+    zxerr_t err = crypto_sign_ed25519(G_io_apdu_buffer, IO_APDU_BUFFER_SIZE - 3, message, messageLength);
+
+    if (err != zxerr_ok) {
         set_code(G_io_apdu_buffer, 0, APDU_CODE_SIGN_VERIFY_ERROR);
         io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
+    } else {
+        set_code(G_io_apdu_buffer, SIG_PLUS_TYPE_LEN, APDU_CODE_OK);
+        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, SIG_PLUS_TYPE_LEN + 2);
     }
 }
 
+#ifdef SUPPORT_SR25519
+__Z_INLINE void app_return_sr25519() {
+    copy_sr25519_signdata(G_io_apdu_buffer);
+    zeroize_sr25519_signdata();
+
+    set_code(G_io_apdu_buffer, SIG_PLUS_TYPE_LEN, APDU_CODE_OK);
+    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, SIG_PLUS_TYPE_LEN + 2);
+}
+#endif
+
 __Z_INLINE void app_reject() {
+#ifdef SUPPORT_SR25519
+    zeroize_sr25519_signdata();
+#endif
     set_code(G_io_apdu_buffer, 0, APDU_CODE_COMMAND_NOT_ALLOWED);
     io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
 }
 
-__Z_INLINE uint8_t app_fill_address() {
+__Z_INLINE zxerr_t app_fill_address(key_kind_e addressKind) {
     // Put data directly in the apdu buffer
-    MEMZERO(G_io_apdu_buffer, IO_APDU_BUFFER_SIZE);
-    action_addr_len = crypto_fillAddress(G_io_apdu_buffer, IO_APDU_BUFFER_SIZE - 2);
-    return action_addr_len;
+    return crypto_fillAddress(addressKind,
+                              G_io_apdu_buffer, IO_APDU_BUFFER_SIZE - 2,
+                              &action_addrResponseLen);
 }
 
-__Z_INLINE void app_reply_address() {
-    set_code(G_io_apdu_buffer, action_addr_len, APDU_CODE_OK);
-    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, action_addr_len + 2);
+__Z_INLINE key_kind_e get_key_type(uint8_t num) {
+#ifdef SUPPORT_SR25519
+    switch (num) {
+        case 0x00:
+            return key_ed25519;
+        case 0x01:
+            return key_sr25519;
+    }
+    return 0xff;
+#else
+    return key_ed25519;
+#endif
 }
 
 __Z_INLINE void app_reply_error() {
+#ifdef SUPPORT_SR25519
+    zeroize_sr25519_signdata();
+#endif
     set_code(G_io_apdu_buffer, 0, APDU_CODE_DATA_INVALID);
     io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
+}
+
+__Z_INLINE void app_reply_address() {
+    if (action_addrResponseLen == 0) {
+        app_reply_error();
+        return;
+    }
+    set_code(G_io_apdu_buffer, action_addrResponseLen, APDU_CODE_OK);
+    io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, action_addrResponseLen + 2);
 }

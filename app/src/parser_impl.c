@@ -15,13 +15,14 @@
 ********************************************************************************/
 
 #include <zxmacros.h>
+#include <zxformat.h>
 #include "parser_impl.h"
 #include "parser_txdef.h"
 #include "coin.h"
-#include "substrate_dispatch.h"
-#include "crypto.h"
+#include "crypto_helper.h"
 #include "bignum.h"
-#include "coin_ss58.h"
+#include "substrate_types.h"
+#include "substrate_dispatch.h"
 
 parser_error_t parser_init_context(parser_context_t *ctx,
                                    const uint8_t *buffer,
@@ -58,9 +59,11 @@ const char *parser_getErrorDescription(parser_error_t err) {
             return "display_idx_out_of_range";
         case parser_display_page_out_of_range:
             return "display_page_out_of_range";
-        // Coin specific
+            // Coin specific
         case parser_spec_not_supported:
             return "Spec version not supported";
+        case parser_tx_version_not_supported:
+            return "Txn version not supported";
         case parser_not_allowed:
             return "Not allowed";
         case parser_not_supported:
@@ -81,6 +84,12 @@ const char *parser_getErrorDescription(parser_error_t err) {
             return "Unexpected unparsed bytes";
         case parser_print_not_supported:
             return "Value cannot be printed";
+        case parser_tx_nesting_not_supported:
+            return "Call nesting not supported";
+        case parser_tx_nesting_limit_reached:
+            return "Max nested calls reached";
+        case parser_tx_call_vec_too_large:
+            return "Call vector exceeds limit";
         default:
             return "Unrecognized error code";
     }
@@ -95,7 +104,7 @@ GEN_DEF_READFIX_UNSIGNED(32)
 GEN_DEF_READFIX_UNSIGNED(64)
 
 parser_error_t _readBool(parser_context_t *c, pd_bool_t *v) {
-    CHECK_INPUT();
+    CHECK_INPUT()
 
     const uint8_t p = *(c->buffer + c->offset);
     CTX_CHECK_AND_ADVANCE(c, 1)
@@ -114,7 +123,7 @@ parser_error_t _readBool(parser_context_t *c, pd_bool_t *v) {
 }
 
 parser_error_t _readCompactInt(parser_context_t *c, compactInt_t *v) {
-    CHECK_INPUT();
+    CHECK_INPUT()
 
     v->ptr = c->buffer + c->offset;
     const uint8_t mode = *v->ptr & 0x03u;      // get mode from two least significant bits
@@ -124,6 +133,7 @@ parser_error_t _readCompactInt(parser_context_t *c, compactInt_t *v) {
         case 0:         // single byte
             v->len = 1;
             CTX_CHECK_AND_ADVANCE(c, v->len)
+            _getValue(v, &tmp);
             break;
         case 1:         // 2-byte
             v->len = 2;
@@ -135,7 +145,7 @@ parser_error_t _readCompactInt(parser_context_t *c, compactInt_t *v) {
             CTX_CHECK_AND_ADVANCE(c, v->len)
             _getValue(v, &tmp);
             break;
-        case 3:         // bitint
+        case 3:         // bigint
             v->len = (*v->ptr >> 2u) + 4 + 1;
             CTX_CHECK_AND_ADVANCE(c, v->len)
             break;
@@ -179,7 +189,8 @@ parser_error_t _getValue(const compactInt_t *c, uint64_t *v) {
 
 parser_error_t _toStringCompactInt(const compactInt_t *c,
                                    uint8_t decimalPlaces,
-                                   char postfix,
+                                   char postfix[],
+                                   char prefix[],
                                    char *outValue, uint16_t outValueLen,
                                    uint8_t pageIdx, uint8_t *pageCount) {
     char bufferUI[200];
@@ -197,20 +208,19 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
         // This is longer number
         uint8_t bcdOut[100];
         const uint16_t bcdOutLen = sizeof(bcdOut);
+
         bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, c->ptr + 1, c->len - 1);
         if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen))
             return parser_unexpected_buffer_end;
     }
 
     // Format number
-    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), decimalPlaces) == 0){
+    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), decimalPlaces) == 0) {
         return parser_unexpected_value;
     }
 
-    // Add postfix
-    if (postfix > 32 && postfix < 127) {
-        const uint16_t p = strlen(bufferUI);
-        bufferUI[p] = postfix;
+    if (z_str3join(bufferUI, sizeof(bufferUI), prefix, postfix) != zxerr_ok) {
+        return parser_unexpected_buffer_end;
     }
 
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
@@ -224,26 +234,28 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
 //////////////////////////////////////////////////////////
 
 parser_error_t _readCallIndex(parser_context_t *c, pd_CallIndex_t *v) {
-    CHECK_INPUT();
+    CHECK_INPUT()
 
-    CHECK_ERROR(_readUInt8(c, &v->moduleIdx));
-    CHECK_ERROR(_readUInt8(c, &v->idx));
+    CHECK_ERROR(_readUInt8(c, &v->moduleIdx))
+    CHECK_ERROR(_readUInt8(c, &v->idx))
     return parser_ok;
 }
 
 parser_error_t _readEra(parser_context_t *c, pd_ExtrinsicEra_t *v) {
-    CHECK_INPUT();
+    CHECK_INPUT()
     //  https://github.com/paritytech/substrate/blob/fc3adc87dc806237eb7371c1d21055eea1702be0/core/sr-primitives/src/generic/era.rs#L117
 
     v->type = eEraImmortal;
+    v->period = 0;
+    v->phase = 0;
 
     uint8_t first;
-    CHECK_ERROR(_readUInt8(c, &first));
+    CHECK_ERROR(_readUInt8(c, &first))
     if (first == 0) { return parser_ok; }
 
     v->type = eEraMortal;
     uint64_t encoded = first;
-    CHECK_ERROR(_readUInt8(c, &first));
+    CHECK_ERROR(_readUInt8(c, &first))
     encoded += (uint64_t) first << 8u;
 
     v->period = 2U << (encoded % (1u << 4u));
@@ -267,27 +279,32 @@ parser_error_t _readEra(parser_context_t *c, pd_ExtrinsicEra_t *v) {
 ////////////////////////////////////////////////////////////////
 
 parser_error_t _readCompactIndex(parser_context_t *c, pd_CompactIndex_t *v) {
-    CHECK_INPUT();
-    CHECK_ERROR(_readCompactInt(c, &v->index));
+    CHECK_INPUT()
+    CHECK_ERROR(_readCompactInt(c, &v->index))
     return parser_ok;
 }
 
 parser_error_t _readCompactBalance(parser_context_t *c, pd_CompactBalance_t *v) {
-    CHECK_INPUT();
-    CHECK_ERROR(_readCompactInt(c, &v->value));
+    CHECK_INPUT()
+    CHECK_ERROR(_readCompactInt(c, &v->value))
     return parser_ok;
 }
 
 parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
                                      char *outValue, uint16_t outValueLen,
                                      uint8_t pageIdx, uint8_t *pageCount) {
-    return _toStringCompactInt(&v->index, 0, 0, outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(&v->index, 0, "", "", outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
                                        char *outValue, uint16_t outValueLen,
                                        uint8_t pageIdx, uint8_t *pageCount) {
-    return _toStringCompactInt(&v->value, COIN_AMOUNT_DECIMAL_PLACES, 0, outValue, outValueLen, pageIdx, pageCount);
+    CHECK_ERROR(_toStringCompactInt(
+            &v->value,
+            COIN_AMOUNT_DECIMAL_PLACES, "", COIN_TICKER,
+            outValue, outValueLen, pageIdx, pageCount))
+    number_inplace_trimming(outValue, 1);
+    return parser_ok;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -300,7 +317,7 @@ parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
 parser_error_t _checkVersions(parser_context_t *c) {
     // Methods are not length delimited so in order to retrieve the specVersion
     // it is necessary to parse from the back.
-    // The transaction is expect to end in
+    // The transaction is expected to end in
     // [4 bytes] specVersion
     // [4 bytes] transactionVersion
     // [32 bytes] genesisHash
@@ -324,13 +341,17 @@ parser_error_t _checkVersions(parser_context_t *c) {
     transactionVersion += (uint32_t) p[2] << 16u;
     transactionVersion += (uint32_t) p[3] << 24u;
 
+    if (transactionVersion != (SUPPORTED_TX_VERSION_CURRENT) &&
+        transactionVersion != (SUPPORTED_TX_VERSION_PREVIOUS)) {
+        return parser_tx_version_not_supported;
+    }
+
     if (specVersion < SUPPORTED_MINIMUM_SPEC_VERSION) {
         return parser_spec_not_supported;
     }
 
-    if (transactionVersion != (SUPPORTED_TX_VERSION)) {
-        return parser_spec_not_supported;
-    }
+    c->tx_obj->specVersion = specVersion;
+    c->tx_obj->transactionVersion = transactionVersion;
 
     return parser_ok;
 }
@@ -358,21 +379,21 @@ uint8_t _detectAddressType(const parser_context_t *c) {
 }
 
 parser_error_t _readTx(parser_context_t *c, parser_tx_t *v) {
-    CHECK_INPUT();
+    CHECK_INPUT()
 
     // Reverse parse to retrieve spec before forward parsing
-    CHECK_ERROR(_checkVersions(c));
+    CHECK_ERROR(_checkVersions(c))
 
     // Now forward parse
-    CHECK_ERROR(_readCallIndex(c, &v->callIndex));
-    CHECK_ERROR(_readMethod(c, v->callIndex.moduleIdx, v->callIndex.idx, &v->method));
-    CHECK_ERROR(_readEra(c, &v->era));
-    CHECK_ERROR(_readCompactIndex(c, &v->nonce));
-    CHECK_ERROR(_readCompactBalance(c, &v->tip));
-    CHECK_ERROR(_readUInt32(c, &v->specVersion));
-    CHECK_ERROR(_readUInt32(c, &v->transactionVersion));
-    CHECK_ERROR(_readHash(c, &v->genesisHash));
-    CHECK_ERROR(_readHash(c, &v->blockHash));
+    CHECK_ERROR(_readCallIndex(c, &v->callIndex))
+    CHECK_ERROR(_readMethod(c, v->callIndex.moduleIdx, v->callIndex.idx, &v->method))
+    CHECK_ERROR(_readEra(c, &v->era))
+    CHECK_ERROR(_readCompactIndex(c, &v->nonce))
+    CHECK_ERROR(_readCompactBalance(c, &v->tip))
+    CHECK_ERROR(_readUInt32(c, &v->specVersion))
+    CHECK_ERROR(_readUInt32(c, &v->transactionVersion))
+    CHECK_ERROR(_readHash(c, &v->genesisHash))
+    CHECK_ERROR(_readHash(c, &v->blockHash))
 
     if (c->offset < c->bufferLen) {
         return parser_unexpected_unparsed_bytes;
@@ -395,26 +416,26 @@ parser_error_t _readTx(parser_context_t *c, parser_tx_t *v) {
 ////////////////////////////////////////////////////////////////
 
 parser_error_t _readAddress(parser_context_t *c, pd_Address_t *v) {
-    CHECK_INPUT();
+    CHECK_INPUT()
     // Based on
     // https://github.com/paritytech/substrate/blob/fc3adc87dc806237eb7371c1d21055eea1702be0/srml/indices/src/address.rs#L66
 
     uint8_t tmp;
-    CHECK_ERROR(_readUInt8(c, &tmp));
+    CHECK_ERROR(_readUInt8(c, &tmp))
 
     switch (tmp) {
         case 0xFF: {
             v->type = eAddressId;
             v->idPtr = c->buffer + c->offset;
-            CTX_CHECK_AND_ADVANCE(c, 32);
+            CTX_CHECK_AND_ADVANCE(c, 32)
             break;
         }
         case 0xFE: {
             compactInt_t ci;
-            CHECK_ERROR(_readCompactInt(c, &ci));
+            CHECK_ERROR(_readCompactInt(c, &ci))
 
             v->type = eAddressIndex;
-            CHECK_ERROR(_getValue(&ci, &v->idx));
+            CHECK_ERROR(_getValue(&ci, &v->idx))
 
             if (v->idx <= 0xffffffffu) {
                 return parser_unexpected_value;
@@ -423,7 +444,7 @@ parser_error_t _readAddress(parser_context_t *c, pd_Address_t *v) {
         }
         case 0xFD: {
             uint32_t tmpval;
-            CHECK_ERROR(_readUInt32(c, &tmpval));
+            CHECK_ERROR(_readUInt32(c, &tmpval))
             v->type = eAddressIndex;
             v->idx = tmpval;
             if (v->idx <= 0xFFFF) {
@@ -433,7 +454,7 @@ parser_error_t _readAddress(parser_context_t *c, pd_Address_t *v) {
         }
         case 0xFC: {
             uint16_t tmpval;
-            CHECK_ERROR(_readUInt16(c, &tmpval));
+            CHECK_ERROR(_readUInt16(c, &tmpval))
             v->type = eAddressIndex;
             v->idx = tmpval;
             if (v->idx <= 0xEF) {
@@ -452,10 +473,6 @@ parser_error_t _readAddress(parser_context_t *c, pd_Address_t *v) {
     }
 
     return parser_ok;
-}
-
-parser_error_t _readHash(parser_context_t *c, pd_Hash_t *v) {
-    GEN_DEF_READARRAY(32);
 }
 
 parser_error_t _toStringPubkeyAsAddress(const uint8_t *pubkey,
@@ -494,10 +511,4 @@ parser_error_t _toStringAddress(const pd_Address_t *v,
     }
 
     return parser_ok;
-}
-
-parser_error_t _toStringHash(const pd_Hash_t *v,
-                             char *outValue, uint16_t outValueLen,
-                             uint8_t pageIdx, uint8_t *pageCount) {
-    GEN_DEF_TOSTRING_ARRAY(32);
 }
