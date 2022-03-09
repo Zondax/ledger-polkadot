@@ -20,7 +20,7 @@
 
 void handle_stack_overflow() {
     zemu_log("!!!!!!!!!!!!!!!!!!!!!! CANARY TRIGGERED!!! STACK OVERFLOW DETECTED\n");
-#if defined (TARGET_NANOS) || defined(TARGET_NANOX)
+#if defined (TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2)
     io_seproxyhal_se_reset();
 #else
     while (1);
@@ -30,12 +30,12 @@ void handle_stack_overflow() {
 #pragma clang diagnostic pop
 
 __Z_UNUSED void check_app_canary() {
-#if defined (TARGET_NANOS) || defined(TARGET_NANOX)
+#if defined (TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2)
     if (app_stack_canary != APP_STACK_CANARY_MAGIC) handle_stack_overflow();
 #endif
 }
 
-#if defined(ZEMU_LOGGING) && (defined (TARGET_NANOS) || defined(TARGET_NANOX))
+#if defined(ZEMU_LOGGING) && (defined (TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2))
 void zemu_log_stack(const char *ctx) {
     #define STACK_SHIFT 20
     void* p = NULL;
@@ -55,7 +55,7 @@ void zemu_log_stack(__Z_UNUSED const char *ctx) {}
 #endif
 
 
-#if defined(ZEMU_LOGGING) && (defined (TARGET_NANOS) || defined(TARGET_NANOX))
+#if defined(ZEMU_LOGGING) && (defined (TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2))
 void zemu_trace(const char *file, uint32_t line) {
     char buf[200];
     snprintf(buf, sizeof(buf), "|TRACE| %s:%d\n", file, line);

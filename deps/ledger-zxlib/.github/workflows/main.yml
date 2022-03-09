@@ -1,0 +1,29 @@
+name: "Test/Build"
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    outputs:
+      uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "::set-output name=uid_gid::$(id -u):$(id -g)"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: |
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+          brew install conan
+          conan config install https://github.com/conan-io/conanclientcert.git
+      - run: cmake -DCMAKE_BUILD_TYPE=Debug . && make

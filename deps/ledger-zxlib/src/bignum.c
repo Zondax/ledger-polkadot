@@ -54,7 +54,7 @@ void bignumLittleEndian_to_bcd(uint8_t *bcdOut, uint16_t bcdOutLen,
                                const uint8_t *binValue, uint16_t binValueLen) {
     MEMZERO(bcdOut, bcdOutLen);
 
-    uint8_t carry;
+    uint8_t carry = 0;
     for (uint16_t bitIdx = 0; bitIdx < binValueLen * 8; bitIdx++) {
         // Fix bcd
         for (uint16_t j = 0; j < bcdOutLen; j++) {
@@ -120,7 +120,7 @@ void bignumBigEndian_to_bcd(uint8_t *bcdOut, uint16_t bcdOutLen,
                             const uint8_t *binValue, uint16_t binValueLen) {
     MEMZERO(bcdOut, bcdOutLen);
 
-    uint8_t carry;
+    uint8_t carry = 0;
     for (uint16_t bitIdx = 0; bitIdx < binValueLen * 8; bitIdx++) {
         // Fix bcd
         for (uint16_t j = 0; j < bcdOutLen; j++) {

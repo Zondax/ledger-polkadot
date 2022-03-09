@@ -141,10 +141,6 @@ clean: clean_output clean_build
 listvariants:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) listvariants)
 
-.PHONY: version
-version:
-	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) version)
-
 .PHONY: shellS
 shellS:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS) -t,bash)
@@ -163,11 +159,11 @@ delete:
 
 .PHONY: loadX
 loadX:
-	${LEDGER_SRC}/pkg/installer_x.sh load
+	${LEDGER_SRC}/pkg/installer_XL.sh load
 
 .PHONY: deleteX
 deleteX:
-	${LEDGER_SRC}/pkg/installer_x.sh delete
+	${LEDGER_SRC}/pkg/installer_XL.sh delete
 
 .PHONY: show_info_recovery_mode
 show_info_recovery_mode:

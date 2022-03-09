@@ -77,7 +77,7 @@ uint8_t intstr_to_fpstr_inplace(char *number, size_t number_max_size, uint8_t de
         numChars = 1;
     } else {
         // Trim leading zeros
-        MEMCPY(number, number + firstDigit, numChars - firstDigit);
+        MEMMOVE(number, number + firstDigit, numChars - firstDigit);
         MEMZERO(number + numChars - firstDigit, firstDigit);
     }
 
