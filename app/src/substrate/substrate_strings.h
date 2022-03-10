@@ -49,6 +49,7 @@ static const char* STR_MO_AUCTIONS = "Auctions";
 static const char* STR_MO_BAGSLIST = "Bagslist";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
 static const char* STR_MO_PREIMAGE = "Preimage";
+static const char* STR_MO_ELECTIONPROVIDERMULTIPHASE = "Electionprovidermultiphase";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";
@@ -314,6 +315,8 @@ static const char* STR_ME_ADD_TRUSTED_VALIDATION_CODE = "Add trusted validation 
 static const char* STR_ME_POKE_UNUSED_VALIDATION_CODE = "Poke unused validation code";
 static const char* STR_ME_INCLUDE_PVF_CHECK_STATEMENT = "Include pvf check statement";
 static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
+static const char* STR_ME_FORCE_APPLY_MIN_COMMISSION = "Force apply min commission";
+static const char* STR_ME_GOVERNANCE_FALLBACK = "Governance fallback";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
@@ -463,6 +466,17 @@ static const char* STR_IT_bytes = "Bytes";
 static const char* STR_IT_chill_threshold = "Chill threshold";
 static const char* STR_IT_min_commission = "Min commission";
 static const char* STR_IT_lighter = "Lighter";
+static const char* STR_IT_raw_solution = "Raw solution";
+static const char* STR_IT_witness = "Witness";
+static const char* STR_IT_maybe_next_score = "Maybe next score";
+static const char* STR_IT_supports = "Supports";
+static const char* STR_IT_num_signed_submissions = "Num signed submissions";
+static const char* STR_IT_maybe_max_voters = "Maybe max voters";
+static const char* STR_IT_maybe_max_targets = "Maybe max targets";
+static const char* STR_IT_inbound = "Inbound";
+static const char* STR_IT_outbound = "Outbound";
+static const char* STR_IT_channels = "Channels";
+static const char* STR_IT_open_requests = "Open requests";
 
 #ifdef __cplusplus
 }

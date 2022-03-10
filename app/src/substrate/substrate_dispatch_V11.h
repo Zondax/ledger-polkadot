@@ -22,27 +22,27 @@ extern "C" {
 #include "parser_impl.h"
 #include "stdbool.h"
 #include "substrate_functions.h"
-#include "substrate_functions_V9.h"
+#include "substrate_functions_V11.h"
 #include <stddef.h>
 #include <stdint.h>
 
-parser_error_t _readMethod_V9(parser_context_t* c, uint8_t moduleIdx, uint8_t callIdx, pd_Method_V9_t* method);
+parser_error_t _readMethod_V11(parser_context_t* c, uint8_t moduleIdx, uint8_t callIdx, pd_Method_V11_t* method);
 
-const char* _getMethod_ModuleName_V9(uint8_t moduleIdx);
+const char* _getMethod_ModuleName_V11(uint8_t moduleIdx);
 
-const char* _getMethod_Name_V9(uint8_t moduleIdx, uint8_t callIdx);
+const char* _getMethod_Name_V11(uint8_t moduleIdx, uint8_t callIdx);
 
-const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
+const char* _getMethod_ItemName_V11(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
 
-uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx);
+uint8_t _getMethod_NumItems_V11(uint8_t moduleIdx, uint8_t callIdx);
 
-parser_error_t _getMethod_ItemValue_V9(
-    pd_Method_V9_t* m, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx,
+parser_error_t _getMethod_ItemValue_V11(
+    pd_Method_V11_t* m, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx,
     char* outValue, uint16_t outValueLen,
     uint8_t pageIdx, uint8_t* pageCount);
 
-bool _getMethod_ItemIsExpert_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
-bool _getMethod_IsNestingSupported_V9(uint8_t moduleIdx, uint8_t callIdx);
+bool _getMethod_ItemIsExpert_V11(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
+bool _getMethod_IsNestingSupported_V11(uint8_t moduleIdx, uint8_t callIdx);
 
 #ifdef __cplusplus
 }

@@ -141,6 +141,10 @@ clean: clean_output clean_build
 listvariants:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) listvariants)
 
+.PHONY: version
+version:
+	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) version)
+
 .PHONY: shellS
 shellS:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS) -t,bash)

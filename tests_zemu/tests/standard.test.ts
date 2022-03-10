@@ -16,7 +16,8 @@
 
 import Zemu, {DEFAULT_START_OPTIONS} from '@zondax/zemu'
 import { newPolkadotApp } from '@zondax/ledger-substrate'
-import {APP_SEED, models, setKeys, txBasic, txNomination} from './common'
+import {APP_SEED, models} from './common'
+import {txBalances_transfer, txStaking_nominate, txSession_setKeys} from './zemu_blobs'
 
 // @ts-ignore
 import ed25519 from 'ed25519-supercop'
@@ -50,7 +51,7 @@ describe('Standard', function () {
     const sim = new Zemu(m.path)
     try {
       await sim.start({...defaultOptions, model: m.name})
-      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-mainmenu`, [1, 0, 0, 5, -5])
+      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-mainmenu`, [1, 0, 0, 4, -5])
     } finally {
       await sim.close()
     }
@@ -138,7 +139,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-show_address_reject`, 3, 2)
+      await sim.navigateAndCompareUntilText('.', `${m.prefix.toLowerCase()}-show_address_reject`, 'REJECT')
 
       const resp = await respRequest
       console.log(resp)
@@ -159,7 +160,7 @@ describe('Standard', function () {
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
 
-      const txBlob = Buffer.from(txBasic, 'hex')
+      const txBlob = Buffer.from(txBalances_transfer, 'hex')
 
       const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
       const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
@@ -169,7 +170,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_basic_normal`, m.name === 'nanos' ? 6 : 6)
+      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-sign_basic_normal`)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -205,7 +206,7 @@ describe('Standard', function () {
       await sim.clickBoth()
       await sim.clickLeft()
 
-      const txBlob = Buffer.from(txBasic, 'hex')
+      const txBlob = Buffer.from(txBalances_transfer, 'hex')
 
       const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
       const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
@@ -216,7 +217,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_basic_expert`, 12)
+      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-sign_basic_expert`)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -247,7 +248,7 @@ describe('Standard', function () {
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
 
-      const txBlob = Buffer.from(setKeys, 'hex')
+      const txBlob = Buffer.from(txSession_setKeys, 'hex')
 
       const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
       const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
@@ -257,7 +258,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-set-keys`, m.name === 'nanos' ? 13 : 10)
+      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-set-keys`)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -288,7 +289,7 @@ describe('Standard', function () {
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
 
-      const txBlob = Buffer.from(txNomination, 'hex')
+      const txBlob = Buffer.from(txStaking_nominate, 'hex')
 
       const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
       const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
@@ -298,7 +299,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_large_nomination`, m.name === 'nanos' ? 7 : 6)
+      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-sign_large_nomination`)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)

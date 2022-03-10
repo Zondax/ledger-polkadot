@@ -1,0 +1,58 @@
+name: "Verify PRs to main"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    outputs:
+      uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "::set-output name=uid_gid::$(id -u):$(id -g)"
+
+  get_version:
+    needs: configure
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/builder-bolos:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    env:
+      BOLOS_ENV: /opt/bolos
+      HOME: /home/zondax_circle
+    outputs:
+      version: ${{ steps.store-version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Invoke `version`
+        shell: bash -l {0}
+        env:
+          BOLOS_SDK: ${{ github.workspace }}/deps/nanos-secure-sdk
+        run: make version
+
+      - id: store-version
+        run: echo ::set-output name=version::$(cat ./app/app.version)
+
+  check_app_version:
+    needs: get_version
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkTag
+        uses: mukunku/tag-exists-action@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: ${{ needs.get_version.outputs.version }}
+
+      - run: echo ${{ steps.checkTag.outputs.exists }}
+
+      - name: Tag exists
+        if: ${{ steps.checkTag.outputs.exists == 'true' }}
+        run: exit 1

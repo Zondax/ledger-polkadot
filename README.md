@@ -4,7 +4,8 @@
 
 -------------------
 
-![zondax](docs/zondax.jpg)
+![zondax_light](docs/zondax_light.png#gh-light-mode-only)
+![zondax_dark](docs/zondax_dark.png#gh-dark-mode-only)
 
 _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
@@ -25,7 +26,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot  10.9160.x
+# Polkadot  11.9170.x
 
 ## System
 
@@ -131,6 +132,7 @@ Please:
 |Kick |    | :heavy_check_mark: |   | `VecLookupasStaticLookupSource` who <br/> |
 |Set staking configs |    |   |   | `Balance` min_nominator_bond <br/>`Balance` min_validator_bond <br/>`Optionu32` max_nominator_count <br/>`Optionu32` max_validator_count <br/>`OptionPercent` chill_threshold <br/>`Perbill` min_commission <br/> |
 |Chill other |    | :heavy_check_mark: |   | `AccountId` controller <br/> |
+|Force apply min commission |    | :heavy_check_mark: |   | `AccountId` validator_stash <br/> |
 
 ## Session
 
@@ -304,7 +306,7 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|As multi threshold 1 |    |   |   | `VecAccountId` other_signatories <br/>`Call` call <br/> |
+|As multi threshold 1 |    | :heavy_check_mark: | :heavy_check_mark: | `VecAccountId` other_signatories <br/>`Call` call <br/> |
 |As multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`OpaqueCall` call <br/>`bool` store_call <br/>`Weight` max_weight <br/> |
 |Approve as multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`H256` call_hash <br/>`Weight` max_weight <br/> |
 |Cancel as multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`Timepoint` timepoint <br/>`H256` call_hash <br/> |
@@ -342,6 +344,7 @@ Please:
 |Set minimum untrusted score |    |   |   | `OptionElectionScore` maybe_next_score <br/> |
 |Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> |
 |Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`u32` num_signed_submissions <br/> |
+|Governance fallback |    | :heavy_check_mark: |   | `Optionu32` maybe_max_voters <br/>`Optionu32` maybe_max_targets <br/> |
 
 ## BagsList
 
@@ -453,10 +456,10 @@ Please:
 |Hrmp init open channel |    |   |   | `ParaId` recipient <br/>`u32` proposed_max_capacity <br/>`u32` proposed_max_message_size <br/> |
 |Hrmp accept open channel |    |   |   | `ParaId` sender <br/> |
 |Hrmp close channel |    |   |   | `HrmpChannelId` channel_id <br/> |
-|Force clean hrmp |    |   |   | `ParaId` para <br/> |
-|Force process hrmp open |    | :heavy_check_mark: |   |  |
-|Force process hrmp close |    | :heavy_check_mark: |   |  |
-|Hrmp cancel open request |    |   |   | `HrmpChannelId` channel_id <br/> |
+|Force clean hrmp |    |   |   | `ParaId` para <br/>`u32` inbound <br/>`u32` outbound <br/> |
+|Force process hrmp open |    | :heavy_check_mark: |   | `u32` channels <br/> |
+|Force process hrmp close |    | :heavy_check_mark: |   | `u32` channels <br/> |
+|Hrmp cancel open request |    |   |   | `HrmpChannelId` channel_id <br/>`u32` open_requests <br/> |
 
 ## Registrar
 
