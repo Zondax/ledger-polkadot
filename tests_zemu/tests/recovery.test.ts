@@ -42,9 +42,9 @@ async function activateSecretMode(sim: any) {
     await sim.clickBoth('', false)
   }
 
-  let reviewSteps = 7
-  if (sim.startOptions.model === 'nanox') {
-    reviewSteps = 6
+  let reviewSteps = 6
+  if (sim.startOptions.model === 'nanos') {
+    reviewSteps = 7
   }
 
   // Review warning message
