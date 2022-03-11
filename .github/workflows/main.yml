@@ -236,7 +236,7 @@ jobs:
       image: zondax/builder-bolos:latest
       options: --user ${{ needs.configure.outputs.uid_gid }}
     env:
-      BOLOS_SDK: ${{ github.workspace }}/deps/nanos2-secure-sdk
+      BOLOS_SDK: ${{ github.workspace }}/deps/nanosplus-secure-sdk
       BOLOS_ENV: /opt/bolos
       HOME: /home/zondax_circle
     steps:
