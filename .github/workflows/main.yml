@@ -150,7 +150,7 @@ jobs:
           export PATH=~/.cargo/bin:$PATH
           cd tests_zemu && yarn testSR25519
 
-  build_package:
+  build_package_0:
     needs: [ configure, build, build_ledger, test_zemu, test_zemu_sr25519 ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
@@ -168,41 +168,101 @@ jobs:
           submodules: true
       - name: Install deps
         run: pip install ledgerblue
-      - name: Build
+
+      - name: Build NanoS light
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
           make SUBSTRATE_PARSER_FULL=0
-      - name: Set tag name var (1)
-        id: vars_1
-        run: echo ::set-output name=tag_name::$(./app/pkg/installer_s.sh version)
+          mv ./app/pkg/installer_s.sh ./app/pkg/installer_nanos_light.sh
+      - name: Set tag
+        id: nanos_light
+        run: echo ::set-output name=tag_name::$(./app/pkg/installer_nanos_light.sh version)
       - name: Create or Update Release (1)
-        id: create_release_1
+        id: create_release_0
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          files: ./app/pkg/installer_s.sh
-          tag_name: ${{ steps.vars_1.outputs.tag_name }}
+          files: ./app/pkg/installer_nanos_light.sh
+          tag_name: ${{ steps.nanos_light.outputs.tag_name }}
           draft: false
           prerelease: false
-      - name: Clear and rebuild XL version
+
+  build_package_1:
+    needs: [ configure, build, build_ledger, test_zemu, test_zemu_sr25519 ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/builder-bolos:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    env:
+      BOLOS_SDK: ${{ github.workspace }}/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+      HOME: /home/zondax_circle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build NanoS XL
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
           make SUBSTRATE_PARSER_FULL=1
-          cp rust/app/pkg/installer_s.sh rust/app/pkg/installer_baking_s.sh
-          cp app/pkg/installer_s.sh app/pkg/installer_XL_s.sh
-      - name: Set tag name var (2)
-        id: vars_2
-        run: echo ::set-output name=tag_name::$(./app/pkg/installer_XL_s.sh version)
-      - name: Create or Update Release (2)
-        id: create_release_2
+          mv ./app/pkg/installer_s.sh ./app/pkg/installer_nanos_xl.sh
+      - name: Set tag
+        id: nanos_xl
+        run: echo ::set-output name=tag_name::$(./app/pkg/installer_nanos_xl.sh version)
+      - name: Update Release
+        id: update_release_1
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          files: ./app/pkg/installer_XL_s.sh
-          tag_name: ${{ steps.vars_2.outputs.tag_name }}
+          files: ./app/pkg/installer_nanos_xl.sh
+          tag_name: ${{ steps.nanos_xl.outputs.tag_name }}
           draft: false
           prerelease: false
+
+    build_package_2:
+      needs: [ configure, build, build_ledger, test_zemu, test_zemu_sr25519 ]
+      if: ${{ github.ref == 'refs/heads/main' }}
+      runs-on: ubuntu-latest
+      container:
+        image: zondax/builder-bolos:latest
+        options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: ${{ github.workspace }}/deps/nanos2-secure-sdk
+        BOLOS_ENV: /opt/bolos
+        HOME: /home/zondax_circle
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+          with:
+            submodules: true
+        - name: Install deps
+          run: pip install ledgerblue
+
+        - name: Build NanoSP XL
+          shell: bash -l {0}
+          run: |
+            source $HOME/.cargo/env
+            make SUBSTRATE_PARSER_FULL=1
+            mv ./app/pkg/installer_s2.sh ./app/pkg/installer_nanosp_xl.sh
+        - name: Set tag
+          id: nanosp_xl
+          run: echo ::set-output name=tag_name::$(./app/pkg/installer_nanosp_xl.sh version)
+        - name: Update Release
+          id: update_release_2
+          uses: softprops/action-gh-release@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          with:
+            files: ./app/pkg/installer_nanosp_xl.sh
+            tag_name: ${{ steps.nanosp_xl.outputs.tag_name }}
+            draft: false
+            prerelease: false
