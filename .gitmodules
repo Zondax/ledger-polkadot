@@ -10,3 +10,6 @@
 [submodule "deps/nanox-secure-sdk"]
 	path = deps/nanox-secure-sdk
 	url = https://github.com/LedgerHQ/nanox-secure-sdk.git
+[submodule "deps/nanosplus-secure-sdk"]
+	path = deps/nanosplus-secure-sdk
+	url = https://github.com/LedgerHQ/nanosplus-secure-sdk

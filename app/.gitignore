@@ -48,4 +48,4 @@ bin/app.sha256
 bin/app.apdu
 
 \output/app.*
-pkg/installer_?.sh
+pkg/installer_*.sh

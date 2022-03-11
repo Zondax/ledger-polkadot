@@ -91,7 +91,7 @@
         text,   /* text             */                          \
 }
 
-#if defined(TARGET_NANOX)
+#if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
 #define UI_SCREEN_WIDTH  128
 #define UI_SCREEN_HEIGHT 64
 

@@ -30,6 +30,8 @@
 
 #if defined(TARGET_NANOS)
 
+void h_initialize();
+
 #define BAGL_WIDTH 128
 #define BAGL_HEIGHT 32
 #define BAGL_WIDTH_MARGIN 10
@@ -66,6 +68,17 @@ const ux_menu_entry_t menu_main[] = {
 #endif
      0, &C_icon_app, "Developed by:", "Zondax.ch", 33, 12},
 
+    {NULL, NULL, 0, &C_icon_app, "License: ", "Apache 2.0", 33, 12},
+    {NULL, os_exit, 0, &C_icon_dashboard, "Quit", NULL, 50, 29},
+    UX_MENU_END
+};
+
+const ux_menu_entry_t menu_initialize[] = {
+    {NULL, NULL, 0, &C_icon_app, MENU_MAIN_APP_LINE1, viewdata.key, 33, 12},
+    {NULL, h_initialize, 0, &C_icon_app, "Click to", "Initialize", 33, 12},
+    {NULL, h_expert_toggle, 0, &C_icon_app, "Expert mode:", viewdata.value, 33, 12},
+    {NULL, NULL, 0, &C_icon_app, APPVERSION_LINE1, APPVERSION_LINE2, 33, 12},
+    {NULL, NULL, 0, &C_icon_app, "Developed by:", "Zondax.ch", 33, 12},
     {NULL, NULL, 0, &C_icon_app, "License: ", "Apache 2.0", 33, 12},
     {NULL, os_exit, 0, &C_icon_dashboard, "Quit", NULL, 50, 29},
     UX_MENU_END
@@ -237,6 +250,16 @@ bool exceed_pixel_in_display(const uint8_t length) {
 //////////////////////////
 //////////////////////////
 //////////////////////////
+
+void view_initialize_show_impl(uint8_t item_idx, char *statusString) {
+    if (statusString == NULL ) {
+        snprintf(viewdata.key, MAX_CHARS_PER_VALUE_LINE, "%s", MENU_MAIN_APP_LINE2);
+    } else {
+        snprintf(viewdata.key, MAX_CHARS_PER_VALUE_LINE, "%s", statusString);
+    }
+    h_expert_update();
+    UX_MENU_DISPLAY(item_idx, menu_initialize, NULL);
+}
 
 void view_idle_show_impl(uint8_t item_idx, char *statusString) {
     if (statusString == NULL ) {

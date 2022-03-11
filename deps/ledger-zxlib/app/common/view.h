@@ -44,6 +44,9 @@ zxerr_t secret_enabled();
 /// view_init (initializes UI)
 void view_init();
 
+/// view_initialize_show (idle view - main menu + status)
+void view_initialize_show(uint8_t item_idx, char *statusString);
+
 /// view_idle_show (idle view - main menu + status)
 void view_idle_show(uint8_t item_idx, char *statusString);
 
