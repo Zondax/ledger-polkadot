@@ -50,6 +50,7 @@ static const char* STR_MO_BAGSLIST = "Bagslist";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
 static const char* STR_MO_PREIMAGE = "Preimage";
 static const char* STR_MO_ELECTIONPROVIDERMULTIPHASE = "Electionprovidermultiphase";
+static const char* STR_MO_PARASDISPUTES = "Parasdisputes";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";
@@ -317,6 +318,7 @@ static const char* STR_ME_INCLUDE_PVF_CHECK_STATEMENT = "Include pvf check state
 static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
 static const char* STR_ME_FORCE_APPLY_MIN_COMMISSION = "Force apply min commission";
 static const char* STR_ME_GOVERNANCE_FALLBACK = "Governance fallback";
+static const char* STR_ME_FORCE_UNFREEZE = "Force unfreeze";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
