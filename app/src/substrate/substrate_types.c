@@ -182,7 +182,7 @@ parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v) {
 
 parser_error_t _readData(parser_context_t* c, pd_Data_t* v)
 {
-    CHECK_INPUT();
+    CHECK_INPUT()
     MEMZERO(v, sizeof(pd_Data_t));
     CHECK_ERROR(_readUInt8(c, (uint8_t*)&v->type))
 
