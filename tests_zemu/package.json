@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@zondax/ledger-substrate": "^0.24.0",
-    "@zondax/zemu": "^0.26.0"
+    "@zondax/zemu": "^0.27.0-rc2"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

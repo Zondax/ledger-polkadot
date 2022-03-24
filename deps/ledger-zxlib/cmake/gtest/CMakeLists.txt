@@ -26,6 +26,6 @@ add_subdirectory(
     ${CMAKE_BINARY_DIR}/googletest-build
 )
 
-if (CMAKE_VERSION VERSION_LESS 2.8.11)
+if (CMAKE_VERSION VERSION_LESS 3.0.0)
     include_directories("${gtest_SOURCE_DIR}/include")
 endif ()

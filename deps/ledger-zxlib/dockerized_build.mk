@@ -27,6 +27,7 @@ DOCKER_APP_BIN=$(DOCKER_APP_SRC)/app/bin/app.elf
 
 DOCKER_BOLOS_SDKS=/project/deps/nanos-secure-sdk
 DOCKER_BOLOS_SDKX=/project/deps/nanox-secure-sdk
+DOCKER_BOLOS_SDKS2=/project/deps/nanosplus-secure-sdk
 
 # Note: This is not an SSH key, and being public represents no risk
 SCP_PUBKEY=049bc79d139c70c83a4b19e8922e5ee3e0080bb14a2e8b0752aa42cda90a1463f689b0fa68c1c0246845c2074787b649d0d8a6c0b97d4607065eee3057bdf16b83
@@ -85,6 +86,8 @@ all:
 	@$(MAKE) buildS
 	@$(MAKE) clean_build
 	@$(MAKE) buildX
+	@$(MAKE) clean_build
+	@$(MAKE) buildS2
 
 .PHONY: check_python
 check_python:
@@ -112,6 +115,10 @@ build_rustS:
 build_rustX:
 	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -C $(DOCKER_APP_SRC) rust)
 
+.PHONY: build_rustS2
+build_rustS2:
+	$(call run_docker,$(DOCKER_BOLOS_SDKS2),make -C $(DOCKER_APP_SRC) rust)
+
 .PHONY: convert_icon
 convert_icon:
 	@convert $(LEDGER_SRC)/tmp.gif -monochrome -size 16x16 -depth 1 $(LEDGER_SRC)/nanos_icon.gif
@@ -124,6 +131,10 @@ buildS: build_rustS
 .PHONY: buildX
 buildX: build_rustX
 	$(call run_docker,$(DOCKER_BOLOS_SDKX),make -j $(NPROC) -C $(DOCKER_APP_SRC))
+
+.PHONY: buildS2
+buildS2: build_rustS2
+	$(call run_docker,$(DOCKER_BOLOS_SDKS2),make -j $(NPROC) -C $(DOCKER_APP_SRC))
 
 .PHONY: clean_output
 clean_output:
@@ -141,10 +152,6 @@ clean: clean_output clean_build
 listvariants:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) listvariants)
 
-.PHONY: version
-version:
-	$(call run_docker,$(DOCKER_BOLOS_SDKS),make -C $(DOCKER_APP_SRC) version)
-
 .PHONY: shellS
 shellS:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS) -t,bash)
@@ -152,6 +159,10 @@ shellS:
 .PHONY: shellX
 shellX:
 	$(call run_docker,$(DOCKER_BOLOS_SDKX) -t,bash)
+
+.PHONY: shellS2
+shellS2:
+	$(call run_docker,$(DOCKER_BOLOS_SDKS2) -t,bash)
 
 .PHONY: load
 load:
@@ -168,6 +179,14 @@ loadX:
 .PHONY: deleteX
 deleteX:
 	${LEDGER_SRC}/pkg/installer_x.sh delete
+
+.PHONY: loadS2
+loadS2:
+	${LEDGER_SRC}/pkg/installer_s2.sh load
+
+.PHONY: deleteS2
+deleteS2:
+	${LEDGER_SRC}/pkg/installer_s2.sh delete
 
 .PHONY: show_info_recovery_mode
 show_info_recovery_mode:

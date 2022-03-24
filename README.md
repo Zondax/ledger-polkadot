@@ -26,7 +26,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot  11.9170.x
+# Polkadot  12.9180.x
 
 ## System
 
@@ -130,7 +130,7 @@ Please:
 |Set history depth |    | :heavy_check_mark: |   | `Compactu32` new_history_depth <br/>`Compactu32` era_items_deleted <br/> |
 |Reap stash |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> |
 |Kick |    | :heavy_check_mark: |   | `VecLookupasStaticLookupSource` who <br/> |
-|Set staking configs |    |   |   | `Balance` min_nominator_bond <br/>`Balance` min_validator_bond <br/>`Optionu32` max_nominator_count <br/>`Optionu32` max_validator_count <br/>`OptionPercent` chill_threshold <br/>`Perbill` min_commission <br/> |
+|Set staking configs |    |   |   | `ConfigOpBalanceOfT` min_nominator_bond <br/>`ConfigOpBalanceOfT` min_validator_bond <br/>`ConfigOpu32` max_nominator_count <br/>`ConfigOpu32` max_validator_count <br/>`ConfigOpPercent` chill_threshold <br/>`ConfigOpPerbill` min_commission <br/> |
 |Chill other |    | :heavy_check_mark: |   | `AccountId` controller <br/> |
 |Force apply min commission |    | :heavy_check_mark: |   | `AccountId` validator_stash <br/> |
 
@@ -343,7 +343,7 @@ Please:
 |Submit unsigned |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`SolutionOrSnapshotSize` witness <br/> |
 |Set minimum untrusted score |    |   |   | `OptionElectionScore` maybe_next_score <br/> |
 |Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> |
-|Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`u32` num_signed_submissions <br/> |
+|Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/> |
 |Governance fallback |    | :heavy_check_mark: |   | `Optionu32` maybe_max_voters <br/>`Optionu32` maybe_max_targets <br/> |
 
 ## BagsList
@@ -460,6 +460,12 @@ Please:
 |Force process hrmp open |    | :heavy_check_mark: |   | `u32` channels <br/> |
 |Force process hrmp close |    | :heavy_check_mark: |   | `u32` channels <br/> |
 |Hrmp cancel open request |    |   |   | `HrmpChannelId` channel_id <br/>`u32` open_requests <br/> |
+
+## ParasDisputes
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Force unfreeze |    | :heavy_check_mark: |   |  |
 
 ## Registrar
 

@@ -45,11 +45,6 @@ jobs:
           cd ./app/rust
           cargo clippy --version
           cargo clippy --all-features --all-targets || true
-#      - name: audit
-#        run: |
-#          cd ./app/rust
-#          cargo audit --version
-#          cargo audit
       - name: run tests
         run: |
           cd ./app/rust
@@ -168,41 +163,65 @@ jobs:
           submodules: true
       - name: Install deps
         run: pip install ledgerblue
-      - name: Build
+
+      - name: Build NanoS light
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
           make SUBSTRATE_PARSER_FULL=0
-      - name: Set tag name var (1)
-        id: vars_1
-        run: echo ::set-output name=tag_name::$(./app/pkg/installer_s.sh version)
+          mv ./app/pkg/installer_s.sh ./app/pkg/installer_nanos.sh
+      - name: Set tag
+        id: nanos
+        run: echo ::set-output name=tag_name::$(./app/pkg/installer_nanos.sh version)
+      - name: Create or Update Release (1)
+        id: create_release_0
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: ./app/pkg/installer_nanos.sh
+          tag_name: ${{ steps.nanos.outputs.tag_name }}
+          draft: false
+          prerelease: false
+
+      - name: Build NanoS XL
+        shell: bash -l {0}
+        run: |
+          source $HOME/.cargo/env
+          make SUBSTRATE_PARSER_FULL=1
+          mv ./app/pkg/installer_s.sh ./app/pkg/installer_nanos_xl.sh
+      - name: Set tag
+        id: nanos_xl
+        run: echo ::set-output name=tag_name::$(./app/pkg/installer_nanos_xl.sh version)
       - name: Create or Update Release (1)
         id: create_release_1
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          files: ./app/pkg/installer_s.sh
-          tag_name: ${{ steps.vars_1.outputs.tag_name }}
+          files: ./app/pkg/installer_nanos_xl.sh
+          tag_name: ${{ steps.nanos_xl.outputs.tag_name }}
           draft: false
           prerelease: false
-      - name: Clear and rebuild XL version
+
+      - name: Build NanoSP
+        env:
+          BOLOS_SDK: ${{ github.workspace }}/deps/nanosplus-secure-sdk
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
           make SUBSTRATE_PARSER_FULL=1
-          cp rust/app/pkg/installer_s.sh rust/app/pkg/installer_baking_s.sh
-          cp app/pkg/installer_s.sh app/pkg/installer_XL_s.sh
-      - name: Set tag name var (2)
-        id: vars_2
-        run: echo ::set-output name=tag_name::$(./app/pkg/installer_XL_s.sh version)
-      - name: Create or Update Release (2)
+          mv ./app/pkg/installer_s2.sh ./app/pkg/installer_nanos_plus.sh
+      - name: Set tag
+        id: nanosp
+        run: echo ::set-output name=tag_name::$(./app/pkg/installer_nanos_plus.sh version)
+      - name: Create or Update Release (1)
         id: create_release_2
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          files: ./app/pkg/installer_XL_s.sh
-          tag_name: ${{ steps.vars_2.outputs.tag_name }}
+          files: ./app/pkg/installer_nanos_plus.sh
+          tag_name: ${{ steps.nanosp.outputs.tag_name }}
           draft: false
           prerelease: false
