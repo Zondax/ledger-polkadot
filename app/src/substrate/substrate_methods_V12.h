@@ -666,7 +666,7 @@ typedef struct {
 #define PD_CALL_CHILDBOUNTIES_ADD_CHILD_BOUNTY_V12 0
 typedef struct {
     pd_Compactu32_t parent_bounty_id;
-    pd_Compactu128_t amount;
+    pd_CompactBalance_t amount;
     pd_Vecu8_t description;
 } pd_childbounties_add_child_bounty_V12_t;
 
@@ -675,7 +675,7 @@ typedef struct {
     pd_Compactu32_t parent_bounty_id;
     pd_Compactu32_t child_bounty_id;
     pd_LookupasStaticLookupSource_V12_t curator;
-    pd_Compactu128_t fee;
+    pd_CompactBalance_t fee;
 } pd_childbounties_propose_curator_V12_t;
 
 #define PD_CALL_CHILDBOUNTIES_ACCEPT_CURATOR_V12 2

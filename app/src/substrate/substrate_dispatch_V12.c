@@ -975,7 +975,7 @@ __Z_INLINE parser_error_t _readMethod_childbounties_add_child_bounty_V12(
     parser_context_t* c, pd_childbounties_add_child_bounty_V12_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->parent_bounty_id))
-    CHECK_ERROR(_readCompactu128(c, &m->amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     CHECK_ERROR(_readVecu8(c, &m->description))
     return parser_ok;
 }
@@ -986,7 +986,7 @@ __Z_INLINE parser_error_t _readMethod_childbounties_propose_curator_V12(
     CHECK_ERROR(_readCompactu32(c, &m->parent_bounty_id))
     CHECK_ERROR(_readCompactu32(c, &m->child_bounty_id))
     CHECK_ERROR(_readLookupasStaticLookupSource_V12(c, &m->curator))
-    CHECK_ERROR(_readCompactu128(c, &m->fee))
+    CHECK_ERROR(_readCompactBalance(c, &m->fee))
     return parser_ok;
 }
 
@@ -6131,7 +6131,7 @@ parser_error_t _getMethod_ItemValue_V12(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* childbounties_add_child_bounty_V12 - amount */;
-            return _toStringCompactu128(
+            return _toStringCompactBalance(
                 &m->basic.childbounties_add_child_bounty_V12.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6161,7 +6161,7 @@ parser_error_t _getMethod_ItemValue_V12(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* childbounties_propose_curator_V12 - fee */;
-            return _toStringCompactu128(
+            return _toStringCompactBalance(
                 &m->basic.childbounties_propose_curator_V12.fee,
                 outValue, outValueLen,
                 pageIdx, pageCount);
