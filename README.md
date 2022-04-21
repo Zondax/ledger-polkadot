@@ -331,8 +331,8 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Add child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu128` amount <br/>`Vecu8` description <br/> |
-|Propose curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/>`LookupasStaticLookupSource` curator <br/>`Compactu128` fee <br/> |
+|Add child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`CompactBalance` amount <br/>`Vecu8` description <br/> |
+|Propose curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/>`LookupasStaticLookupSource` curator <br/>`CompactBalance` fee <br/> |
 |Accept curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
 |Unassign curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
 |Award child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/>`LookupasStaticLookupSource` beneficiary <br/> |
