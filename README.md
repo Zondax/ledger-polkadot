@@ -1,15 +1,17 @@
 # Ledger Polkadot app
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GithubActions](https://github.com/zondax/ledger-polkadot/actions/workflows/main.yml/badge.svg)](https://github.com/Zondax/ledger-polkadot/blob/main/.github/workflows/main.yaml)
 
--------------------
+---
 
 ![zondax_light](docs/zondax_light.png#gh-light-mode-only)
 ![zondax_dark](docs/zondax_dark.png#gh-dark-mode-only)
 
 _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
-------------------
+---
+
 This project contains the Polkadot app (https://polkadot.network/) for Ledger Nano S and X.
 
 - Ledger Nano S/X BOLOS app
@@ -26,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot  12.9180.x
+# Polkadot  12.9190.x
 
 ## System
 
@@ -161,7 +163,7 @@ Please:
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Propose |    |   |   | `Hash` proposal_hash <br/>`Compactu128` amount <br/> |
 |Second |    | :heavy_check_mark: |   | `Compactu32` proposal <br/>`Compactu32` seconds_upper_bound <br/> |
-|Vote |    |   |   | `Compactu32` ref_index <br/>`AccountVoteBalanceOf` vote <br/> |
+|Vote |    |   |   | `Compactu32` ref_index <br/>`AccountVote` vote <br/> |
 |Emergency cancel |    | :heavy_check_mark: |   | `ReferendumIndex` ref_index <br/> |
 |External propose |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |
 |External propose majority |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |
@@ -190,8 +192,8 @@ Please:
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Set members |    |   |   | `VecAccountId` new_members <br/>`OptionAccountId` prime <br/>`MemberCount` old_count <br/> |
-|Execute |    |   |   | `BoxTasConfigIProposal` proposal <br/>`Compactu32` length_bound <br/> |
-|Propose |    |   |   | `Compactu32` threshold <br/>`BoxTasConfigIProposal` proposal <br/>`Compactu32` length_bound <br/> |
+|Execute |    |   |   | `Proposal` proposal <br/>`Compactu32` length_bound <br/> |
+|Propose |    |   |   | `Compactu32` threshold <br/>`Proposal` proposal <br/>`Compactu32` length_bound <br/> |
 |Vote |    | :heavy_check_mark: |   | `Hash` proposal <br/>`Compactu32` index <br/>`bool` approve <br/> |
 |Close |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu32` index <br/>`Compactu64` proposal_weight_bound <br/>`Compactu32` length_bound <br/> |
 |Disapprove proposal |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |
@@ -201,8 +203,8 @@ Please:
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Set members |    |   |   | `VecAccountId` new_members <br/>`OptionAccountId` prime <br/>`MemberCount` old_count <br/> |
-|Execute |    |   |   | `BoxTasConfigIProposal` proposal <br/>`Compactu32` length_bound <br/> |
-|Propose |    |   |   | `Compactu32` threshold <br/>`BoxTasConfigIProposal` proposal <br/>`Compactu32` length_bound <br/> |
+|Execute |    |   |   | `Proposal` proposal <br/>`Compactu32` length_bound <br/> |
+|Propose |    |   |   | `Compactu32` threshold <br/>`Proposal` proposal <br/>`Compactu32` length_bound <br/> |
 |Vote |    | :heavy_check_mark: |   | `Hash` proposal <br/>`Compactu32` index <br/>`bool` approve <br/> |
 |Close |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu32` index <br/>`Compactu64` proposal_weight_bound <br/>`Compactu32` length_bound <br/> |
 |Disapprove proposal |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |
@@ -324,6 +326,18 @@ Please:
 |Claim bounty |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/> |
 |Close bounty |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/> |
 |Extend bounty expiry |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/>`Bytes` remark <br/> |
+
+## ChildBounties
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Add child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu128` amount <br/>`Vecu8` description <br/> |
+|Propose curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/>`LookupasStaticLookupSource` curator <br/>`Compactu128` fee <br/> |
+|Accept curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
+|Unassign curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
+|Award child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/>`LookupasStaticLookupSource` beneficiary <br/> |
+|Claim child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
+|Close child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
 
 ## Tips
 
