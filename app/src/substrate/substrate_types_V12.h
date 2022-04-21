@@ -35,6 +35,20 @@ typedef struct {
 } pd_CompactAccountIndex_V12_t;
 
 typedef struct {
+    uint8_t value;
+} pd_Vote_V12_t;
+
+typedef struct {
+    pd_BalanceOf_t aye;
+    pd_BalanceOf_t nay;
+} pd_AccountVoteSplit_V12_t;
+
+typedef struct {
+    pd_Vote_V12_t vote;
+    pd_BalanceOf_t balance;
+} pd_AccountVoteStandard_V12_t;
+
+typedef struct {
     compactInt_t value;
 } pd_CompactPerBill_V12_t;
 
@@ -110,6 +124,14 @@ typedef struct {
 } pd_schedulePeriodBlockNumber_V12_t;
 
 typedef struct {
+    uint8_t value;
+    union {
+        pd_AccountVoteStandard_V12_t voteStandard;
+        pd_AccountVoteSplit_V12_t voteSplit;
+    };
+} pd_AccountVote_V12_t;
+
+typedef struct {
     pd_Call_t call;
 } pd_OpaqueCall_V12_t;
 
@@ -132,11 +154,6 @@ typedef struct {
 typedef struct {
     uint32_t value;
 } pd_AccountIndex_V12_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_AccountVoteBalanceOf_V12_t;
 
 typedef struct {
     // TODO: Not implemented
@@ -177,11 +194,6 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_BoxRawSolutionSolutionOfT_V12_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_BoxTasConfigIProposal_V12_t;
 
 typedef struct {
     // TODO: Not implemented
