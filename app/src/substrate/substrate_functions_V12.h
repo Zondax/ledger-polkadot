@@ -28,7 +28,9 @@ extern "C" {
 // Read functions
 parser_error_t _readAccountId_V12(parser_context_t* c, pd_AccountId_V12_t* v);
 parser_error_t _readAccountIndex_V12(parser_context_t* c, pd_AccountIndex_V12_t* v);
-parser_error_t _readAccountVoteBalanceOf_V12(parser_context_t* c, pd_AccountVoteBalanceOf_V12_t* v);
+parser_error_t _readAccountVoteSplit_V12(parser_context_t* c, pd_AccountVoteSplit_V12_t* v);
+parser_error_t _readAccountVoteStandard_V12(parser_context_t* c, pd_AccountVoteStandard_V12_t* v);
+parser_error_t _readAccountVote_V12(parser_context_t* c, pd_AccountVote_V12_t* v);
 parser_error_t _readAuthorityIdasRuntimeAppPublicSignature_V12(parser_context_t* c, pd_AuthorityIdasRuntimeAppPublicSignature_V12_t* v);
 parser_error_t _readBoxCallOrHashOfT_V12(parser_context_t* c, pd_BoxCallOrHashOfT_V12_t* v);
 parser_error_t _readBoxEquivocationProofHashBlockNumber_V12(parser_context_t* c, pd_BoxEquivocationProofHashBlockNumber_V12_t* v);
@@ -37,7 +39,6 @@ parser_error_t _readBoxIdentityInfoMaxAdditionalFields_V12(parser_context_t* c, 
 parser_error_t _readBoxMultiLocation_V12(parser_context_t* c, pd_BoxMultiLocation_V12_t* v);
 parser_error_t _readBoxPalletsOrigin_V12(parser_context_t* c, pd_BoxPalletsOrigin_V12_t* v);
 parser_error_t _readBoxRawSolutionSolutionOfT_V12(parser_context_t* c, pd_BoxRawSolutionSolutionOfT_V12_t* v);
-parser_error_t _readBoxTasConfigIProposal_V12(parser_context_t* c, pd_BoxTasConfigIProposal_V12_t* v);
 parser_error_t _readBoxVersionedMultiAssets_V12(parser_context_t* c, pd_BoxVersionedMultiAssets_V12_t* v);
 parser_error_t _readBoxVersionedMultiLocation_V12(parser_context_t* c, pd_BoxVersionedMultiLocation_V12_t* v);
 parser_error_t _readBoxVersionedXcmTasSysConfigCall_V12(parser_context_t* c, pd_BoxVersionedXcmTasSysConfigCall_V12_t* v);
@@ -109,6 +110,7 @@ parser_error_t _readVecKey_V12(parser_context_t* c, pd_VecKey_V12_t* v);
 parser_error_t _readVecLookupasStaticLookupSource_V12(parser_context_t* c, pd_VecLookupasStaticLookupSource_V12_t* v);
 parser_error_t _readVecTupleAccountIdData_V12(parser_context_t* c, pd_VecTupleAccountIdData_V12_t* v);
 parser_error_t _readVestingInfoBalanceOfTBlockNumber_V12(parser_context_t* c, pd_VestingInfoBalanceOfTBlockNumber_V12_t* v);
+parser_error_t _readVote_V12(parser_context_t* c, pd_Vote_V12_t* v);
 parser_error_t _readWeightLimit_V12(parser_context_t* c, pd_WeightLimit_V12_t* v);
 parser_error_t _readWeight_V12(parser_context_t* c, pd_Weight_V12_t* v);
 parser_error_t _readXcmVersion_V12(parser_context_t* c, pd_XcmVersion_V12_t* v);
@@ -130,8 +132,22 @@ parser_error_t _toStringAccountIndex_V12(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringAccountVoteBalanceOf_V12(
-    const pd_AccountVoteBalanceOf_V12_t* v,
+parser_error_t _toStringAccountVoteSplit_V12(
+    const pd_AccountVoteSplit_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringAccountVoteStandard_V12(
+    const pd_AccountVoteStandard_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringAccountVote_V12(
+    const pd_AccountVote_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -188,13 +204,6 @@ parser_error_t _toStringBoxPalletsOrigin_V12(
 
 parser_error_t _toStringBoxRawSolutionSolutionOfT_V12(
     const pd_BoxRawSolutionSolutionOfT_V12_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringBoxTasConfigIProposal_V12(
-    const pd_BoxTasConfigIProposal_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -692,6 +701,13 @@ parser_error_t _toStringVecTupleAccountIdData_V12(
 
 parser_error_t _toStringVestingInfoBalanceOfTBlockNumber_V12(
     const pd_VestingInfoBalanceOfTBlockNumber_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringVote_V12(
+    const pd_Vote_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

@@ -31,6 +31,7 @@ parser_error_t _readMethod_V12(parser_context_t* c, uint8_t moduleIdx, uint8_t c
 const char* _getMethod_ModuleName_V12(uint8_t moduleIdx);
 
 const char* _getMethod_Name_V12(uint8_t moduleIdx, uint8_t callIdx);
+const char* _getMethod_Name_V12_ParserFull(uint16_t callPrivIdx);
 
 const char* _getMethod_ItemName_V12(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
 

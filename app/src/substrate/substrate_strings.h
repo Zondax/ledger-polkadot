@@ -51,6 +51,7 @@ static const char* STR_MO_XCMPALLET = "Xcmpallet";
 static const char* STR_MO_PREIMAGE = "Preimage";
 static const char* STR_MO_ELECTIONPROVIDERMULTIPHASE = "Electionprovidermultiphase";
 static const char* STR_MO_PARASDISPUTES = "Parasdisputes";
+static const char* STR_MO_CHILDBOUNTIES = "Childbounties";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";
@@ -319,6 +320,10 @@ static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
 static const char* STR_ME_FORCE_APPLY_MIN_COMMISSION = "Force apply min commission";
 static const char* STR_ME_GOVERNANCE_FALLBACK = "Governance fallback";
 static const char* STR_ME_FORCE_UNFREEZE = "Force unfreeze";
+static const char* STR_ME_ADD_CHILD_BOUNTY = "Add child bounty";
+static const char* STR_ME_AWARD_CHILD_BOUNTY = "Award child bounty";
+static const char* STR_ME_CLAIM_CHILD_BOUNTY = "Claim child bounty";
+static const char* STR_ME_CLOSE_CHILD_BOUNTY = "Close child bounty";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
@@ -479,6 +484,8 @@ static const char* STR_IT_inbound = "Inbound";
 static const char* STR_IT_outbound = "Outbound";
 static const char* STR_IT_channels = "Channels";
 static const char* STR_IT_open_requests = "Open requests";
+static const char* STR_IT_parent_bounty_id = "Parent bounty id";
+static const char* STR_IT_child_bounty_id = "Child bounty id";
 
 #ifdef __cplusplus
 }
