@@ -131,9 +131,9 @@
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Propose |    |   |   | `Hash` proposal_hash <br/>`Compactu128` amount <br/> |
+|Propose |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`CompactBalance` amount <br/> |
 |Second |    | :heavy_check_mark: |   | `Compactu32` proposal <br/>`Compactu32` seconds_upper_bound <br/> |
-|Vote |    |   |   | `Compactu32` ref_index <br/>`AccountVote` vote <br/> |
+|Vote |    | :heavy_check_mark: |   | `Compactu32` ref_index <br/>`AccountVote` vote <br/> |
 |Emergency cancel |    | :heavy_check_mark: |   | `ReferendumIndex` ref_index <br/> |
 |External propose |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |
 |External propose majority |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |

@@ -1,18 +1,18 @@
 /*******************************************************************************
-*  (c) 2019 - 2022 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *  (c) 2019 - 2022 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 
 #include "substrate_dispatch_V12.h"
 #include "substrate_strings.h"
@@ -369,11 +369,27 @@ __Z_INLINE parser_error_t _readMethod_grandpa_note_stalled_V12(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_democracy_propose_V12(
+    parser_context_t* c, pd_democracy_propose_V12_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_democracy_second_V12(
     parser_context_t* c, pd_democracy_second_V12_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->proposal))
     CHECK_ERROR(_readCompactu32(c, &m->seconds_upper_bound))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_vote_V12(
+    parser_context_t* c, pd_democracy_vote_V12_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->ref_index))
+    CHECK_ERROR(_readAccountVote_V12(c, &m->vote))
     return parser_ok;
 }
 
@@ -1623,8 +1639,14 @@ parser_error_t _readMethod_V12(
     case 2818: /* module 11 call 2 */
         CHECK_ERROR(_readMethod_grandpa_note_stalled_V12(c, &method->basic.grandpa_note_stalled_V12))
         break;
+    case 3584: /* module 14 call 0 */
+        CHECK_ERROR(_readMethod_democracy_propose_V12(c, &method->basic.democracy_propose_V12))
+        break;
     case 3585: /* module 14 call 1 */
         CHECK_ERROR(_readMethod_democracy_second_V12(c, &method->basic.democracy_second_V12))
+        break;
+    case 3586: /* module 14 call 2 */
+        CHECK_ERROR(_readMethod_democracy_vote_V12(c, &method->basic.democracy_vote_V12))
         break;
     case 3587: /* module 14 call 3 */
         CHECK_ERROR(_readMethod_democracy_emergency_cancel_V12(c, &method->basic.democracy_emergency_cancel_V12))
@@ -2260,8 +2282,12 @@ const char* _getMethod_Name_V12_ParserFull(uint16_t callPrivIdx)
         return STR_ME_FORCE_APPLY_MIN_COMMISSION;
     case 2818: /* module 11 call 2 */
         return STR_ME_NOTE_STALLED;
+    case 3584: /* module 14 call 0 */
+        return STR_ME_PROPOSE;
     case 3585: /* module 14 call 1 */
         return STR_ME_SECOND;
+    case 3586: /* module 14 call 2 */
+        return STR_ME_VOTE;
     case 3587: /* module 14 call 3 */
         return STR_ME_EMERGENCY_CANCEL;
     case 3588: /* module 14 call 4 */
@@ -2662,7 +2688,11 @@ uint8_t _getMethod_NumItems_V12(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 2818: /* module 11 call 2 */
         return 2;
+    case 3584: /* module 14 call 0 */
+        return 2;
     case 3585: /* module 14 call 1 */
+        return 2;
+    case 3586: /* module 14 call 2 */
         return 2;
     case 3587: /* module 14 call 3 */
         return 1;
@@ -3330,12 +3360,30 @@ const char* _getMethod_ItemName_V12(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         default:
             return NULL;
         }
+    case 3584: /* module 14 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        case 1:
+            return STR_IT_amount;
+        default:
+            return NULL;
+        }
     case 3585: /* module 14 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_proposal;
         case 1:
             return STR_IT_seconds_upper_bound;
+        default:
+            return NULL;
+        }
+    case 3586: /* module 14 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_ref_index;
+        case 1:
+            return STR_IT_vote;
         default:
             return NULL;
         }
@@ -5063,6 +5111,21 @@ parser_error_t _getMethod_ItemValue_V12(
         default:
             return parser_no_data;
         }
+    case 3584: /* module 14 call 0 */
+        switch (itemIdx) {
+        case 0: /* democracy_propose_V12 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.democracy_propose_V12.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_propose_V12 - amount */;
+            return _toStringCompactBalance(
+                &m->basic.democracy_propose_V12.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 3585: /* module 14 call 1 */
         switch (itemIdx) {
         case 0: /* democracy_second_V12 - proposal */;
@@ -5073,6 +5136,21 @@ parser_error_t _getMethod_ItemValue_V12(
         case 1: /* democracy_second_V12 - seconds_upper_bound */;
             return _toStringCompactu32(
                 &m->basic.democracy_second_V12.seconds_upper_bound,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 3586: /* module 14 call 2 */
+        switch (itemIdx) {
+        case 0: /* democracy_vote_V12 - ref_index */;
+            return _toStringCompactu32(
+                &m->basic.democracy_vote_V12.ref_index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_vote_V12 - vote */;
+            return _toStringAccountVote_V12(
+                &m->basic.democracy_vote_V12.vote,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6974,7 +7052,9 @@ bool _getMethod_IsNestingSupported_V12(uint8_t moduleIdx, uint8_t callIdx)
     case 2304: // Session:Set keys
     case 2305: // Session:Purge keys
     case 2818: // Grandpa:Note stalled
+    case 3584: // Democracy:Propose
     case 3585: // Democracy:Second
+    case 3586: // Democracy:Vote
     case 3587: // Democracy:Emergency cancel
     case 3588: // Democracy:External propose
     case 3589: // Democracy:External propose majority

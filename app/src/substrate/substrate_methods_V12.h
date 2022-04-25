@@ -1,18 +1,18 @@
 /*******************************************************************************
-*  (c) 2019 - 2022 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *  (c) 2019 - 2022 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextern-c-compat"
 #pragma once
@@ -257,11 +257,23 @@ typedef struct {
     pd_BlockNumber_t best_finalized_block_number;
 } pd_grandpa_note_stalled_V12_t;
 
+#define PD_CALL_DEMOCRACY_PROPOSE_V12 0
+typedef struct {
+    pd_Hash_t proposal_hash;
+    pd_CompactBalance_t amount;
+} pd_democracy_propose_V12_t;
+
 #define PD_CALL_DEMOCRACY_SECOND_V12 1
 typedef struct {
     pd_Compactu32_t proposal;
     pd_Compactu32_t seconds_upper_bound;
 } pd_democracy_second_V12_t;
+
+#define PD_CALL_DEMOCRACY_VOTE_V12 2
+typedef struct {
+    pd_Compactu32_t ref_index;
+    pd_AccountVote_V12_t vote;
+} pd_democracy_vote_V12_t;
 
 #define PD_CALL_DEMOCRACY_EMERGENCY_CANCEL_V12 3
 typedef struct {
@@ -1063,7 +1075,9 @@ typedef union {
     pd_staking_chill_other_V12_t staking_chill_other_V12;
     pd_staking_force_apply_min_commission_V12_t staking_force_apply_min_commission_V12;
     pd_grandpa_note_stalled_V12_t grandpa_note_stalled_V12;
+    pd_democracy_propose_V12_t democracy_propose_V12;
     pd_democracy_second_V12_t democracy_second_V12;
+    pd_democracy_vote_V12_t democracy_vote_V12;
     pd_democracy_emergency_cancel_V12_t democracy_emergency_cancel_V12;
     pd_democracy_external_propose_V12_t democracy_external_propose_V12;
     pd_democracy_external_propose_majority_V12_t democracy_external_propose_majority_V12;
