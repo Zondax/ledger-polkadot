@@ -14,7 +14,7 @@
     "Ledger"
   ],
   "scripts": {
-    "test": "jest -t 'Standard'",
+    "test": "jest -t 'Recovery' && jest -t 'Standard'",
     "testSR25519": "jest tests/sr25519.test.ts"
   },
   "dependencies": {

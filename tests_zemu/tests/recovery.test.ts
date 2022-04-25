@@ -56,7 +56,7 @@ async function activateSecretMode(sim: any) {
   await sim.clickBoth()
 }
 
-describe('Standard', function () {
+describe('Recovery', function () {
   test.each(models)('main secret menu (%s)', async function (m) {
     const sim = new Zemu(m.path)
     try {
@@ -69,14 +69,24 @@ describe('Standard', function () {
       const kusama_expected_pk = 'ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42'
 
       let resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
+
       console.log(resp)
+
+      expect(resp.return_code).toEqual(0x9000)
+      expect(resp.error_message).toEqual('No errors')
+
       expect(resp.address).toEqual(polkadot_expected_address)
       expect(resp.pubKey).toEqual(polkadot_expected_pk)
 
       await activateSecretMode(sim)
 
       resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
+
       console.log(resp)
+
+      expect(resp.return_code).toEqual(0x9000)
+      expect(resp.error_message).toEqual('No errors')
+
       expect(resp.address).toEqual(kusama_expected_address)
       expect(resp.pubKey).toEqual(kusama_expected_pk)
     } finally {
