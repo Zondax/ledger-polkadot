@@ -109,7 +109,7 @@ parser_error_t _readVecKeyValue_V12(parser_context_t* c, pd_VecKeyValue_V12_t* v
 parser_error_t _readVecKey_V12(parser_context_t* c, pd_VecKey_V12_t* v);
 parser_error_t _readVecLookupasStaticLookupSource_V12(parser_context_t* c, pd_VecLookupasStaticLookupSource_V12_t* v);
 parser_error_t _readVecTupleAccountIdData_V12(parser_context_t* c, pd_VecTupleAccountIdData_V12_t* v);
-parser_error_t _readVestingInfoBalanceOfTBlockNumber_V12(parser_context_t* c, pd_VestingInfoBalanceOfTBlockNumber_V12_t* v);
+parser_error_t _readVestingInfo_V12(parser_context_t* c, pd_VestingInfo_V12_t* v);
 parser_error_t _readVote_V12(parser_context_t* c, pd_Vote_V12_t* v);
 parser_error_t _readWeightLimit_V12(parser_context_t* c, pd_WeightLimit_V12_t* v);
 parser_error_t _readWeight_V12(parser_context_t* c, pd_Weight_V12_t* v);
@@ -699,8 +699,8 @@ parser_error_t _toStringVecTupleAccountIdData_V12(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringVestingInfoBalanceOfTBlockNumber_V12(
-    const pd_VestingInfoBalanceOfTBlockNumber_V12_t* v,
+parser_error_t _toStringVestingInfo_V12(
+    const pd_VestingInfo_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

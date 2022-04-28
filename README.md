@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot  12.9190.x
+# Polkadot  12.9200.x
 
 ## System
 
@@ -256,8 +256,8 @@ Please:
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Vest |    | :heavy_check_mark: |   |  |
 |Vest other |    | :heavy_check_mark: |   | `LookupasStaticLookupSource` target <br/> |
-|Vested transfer |    |   |   | `LookupasStaticLookupSource` target <br/>`VestingInfoBalanceOfTBlockNumber` schedule <br/> |
-|Force vested transfer |    |   |   | `LookupasStaticLookupSource` source <br/>`LookupasStaticLookupSource` target <br/>`VestingInfoBalanceOfTBlockNumber` schedule <br/> |
+|Vested transfer |    |   |   | `LookupasStaticLookupSource` target <br/>`VestingInfo` schedule <br/> |
+|Force vested transfer |    |   |   | `LookupasStaticLookupSource` source <br/>`LookupasStaticLookupSource` target <br/>`VestingInfo` schedule <br/> |
 |Merge schedules |    | :heavy_check_mark: |   | `u32` schedule1_index <br/>`u32` schedule2_index <br/> |
 
 ## Utility
