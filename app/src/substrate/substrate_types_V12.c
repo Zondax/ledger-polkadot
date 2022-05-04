@@ -361,7 +361,10 @@ parser_error_t _readRewardDestination_V12(parser_context_t* c, pd_RewardDestinat
 {
     CHECK_INPUT()
     CHECK_ERROR(_readUInt8(c, &v->value))
-    if (v->value > 2) {
+
+    if (v->value == 3) {
+        CHECK_ERROR(_readAccountId_V12(c, &v->accountId))
+    } else if (v->value > 4) {
         return parser_value_out_of_range;
     }
     return parser_ok;
@@ -427,9 +430,12 @@ parser_error_t _readValidatorSignature_V12(parser_context_t* c, pd_ValidatorSign
     return parser_not_supported;
 }
 
-parser_error_t _readVestingInfoBalanceOfTBlockNumber_V12(parser_context_t* c, pd_VestingInfoBalanceOfTBlockNumber_V12_t* v)
+parser_error_t _readVestingInfo_V12(parser_context_t* c, pd_VestingInfo_V12_t* v)
 {
-    return parser_not_supported;
+    CHECK_ERROR(_readBalanceOf(c, &v->locked))
+    CHECK_ERROR(_readBalanceOf(c, &v->per_block))
+    CHECK_ERROR(_readBlockNumber(c, &v->starting_block))
+    return parser_ok;
 }
 
 parser_error_t _readVote_V12(parser_context_t* c, pd_Vote_V12_t* v)
@@ -720,10 +726,10 @@ parser_error_t _toStringAccountVote_V12(
     CLEAN_AND_CHECK()
     switch (v->value) {
     case 0:
-        _toStringAccountVoteStandard_V12(&v->voteStandard, outValue, outValueLen, pageIdx, pageCount);
+        CHECK_ERROR(_toStringAccountVoteStandard_V12(&v->voteStandard, outValue, outValueLen, pageIdx, pageCount));
         break;
     case 1:
-        _toStringAccountVoteSplit_V12(&v->voteSplit, outValue, outValueLen, pageIdx, pageCount);
+        CHECK_ERROR(_toStringAccountVoteSplit_V12(&v->voteSplit, outValue, outValueLen, pageIdx, pageCount));
         break;
     default:
         return parser_unexpected_value;
@@ -1368,6 +1374,12 @@ parser_error_t _toStringRewardDestination_V12(
     case 2:
         snprintf(outValue, outValueLen, "Controller");
         break;
+    case 3:
+        CHECK_ERROR(_toStringAccountId_V12(&v->accountId, outValue, outValueLen, pageIdx, pageCount));
+        break;
+    case 4:
+        snprintf(outValue, outValueLen, "None");
+        break;
     default:
         return parser_print_not_supported;
     }
@@ -1428,7 +1440,7 @@ parser_error_t _toStringTimepoint_V12(
     CLEAN_AND_CHECK()
 
     // First measure number of pages
-    uint8_t pages[2];
+    uint8_t pages[2] = { 0 };
     CHECK_ERROR(_toStringBlockNumber(&v->height, outValue, outValueLen, 0, &pages[0]))
     CHECK_ERROR(_toStringu32(&v->index, outValue, outValueLen, 0, &pages[1]))
 
@@ -1509,7 +1521,7 @@ parser_error_t _toStringValidatorPrefs_V12(
     CLEAN_AND_CHECK()
 
     // First measure number of pages
-    uint8_t pages[2];
+    uint8_t pages[2] = { 0 };
     CHECK_ERROR(_toStringCompactPerBill_V12(&v->commission, outValue, outValueLen, 0, &pages[0]))
     CHECK_ERROR(_toStringbool(&v->blocked, outValue, outValueLen, 0, &pages[1]))
 
@@ -1547,15 +1559,48 @@ parser_error_t _toStringValidatorSignature_V12(
     return parser_print_not_supported;
 }
 
-parser_error_t _toStringVestingInfoBalanceOfTBlockNumber_V12(
-    const pd_VestingInfoBalanceOfTBlockNumber_V12_t* v,
+parser_error_t _toStringVestingInfo_V12(
+    const pd_VestingInfo_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+
+    // First measure number of pages
+    uint8_t pages[3] = { 0 };
+    CHECK_ERROR(_toStringBalanceOf(&v->locked, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringBalanceOf(&v->per_block, outValue, outValueLen, 0, &pages[1]))
+    CHECK_ERROR(_toStringBlockNumber(&v->starting_block, outValue, outValueLen, 0, &pages[2]))
+
+    *pageCount = 0;
+    for (uint8_t i = 0; i < (uint8_t)sizeof(pages); i++) {
+        *pageCount += pages[i];
+    }
+
+    if (pageIdx > *pageCount) {
+        return parser_display_idx_out_of_range;
+    }
+
+    if (pageIdx < pages[0]) {
+        CHECK_ERROR(_toStringBalanceOf(&v->locked, outValue, outValueLen, pageIdx, &pages[0]))
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringBalanceOf(&v->per_block, outValue, outValueLen, pageIdx, &pages[1]))
+        return parser_ok;
+    }
+    pageIdx -= pages[1];
+
+    if (pageIdx < pages[2]) {
+        CHECK_ERROR(_toStringBlockNumber(&v->starting_block, outValue, outValueLen, pageIdx, &pages[2]))
+        return parser_ok;
+    }
+
+    return parser_display_idx_out_of_range;
 }
 
 parser_error_t _toStringVote_V12(
