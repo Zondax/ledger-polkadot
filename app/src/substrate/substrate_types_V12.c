@@ -361,7 +361,10 @@ parser_error_t _readRewardDestination_V12(parser_context_t* c, pd_RewardDestinat
 {
     CHECK_INPUT()
     CHECK_ERROR(_readUInt8(c, &v->value))
-    if (v->value > 2) {
+
+    if (v->value == 3) {
+        CHECK_ERROR(_readAccountId_V12(c, &v->accountId))
+    } else if (v->value > 4) {
         return parser_value_out_of_range;
     }
     return parser_ok;
@@ -720,10 +723,10 @@ parser_error_t _toStringAccountVote_V12(
     CLEAN_AND_CHECK()
     switch (v->value) {
     case 0:
-        _toStringAccountVoteStandard_V12(&v->voteStandard, outValue, outValueLen, pageIdx, pageCount);
+        CHECK_ERROR(_toStringAccountVoteStandard_V12(&v->voteStandard, outValue, outValueLen, pageIdx, pageCount));
         break;
     case 1:
-        _toStringAccountVoteSplit_V12(&v->voteSplit, outValue, outValueLen, pageIdx, pageCount);
+        CHECK_ERROR(_toStringAccountVoteSplit_V12(&v->voteSplit, outValue, outValueLen, pageIdx, pageCount));
         break;
     default:
         return parser_unexpected_value;
@@ -1367,6 +1370,12 @@ parser_error_t _toStringRewardDestination_V12(
         break;
     case 2:
         snprintf(outValue, outValueLen, "Controller");
+        break;
+    case 3:
+        CHECK_ERROR(_toStringAccountId_V12(&v->accountId, outValue, outValueLen, pageIdx, pageCount));
+        break;
+    case 4:
+        snprintf(outValue, outValueLen, "None");
         break;
     default:
         return parser_print_not_supported;
