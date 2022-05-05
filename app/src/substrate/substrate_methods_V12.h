@@ -1,18 +1,18 @@
 /*******************************************************************************
-*  (c) 2019 - 2022 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *  (c) 2019 - 2022 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextern-c-compat"
 #pragma once
@@ -47,6 +47,7 @@ extern "C" {
 #define PD_CALL_PROXY_V12 29
 #define PD_CALL_MULTISIG_V12 30
 #define PD_CALL_BOUNTIES_V12 34
+#define PD_CALL_CHILDBOUNTIES_V12 38
 #define PD_CALL_TIPS_V12 35
 #define PD_CALL_ELECTIONPROVIDERMULTIPHASE_V12 36
 #define PD_CALL_BAGSLIST_V12 37
@@ -256,11 +257,23 @@ typedef struct {
     pd_BlockNumber_t best_finalized_block_number;
 } pd_grandpa_note_stalled_V12_t;
 
+#define PD_CALL_DEMOCRACY_PROPOSE_V12 0
+typedef struct {
+    pd_Hash_t proposal_hash;
+    pd_CompactBalance_t amount;
+} pd_democracy_propose_V12_t;
+
 #define PD_CALL_DEMOCRACY_SECOND_V12 1
 typedef struct {
     pd_Compactu32_t proposal;
     pd_Compactu32_t seconds_upper_bound;
 } pd_democracy_second_V12_t;
+
+#define PD_CALL_DEMOCRACY_VOTE_V12 2
+typedef struct {
+    pd_Compactu32_t ref_index;
+    pd_AccountVote_V12_t vote;
+} pd_democracy_vote_V12_t;
 
 #define PD_CALL_DEMOCRACY_EMERGENCY_CANCEL_V12 3
 typedef struct {
@@ -662,6 +675,52 @@ typedef struct {
     pd_Bytes_t remark;
 } pd_bounties_extend_bounty_expiry_V12_t;
 
+#define PD_CALL_CHILDBOUNTIES_ADD_CHILD_BOUNTY_V12 0
+typedef struct {
+    pd_Compactu32_t parent_bounty_id;
+    pd_CompactBalance_t amount;
+    pd_Vecu8_t description;
+} pd_childbounties_add_child_bounty_V12_t;
+
+#define PD_CALL_CHILDBOUNTIES_PROPOSE_CURATOR_V12 1
+typedef struct {
+    pd_Compactu32_t parent_bounty_id;
+    pd_Compactu32_t child_bounty_id;
+    pd_LookupasStaticLookupSource_V12_t curator;
+    pd_CompactBalance_t fee;
+} pd_childbounties_propose_curator_V12_t;
+
+#define PD_CALL_CHILDBOUNTIES_ACCEPT_CURATOR_V12 2
+typedef struct {
+    pd_Compactu32_t parent_bounty_id;
+    pd_Compactu32_t child_bounty_id;
+} pd_childbounties_accept_curator_V12_t;
+
+#define PD_CALL_CHILDBOUNTIES_UNASSIGN_CURATOR_V12 3
+typedef struct {
+    pd_Compactu32_t parent_bounty_id;
+    pd_Compactu32_t child_bounty_id;
+} pd_childbounties_unassign_curator_V12_t;
+
+#define PD_CALL_CHILDBOUNTIES_AWARD_CHILD_BOUNTY_V12 4
+typedef struct {
+    pd_Compactu32_t parent_bounty_id;
+    pd_Compactu32_t child_bounty_id;
+    pd_LookupasStaticLookupSource_V12_t beneficiary;
+} pd_childbounties_award_child_bounty_V12_t;
+
+#define PD_CALL_CHILDBOUNTIES_CLAIM_CHILD_BOUNTY_V12 5
+typedef struct {
+    pd_Compactu32_t parent_bounty_id;
+    pd_Compactu32_t child_bounty_id;
+} pd_childbounties_claim_child_bounty_V12_t;
+
+#define PD_CALL_CHILDBOUNTIES_CLOSE_CHILD_BOUNTY_V12 6
+typedef struct {
+    pd_Compactu32_t parent_bounty_id;
+    pd_Compactu32_t child_bounty_id;
+} pd_childbounties_close_child_bounty_V12_t;
+
 #define PD_CALL_TIPS_REPORT_AWESOME_V12 0
 typedef struct {
     pd_Bytes_t reason;
@@ -1016,7 +1075,9 @@ typedef union {
     pd_staking_chill_other_V12_t staking_chill_other_V12;
     pd_staking_force_apply_min_commission_V12_t staking_force_apply_min_commission_V12;
     pd_grandpa_note_stalled_V12_t grandpa_note_stalled_V12;
+    pd_democracy_propose_V12_t democracy_propose_V12;
     pd_democracy_second_V12_t democracy_second_V12;
+    pd_democracy_vote_V12_t democracy_vote_V12;
     pd_democracy_emergency_cancel_V12_t democracy_emergency_cancel_V12;
     pd_democracy_external_propose_V12_t democracy_external_propose_V12;
     pd_democracy_external_propose_majority_V12_t democracy_external_propose_majority_V12;
@@ -1089,6 +1150,13 @@ typedef union {
     pd_bounties_claim_bounty_V12_t bounties_claim_bounty_V12;
     pd_bounties_close_bounty_V12_t bounties_close_bounty_V12;
     pd_bounties_extend_bounty_expiry_V12_t bounties_extend_bounty_expiry_V12;
+    pd_childbounties_add_child_bounty_V12_t childbounties_add_child_bounty_V12;
+    pd_childbounties_propose_curator_V12_t childbounties_propose_curator_V12;
+    pd_childbounties_accept_curator_V12_t childbounties_accept_curator_V12;
+    pd_childbounties_unassign_curator_V12_t childbounties_unassign_curator_V12;
+    pd_childbounties_award_child_bounty_V12_t childbounties_award_child_bounty_V12;
+    pd_childbounties_claim_child_bounty_V12_t childbounties_claim_child_bounty_V12;
+    pd_childbounties_close_child_bounty_V12_t childbounties_close_child_bounty_V12;
     pd_tips_report_awesome_V12_t tips_report_awesome_V12;
     pd_tips_retract_tip_V12_t tips_retract_tip_V12;
     pd_tips_tip_new_V12_t tips_tip_new_V12;
