@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2019 - 2022 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2019 - 2022 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 #pragma once
 
 #ifdef __cplusplus
@@ -51,6 +51,8 @@ static const char* STR_MO_HRMP = "Hrmp";
 static const char* STR_MO_PARASDISPUTES = "Parasdisputes";
 static const char* STR_MO_REGISTRAR = "Registrar";
 static const char* STR_MO_AUCTIONS = "Auctions";
+static const char* STR_MO_XCMPALLET = "Xcmpallet";
+static const char* STR_MO_CROWDLOAN = "Crowdloan";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";
@@ -238,6 +240,19 @@ static const char* STR_ME_RESERVE = "Reserve";
 static const char* STR_ME_NEW_AUCTION = "New auction";
 static const char* STR_ME_BID = "Bid";
 static const char* STR_ME_CANCEL_AUCTION = "Cancel auction";
+static const char* STR_ME_SET_MEMBERS = "Set members";
+static const char* STR_ME_EXECUTE = "Execute";
+static const char* STR_ME_VESTED_TRANSFER = "Vested transfer";
+static const char* STR_ME_FORCE_VESTED_TRANSFER = "Force vested transfer";
+static const char* STR_ME_CREATE = "Create";
+static const char* STR_ME_CONTRIBUTE = "Contribute";
+static const char* STR_ME_WITHDRAW = "Withdraw";
+static const char* STR_ME_REFUND = "Refund";
+static const char* STR_ME_DISSOLVE = "Dissolve";
+static const char* STR_ME_EDIT = "Edit";
+static const char* STR_ME_ADD_MEMO = "Add memo";
+static const char* STR_ME_POKE = "Poke";
+static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
@@ -389,6 +404,21 @@ static const char* STR_IT_lease_period_index = "Lease period index";
 static const char* STR_IT_auction_index = "Auction index";
 static const char* STR_IT_first_slot = "First slot";
 static const char* STR_IT_last_slot = "Last slot";
+static const char* STR_IT_message = "Message";
+static const char* STR_IT_assets = "Assets";
+static const char* STR_IT_fee_asset_item = "Fee asset item";
+static const char* STR_IT_location = "Location";
+static const char* STR_IT_xcm_version = "Xcm version";
+static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
+static const char* STR_IT_weight_limit = "Weight limit";
+static const char* STR_IT_num_signed_submissions = "Num signed submissions";
+static const char* STR_IT_cap = "Cap";
+static const char* STR_IT_first_period = "First period";
+static const char* STR_IT_last_period = "Last period";
+static const char* STR_IT_end = "End";
+static const char* STR_IT_verifier = "Verifier";
+static const char* STR_IT_signature = "Signature";
+static const char* STR_IT_memo = "Memo";
 
 #ifdef __cplusplus
 }

@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2019 - 2022 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2019 - 2022 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 #pragma once
 
 #ifdef __cplusplus
@@ -51,7 +51,10 @@ parser_error_t _readConfigOpPerbill_V12(parser_context_t* c, pd_ConfigOpPerbill_
 parser_error_t _readConfigOpPercent_V12(parser_context_t* c, pd_ConfigOpPercent_V12_t* v);
 parser_error_t _readConfigOpu32_V12(parser_context_t* c, pd_ConfigOpu32_V12_t* v);
 parser_error_t _readConviction_V12(parser_context_t* c, pd_Conviction_V12_t* v);
+parser_error_t _readEcdsaPublic_V12(parser_context_t* c, pd_EcdsaPublic_V12_t* v);
 parser_error_t _readEcdsaSignature_V12(parser_context_t* c, pd_EcdsaSignature_V12_t* v);
+parser_error_t _readEd25519Public_V12(parser_context_t* c, pd_Ed25519Public_V12_t* v);
+parser_error_t _readEd25519Signature_V12(parser_context_t* c, pd_Ed25519Signature_V12_t* v);
 parser_error_t _readElectionScore_V12(parser_context_t* c, pd_ElectionScore_V12_t* v);
 parser_error_t _readEraIndex_V12(parser_context_t* c, pd_EraIndex_V12_t* v);
 parser_error_t _readEthereumAddress_V12(parser_context_t* c, pd_EthereumAddress_V12_t* v);
@@ -95,6 +98,8 @@ parser_error_t _readRenouncing_V12(parser_context_t* c, pd_Renouncing_V12_t* v);
 parser_error_t _readRewardDestination_V12(parser_context_t* c, pd_RewardDestination_V12_t* v);
 parser_error_t _readSessionIndex_V12(parser_context_t* c, pd_SessionIndex_V12_t* v);
 parser_error_t _readSolutionOrSnapshotSize_V12(parser_context_t* c, pd_SolutionOrSnapshotSize_V12_t* v);
+parser_error_t _readSr25519Public_V12(parser_context_t* c, pd_Sr25519Public_V12_t* v);
+parser_error_t _readSr25519Signature_V12(parser_context_t* c, pd_Sr25519Signature_V12_t* v);
 parser_error_t _readStatementKind_V12(parser_context_t* c, pd_StatementKind_V12_t* v);
 parser_error_t _readSupportsAccountId_V12(parser_context_t* c, pd_SupportsAccountId_V12_t* v);
 parser_error_t _readTimepoint_V12(parser_context_t* c, pd_Timepoint_V12_t* v);
@@ -293,8 +298,29 @@ parser_error_t _toStringConviction_V12(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringEcdsaPublic_V12(
+    const pd_EcdsaPublic_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringEcdsaSignature_V12(
     const pd_EcdsaSignature_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringEd25519Public_V12(
+    const pd_Ed25519Public_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringEd25519Signature_V12(
+    const pd_Ed25519Signature_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -596,6 +622,20 @@ parser_error_t _toStringSessionIndex_V12(
 
 parser_error_t _toStringSolutionOrSnapshotSize_V12(
     const pd_SolutionOrSnapshotSize_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringSr25519Public_V12(
+    const pd_Sr25519Public_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringSr25519Signature_V12(
+    const pd_Sr25519Signature_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

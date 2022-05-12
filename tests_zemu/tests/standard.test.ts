@@ -16,7 +16,7 @@
 
 import Zemu, { DEFAULT_START_OPTIONS } from '@zondax/zemu'
 import { newPolkadotApp } from '@zondax/ledger-substrate'
-import { APP_SEED, models } from './common'
+import { APP_SEED, models, txProxy_proxy_transferKeepAlive } from './common'
 import { txBalances_transfer, txStaking_nominate, txSession_setKeys } from './zemu_blobs'
 
 // @ts-ignore
@@ -320,4 +320,44 @@ describe('Standard', function () {
       await sim.close()
     }
   })
+
+  test.each(models)('Proxy proxy transferKeepAlive', async function (m) {
+    const sim = new Zemu(m.path)
+    try {
+      await sim.start({ ...defaultOptions, model: m.name })
+      const app = newPolkadotApp(sim.getTransport())
+      const pathAccount = 0x80000000
+      const pathChange = 0x80000000
+      const pathIndex = 0x80000000
+
+      const txBlob = Buffer.from(txProxy_proxy_transferKeepAlive, 'hex')
+
+      const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
+      const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
+
+      // do not wait here.. we need to navigate
+      const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob)
+      await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
+      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-proxy_transfer_keepAlive`)
+
+      const signatureResponse = await signatureRequest
+      console.log(signatureResponse)
+
+      expect(signatureResponse.return_code).toEqual(0x9000)
+      expect(signatureResponse.error_message).toEqual('No errors')
+
+      // Now verify the signature
+      let prehash = txBlob
+      if (txBlob.length > 256) {
+        const context = blake2bInit(32)
+        blake2bUpdate(context, txBlob)
+        prehash = Buffer.from(blake2bFinal(context))
+      }
+      const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey)
+      expect(valid).toEqual(true)
+    } finally {
+      await sim.close()
+    }
+  })
+
 })
