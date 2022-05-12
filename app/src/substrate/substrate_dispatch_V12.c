@@ -159,6 +159,84 @@ __Z_INLINE parser_error_t _readMethod_utility_batch_all_V12(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_crowdloan_create_V12(
+    parser_context_t* c, pd_crowdloan_create_V12_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->index))
+    CHECK_ERROR(_readCompactu128(c, &m->cap))
+    CHECK_ERROR(_readCompactu32(c, &m->first_period))
+    CHECK_ERROR(_readCompactu32(c, &m->last_period))
+    CHECK_ERROR(_readCompactu32(c, &m->end))
+    CHECK_ERROR(_readOptionMultiSigner_V12(c, &m->verifier))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_crowdloan_contribute_V12(
+    parser_context_t* c, pd_crowdloan_contribute_V12_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->index))
+    CHECK_ERROR(_readCompactu128(c, &m->amount))
+    CHECK_ERROR(_readOptionMultiSignature_V12(c, &m->signature))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_crowdloan_withdraw_V12(
+    parser_context_t* c, pd_crowdloan_withdraw_V12_t* m)
+{
+    CHECK_ERROR(_readAccountId_V12(c, &m->who))
+    CHECK_ERROR(_readCompactu32(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_crowdloan_refund_V12(
+    parser_context_t* c, pd_crowdloan_refund_V12_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_crowdloan_dissolve_V12(
+    parser_context_t* c, pd_crowdloan_dissolve_V12_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_crowdloan_edit_V12(
+    parser_context_t* c, pd_crowdloan_edit_V12_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->index))
+    CHECK_ERROR(_readCompactu128(c, &m->cap))
+    CHECK_ERROR(_readCompactu32(c, &m->first_period))
+    CHECK_ERROR(_readCompactu32(c, &m->last_period))
+    CHECK_ERROR(_readCompactu32(c, &m->end))
+    CHECK_ERROR(_readOptionMultiSigner_V12(c, &m->verifier))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_crowdloan_add_memo_V12(
+    parser_context_t* c, pd_crowdloan_add_memo_V12_t* m)
+{
+    CHECK_ERROR(_readParaId_V12(c, &m->index))
+    CHECK_ERROR(_readVecu8(c, &m->memo))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_crowdloan_poke_V12(
+    parser_context_t* c, pd_crowdloan_poke_V12_t* m)
+{
+    CHECK_ERROR(_readParaId_V12(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_crowdloan_contribute_all_V12(
+    parser_context_t* c, pd_crowdloan_contribute_all_V12_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->index))
+    CHECK_ERROR(_readOptionMultiSignature_V12(c, &m->signature))
+    return parser_ok;
+}
+
 #ifdef SUBSTRATE_PARSER_FULL
 __Z_INLINE parser_error_t _readMethod_system_fill_block_V12(
     parser_context_t* c, pd_system_fill_block_V12_t* m)
@@ -1558,84 +1636,6 @@ __Z_INLINE parser_error_t _readMethod_auctions_cancel_auction_V12(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_crowdloan_create_V12(
-    parser_context_t* c, pd_crowdloan_create_V12_t* m)
-{
-    CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readCompactu128(c, &m->cap))
-    CHECK_ERROR(_readCompactu32(c, &m->first_period))
-    CHECK_ERROR(_readCompactu32(c, &m->last_period))
-    CHECK_ERROR(_readCompactu32(c, &m->end))
-    CHECK_ERROR(_readOptionMultiSigner_V12(c, &m->verifier))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_crowdloan_contribute_V12(
-    parser_context_t* c, pd_crowdloan_contribute_V12_t* m)
-{
-    CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readCompactu128(c, &m->amount))
-    CHECK_ERROR(_readOptionMultiSignature_V12(c, &m->signature))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_crowdloan_withdraw_V12(
-    parser_context_t* c, pd_crowdloan_withdraw_V12_t* m)
-{
-    CHECK_ERROR(_readAccountId_V12(c, &m->who))
-    CHECK_ERROR(_readCompactu32(c, &m->index))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_crowdloan_refund_V12(
-    parser_context_t* c, pd_crowdloan_refund_V12_t* m)
-{
-    CHECK_ERROR(_readCompactu32(c, &m->index))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_crowdloan_dissolve_V12(
-    parser_context_t* c, pd_crowdloan_dissolve_V12_t* m)
-{
-    CHECK_ERROR(_readCompactu32(c, &m->index))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_crowdloan_edit_V12(
-    parser_context_t* c, pd_crowdloan_edit_V12_t* m)
-{
-    CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readCompactu128(c, &m->cap))
-    CHECK_ERROR(_readCompactu32(c, &m->first_period))
-    CHECK_ERROR(_readCompactu32(c, &m->last_period))
-    CHECK_ERROR(_readCompactu32(c, &m->end))
-    CHECK_ERROR(_readOptionMultiSigner_V12(c, &m->verifier))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_crowdloan_add_memo_V12(
-    parser_context_t* c, pd_crowdloan_add_memo_V12_t* m)
-{
-    CHECK_ERROR(_readParaId_V12(c, &m->index))
-    CHECK_ERROR(_readVecu8(c, &m->memo))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_crowdloan_poke_V12(
-    parser_context_t* c, pd_crowdloan_poke_V12_t* m)
-{
-    CHECK_ERROR(_readParaId_V12(c, &m->index))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_crowdloan_contribute_all_V12(
-    parser_context_t* c, pd_crowdloan_contribute_all_V12_t* m)
-{
-    CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readOptionMultiSignature_V12(c, &m->signature))
-    return parser_ok;
-}
-
 #endif
 
 parser_error_t _readMethod_V12(
@@ -1704,6 +1704,33 @@ parser_error_t _readMethod_V12(
         break;
     case 6658: /* module 26 call 2 */
         CHECK_ERROR(_readMethod_utility_batch_all_V12(c, &method->basic.utility_batch_all_V12))
+        break;
+    case 18688: /* module 73 call 0 */
+        CHECK_ERROR(_readMethod_crowdloan_create_V12(c, &method->basic.crowdloan_create_V12))
+        break;
+    case 18689: /* module 73 call 1 */
+        CHECK_ERROR(_readMethod_crowdloan_contribute_V12(c, &method->basic.crowdloan_contribute_V12))
+        break;
+    case 18690: /* module 73 call 2 */
+        CHECK_ERROR(_readMethod_crowdloan_withdraw_V12(c, &method->basic.crowdloan_withdraw_V12))
+        break;
+    case 18691: /* module 73 call 3 */
+        CHECK_ERROR(_readMethod_crowdloan_refund_V12(c, &method->basic.crowdloan_refund_V12))
+        break;
+    case 18692: /* module 73 call 4 */
+        CHECK_ERROR(_readMethod_crowdloan_dissolve_V12(c, &method->basic.crowdloan_dissolve_V12))
+        break;
+    case 18693: /* module 73 call 5 */
+        CHECK_ERROR(_readMethod_crowdloan_edit_V12(c, &method->basic.crowdloan_edit_V12))
+        break;
+    case 18694: /* module 73 call 6 */
+        CHECK_ERROR(_readMethod_crowdloan_add_memo_V12(c, &method->basic.crowdloan_add_memo_V12))
+        break;
+    case 18695: /* module 73 call 7 */
+        CHECK_ERROR(_readMethod_crowdloan_poke_V12(c, &method->basic.crowdloan_poke_V12))
+        break;
+    case 18696: /* module 73 call 8 */
+        CHECK_ERROR(_readMethod_crowdloan_contribute_all_V12(c, &method->basic.crowdloan_contribute_all_V12))
         break;
 
 #ifdef SUBSTRATE_PARSER_FULL
@@ -2265,33 +2292,6 @@ parser_error_t _readMethod_V12(
     case 18434: /* module 72 call 2 */
         CHECK_ERROR(_readMethod_auctions_cancel_auction_V12(c, &method->basic.auctions_cancel_auction_V12))
         break;
-    case 18688: /* module 73 call 0 */
-        CHECK_ERROR(_readMethod_crowdloan_create_V12(c, &method->basic.crowdloan_create_V12))
-        break;
-    case 18689: /* module 73 call 1 */
-        CHECK_ERROR(_readMethod_crowdloan_contribute_V12(c, &method->basic.crowdloan_contribute_V12))
-        break;
-    case 18690: /* module 73 call 2 */
-        CHECK_ERROR(_readMethod_crowdloan_withdraw_V12(c, &method->basic.crowdloan_withdraw_V12))
-        break;
-    case 18691: /* module 73 call 3 */
-        CHECK_ERROR(_readMethod_crowdloan_refund_V12(c, &method->basic.crowdloan_refund_V12))
-        break;
-    case 18692: /* module 73 call 4 */
-        CHECK_ERROR(_readMethod_crowdloan_dissolve_V12(c, &method->basic.crowdloan_dissolve_V12))
-        break;
-    case 18693: /* module 73 call 5 */
-        CHECK_ERROR(_readMethod_crowdloan_edit_V12(c, &method->basic.crowdloan_edit_V12))
-        break;
-    case 18694: /* module 73 call 6 */
-        CHECK_ERROR(_readMethod_crowdloan_add_memo_V12(c, &method->basic.crowdloan_add_memo_V12))
-        break;
-    case 18695: /* module 73 call 7 */
-        CHECK_ERROR(_readMethod_crowdloan_poke_V12(c, &method->basic.crowdloan_poke_V12))
-        break;
-    case 18696: /* module 73 call 8 */
-        CHECK_ERROR(_readMethod_crowdloan_contribute_all_V12(c, &method->basic.crowdloan_contribute_all_V12))
-        break;
 #endif
     default:
         return parser_unexpected_callIndex;
@@ -2316,6 +2316,8 @@ const char* _getMethod_ModuleName_V12(uint8_t moduleIdx)
         return STR_MO_SESSION;
     case 26:
         return STR_MO_UTILITY;
+    case 73:
+        return STR_MO_CROWDLOAN;
 #ifdef SUBSTRATE_PARSER_FULL
     case 0:
         return STR_MO_SYSTEM;
@@ -2371,8 +2373,6 @@ const char* _getMethod_ModuleName_V12(uint8_t moduleIdx)
         return STR_MO_REGISTRAR;
     case 72:
         return STR_MO_AUCTIONS;
-    case 73:
-        return STR_MO_CROWDLOAN;
 #endif
     default:
         return NULL;
@@ -2424,6 +2424,24 @@ const char* _getMethod_Name_V12(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_BATCH;
     case 6658: /* module 26 call 2 */
         return STR_ME_BATCH_ALL;
+    case 18688: /* module 73 call 0 */
+        return STR_ME_CREATE;
+    case 18689: /* module 73 call 1 */
+        return STR_ME_CONTRIBUTE;
+    case 18690: /* module 73 call 2 */
+        return STR_ME_WITHDRAW;
+    case 18691: /* module 73 call 3 */
+        return STR_ME_REFUND;
+    case 18692: /* module 73 call 4 */
+        return STR_ME_DISSOLVE;
+    case 18693: /* module 73 call 5 */
+        return STR_ME_EDIT;
+    case 18694: /* module 73 call 6 */
+        return STR_ME_ADD_MEMO;
+    case 18695: /* module 73 call 7 */
+        return STR_ME_POKE;
+    case 18696: /* module 73 call 8 */
+        return STR_ME_CONTRIBUTE_ALL;
     default:
         return _getMethod_Name_V12_ParserFull(callPrivIdx);
     }
@@ -2807,24 +2825,6 @@ const char* _getMethod_Name_V12_ParserFull(uint16_t callPrivIdx)
         return STR_ME_BID;
     case 18434: /* module 72 call 2 */
         return STR_ME_CANCEL_AUCTION;
-    case 18688: /* module 73 call 0 */
-        return STR_ME_CREATE;
-    case 18689: /* module 73 call 1 */
-        return STR_ME_CONTRIBUTE;
-    case 18690: /* module 73 call 2 */
-        return STR_ME_WITHDRAW;
-    case 18691: /* module 73 call 3 */
-        return STR_ME_REFUND;
-    case 18692: /* module 73 call 4 */
-        return STR_ME_DISSOLVE;
-    case 18693: /* module 73 call 5 */
-        return STR_ME_EDIT;
-    case 18694: /* module 73 call 6 */
-        return STR_ME_ADD_MEMO;
-    case 18695: /* module 73 call 7 */
-        return STR_ME_POKE;
-    case 18696: /* module 73 call 8 */
-        return STR_ME_CONTRIBUTE_ALL;
 #endif
     default:
         return NULL;
@@ -2876,6 +2876,24 @@ uint8_t _getMethod_NumItems_V12(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 6658: /* module 26 call 2 */
         return 1;
+    case 18688: /* module 73 call 0 */
+        return 6;
+    case 18689: /* module 73 call 1 */
+        return 3;
+    case 18690: /* module 73 call 2 */
+        return 2;
+    case 18691: /* module 73 call 3 */
+        return 1;
+    case 18692: /* module 73 call 4 */
+        return 1;
+    case 18693: /* module 73 call 5 */
+        return 6;
+    case 18694: /* module 73 call 6 */
+        return 2;
+    case 18695: /* module 73 call 7 */
+        return 1;
+    case 18696: /* module 73 call 8 */
+        return 2;
 #ifdef SUBSTRATE_PARSER_FULL
     case 0: /* module 0 call 0 */
         return 1;
@@ -3249,24 +3267,6 @@ uint8_t _getMethod_NumItems_V12(uint8_t moduleIdx, uint8_t callIdx)
         return 5;
     case 18434: /* module 72 call 2 */
         return 0;
-    case 18688: /* module 73 call 0 */
-        return 6;
-    case 18689: /* module 73 call 1 */
-        return 3;
-    case 18690: /* module 73 call 2 */
-        return 2;
-    case 18691: /* module 73 call 3 */
-        return 1;
-    case 18692: /* module 73 call 4 */
-        return 1;
-    case 18693: /* module 73 call 5 */
-        return 6;
-    case 18694: /* module 73 call 6 */
-        return 2;
-    case 18695: /* module 73 call 7 */
-        return 1;
-    case 18696: /* module 73 call 8 */
-        return 2;
 #endif
     default:
         return 0;
@@ -3424,6 +3424,99 @@ const char* _getMethod_ItemName_V12(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         switch (itemIdx) {
         case 0:
             return STR_IT_calls;
+        default:
+            return NULL;
+        }
+    case 18688: /* module 73 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        case 1:
+            return STR_IT_cap;
+        case 2:
+            return STR_IT_first_period;
+        case 3:
+            return STR_IT_last_period;
+        case 4:
+            return STR_IT_end;
+        case 5:
+            return STR_IT_verifier;
+        default:
+            return NULL;
+        }
+    case 18689: /* module 73 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        case 1:
+            return STR_IT_amount;
+        case 2:
+            return STR_IT_signature;
+        default:
+            return NULL;
+        }
+    case 18690: /* module 73 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_who;
+        case 1:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 18691: /* module 73 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 18692: /* module 73 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 18693: /* module 73 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        case 1:
+            return STR_IT_cap;
+        case 2:
+            return STR_IT_first_period;
+        case 3:
+            return STR_IT_last_period;
+        case 4:
+            return STR_IT_end;
+        case 5:
+            return STR_IT_verifier;
+        default:
+            return NULL;
+        }
+    case 18694: /* module 73 call 6 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        case 1:
+            return STR_IT_memo;
+        default:
+            return NULL;
+        }
+    case 18695: /* module 73 call 7 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 18696: /* module 73 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        case 1:
+            return STR_IT_signature;
         default:
             return NULL;
         }
@@ -4922,99 +5015,6 @@ const char* _getMethod_ItemName_V12(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         default:
             return NULL;
         }
-    case 18688: /* module 73 call 0 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_index;
-        case 1:
-            return STR_IT_cap;
-        case 2:
-            return STR_IT_first_period;
-        case 3:
-            return STR_IT_last_period;
-        case 4:
-            return STR_IT_end;
-        case 5:
-            return STR_IT_verifier;
-        default:
-            return NULL;
-        }
-    case 18689: /* module 73 call 1 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_index;
-        case 1:
-            return STR_IT_amount;
-        case 2:
-            return STR_IT_signature;
-        default:
-            return NULL;
-        }
-    case 18690: /* module 73 call 2 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_who;
-        case 1:
-            return STR_IT_index;
-        default:
-            return NULL;
-        }
-    case 18691: /* module 73 call 3 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_index;
-        default:
-            return NULL;
-        }
-    case 18692: /* module 73 call 4 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_index;
-        default:
-            return NULL;
-        }
-    case 18693: /* module 73 call 5 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_index;
-        case 1:
-            return STR_IT_cap;
-        case 2:
-            return STR_IT_first_period;
-        case 3:
-            return STR_IT_last_period;
-        case 4:
-            return STR_IT_end;
-        case 5:
-            return STR_IT_verifier;
-        default:
-            return NULL;
-        }
-    case 18694: /* module 73 call 6 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_index;
-        case 1:
-            return STR_IT_memo;
-        default:
-            return NULL;
-        }
-    case 18695: /* module 73 call 7 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_index;
-        default:
-            return NULL;
-        }
-    case 18696: /* module 73 call 8 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_index;
-        case 1:
-            return STR_IT_signature;
-        default:
-            return NULL;
-        }
 #endif
     default:
         return NULL;
@@ -5252,6 +5252,171 @@ parser_error_t _getMethod_ItemValue_V12(
         case 0: /* utility_batch_all_V12 - calls */;
             return _toStringVecCall(
                 &m->basic.utility_batch_all_V12.calls,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 18688: /* module 73 call 0 */
+        switch (itemIdx) {
+        case 0: /* crowdloan_create_V12 - index */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_create_V12.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* crowdloan_create_V12 - cap */;
+            return _toStringCompactu128(
+                &m->basic.crowdloan_create_V12.cap,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* crowdloan_create_V12 - first_period */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_create_V12.first_period,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* crowdloan_create_V12 - last_period */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_create_V12.last_period,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 4: /* crowdloan_create_V12 - end */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_create_V12.end,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 5: /* crowdloan_create_V12 - verifier */;
+            return _toStringOptionMultiSigner_V12(
+                &m->basic.crowdloan_create_V12.verifier,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 18689: /* module 73 call 1 */
+        switch (itemIdx) {
+        case 0: /* crowdloan_contribute_V12 - index */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_contribute_V12.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* crowdloan_contribute_V12 - amount */;
+            return _toStringCompactu128(
+                &m->basic.crowdloan_contribute_V12.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* crowdloan_contribute_V12 - signature */;
+            return _toStringOptionMultiSignature_V12(
+                &m->basic.crowdloan_contribute_V12.signature,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 18690: /* module 73 call 2 */
+        switch (itemIdx) {
+        case 0: /* crowdloan_withdraw_V12 - who */;
+            return _toStringAccountId_V12(
+                &m->basic.crowdloan_withdraw_V12.who,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* crowdloan_withdraw_V12 - index */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_withdraw_V12.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 18691: /* module 73 call 3 */
+        switch (itemIdx) {
+        case 0: /* crowdloan_refund_V12 - index */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_refund_V12.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 18692: /* module 73 call 4 */
+        switch (itemIdx) {
+        case 0: /* crowdloan_dissolve_V12 - index */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_dissolve_V12.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 18693: /* module 73 call 5 */
+        switch (itemIdx) {
+        case 0: /* crowdloan_edit_V12 - index */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_edit_V12.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* crowdloan_edit_V12 - cap */;
+            return _toStringCompactu128(
+                &m->basic.crowdloan_edit_V12.cap,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* crowdloan_edit_V12 - first_period */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_edit_V12.first_period,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* crowdloan_edit_V12 - last_period */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_edit_V12.last_period,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 4: /* crowdloan_edit_V12 - end */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_edit_V12.end,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 5: /* crowdloan_edit_V12 - verifier */;
+            return _toStringOptionMultiSigner_V12(
+                &m->basic.crowdloan_edit_V12.verifier,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 18694: /* module 73 call 6 */
+        switch (itemIdx) {
+        case 0: /* crowdloan_add_memo_V12 - index */;
+            return _toStringParaId_V12(
+                &m->basic.crowdloan_add_memo_V12.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* crowdloan_add_memo_V12 - memo */;
+            return _toStringVecu8(
+                &m->basic.crowdloan_add_memo_V12.memo,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 18695: /* module 73 call 7 */
+        switch (itemIdx) {
+        case 0: /* crowdloan_poke_V12 - index */;
+            return _toStringParaId_V12(
+                &m->basic.crowdloan_poke_V12.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 18696: /* module 73 call 8 */
+        switch (itemIdx) {
+        case 0: /* crowdloan_contribute_all_V12 - index */;
+            return _toStringCompactu32(
+                &m->basic.crowdloan_contribute_all_V12.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* crowdloan_contribute_all_V12 - signature */;
+            return _toStringOptionMultiSignature_V12(
+                &m->basic.crowdloan_contribute_all_V12.signature,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -7595,171 +7760,6 @@ parser_error_t _getMethod_ItemValue_V12(
         }
     case 18434: /* module 72 call 2 */
         switch (itemIdx) {
-        default:
-            return parser_no_data;
-        }
-    case 18688: /* module 73 call 0 */
-        switch (itemIdx) {
-        case 0: /* crowdloan_create_V12 - index */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_create_V12.index,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* crowdloan_create_V12 - cap */;
-            return _toStringCompactu128(
-                &m->basic.crowdloan_create_V12.cap,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 2: /* crowdloan_create_V12 - first_period */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_create_V12.first_period,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 3: /* crowdloan_create_V12 - last_period */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_create_V12.last_period,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 4: /* crowdloan_create_V12 - end */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_create_V12.end,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 5: /* crowdloan_create_V12 - verifier */;
-            return _toStringOptionMultiSigner_V12(
-                &m->basic.crowdloan_create_V12.verifier,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 18689: /* module 73 call 1 */
-        switch (itemIdx) {
-        case 0: /* crowdloan_contribute_V12 - index */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_contribute_V12.index,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* crowdloan_contribute_V12 - amount */;
-            return _toStringCompactu128(
-                &m->basic.crowdloan_contribute_V12.amount,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 2: /* crowdloan_contribute_V12 - signature */;
-            return _toStringOptionMultiSignature_V12(
-                &m->basic.crowdloan_contribute_V12.signature,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 18690: /* module 73 call 2 */
-        switch (itemIdx) {
-        case 0: /* crowdloan_withdraw_V12 - who */;
-            return _toStringAccountId_V12(
-                &m->basic.crowdloan_withdraw_V12.who,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* crowdloan_withdraw_V12 - index */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_withdraw_V12.index,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 18691: /* module 73 call 3 */
-        switch (itemIdx) {
-        case 0: /* crowdloan_refund_V12 - index */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_refund_V12.index,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 18692: /* module 73 call 4 */
-        switch (itemIdx) {
-        case 0: /* crowdloan_dissolve_V12 - index */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_dissolve_V12.index,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 18693: /* module 73 call 5 */
-        switch (itemIdx) {
-        case 0: /* crowdloan_edit_V12 - index */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_edit_V12.index,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* crowdloan_edit_V12 - cap */;
-            return _toStringCompactu128(
-                &m->basic.crowdloan_edit_V12.cap,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 2: /* crowdloan_edit_V12 - first_period */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_edit_V12.first_period,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 3: /* crowdloan_edit_V12 - last_period */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_edit_V12.last_period,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 4: /* crowdloan_edit_V12 - end */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_edit_V12.end,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 5: /* crowdloan_edit_V12 - verifier */;
-            return _toStringOptionMultiSigner_V12(
-                &m->basic.crowdloan_edit_V12.verifier,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 18694: /* module 73 call 6 */
-        switch (itemIdx) {
-        case 0: /* crowdloan_add_memo_V12 - index */;
-            return _toStringParaId_V12(
-                &m->basic.crowdloan_add_memo_V12.index,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* crowdloan_add_memo_V12 - memo */;
-            return _toStringVecu8(
-                &m->basic.crowdloan_add_memo_V12.memo,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 18695: /* module 73 call 7 */
-        switch (itemIdx) {
-        case 0: /* crowdloan_poke_V12 - index */;
-            return _toStringParaId_V12(
-                &m->basic.crowdloan_poke_V12.index,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 18696: /* module 73 call 8 */
-        switch (itemIdx) {
-        case 0: /* crowdloan_contribute_all_V12 - index */;
-            return _toStringCompactu32(
-                &m->basic.crowdloan_contribute_all_V12.index,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* crowdloan_contribute_all_V12 - signature */;
-            return _toStringOptionMultiSignature_V12(
-                &m->basic.crowdloan_contribute_all_V12.signature,
-                outValue, outValueLen,
-                pageIdx, pageCount);
         default:
             return parser_no_data;
         }

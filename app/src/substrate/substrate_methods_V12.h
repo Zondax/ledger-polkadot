@@ -142,6 +142,66 @@ typedef struct {
     pd_VecCall_t calls;
 } pd_utility_batch_all_V12_t;
 
+#define PD_CALL_CROWDLOAN_CREATE_V12 0
+typedef struct {
+    pd_Compactu32_t index;
+    pd_Compactu128_t cap;
+    pd_Compactu32_t first_period;
+    pd_Compactu32_t last_period;
+    pd_Compactu32_t end;
+    pd_OptionMultiSigner_V12_t verifier;
+} pd_crowdloan_create_V12_t;
+
+#define PD_CALL_CROWDLOAN_CONTRIBUTE_V12 1
+typedef struct {
+    pd_Compactu32_t index;
+    pd_Compactu128_t amount;
+    pd_OptionMultiSignature_V12_t signature;
+} pd_crowdloan_contribute_V12_t;
+
+#define PD_CALL_CROWDLOAN_WITHDRAW_V12 2
+typedef struct {
+    pd_AccountId_V12_t who;
+    pd_Compactu32_t index;
+} pd_crowdloan_withdraw_V12_t;
+
+#define PD_CALL_CROWDLOAN_REFUND_V12 3
+typedef struct {
+    pd_Compactu32_t index;
+} pd_crowdloan_refund_V12_t;
+
+#define PD_CALL_CROWDLOAN_DISSOLVE_V12 4
+typedef struct {
+    pd_Compactu32_t index;
+} pd_crowdloan_dissolve_V12_t;
+
+#define PD_CALL_CROWDLOAN_EDIT_V12 5
+typedef struct {
+    pd_Compactu32_t index;
+    pd_Compactu128_t cap;
+    pd_Compactu32_t first_period;
+    pd_Compactu32_t last_period;
+    pd_Compactu32_t end;
+    pd_OptionMultiSigner_V12_t verifier;
+} pd_crowdloan_edit_V12_t;
+
+#define PD_CALL_CROWDLOAN_ADD_MEMO_V12 6
+typedef struct {
+    pd_ParaId_V12_t index;
+    pd_Vecu8_t memo;
+} pd_crowdloan_add_memo_V12_t;
+
+#define PD_CALL_CROWDLOAN_POKE_V12 7
+typedef struct {
+    pd_ParaId_V12_t index;
+} pd_crowdloan_poke_V12_t;
+
+#define PD_CALL_CROWDLOAN_CONTRIBUTE_ALL_V12 8
+typedef struct {
+    pd_Compactu32_t index;
+    pd_OptionMultiSignature_V12_t signature;
+} pd_crowdloan_contribute_all_V12_t;
+
 #ifdef SUBSTRATE_PARSER_FULL
 
 #define PD_CALL_PREIMAGE_NOTE_PREIMAGE_V12 0
@@ -1093,66 +1153,6 @@ typedef struct {
 typedef struct {
 } pd_auctions_cancel_auction_V12_t;
 
-#define PD_CALL_CROWDLOAN_CREATE_V12 0
-typedef struct {
-    pd_Compactu32_t index;
-    pd_Compactu128_t cap;
-    pd_Compactu32_t first_period;
-    pd_Compactu32_t last_period;
-    pd_Compactu32_t end;
-    pd_OptionMultiSigner_V12_t verifier;
-} pd_crowdloan_create_V12_t;
-
-#define PD_CALL_CROWDLOAN_CONTRIBUTE_V12 1
-typedef struct {
-    pd_Compactu32_t index;
-    pd_Compactu128_t amount;
-    pd_OptionMultiSignature_V12_t signature;
-} pd_crowdloan_contribute_V12_t;
-
-#define PD_CALL_CROWDLOAN_WITHDRAW_V12 2
-typedef struct {
-    pd_AccountId_V12_t who;
-    pd_Compactu32_t index;
-} pd_crowdloan_withdraw_V12_t;
-
-#define PD_CALL_CROWDLOAN_REFUND_V12 3
-typedef struct {
-    pd_Compactu32_t index;
-} pd_crowdloan_refund_V12_t;
-
-#define PD_CALL_CROWDLOAN_DISSOLVE_V12 4
-typedef struct {
-    pd_Compactu32_t index;
-} pd_crowdloan_dissolve_V12_t;
-
-#define PD_CALL_CROWDLOAN_EDIT_V12 5
-typedef struct {
-    pd_Compactu32_t index;
-    pd_Compactu128_t cap;
-    pd_Compactu32_t first_period;
-    pd_Compactu32_t last_period;
-    pd_Compactu32_t end;
-    pd_OptionMultiSigner_V12_t verifier;
-} pd_crowdloan_edit_V12_t;
-
-#define PD_CALL_CROWDLOAN_ADD_MEMO_V12 6
-typedef struct {
-    pd_ParaId_V12_t index;
-    pd_Vecu8_t memo;
-} pd_crowdloan_add_memo_V12_t;
-
-#define PD_CALL_CROWDLOAN_POKE_V12 7
-typedef struct {
-    pd_ParaId_V12_t index;
-} pd_crowdloan_poke_V12_t;
-
-#define PD_CALL_CROWDLOAN_CONTRIBUTE_ALL_V12 8
-typedef struct {
-    pd_Compactu32_t index;
-    pd_OptionMultiSignature_V12_t signature;
-} pd_crowdloan_contribute_all_V12_t;
-
 #endif
 
 typedef union {
@@ -1172,6 +1172,15 @@ typedef union {
     pd_session_purge_keys_V12_t session_purge_keys_V12;
     pd_utility_batch_V12_t utility_batch_V12;
     pd_utility_batch_all_V12_t utility_batch_all_V12;
+    pd_crowdloan_create_V12_t crowdloan_create_V12;
+    pd_crowdloan_contribute_V12_t crowdloan_contribute_V12;
+    pd_crowdloan_withdraw_V12_t crowdloan_withdraw_V12;
+    pd_crowdloan_refund_V12_t crowdloan_refund_V12;
+    pd_crowdloan_dissolve_V12_t crowdloan_dissolve_V12;
+    pd_crowdloan_edit_V12_t crowdloan_edit_V12;
+    pd_crowdloan_add_memo_V12_t crowdloan_add_memo_V12;
+    pd_crowdloan_poke_V12_t crowdloan_poke_V12;
+    pd_crowdloan_contribute_all_V12_t crowdloan_contribute_all_V12;
 #ifdef SUBSTRATE_PARSER_FULL
     pd_preimage_note_preimage_V12_t preimage_note_preimage_V12;
     pd_preimage_unnote_preimage_V12_t preimage_unnote_preimage_V12;
@@ -1347,15 +1356,6 @@ typedef union {
     pd_auctions_new_auction_V12_t auctions_new_auction_V12;
     pd_auctions_bid_V12_t auctions_bid_V12;
     pd_auctions_cancel_auction_V12_t auctions_cancel_auction_V12;
-    pd_crowdloan_create_V12_t crowdloan_create_V12;
-    pd_crowdloan_contribute_V12_t crowdloan_contribute_V12;
-    pd_crowdloan_withdraw_V12_t crowdloan_withdraw_V12;
-    pd_crowdloan_refund_V12_t crowdloan_refund_V12;
-    pd_crowdloan_dissolve_V12_t crowdloan_dissolve_V12;
-    pd_crowdloan_edit_V12_t crowdloan_edit_V12;
-    pd_crowdloan_add_memo_V12_t crowdloan_add_memo_V12;
-    pd_crowdloan_poke_V12_t crowdloan_poke_V12;
-    pd_crowdloan_contribute_all_V12_t crowdloan_contribute_all_V12;
 #endif
 } pd_MethodBasic_V12_t;
 
