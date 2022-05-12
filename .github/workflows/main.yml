@@ -145,7 +145,7 @@ jobs:
           export PATH=~/.cargo/bin:$PATH
           cd tests_zemu && yarn testSR25519
 
-  build_package:
+  build_package_0:
     needs: [ configure, build, build_ledger, test_zemu, test_zemu_sr25519 ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
@@ -164,14 +164,14 @@ jobs:
       - name: Install deps
         run: pip install ledgerblue
 
-      - name: Build NanoS light
+      - name: Build NanoS
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
           make SUBSTRATE_PARSER_FULL=0
           mv ./app/pkg/installer_s.sh ./app/pkg/installer_nanos.sh
       - name: Set tag
-        id: nanos
+        id: nanos_light
         run: echo ::set-output name=tag_name::$(./app/pkg/installer_nanos.sh version)
       - name: Create or Update Release (1)
         id: create_release_0
@@ -180,9 +180,28 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           files: ./app/pkg/installer_nanos.sh
-          tag_name: ${{ steps.nanos.outputs.tag_name }}
+          tag_name: ${{ steps.nanos_light.outputs.tag_name }}
           draft: false
           prerelease: false
+
+  build_package_1:
+    needs: [ configure, build, build_ledger, test_zemu, test_zemu_sr25519 ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/builder-bolos:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    env:
+      BOLOS_SDK: ${{ github.workspace }}/deps/nanos-secure-sdk
+      BOLOS_ENV: /opt/bolos
+      HOME: /home/zondax_circle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
 
       - name: Build NanoS XL
         shell: bash -l {0}
@@ -193,8 +212,8 @@ jobs:
       - name: Set tag
         id: nanos_xl
         run: echo ::set-output name=tag_name::$(./app/pkg/installer_nanos_xl.sh version)
-      - name: Create or Update Release (1)
-        id: create_release_1
+      - name: Update Release
+        id: update_release_1
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
@@ -204,9 +223,26 @@ jobs:
           draft: false
           prerelease: false
 
+  build_package_2:
+    needs: [ configure, build, build_ledger, test_zemu, test_zemu_sr25519 ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/builder-bolos:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+    env:
+      BOLOS_SDK: ${{ github.workspace }}/deps/nanosplus-secure-sdk
+      BOLOS_ENV: /opt/bolos
+      HOME: /home/zondax_circle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
       - name: Build NanoSP
-        env:
-          BOLOS_SDK: ${{ github.workspace }}/deps/nanosplus-secure-sdk
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
@@ -215,8 +251,8 @@ jobs:
       - name: Set tag
         id: nanosp
         run: echo ::set-output name=tag_name::$(./app/pkg/installer_nanos_plus.sh version)
-      - name: Create or Update Release (1)
-        id: create_release_2
+      - name: Update Release
+        id: update_release_2
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
