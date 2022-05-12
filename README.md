@@ -512,15 +512,15 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Create |    | :heavy_check_mark: |   | `Compactu32` index <br/>`Compactu128` cap <br/>`Compactu32` first_period <br/>`Compactu32` last_period <br/>`Compactu32` end <br/>`OptionMultiSigner` verifier <br/> |
-|Contribute |    | :heavy_check_mark: |   | `Compactu32` index <br/>`Compactu128` amount <br/>`OptionMultiSignature` signature <br/> |
-|Withdraw |    | :heavy_check_mark: |   | `AccountId` who <br/>`Compactu32` index <br/> |
-|Refund |    | :heavy_check_mark: |   | `Compactu32` index <br/> |
-|Dissolve |    | :heavy_check_mark: |   | `Compactu32` index <br/> |
-|Edit |    | :heavy_check_mark: |   | `Compactu32` index <br/>`Compactu128` cap <br/>`Compactu32` first_period <br/>`Compactu32` last_period <br/>`Compactu32` end <br/>`OptionMultiSigner` verifier <br/> |
-|Add memo |    | :heavy_check_mark: |   | `ParaId` index <br/>`Vecu8` memo <br/> |
-|Poke |    | :heavy_check_mark: |   | `ParaId` index <br/> |
-|Contribute all |    | :heavy_check_mark: |   | `Compactu32` index <br/>`OptionMultiSignature` signature <br/> |
+|Create | :heavy_check_mark:  | :heavy_check_mark: |   | `Compactu32` index <br/>`Compactu128` cap <br/>`Compactu32` first_period <br/>`Compactu32` last_period <br/>`Compactu32` end <br/>`OptionMultiSigner` verifier <br/> |
+|Contribute | :heavy_check_mark:  | :heavy_check_mark: |   | `Compactu32` index <br/>`Compactu128` amount <br/>`OptionMultiSignature` signature <br/> |
+|Withdraw | :heavy_check_mark:  | :heavy_check_mark: |   | `AccountId` who <br/>`Compactu32` index <br/> |
+|Refund | :heavy_check_mark:  | :heavy_check_mark: |   | `Compactu32` index <br/> |
+|Dissolve | :heavy_check_mark:  | :heavy_check_mark: |   | `Compactu32` index <br/> |
+|Edit | :heavy_check_mark:  | :heavy_check_mark: |   | `Compactu32` index <br/>`Compactu128` cap <br/>`Compactu32` first_period <br/>`Compactu32` last_period <br/>`Compactu32` end <br/>`OptionMultiSigner` verifier <br/> |
+|Add memo | :heavy_check_mark:  | :heavy_check_mark: |   | `ParaId` index <br/>`Vecu8` memo <br/> |
+|Poke | :heavy_check_mark:  | :heavy_check_mark: |   | `ParaId` index <br/> |
+|Contribute all | :heavy_check_mark:  | :heavy_check_mark: |   | `Compactu32` index <br/>`OptionMultiSignature` signature <br/> |
 
 ## XcmPallet
 
