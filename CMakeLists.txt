@@ -115,6 +115,7 @@ file(GLOB_RECURSE LIB_SRC
         ####
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/crypto_helper.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_impl_common.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_impl.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/parser_txdef.c
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/substrate/substrate*.c
