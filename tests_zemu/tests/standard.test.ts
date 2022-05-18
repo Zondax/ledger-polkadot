@@ -16,8 +16,8 @@
 
 import Zemu, { DEFAULT_START_OPTIONS } from '@zondax/zemu'
 import { newPolkadotApp } from '@zondax/ledger-substrate'
-import { APP_SEED, models, txProxy_proxy_transferKeepAlive } from './common'
-import { txBalances_transfer, txStaking_nominate, txSession_setKeys } from './zemu_blobs'
+import { APP_SEED, models } from './common'
+import { txBalances_transfer, txStaking_nominate, txSession_setKeys, txProxy_proxy } from './zemu_blobs'
 
 // @ts-ignore
 import ed25519 from 'ed25519-supercop'
@@ -321,7 +321,7 @@ describe('Standard', function () {
     }
   })
 
-  test.each(models)('Proxy proxy transferKeepAlive', async function (m) {
+  test.each(models)('Proxy proxy balances transfer', async function (m) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({ ...defaultOptions, model: m.name })
@@ -330,7 +330,7 @@ describe('Standard', function () {
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
 
-      const txBlob = Buffer.from(txProxy_proxy_transferKeepAlive, 'hex')
+      const txBlob = Buffer.from(txProxy_proxy, 'hex')
 
       const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
       const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
@@ -338,7 +338,7 @@ describe('Standard', function () {
       // do not wait here.. we need to navigate
       const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob)
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-proxy_transfer_keepAlive`)
+      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-proxy_balances_transfer`)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -359,5 +359,4 @@ describe('Standard', function () {
       await sim.close()
     }
   })
-
 })
