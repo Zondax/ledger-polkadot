@@ -1,18 +1,18 @@
 /*******************************************************************************
-*  (c) 2019 - 2022 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *  (c) 2019 - 2022 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 
 #include "substrate_dispatch_V12.h"
 #include "substrate_strings.h"
@@ -154,6 +154,13 @@ __Z_INLINE parser_error_t _readMethod_utility_batch_V12(
 
 __Z_INLINE parser_error_t _readMethod_utility_batch_all_V12(
     parser_context_t* c, pd_utility_batch_all_V12_t* m)
+{
+    CHECK_ERROR(_readVecCall(c, &m->calls))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_utility_force_batch_V12(
+    parser_context_t* c, pd_utility_force_batch_V12_t* m)
 {
     CHECK_ERROR(_readVecCall(c, &m->calls))
     return parser_ok;
@@ -830,6 +837,13 @@ __Z_INLINE parser_error_t _readMethod_treasury_reject_proposal_V12(
 
 __Z_INLINE parser_error_t _readMethod_treasury_approve_proposal_V12(
     parser_context_t* c, pd_treasury_approve_proposal_V12_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->proposal_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_treasury_remove_approval_V12(
+    parser_context_t* c, pd_treasury_remove_approval_V12_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->proposal_id))
     return parser_ok;
@@ -1705,6 +1719,9 @@ parser_error_t _readMethod_V12(
     case 6658: /* module 26 call 2 */
         CHECK_ERROR(_readMethod_utility_batch_all_V12(c, &method->basic.utility_batch_all_V12))
         break;
+    case 6660: /* module 26 call 4 */
+        CHECK_ERROR(_readMethod_utility_force_batch_V12(c, &method->basic.utility_force_batch_V12))
+        break;
     case 18688: /* module 73 call 0 */
         CHECK_ERROR(_readMethod_crowdloan_create_V12(c, &method->basic.crowdloan_create_V12))
         break;
@@ -1973,6 +1990,9 @@ parser_error_t _readMethod_V12(
         break;
     case 4866: /* module 19 call 2 */
         CHECK_ERROR(_readMethod_treasury_approve_proposal_V12(c, &method->basic.treasury_approve_proposal_V12))
+        break;
+    case 4867: /* module 19 call 3 */
+        CHECK_ERROR(_readMethod_treasury_remove_approval_V12(c, &method->basic.treasury_remove_approval_V12))
         break;
     case 6144: /* module 24 call 0 */
         CHECK_ERROR(_readMethod_claims_claim_V12(c, &method->basic.claims_claim_V12))
@@ -2424,6 +2444,8 @@ const char* _getMethod_Name_V12(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_BATCH;
     case 6658: /* module 26 call 2 */
         return STR_ME_BATCH_ALL;
+    case 6660: /* module 26 call 4 */
+        return STR_ME_FORCE_BATCH;
     case 18688: /* module 73 call 0 */
         return STR_ME_CREATE;
     case 18689: /* module 73 call 1 */
@@ -2613,6 +2635,8 @@ const char* _getMethod_Name_V12_ParserFull(uint16_t callPrivIdx)
         return STR_ME_REJECT_PROPOSAL;
     case 4866: /* module 19 call 2 */
         return STR_ME_APPROVE_PROPOSAL;
+    case 4867: /* module 19 call 3 */
+        return STR_ME_REMOVE_APPROVAL;
     case 6144: /* module 24 call 0 */
         return STR_ME_CLAIM;
     case 6146: /* module 24 call 2 */
@@ -2876,6 +2900,8 @@ uint8_t _getMethod_NumItems_V12(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 6658: /* module 26 call 2 */
         return 1;
+    case 6660: /* module 26 call 4 */
+        return 1;
     case 18688: /* module 73 call 0 */
         return 6;
     case 18689: /* module 73 call 1 */
@@ -3054,6 +3080,8 @@ uint8_t _getMethod_NumItems_V12(uint8_t moduleIdx, uint8_t callIdx)
     case 4865: /* module 19 call 1 */
         return 1;
     case 4866: /* module 19 call 2 */
+        return 1;
+    case 4867: /* module 19 call 3 */
         return 1;
     case 6144: /* module 24 call 0 */
         return 2;
@@ -3421,6 +3449,13 @@ const char* _getMethod_ItemName_V12(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
             return NULL;
         }
     case 6658: /* module 26 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_calls;
+        default:
+            return NULL;
+        }
+    case 6660: /* module 26 call 4 */
         switch (itemIdx) {
         case 0:
             return STR_IT_calls;
@@ -4149,6 +4184,13 @@ const char* _getMethod_ItemName_V12(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
             return NULL;
         }
     case 4866: /* module 19 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_id;
+        default:
+            return NULL;
+        }
+    case 4867: /* module 19 call 3 */
         switch (itemIdx) {
         case 0:
             return STR_IT_proposal_id;
@@ -5252,6 +5294,16 @@ parser_error_t _getMethod_ItemValue_V12(
         case 0: /* utility_batch_all_V12 - calls */;
             return _toStringVecCall(
                 &m->basic.utility_batch_all_V12.calls,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 6660: /* module 26 call 4 */
+        switch (itemIdx) {
+        case 0: /* utility_force_batch_V12 - calls */;
+            return _toStringVecCall(
+                &m->basic.utility_force_batch_V12.calls,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6403,6 +6455,16 @@ parser_error_t _getMethod_ItemValue_V12(
         case 0: /* treasury_approve_proposal_V12 - proposal_id */;
             return _toStringCompactu32(
                 &m->basic.treasury_approve_proposal_V12.proposal_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 4867: /* module 19 call 3 */
+        switch (itemIdx) {
+        case 0: /* treasury_remove_approval_V12 - proposal_id */;
+            return _toStringCompactu32(
+                &m->basic.treasury_remove_approval_V12.proposal_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -7895,6 +7957,7 @@ bool _getMethod_IsNestingSupported_V12(uint8_t moduleIdx, uint8_t callIdx)
     case 4864: // Treasury:Propose spend
     case 4865: // Treasury:Reject proposal
     case 4866: // Treasury:Approve proposal
+    case 4867: // Treasury:Remove approval
     case 6144: // Claims:Claim
     case 6146: // Claims:Claim attest
     case 6147: // Claims:Attest
@@ -7906,6 +7969,7 @@ bool _getMethod_IsNestingSupported_V12(uint8_t moduleIdx, uint8_t callIdx)
     case 6404: // Vesting:Merge schedules
     case 6656: // Utility:Batch
     case 6658: // Utility:Batch all
+    case 6660: // Utility:Force batch
     case 7168: // Identity:Add registrar
     case 7171: // Identity:Clear identity
     case 7172: // Identity:Request judgement
