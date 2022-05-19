@@ -403,6 +403,13 @@ __Z_INLINE parser_error_t _readMethod_staking_force_new_era_V12(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_staking_set_invulnerables_V12(
+    parser_context_t* c, pd_staking_set_invulnerables_V12_t* m)
+{
+    CHECK_ERROR(_readVecAccountId_V12(c, &m->invulnerables))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_staking_force_unstake_V12(
     parser_context_t* c, pd_staking_force_unstake_V12_t* m)
 {
@@ -414,6 +421,14 @@ __Z_INLINE parser_error_t _readMethod_staking_force_unstake_V12(
 __Z_INLINE parser_error_t _readMethod_staking_force_new_era_always_V12(
     parser_context_t* c, pd_staking_force_new_era_always_V12_t* m)
 {
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_staking_cancel_deferred_slash_V12(
+    parser_context_t* c, pd_staking_cancel_deferred_slash_V12_t* m)
+{
+    CHECK_ERROR(_readEraIndex_V12(c, &m->era))
+    CHECK_ERROR(_readVecu32(c, &m->slash_indices))
     return parser_ok;
 }
 
@@ -739,6 +754,14 @@ __Z_INLINE parser_error_t _readMethod_technicalcommittee_disapprove_proposal_V12
     parser_context_t* c, pd_technicalcommittee_disapprove_proposal_V12_t* m)
 {
     CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_phragmenelection_vote_V12(
+    parser_context_t* c, pd_phragmenelection_vote_V12_t* m)
+{
+    CHECK_ERROR(_readVecAccountId_V12(c, &m->votes))
+    CHECK_ERROR(_readCompactu128(c, &m->amount))
     return parser_ok;
 }
 
@@ -1817,11 +1840,17 @@ parser_error_t _readMethod_V12(
     case 1805: /* module 7 call 13 */
         CHECK_ERROR(_readMethod_staking_force_new_era_V12(c, &method->basic.staking_force_new_era_V12))
         break;
+    case 1806: /* module 7 call 14 */
+        CHECK_ERROR(_readMethod_staking_set_invulnerables_V12(c, &method->basic.staking_set_invulnerables_V12))
+        break;
     case 1807: /* module 7 call 15 */
         CHECK_ERROR(_readMethod_staking_force_unstake_V12(c, &method->basic.staking_force_unstake_V12))
         break;
     case 1808: /* module 7 call 16 */
         CHECK_ERROR(_readMethod_staking_force_new_era_always_V12(c, &method->basic.staking_force_new_era_always_V12))
+        break;
+    case 1809: /* module 7 call 17 */
+        CHECK_ERROR(_readMethod_staking_cancel_deferred_slash_V12(c, &method->basic.staking_cancel_deferred_slash_V12))
         break;
     case 1812: /* module 7 call 20 */
         CHECK_ERROR(_readMethod_staking_set_history_depth_V12(c, &method->basic.staking_set_history_depth_V12))
@@ -1948,6 +1977,9 @@ parser_error_t _readMethod_V12(
         break;
     case 4101: /* module 16 call 5 */
         CHECK_ERROR(_readMethod_technicalcommittee_disapprove_proposal_V12(c, &method->basic.technicalcommittee_disapprove_proposal_V12))
+        break;
+    case 4352: /* module 17 call 0 */
+        CHECK_ERROR(_readMethod_phragmenelection_vote_V12(c, &method->basic.phragmenelection_vote_V12))
         break;
     case 4353: /* module 17 call 1 */
         CHECK_ERROR(_readMethod_phragmenelection_remove_voter_V12(c, &method->basic.phragmenelection_remove_voter_V12))
@@ -2519,10 +2551,14 @@ const char* _getMethod_Name_V12_ParserFull(uint16_t callPrivIdx)
         return STR_ME_FORCE_NO_ERAS;
     case 1805: /* module 7 call 13 */
         return STR_ME_FORCE_NEW_ERA;
+    case 1806: /* module 7 call 14 */
+        return STR_ME_SET_INVULNERABLES;
     case 1807: /* module 7 call 15 */
         return STR_ME_FORCE_UNSTAKE;
     case 1808: /* module 7 call 16 */
         return STR_ME_FORCE_NEW_ERA_ALWAYS;
+    case 1809: /* module 7 call 17 */
+        return STR_ME_CANCEL_DEFERRED_SLASH;
     case 1812: /* module 7 call 20 */
         return STR_ME_SET_HISTORY_DEPTH;
     case 1813: /* module 7 call 21 */
@@ -2607,6 +2643,8 @@ const char* _getMethod_Name_V12_ParserFull(uint16_t callPrivIdx)
         return STR_ME_CLOSE;
     case 4101: /* module 16 call 5 */
         return STR_ME_DISAPPROVE_PROPOSAL;
+    case 4352: /* module 17 call 0 */
+        return STR_ME_VOTE;
     case 4353: /* module 17 call 1 */
         return STR_ME_REMOVE_VOTER;
     case 4354: /* module 17 call 2 */
@@ -2965,10 +3003,14 @@ uint8_t _getMethod_NumItems_V12(uint8_t moduleIdx, uint8_t callIdx)
         return 0;
     case 1805: /* module 7 call 13 */
         return 0;
+    case 1806: /* module 7 call 14 */
+        return 1;
     case 1807: /* module 7 call 15 */
         return 2;
     case 1808: /* module 7 call 16 */
         return 0;
+    case 1809: /* module 7 call 17 */
+        return 2;
     case 1812: /* module 7 call 20 */
         return 2;
     case 1813: /* module 7 call 21 */
@@ -3053,6 +3095,8 @@ uint8_t _getMethod_NumItems_V12(uint8_t moduleIdx, uint8_t callIdx)
         return 4;
     case 4101: /* module 16 call 5 */
         return 1;
+    case 4352: /* module 17 call 0 */
+        return 2;
     case 4353: /* module 17 call 1 */
         return 0;
     case 4354: /* module 17 call 2 */
@@ -3718,6 +3762,13 @@ const char* _getMethod_ItemName_V12(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         default:
             return NULL;
         }
+    case 1806: /* module 7 call 14 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_invulnerables;
+        default:
+            return NULL;
+        }
     case 1807: /* module 7 call 15 */
         switch (itemIdx) {
         case 0:
@@ -3729,6 +3780,15 @@ const char* _getMethod_ItemName_V12(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         }
     case 1808: /* module 7 call 16 */
         switch (itemIdx) {
+        default:
+            return NULL;
+        }
+    case 1809: /* module 7 call 17 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_era;
+        case 1:
+            return STR_IT_slash_indices;
         default:
             return NULL;
         }
@@ -4085,6 +4145,15 @@ const char* _getMethod_ItemName_V12(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         switch (itemIdx) {
         case 0:
             return STR_IT_proposal_hash;
+        default:
+            return NULL;
+        }
+    case 4352: /* module 17 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_votes;
+        case 1:
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -5715,6 +5784,16 @@ parser_error_t _getMethod_ItemValue_V12(
         default:
             return parser_no_data;
         }
+    case 1806: /* module 7 call 14 */
+        switch (itemIdx) {
+        case 0: /* staking_set_invulnerables_V12 - invulnerables */;
+            return _toStringVecAccountId_V12(
+                &m->basic.staking_set_invulnerables_V12.invulnerables,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 1807: /* module 7 call 15 */
         switch (itemIdx) {
         case 0: /* staking_force_unstake_V12 - stash */;
@@ -5732,6 +5811,21 @@ parser_error_t _getMethod_ItemValue_V12(
         }
     case 1808: /* module 7 call 16 */
         switch (itemIdx) {
+        default:
+            return parser_no_data;
+        }
+    case 1809: /* module 7 call 17 */
+        switch (itemIdx) {
+        case 0: /* staking_cancel_deferred_slash_V12 - era */;
+            return _toStringEraIndex_V12(
+                &m->basic.staking_cancel_deferred_slash_V12.era,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* staking_cancel_deferred_slash_V12 - slash_indices */;
+            return _toStringVecu32(
+                &m->basic.staking_cancel_deferred_slash_V12.slash_indices,
+                outValue, outValueLen,
+                pageIdx, pageCount);
         default:
             return parser_no_data;
         }
@@ -6305,6 +6399,21 @@ parser_error_t _getMethod_ItemValue_V12(
         case 0: /* technicalcommittee_disapprove_proposal_V12 - proposal_hash */;
             return _toStringHash(
                 &m->basic.technicalcommittee_disapprove_proposal_V12.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 4352: /* module 17 call 0 */
+        switch (itemIdx) {
+        case 0: /* phragmenelection_vote_V12 - votes */;
+            return _toStringVecAccountId_V12(
+                &m->basic.phragmenelection_vote_V12.votes,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* phragmenelection_vote_V12 - amount */;
+            return _toStringCompactu128(
+                &m->basic.phragmenelection_vote_V12.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -7895,8 +8004,10 @@ bool _getMethod_IsNestingSupported_V12(uint8_t moduleIdx, uint8_t callIdx)
     case 1802: // Staking:Increase validator count
     case 1804: // Staking:Force no eras
     case 1805: // Staking:Force new era
+    case 1806: // Staking:Set invulnerables
     case 1807: // Staking:Force unstake
     case 1808: // Staking:Force new era always
+    case 1809: // Staking:Cancel deferred slash
     case 1810: // Staking:Payout stakers
     case 1811: // Staking:Rebond
     case 1812: // Staking:Set history depth
@@ -7943,6 +8054,7 @@ bool _getMethod_IsNestingSupported_V12(uint8_t moduleIdx, uint8_t callIdx)
     case 4099: // TechnicalCommittee:Vote
     case 4100: // TechnicalCommittee:Close
     case 4101: // TechnicalCommittee:Disapprove proposal
+    case 4352: // PhragmenElection:Vote
     case 4353: // PhragmenElection:Remove voter
     case 4354: // PhragmenElection:Submit candidacy
     case 4356: // PhragmenElection:Remove member

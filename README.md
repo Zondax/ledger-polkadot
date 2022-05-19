@@ -123,10 +123,10 @@ Please:
 |Scale validator count |    |   |   | `Percent` factor <br/> |
 |Force no eras |    | :heavy_check_mark: |   |  |
 |Force new era |    | :heavy_check_mark: |   |  |
-|Set invulnerables |    |   |   | `VecAccountId` invulnerables <br/> |
+|Set invulnerables |    | :heavy_check_mark: |   | `VecAccountId` invulnerables <br/> |
 |Force unstake |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> |
 |Force new era always |    | :heavy_check_mark: |   |  |
-|Cancel deferred slash |    |   |   | `EraIndex` era <br/>`Bytes` slash_indices <br/> |
+|Cancel deferred slash |    | :heavy_check_mark: |   | `EraIndex` era <br/>`Vecu32` slash_indices <br/> |
 |Payout stakers | :heavy_check_mark:  | :heavy_check_mark: |   | `AccountId` validator_stash <br/>`EraIndex` era <br/> |
 |Rebond | :heavy_check_mark:  | :heavy_check_mark: |   | `CompactBalance` amount <br/> |
 |Set history depth |    | :heavy_check_mark: |   | `Compactu32` new_history_depth <br/>`Compactu32` era_items_deleted <br/> |
@@ -213,7 +213,7 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Vote |    |   |   | `VecAccountId` votes <br/>`Compactu128` amount <br/> |
+|Vote |    | :heavy_check_mark: |   | `VecAccountId` votes <br/>`Compactu128` amount <br/> |
 |Remove voter |    | :heavy_check_mark: |   |  |
 |Submit candidacy |    | :heavy_check_mark: |   | `Compactu32` candidate_count <br/> |
 |Renounce candidacy |    |   |   | `Renouncing` renouncing <br/> |

@@ -286,6 +286,11 @@ typedef struct {
 typedef struct {
 } pd_staking_force_new_era_V12_t;
 
+#define PD_CALL_STAKING_SET_INVULNERABLES_V12 14
+typedef struct {
+    pd_VecAccountId_V12_t invulnerables;
+} pd_staking_set_invulnerables_V12_t;
+
 #define PD_CALL_STAKING_FORCE_UNSTAKE_V12 15
 typedef struct {
     pd_AccountId_V12_t stash;
@@ -295,6 +300,12 @@ typedef struct {
 #define PD_CALL_STAKING_FORCE_NEW_ERA_ALWAYS_V12 16
 typedef struct {
 } pd_staking_force_new_era_always_V12_t;
+
+#define PD_CALL_STAKING_CANCEL_DEFERRED_SLASH_V12 17
+typedef struct {
+    pd_EraIndex_V12_t era;
+    pd_Vecu32_t slash_indices;
+} pd_staking_cancel_deferred_slash_V12_t;
 
 #define PD_CALL_STAKING_SET_HISTORY_DEPTH_V12 20
 typedef struct {
@@ -536,6 +547,12 @@ typedef struct {
 typedef struct {
     pd_Hash_t proposal_hash;
 } pd_technicalcommittee_disapprove_proposal_V12_t;
+
+#define PD_CALL_PHRAGMENELECTION_VOTE_V12 0
+typedef struct {
+    pd_VecAccountId_V12_t votes;
+    pd_Compactu128_t amount;
+} pd_phragmenelection_vote_V12_t;
 
 #define PD_CALL_PHRAGMENELECTION_REMOVE_VOTER_V12 1
 typedef struct {
@@ -1208,8 +1225,10 @@ typedef union {
     pd_staking_increase_validator_count_V12_t staking_increase_validator_count_V12;
     pd_staking_force_no_eras_V12_t staking_force_no_eras_V12;
     pd_staking_force_new_era_V12_t staking_force_new_era_V12;
+    pd_staking_set_invulnerables_V12_t staking_set_invulnerables_V12;
     pd_staking_force_unstake_V12_t staking_force_unstake_V12;
     pd_staking_force_new_era_always_V12_t staking_force_new_era_always_V12;
+    pd_staking_cancel_deferred_slash_V12_t staking_cancel_deferred_slash_V12;
     pd_staking_set_history_depth_V12_t staking_set_history_depth_V12;
     pd_staking_reap_stash_V12_t staking_reap_stash_V12;
     pd_staking_kick_V12_t staking_kick_V12;
@@ -1252,6 +1271,7 @@ typedef union {
     pd_technicalcommittee_vote_V12_t technicalcommittee_vote_V12;
     pd_technicalcommittee_close_V12_t technicalcommittee_close_V12;
     pd_technicalcommittee_disapprove_proposal_V12_t technicalcommittee_disapprove_proposal_V12;
+    pd_phragmenelection_vote_V12_t phragmenelection_vote_V12;
     pd_phragmenelection_remove_voter_V12_t phragmenelection_remove_voter_V12;
     pd_phragmenelection_submit_candidacy_V12_t phragmenelection_submit_candidacy_V12;
     pd_phragmenelection_remove_member_V12_t phragmenelection_remove_member_V12;
