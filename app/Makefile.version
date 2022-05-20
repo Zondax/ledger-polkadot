@@ -1,6 +1,6 @@
 # This is the `transaction_version` field of `Runtime`
 APPVERSION_M=12
 # This is the `spec_version` field of `Runtime`
-APPVERSION_N=9200
+APPVERSION_N=9220
 # This is the patch version of this release
-APPVERSION_P=1
+APPVERSION_P=0

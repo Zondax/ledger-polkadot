@@ -1,18 +1,18 @@
 /*******************************************************************************
-*  (c) 2019 - 2022 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *  (c) 2019 - 2022 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 #pragma once
 
 #ifdef __cplusplus
@@ -51,7 +51,6 @@ static const char* STR_MO_HRMP = "Hrmp";
 static const char* STR_MO_PARASDISPUTES = "Parasdisputes";
 static const char* STR_MO_REGISTRAR = "Registrar";
 static const char* STR_MO_AUCTIONS = "Auctions";
-static const char* STR_MO_XCMPALLET = "Xcmpallet";
 static const char* STR_MO_CROWDLOAN = "Crowdloan";
 
 // Methods names
@@ -67,10 +66,10 @@ static const char* STR_ME_REQUEST_PREIMAGE = "Request preimage";
 static const char* STR_ME_UNREQUEST_PREIMAGE = "Unrequest preimage";
 static const char* STR_ME_SET = "Set";
 static const char* STR_ME_CLAIM = "Claim";
+static const char* STR_ME_TRANSFER = "Transfer";
 static const char* STR_ME_FREE = "Free";
 static const char* STR_ME_FORCE_TRANSFER = "Force transfer";
 static const char* STR_ME_FREEZE = "Freeze";
-static const char* STR_ME_TRANSFER = "Transfer";
 static const char* STR_ME_SET_BALANCE = "Set balance";
 static const char* STR_ME_TRANSFER_KEEP_ALIVE = "Transfer keep alive";
 static const char* STR_ME_TRANSFER_ALL = "Transfer all";
@@ -88,8 +87,10 @@ static const char* STR_ME_SET_VALIDATOR_COUNT = "Set validator count";
 static const char* STR_ME_INCREASE_VALIDATOR_COUNT = "Increase validator count";
 static const char* STR_ME_FORCE_NO_ERAS = "Force no eras";
 static const char* STR_ME_FORCE_NEW_ERA = "Force new era";
+static const char* STR_ME_SET_INVULNERABLES = "Set invulnerables";
 static const char* STR_ME_FORCE_UNSTAKE = "Force unstake";
 static const char* STR_ME_FORCE_NEW_ERA_ALWAYS = "Force new era always";
+static const char* STR_ME_CANCEL_DEFERRED_SLASH = "Cancel deferred slash";
 static const char* STR_ME_PAYOUT_STAKERS = "Payout stakers";
 static const char* STR_ME_REBOND = "Rebond";
 static const char* STR_ME_SET_HISTORY_DEPTH = "Set history depth";
@@ -123,6 +124,8 @@ static const char* STR_ME_REMOVE_VOTE = "Remove vote";
 static const char* STR_ME_REMOVE_OTHER_VOTE = "Remove other vote";
 static const char* STR_ME_ENACT_PROPOSAL = "Enact proposal";
 static const char* STR_ME_CANCEL_PROPOSAL = "Cancel proposal";
+static const char* STR_ME_SET_MEMBERS = "Set members";
+static const char* STR_ME_EXECUTE = "Execute";
 static const char* STR_ME_CLOSE = "Close";
 static const char* STR_ME_DISAPPROVE_PROPOSAL = "Disapprove proposal";
 static const char* STR_ME_REMOVE_VOTER = "Remove voter";
@@ -138,14 +141,18 @@ static const char* STR_ME_CLEAR_PRIME = "Clear prime";
 static const char* STR_ME_PROPOSE_SPEND = "Propose spend";
 static const char* STR_ME_REJECT_PROPOSAL = "Reject proposal";
 static const char* STR_ME_APPROVE_PROPOSAL = "Approve proposal";
+static const char* STR_ME_REMOVE_APPROVAL = "Remove approval";
 static const char* STR_ME_CLAIM_ATTEST = "Claim attest";
 static const char* STR_ME_ATTEST = "Attest";
 static const char* STR_ME_MOVE_CLAIM = "Move claim";
 static const char* STR_ME_VEST = "Vest";
 static const char* STR_ME_VEST_OTHER = "Vest other";
+static const char* STR_ME_VESTED_TRANSFER = "Vested transfer";
+static const char* STR_ME_FORCE_VESTED_TRANSFER = "Force vested transfer";
 static const char* STR_ME_MERGE_SCHEDULES = "Merge schedules";
 static const char* STR_ME_BATCH = "Batch";
 static const char* STR_ME_BATCH_ALL = "Batch all";
+static const char* STR_ME_FORCE_BATCH = "Force batch";
 static const char* STR_ME_ADD_REGISTRAR = "Add registrar";
 static const char* STR_ME_CLEAR_IDENTITY = "Clear identity";
 static const char* STR_ME_REQUEST_JUDGEMENT = "Request judgement";
@@ -240,10 +247,6 @@ static const char* STR_ME_RESERVE = "Reserve";
 static const char* STR_ME_NEW_AUCTION = "New auction";
 static const char* STR_ME_BID = "Bid";
 static const char* STR_ME_CANCEL_AUCTION = "Cancel auction";
-static const char* STR_ME_SET_MEMBERS = "Set members";
-static const char* STR_ME_EXECUTE = "Execute";
-static const char* STR_ME_VESTED_TRANSFER = "Vested transfer";
-static const char* STR_ME_FORCE_VESTED_TRANSFER = "Force vested transfer";
 static const char* STR_ME_CREATE = "Create";
 static const char* STR_ME_CONTRIBUTE = "Contribute";
 static const char* STR_ME_WITHDRAW = "Withdraw";
@@ -404,14 +407,6 @@ static const char* STR_IT_lease_period_index = "Lease period index";
 static const char* STR_IT_auction_index = "Auction index";
 static const char* STR_IT_first_slot = "First slot";
 static const char* STR_IT_last_slot = "Last slot";
-static const char* STR_IT_message = "Message";
-static const char* STR_IT_assets = "Assets";
-static const char* STR_IT_fee_asset_item = "Fee asset item";
-static const char* STR_IT_location = "Location";
-static const char* STR_IT_xcm_version = "Xcm version";
-static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
-static const char* STR_IT_weight_limit = "Weight limit";
-static const char* STR_IT_num_signed_submissions = "Num signed submissions";
 static const char* STR_IT_cap = "Cap";
 static const char* STR_IT_first_period = "First period";
 static const char* STR_IT_last_period = "Last period";
