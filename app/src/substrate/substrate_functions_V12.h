@@ -38,7 +38,7 @@ parser_error_t _readBoxEquivocationProofHeader_V12(parser_context_t* c, pd_BoxEq
 parser_error_t _readBoxIdentityInfoMaxAdditionalFields_V12(parser_context_t* c, pd_BoxIdentityInfoMaxAdditionalFields_V12_t* v);
 parser_error_t _readBoxMultiLocation_V12(parser_context_t* c, pd_BoxMultiLocation_V12_t* v);
 parser_error_t _readBoxPalletsOrigin_V12(parser_context_t* c, pd_BoxPalletsOrigin_V12_t* v);
-parser_error_t _readBoxRawSolutionSolutionOfT_V12(parser_context_t* c, pd_BoxRawSolutionSolutionOfT_V12_t* v);
+parser_error_t _readBoxRawSolutionSolutionOfMinerConfig_V12(parser_context_t* c, pd_BoxRawSolutionSolutionOfMinerConfig_V12_t* v);
 parser_error_t _readBoxVersionedMultiAssets_V12(parser_context_t* c, pd_BoxVersionedMultiAssets_V12_t* v);
 parser_error_t _readBoxVersionedMultiLocation_V12(parser_context_t* c, pd_BoxVersionedMultiLocation_V12_t* v);
 parser_error_t _readBoxVersionedXcmTasSysConfigCall_V12(parser_context_t* c, pd_BoxVersionedXcmTasSysConfigCall_V12_t* v);
@@ -207,8 +207,8 @@ parser_error_t _toStringBoxPalletsOrigin_V12(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringBoxRawSolutionSolutionOfT_V12(
-    const pd_BoxRawSolutionSolutionOfT_V12_t* v,
+parser_error_t _toStringBoxRawSolutionSolutionOfMinerConfig_V12(
+    const pd_BoxRawSolutionSolutionOfMinerConfig_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

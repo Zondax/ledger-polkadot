@@ -103,7 +103,7 @@ parser_error_t _readBoxPalletsOrigin_V12(parser_context_t* c, pd_BoxPalletsOrigi
     return parser_not_supported;
 }
 
-parser_error_t _readBoxRawSolutionSolutionOfT_V12(parser_context_t* c, pd_BoxRawSolutionSolutionOfT_V12_t* v)
+parser_error_t _readBoxRawSolutionSolutionOfMinerConfig_V12(parser_context_t* c, pd_BoxRawSolutionSolutionOfMinerConfig_V12_t* v)
 {
     return parser_not_supported;
 }
@@ -366,7 +366,9 @@ parser_error_t _readPerbill_V12(parser_context_t* c, pd_Perbill_V12_t* v)
 
 parser_error_t _readPercent_V12(parser_context_t* c, pd_Percent_V12_t* v)
 {
-    return _readCompactInt(c, &v->value);
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    return parser_ok;
 }
 
 parser_error_t _readProxyType_V12(parser_context_t* c, pd_ProxyType_V12_t* v)
@@ -868,8 +870,8 @@ parser_error_t _toStringBoxPalletsOrigin_V12(
     return parser_print_not_supported;
 }
 
-parser_error_t _toStringBoxRawSolutionSolutionOfT_V12(
-    const pd_BoxRawSolutionSolutionOfT_V12_t* v,
+parser_error_t _toStringBoxRawSolutionSolutionOfMinerConfig_V12(
+    const pd_BoxRawSolutionSolutionOfMinerConfig_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -1385,8 +1387,14 @@ parser_error_t _toStringPercent_V12(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    // 9 but shift 2 to show as percentage
-    return _toStringCompactInt(&v->value, 7, "%", "", outValue, outValueLen, pageIdx, pageCount);
+    char bufferUI[50];
+    char bufferRatio[50];
+
+    uint64_to_str(bufferRatio, sizeof(bufferRatio), v->value);
+
+    snprintf(bufferUI, sizeof(bufferUI), "%s%%", bufferRatio);
+    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
+    return parser_ok;
 }
 
 parser_error_t _toStringProxyType_V12(

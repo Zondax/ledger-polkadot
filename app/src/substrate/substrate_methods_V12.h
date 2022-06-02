@@ -50,7 +50,7 @@ extern "C" {
 #define PD_CALL_CHILDBOUNTIES_V12 38
 #define PD_CALL_TIPS_V12 35
 #define PD_CALL_ELECTIONPROVIDERMULTIPHASE_V12 36
-#define PD_CALL_BAGSLIST_V12 37
+#define PD_CALL_VOTERLIST_V12 37
 #define PD_CALL_CONFIGURATION_V12 51
 #define PD_CALL_INITIALIZER_V12 57
 #define PD_CALL_HRMP_V12 60
@@ -908,15 +908,15 @@ typedef struct {
     pd_Optionu32_t maybe_max_targets;
 } pd_electionprovidermultiphase_governance_fallback_V12_t;
 
-#define PD_CALL_BAGSLIST_REBAG_V12 0
+#define PD_CALL_VOTERLIST_REBAG_V12 0
 typedef struct {
     pd_AccountId_V12_t dislocated;
-} pd_bagslist_rebag_V12_t;
+} pd_voterlist_rebag_V12_t;
 
-#define PD_CALL_BAGSLIST_PUT_IN_FRONT_OF_V12 1
+#define PD_CALL_VOTERLIST_PUT_IN_FRONT_OF_V12 1
 typedef struct {
     pd_AccountId_V12_t lighter;
-} pd_bagslist_put_in_front_of_V12_t;
+} pd_voterlist_put_in_front_of_V12_t;
 
 #define PD_CALL_CONFIGURATION_SET_VALIDATION_UPGRADE_COOLDOWN_V12 0
 typedef struct {
@@ -1334,8 +1334,8 @@ typedef union {
     pd_tips_close_tip_V12_t tips_close_tip_V12;
     pd_tips_slash_tip_V12_t tips_slash_tip_V12;
     pd_electionprovidermultiphase_governance_fallback_V12_t electionprovidermultiphase_governance_fallback_V12;
-    pd_bagslist_rebag_V12_t bagslist_rebag_V12;
-    pd_bagslist_put_in_front_of_V12_t bagslist_put_in_front_of_V12;
+    pd_voterlist_rebag_V12_t voterlist_rebag_V12;
+    pd_voterlist_put_in_front_of_V12_t voterlist_put_in_front_of_V12;
     pd_configuration_set_validation_upgrade_cooldown_V12_t configuration_set_validation_upgrade_cooldown_V12;
     pd_configuration_set_validation_upgrade_delay_V12_t configuration_set_validation_upgrade_delay_V12;
     pd_configuration_set_code_retention_period_V12_t configuration_set_code_retention_period_V12;

@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot  12.9220.x
+# Polkadot  12.9230.x
 
 ## System
 
@@ -356,13 +356,13 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Submit unsigned |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`SolutionOrSnapshotSize` witness <br/> |
+|Submit unsigned |    |   |   | `BoxRawSolutionSolutionOfMinerConfig` raw_solution <br/>`SolutionOrSnapshotSize` witness <br/> |
 |Set minimum untrusted score |    |   |   | `OptionElectionScore` maybe_next_score <br/> |
 |Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> |
-|Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/> |
+|Submit |    |   |   | `BoxRawSolutionSolutionOfMinerConfig` raw_solution <br/> |
 |Governance fallback |    | :heavy_check_mark: |   | `Optionu32` maybe_max_voters <br/>`Optionu32` maybe_max_targets <br/> |
 
-## BagsList
+## VoterList
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
