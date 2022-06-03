@@ -1293,15 +1293,15 @@ __Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_governance_fall
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_bagslist_rebag_V12(
-    parser_context_t* c, pd_bagslist_rebag_V12_t* m)
+__Z_INLINE parser_error_t _readMethod_voterlist_rebag_V12(
+    parser_context_t* c, pd_voterlist_rebag_V12_t* m)
 {
     CHECK_ERROR(_readAccountId_V12(c, &m->dislocated))
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_bagslist_put_in_front_of_V12(
-    parser_context_t* c, pd_bagslist_put_in_front_of_V12_t* m)
+__Z_INLINE parser_error_t _readMethod_voterlist_put_in_front_of_V12(
+    parser_context_t* c, pd_voterlist_put_in_front_of_V12_t* m)
 {
     CHECK_ERROR(_readAccountId_V12(c, &m->lighter))
     return parser_ok;
@@ -2183,10 +2183,10 @@ parser_error_t _readMethod_V12(
         CHECK_ERROR(_readMethod_electionprovidermultiphase_governance_fallback_V12(c, &method->basic.electionprovidermultiphase_governance_fallback_V12))
         break;
     case 9472: /* module 37 call 0 */
-        CHECK_ERROR(_readMethod_bagslist_rebag_V12(c, &method->basic.bagslist_rebag_V12))
+        CHECK_ERROR(_readMethod_voterlist_rebag_V12(c, &method->basic.voterlist_rebag_V12))
         break;
     case 9473: /* module 37 call 1 */
-        CHECK_ERROR(_readMethod_bagslist_put_in_front_of_V12(c, &method->basic.bagslist_put_in_front_of_V12))
+        CHECK_ERROR(_readMethod_voterlist_put_in_front_of_V12(c, &method->basic.voterlist_put_in_front_of_V12))
         break;
     case 13056: /* module 51 call 0 */
         CHECK_ERROR(_readMethod_configuration_set_validation_upgrade_cooldown_V12(c, &method->basic.configuration_set_validation_upgrade_cooldown_V12))
@@ -2412,7 +2412,7 @@ const char* _getMethod_ModuleName_V12(uint8_t moduleIdx)
     case 36:
         return STR_MO_ELECTIONPROVIDERMULTIPHASE;
     case 37:
-        return STR_MO_BAGSLIST;
+        return STR_MO_VOTERLIST;
     case 51:
         return STR_MO_CONFIGURATION;
     case 57:
@@ -7386,9 +7386,9 @@ parser_error_t _getMethod_ItemValue_V12(
         }
     case 9472: /* module 37 call 0 */
         switch (itemIdx) {
-        case 0: /* bagslist_rebag_V12 - dislocated */;
+        case 0: /* voterlist_rebag_V12 - dislocated */;
             return _toStringAccountId_V12(
-                &m->basic.bagslist_rebag_V12.dislocated,
+                &m->basic.voterlist_rebag_V12.dislocated,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -7396,9 +7396,9 @@ parser_error_t _getMethod_ItemValue_V12(
         }
     case 9473: /* module 37 call 1 */
         switch (itemIdx) {
-        case 0: /* bagslist_put_in_front_of_V12 - lighter */;
+        case 0: /* voterlist_put_in_front_of_V12 - lighter */;
             return _toStringAccountId_V12(
-                &m->basic.bagslist_put_in_front_of_V12.lighter,
+                &m->basic.voterlist_put_in_front_of_V12.lighter,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -8120,8 +8120,8 @@ bool _getMethod_IsNestingSupported_V12(uint8_t moduleIdx, uint8_t callIdx)
     case 8964: // Tips:Close tip
     case 8965: // Tips:Slash tip
     case 9220: // ElectionProviderMultiPhase:Governance fallback
-    case 9472: // BagsList:Rebag
-    case 9473: // BagsList:Put in front of
+    case 9472: // VoterList:Rebag
+    case 9473: // VoterList:Put in front of
     case 13056: // Configuration:Set validation upgrade cooldown
     case 13057: // Configuration:Set validation upgrade delay
     case 13058: // Configuration:Set code retention period
