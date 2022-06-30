@@ -47,6 +47,7 @@ parser_error_t _readH256(parser_context_t* c, pd_H256_t* v);
 parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v);
 parser_error_t _readOptionu32(parser_context_t* c, pd_Optionu32_t* v);
 parser_error_t _readVecHeader(parser_context_t* c, pd_VecHeader_t* v);
+parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v);
 parser_error_t _readVecu8(parser_context_t* c, pd_Vecu8_t* v);
 
 // Common toString functions
@@ -193,6 +194,13 @@ parser_error_t _toStringOptionu32(
 
 parser_error_t _toStringVecHeader(
     const pd_VecHeader_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringVecu32(
+    const pd_Vecu32_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

@@ -35,6 +35,30 @@ typedef struct {
 } pd_CompactAccountIndex_V12_t;
 
 typedef struct {
+    const uint8_t* _ptr;
+} pd_EcdsaPublic_V12_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_EcdsaSignature_V12_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_Ed25519Public_V12_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_Ed25519Signature_V12_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_Sr25519Public_V12_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_Sr25519Signature_V12_t;
+
+typedef struct {
     uint8_t value;
 } pd_Vote_V12_t;
 
@@ -76,13 +100,21 @@ typedef struct {
 } pd_LookupasStaticLookupSource_V12_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+    uint8_t value;
+    union {
+        pd_Ed25519Signature_V12_t ed25519;
+        pd_Sr25519Signature_V12_t sr25519;
+        pd_EcdsaSignature_V12_t ecdsa;
+    };
 } pd_MultiSignature_V12_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+    uint8_t value;
+    union {
+        pd_Ed25519Public_V12_t ed25519;
+        pd_Sr25519Public_V12_t sr25519;
+        pd_EcdsaPublic_V12_t ecdsa;
+    };
 } pd_MultiSigner_V12_t;
 
 typedef struct {
@@ -134,6 +166,16 @@ typedef struct {
 typedef struct {
     pd_Call_t call;
 } pd_OpaqueCall_V12_t;
+
+typedef struct {
+    uint8_t some;
+    pd_MultiSignature_V12_t contained;
+} pd_OptionMultiSignature_V12_t;
+
+typedef struct {
+    uint8_t some;
+    pd_MultiSigner_V12_t contained;
+} pd_OptionMultiSigner_V12_t;
 
 typedef struct {
     uint8_t some;
@@ -204,7 +246,7 @@ typedef struct {
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_BoxRawSolutionSolutionOfT_V12_t;
+} pd_BoxRawSolutionSolutionOfMinerConfig_V12_t;
 
 typedef struct {
     // TODO: Not implemented
@@ -253,10 +295,6 @@ typedef struct {
 typedef struct {
     uint8_t value;
 } pd_Conviction_V12_t;
-
-typedef struct {
-    const uint8_t* _ptr;
-} pd_EcdsaSignature_V12_t;
 
 typedef struct {
     uint32_t value;
@@ -326,16 +364,6 @@ typedef struct {
 
 typedef struct {
     uint8_t some;
-    pd_MultiSignature_V12_t contained;
-} pd_OptionMultiSignature_V12_t;
-
-typedef struct {
-    uint8_t some;
-    pd_MultiSigner_V12_t contained;
-} pd_OptionMultiSigner_V12_t;
-
-typedef struct {
-    uint8_t some;
     pd_ProxyType_V12_t contained;
 } pd_OptionProxyType_V12_t;
 
@@ -370,8 +398,7 @@ typedef struct {
 } pd_OverweightIndex_V12_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+    uint32_t value;
 } pd_ParaId_V12_t;
 
 typedef struct {
@@ -384,7 +411,7 @@ typedef struct {
 } pd_Perbill_V12_t;
 
 typedef struct {
-    compactInt_t value;
+    uint8_t value;
 } pd_Percent_V12_t;
 
 typedef struct {
