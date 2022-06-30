@@ -12,8 +12,8 @@ name = "teststools"
 crate-type = ["cdylib"]
 
 [build-dependencies]
-neon-build = "0.10.0"
+neon-build = "0.10.1"
 
 [dependencies]
-neon = "0.10.0"
+neon = "0.10.1"
 schnorrkel = "0.10.2"
