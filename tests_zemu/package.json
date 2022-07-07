@@ -18,7 +18,7 @@
     "testSR25519": "jest tests/sr25519.test.ts"
   },
   "dependencies": {
-    "@zondax/ledger-substrate": "^0.31.0",
+    "@zondax/ledger-substrate": "^0.32.0",
     "@zondax/zemu": "^0.32.0"
   },
   "devDependencies": {
