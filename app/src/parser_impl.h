@@ -183,6 +183,7 @@ parser_error_t _readCompactIndex(parser_context_t *c, pd_CompactIndex_t *v);
 uint16_t _detectAddressType(const parser_context_t *c);
 
 parser_error_t _toStringCompactInt(const compactInt_t *c, uint8_t decimalPlaces,
+                                   bool trimTrailingZeros,
                                    char postfix[],
                                    char prefix[],
                                    char *outValue, uint16_t outValueLen,

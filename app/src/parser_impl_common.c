@@ -90,6 +90,8 @@ const char *parser_getErrorDescription(parser_error_t err) {
             return "Max nested calls reached";
         case parser_tx_call_vec_too_large:
             return "Call vector exceeds limit";
+        case parser_junction_limit:
+            return "Max junctions reached";
         default:
             return "Unrecognized error code";
     }
@@ -189,6 +191,7 @@ parser_error_t _getValue(const compactInt_t *c, uint64_t *v) {
 
 parser_error_t _toStringCompactInt(const compactInt_t *c,
                                    uint8_t decimalPlaces,
+                                   bool trimTrailingZeros,
                                    char postfix[],
                                    char prefix[],
                                    char *outValue, uint16_t outValueLen,
@@ -221,6 +224,10 @@ parser_error_t _toStringCompactInt(const compactInt_t *c,
 
     if (z_str3join(bufferUI, sizeof(bufferUI), prefix, postfix) != zxerr_ok) {
         return parser_unexpected_buffer_end;
+    }
+
+    if(trimTrailingZeros) {
+        number_inplace_trimming(bufferUI, 1);
     }
 
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
@@ -293,7 +300,7 @@ parser_error_t _readCompactBalance(parser_context_t *c, pd_CompactBalance_t *v) 
 parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
                                      char *outValue, uint16_t outValueLen,
                                      uint8_t pageIdx, uint8_t *pageCount) {
-    return _toStringCompactInt(&v->index, 0, "", "", outValue, outValueLen, pageIdx, pageCount);
+    return _toStringCompactInt(&v->index, 0, false, "", "", outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
@@ -301,9 +308,8 @@ parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
                                        uint8_t pageIdx, uint8_t *pageCount) {
     CHECK_ERROR(_toStringCompactInt(
             &v->value,
-            COIN_AMOUNT_DECIMAL_PLACES, "", COIN_TICKER,
+            COIN_AMOUNT_DECIMAL_PLACES, true, "", COIN_TICKER,
             outValue, outValueLen, pageIdx, pageCount))
-    number_inplace_trimming(outValue, 1);
     return parser_ok;
 }
 
