@@ -59,7 +59,7 @@ zxerr_t secret_enabled() {
 #ifdef APP_SECRET_MODE_ENABLED
     zemu_log("RECOVERY TRIGGERED");
     view_review_init(secret_getItem, secret_getNumItems, secret_accept);
-    view_review_show();
+    view_review_show(0x00);
 #endif
     return zxerr_ok;
 }

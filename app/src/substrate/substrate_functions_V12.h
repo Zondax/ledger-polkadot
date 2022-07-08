@@ -38,7 +38,7 @@ parser_error_t _readBoxEquivocationProofHeader_V12(parser_context_t* c, pd_BoxEq
 parser_error_t _readBoxIdentityInfoMaxAdditionalFields_V12(parser_context_t* c, pd_BoxIdentityInfoMaxAdditionalFields_V12_t* v);
 parser_error_t _readBoxMultiLocation_V12(parser_context_t* c, pd_BoxMultiLocation_V12_t* v);
 parser_error_t _readBoxPalletsOrigin_V12(parser_context_t* c, pd_BoxPalletsOrigin_V12_t* v);
-parser_error_t _readBoxRawSolutionSolutionOfT_V12(parser_context_t* c, pd_BoxRawSolutionSolutionOfT_V12_t* v);
+parser_error_t _readBoxRawSolutionSolutionOfMinerConfig_V12(parser_context_t* c, pd_BoxRawSolutionSolutionOfMinerConfig_V12_t* v);
 parser_error_t _readBoxVersionedMultiAssets_V12(parser_context_t* c, pd_BoxVersionedMultiAssets_V12_t* v);
 parser_error_t _readBoxVersionedMultiLocation_V12(parser_context_t* c, pd_BoxVersionedMultiLocation_V12_t* v);
 parser_error_t _readBoxVersionedXcmTasSysConfigCall_V12(parser_context_t* c, pd_BoxVersionedXcmTasSysConfigCall_V12_t* v);
@@ -51,7 +51,10 @@ parser_error_t _readConfigOpPerbill_V12(parser_context_t* c, pd_ConfigOpPerbill_
 parser_error_t _readConfigOpPercent_V12(parser_context_t* c, pd_ConfigOpPercent_V12_t* v);
 parser_error_t _readConfigOpu32_V12(parser_context_t* c, pd_ConfigOpu32_V12_t* v);
 parser_error_t _readConviction_V12(parser_context_t* c, pd_Conviction_V12_t* v);
+parser_error_t _readEcdsaPublic_V12(parser_context_t* c, pd_EcdsaPublic_V12_t* v);
 parser_error_t _readEcdsaSignature_V12(parser_context_t* c, pd_EcdsaSignature_V12_t* v);
+parser_error_t _readEd25519Public_V12(parser_context_t* c, pd_Ed25519Public_V12_t* v);
+parser_error_t _readEd25519Signature_V12(parser_context_t* c, pd_Ed25519Signature_V12_t* v);
 parser_error_t _readElectionScore_V12(parser_context_t* c, pd_ElectionScore_V12_t* v);
 parser_error_t _readEraIndex_V12(parser_context_t* c, pd_EraIndex_V12_t* v);
 parser_error_t _readEthereumAddress_V12(parser_context_t* c, pd_EthereumAddress_V12_t* v);
@@ -95,6 +98,8 @@ parser_error_t _readRenouncing_V12(parser_context_t* c, pd_Renouncing_V12_t* v);
 parser_error_t _readRewardDestination_V12(parser_context_t* c, pd_RewardDestination_V12_t* v);
 parser_error_t _readSessionIndex_V12(parser_context_t* c, pd_SessionIndex_V12_t* v);
 parser_error_t _readSolutionOrSnapshotSize_V12(parser_context_t* c, pd_SolutionOrSnapshotSize_V12_t* v);
+parser_error_t _readSr25519Public_V12(parser_context_t* c, pd_Sr25519Public_V12_t* v);
+parser_error_t _readSr25519Signature_V12(parser_context_t* c, pd_Sr25519Signature_V12_t* v);
 parser_error_t _readStatementKind_V12(parser_context_t* c, pd_StatementKind_V12_t* v);
 parser_error_t _readSupportsAccountId_V12(parser_context_t* c, pd_SupportsAccountId_V12_t* v);
 parser_error_t _readTimepoint_V12(parser_context_t* c, pd_Timepoint_V12_t* v);
@@ -202,8 +207,8 @@ parser_error_t _toStringBoxPalletsOrigin_V12(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringBoxRawSolutionSolutionOfT_V12(
-    const pd_BoxRawSolutionSolutionOfT_V12_t* v,
+parser_error_t _toStringBoxRawSolutionSolutionOfMinerConfig_V12(
+    const pd_BoxRawSolutionSolutionOfMinerConfig_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -293,8 +298,29 @@ parser_error_t _toStringConviction_V12(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringEcdsaPublic_V12(
+    const pd_EcdsaPublic_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringEcdsaSignature_V12(
     const pd_EcdsaSignature_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringEd25519Public_V12(
+    const pd_Ed25519Public_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringEd25519Signature_V12(
+    const pd_Ed25519Signature_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -596,6 +622,20 @@ parser_error_t _toStringSessionIndex_V12(
 
 parser_error_t _toStringSolutionOrSnapshotSize_V12(
     const pd_SolutionOrSnapshotSize_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringSr25519Public_V12(
+    const pd_Sr25519Public_V12_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringSr25519Signature_V12(
+    const pd_Sr25519Signature_V12_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
