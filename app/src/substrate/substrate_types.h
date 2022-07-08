@@ -100,11 +100,6 @@ typedef struct {
 } pd_Call_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Header_t;
-
-typedef struct {
     pd_Call_t call;
 } pd_Proposal_t;
 
@@ -118,12 +113,6 @@ typedef struct {
 typedef compactInt_t pd_Compactu128_t;
 
 typedef struct {
-    uint8_t type;
-    const uint8_t* _ptr;
-    uint8_t _len;
-} pd_Data_t;
-
-typedef struct {
     const uint8_t* _ptr;
 } pd_H256_t;
 
@@ -135,12 +124,6 @@ typedef struct {
     uint8_t some;
     pd_u32_t contained;
 } pd_Optionu32_t;
-
-typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-    uint64_t _lenBuffer;
-} pd_VecHeader_t;
 
 typedef struct {
     uint64_t _len;
