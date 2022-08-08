@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  (c) 2019 - 2022 Zondax GmbH
+ *  (c) 2019 - 2022 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -566,7 +566,8 @@ typedef struct {
 #define PD_CALL_PHRAGMENELECTION_REMOVE_MEMBER_V13 4
 typedef struct {
     pd_LookupasStaticLookupSource_V13_t who;
-    pd_bool_t has_replacement;
+    pd_bool_t slash_bond;
+    pd_bool_t rerun_election;
 } pd_phragmenelection_remove_member_V13_t;
 
 #define PD_CALL_PHRAGMENELECTION_CLEAN_DEFUNCT_VOTERS_V13 5

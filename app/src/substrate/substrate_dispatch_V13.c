@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  (c) 2019 - 2022 Zondax GmbH
+ *  (c) 2019 - 2022 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -782,7 +782,8 @@ __Z_INLINE parser_error_t _readMethod_phragmenelection_remove_member_V13(
     parser_context_t* c, pd_phragmenelection_remove_member_V13_t* m)
 {
     CHECK_ERROR(_readLookupasStaticLookupSource_V13(c, &m->who))
-    CHECK_ERROR(_readbool(c, &m->has_replacement))
+    CHECK_ERROR(_readbool(c, &m->slash_bond))
+    CHECK_ERROR(_readbool(c, &m->rerun_election))
     return parser_ok;
 }
 
@@ -3115,7 +3116,7 @@ uint8_t _getMethod_NumItems_V13(uint8_t moduleIdx, uint8_t callIdx)
     case 4354: /* module 17 call 2 */
         return 1;
     case 4356: /* module 17 call 4 */
-        return 2;
+        return 3;
     case 4357: /* module 17 call 5 */
         return 2;
     case 4608: /* module 18 call 0 */
@@ -4189,7 +4190,9 @@ const char* _getMethod_ItemName_V13(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         case 0:
             return STR_IT_who;
         case 1:
-            return STR_IT_has_replacement;
+            return STR_IT_slash_bond;
+        case 2:
+            return STR_IT_rerun_election;
         default:
             return NULL;
         }
@@ -6465,9 +6468,14 @@ parser_error_t _getMethod_ItemValue_V13(
                 &m->basic.phragmenelection_remove_member_V13.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* phragmenelection_remove_member_V13 - has_replacement */;
+        case 1: /* phragmenelection_remove_member_V13 - slash_bond */;
             return _toStringbool(
-                &m->basic.phragmenelection_remove_member_V13.has_replacement,
+                &m->basic.phragmenelection_remove_member_V13.slash_bond,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* phragmenelection_remove_member_V13 - rerun_election */;
+            return _toStringbool(
+                &m->basic.phragmenelection_remove_member_V13.rerun_election,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
