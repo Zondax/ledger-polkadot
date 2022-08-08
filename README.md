@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot  13.9250.x
+# Polkadot  13.9270.x
 
 ## System
 
@@ -217,7 +217,7 @@ Please:
 |Remove voter |    | :heavy_check_mark: |   |  |
 |Submit candidacy |    | :heavy_check_mark: |   | `Compactu32` candidate_count <br/> |
 |Renounce candidacy |    |   |   | `Renouncing` renouncing <br/> |
-|Remove member |    | :heavy_check_mark: |   | `LookupasStaticLookupSource` who <br/>`bool` has_replacement <br/> |
+|Remove member |    | :heavy_check_mark: |   | `LookupasStaticLookupSource` who <br/>`bool` slash_bond <br/>`bool` rerun_election <br/> |
 |Clean defunct voters |    | :heavy_check_mark: |   | `u32` num_voters <br/>`u32` num_defunct <br/> |
 
 ## TechnicalMembership
