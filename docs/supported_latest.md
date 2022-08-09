@@ -131,31 +131,31 @@
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Propose |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`CompactBalance` amount <br/> |
-|Second |    | :heavy_check_mark: |   | `Compactu32` proposal <br/>`Compactu32` seconds_upper_bound <br/> |
-|Vote |    | :heavy_check_mark: |   | `Compactu32` ref_index <br/>`AccountVote` vote <br/> |
-|Emergency cancel |    | :heavy_check_mark: |   | `ReferendumIndex` ref_index <br/> |
-|External propose |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |
-|External propose majority |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |
-|External propose default |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |
-|Fast track |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`BlockNumber` voting_period <br/>`BlockNumber` delay <br/> |
-|Veto external |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> |
-|Cancel referendum |    | :heavy_check_mark: |   | `Compactu32` ref_index <br/> |
-|Cancel queued |    | :heavy_check_mark: |   | `ReferendumIndex` which <br/> |
-|Delegate |    | :heavy_check_mark: |   | `AccountId` to <br/>`Conviction` conviction <br/>`Balance` balance <br/> |
-|Undelegate |    | :heavy_check_mark: |   |  |
-|Clear public proposals |    | :heavy_check_mark: |   |  |
+|Propose |    | :heavy_check_mark: | :heavy_check_mark: | `Hash` proposal_hash <br/>`CompactBalance` amount <br/> |
+|Second |    | :heavy_check_mark: | :heavy_check_mark: | `Compactu32` proposal <br/>`Compactu32` seconds_upper_bound <br/> |
+|Vote |    | :heavy_check_mark: | :heavy_check_mark: | `Compactu32` ref_index <br/>`AccountVote` vote <br/> |
+|Emergency cancel |    | :heavy_check_mark: | :heavy_check_mark: | `ReferendumIndex` ref_index <br/> |
+|External propose |    | :heavy_check_mark: | :heavy_check_mark: | `Hash` proposal_hash <br/> |
+|External propose majority |    | :heavy_check_mark: | :heavy_check_mark: | `Hash` proposal_hash <br/> |
+|External propose default |    | :heavy_check_mark: | :heavy_check_mark: | `Hash` proposal_hash <br/> |
+|Fast track |    | :heavy_check_mark: | :heavy_check_mark: | `Hash` proposal_hash <br/>`BlockNumber` voting_period <br/>`BlockNumber` delay <br/> |
+|Veto external |    | :heavy_check_mark: | :heavy_check_mark: | `Hash` proposal_hash <br/> |
+|Cancel referendum |    | :heavy_check_mark: | :heavy_check_mark: | `Compactu32` ref_index <br/> |
+|Cancel queued |    | :heavy_check_mark: | :heavy_check_mark: | `ReferendumIndex` which <br/> |
+|Delegate |    | :heavy_check_mark: | :heavy_check_mark: | `AccountId` to <br/>`Conviction` conviction <br/>`Balance` balance <br/> |
+|Undelegate |    | :heavy_check_mark: | :heavy_check_mark: |  |
+|Clear public proposals |    | :heavy_check_mark: | :heavy_check_mark: |  |
 |Note preimage |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> |
 |Note preimage operational |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> |
 |Note imminent preimage |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> |
 |Note imminent preimage operational |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> |
-|Reap preimage |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu32` proposal_len_upper_bound <br/> |
-|Unlock |    | :heavy_check_mark: |   | `AccountId` target <br/> |
-|Remove vote |    | :heavy_check_mark: |   | `ReferendumIndex` index <br/> |
-|Remove other vote |    | :heavy_check_mark: |   | `AccountId` target <br/>`ReferendumIndex` index <br/> |
-|Enact proposal |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`ReferendumIndex` index <br/> |
+|Reap preimage |    | :heavy_check_mark: | :heavy_check_mark: | `Hash` proposal_hash <br/>`Compactu32` proposal_len_upper_bound <br/> |
+|Unlock |    | :heavy_check_mark: | :heavy_check_mark: | `AccountId` target <br/> |
+|Remove vote |    | :heavy_check_mark: | :heavy_check_mark: | `ReferendumIndex` index <br/> |
+|Remove other vote |    | :heavy_check_mark: | :heavy_check_mark: | `AccountId` target <br/>`ReferendumIndex` index <br/> |
+|Enact proposal |    | :heavy_check_mark: | :heavy_check_mark: | `Hash` proposal_hash <br/>`ReferendumIndex` index <br/> |
 |Blacklist |    |   |   | `Hash` proposal_hash <br/>`OptionReferendumIndex` maybe_ref_index <br/> |
-|Cancel proposal |    | :heavy_check_mark: |   | `Compactu32` prop_index <br/> |
+|Cancel proposal |    | :heavy_check_mark: | :heavy_check_mark: | `Compactu32` prop_index <br/> |
 
 ## Council
 
