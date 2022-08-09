@@ -1880,46 +1880,46 @@ parser_error_t _readMethod_V13(
         CHECK_ERROR(_readMethod_grandpa_note_stalled_V13(c, &method->basic.grandpa_note_stalled_V13))
         break;
     case 3584: /* module 14 call 0 */
-        CHECK_ERROR(_readMethod_democracy_propose_V13(c, &method->basic.democracy_propose_V13))
+        CHECK_ERROR(_readMethod_democracy_propose_V13(c, &method->nested.democracy_propose_V13))
         break;
     case 3585: /* module 14 call 1 */
-        CHECK_ERROR(_readMethod_democracy_second_V13(c, &method->basic.democracy_second_V13))
+        CHECK_ERROR(_readMethod_democracy_second_V13(c, &method->nested.democracy_second_V13))
         break;
     case 3586: /* module 14 call 2 */
-        CHECK_ERROR(_readMethod_democracy_vote_V13(c, &method->basic.democracy_vote_V13))
+        CHECK_ERROR(_readMethod_democracy_vote_V13(c, &method->nested.democracy_vote_V13))
         break;
     case 3587: /* module 14 call 3 */
-        CHECK_ERROR(_readMethod_democracy_emergency_cancel_V13(c, &method->basic.democracy_emergency_cancel_V13))
+        CHECK_ERROR(_readMethod_democracy_emergency_cancel_V13(c, &method->nested.democracy_emergency_cancel_V13))
         break;
     case 3588: /* module 14 call 4 */
-        CHECK_ERROR(_readMethod_democracy_external_propose_V13(c, &method->basic.democracy_external_propose_V13))
+        CHECK_ERROR(_readMethod_democracy_external_propose_V13(c, &method->nested.democracy_external_propose_V13))
         break;
     case 3589: /* module 14 call 5 */
-        CHECK_ERROR(_readMethod_democracy_external_propose_majority_V13(c, &method->basic.democracy_external_propose_majority_V13))
+        CHECK_ERROR(_readMethod_democracy_external_propose_majority_V13(c, &method->nested.democracy_external_propose_majority_V13))
         break;
     case 3590: /* module 14 call 6 */
-        CHECK_ERROR(_readMethod_democracy_external_propose_default_V13(c, &method->basic.democracy_external_propose_default_V13))
+        CHECK_ERROR(_readMethod_democracy_external_propose_default_V13(c, &method->nested.democracy_external_propose_default_V13))
         break;
     case 3591: /* module 14 call 7 */
-        CHECK_ERROR(_readMethod_democracy_fast_track_V13(c, &method->basic.democracy_fast_track_V13))
+        CHECK_ERROR(_readMethod_democracy_fast_track_V13(c, &method->nested.democracy_fast_track_V13))
         break;
     case 3592: /* module 14 call 8 */
-        CHECK_ERROR(_readMethod_democracy_veto_external_V13(c, &method->basic.democracy_veto_external_V13))
+        CHECK_ERROR(_readMethod_democracy_veto_external_V13(c, &method->nested.democracy_veto_external_V13))
         break;
     case 3593: /* module 14 call 9 */
-        CHECK_ERROR(_readMethod_democracy_cancel_referendum_V13(c, &method->basic.democracy_cancel_referendum_V13))
+        CHECK_ERROR(_readMethod_democracy_cancel_referendum_V13(c, &method->nested.democracy_cancel_referendum_V13))
         break;
     case 3594: /* module 14 call 10 */
-        CHECK_ERROR(_readMethod_democracy_cancel_queued_V13(c, &method->basic.democracy_cancel_queued_V13))
+        CHECK_ERROR(_readMethod_democracy_cancel_queued_V13(c, &method->nested.democracy_cancel_queued_V13))
         break;
     case 3595: /* module 14 call 11 */
-        CHECK_ERROR(_readMethod_democracy_delegate_V13(c, &method->basic.democracy_delegate_V13))
+        CHECK_ERROR(_readMethod_democracy_delegate_V13(c, &method->nested.democracy_delegate_V13))
         break;
     case 3596: /* module 14 call 12 */
-        CHECK_ERROR(_readMethod_democracy_undelegate_V13(c, &method->basic.democracy_undelegate_V13))
+        CHECK_ERROR(_readMethod_democracy_undelegate_V13(c, &method->nested.democracy_undelegate_V13))
         break;
     case 3597: /* module 14 call 13 */
-        CHECK_ERROR(_readMethod_democracy_clear_public_proposals_V13(c, &method->basic.democracy_clear_public_proposals_V13))
+        CHECK_ERROR(_readMethod_democracy_clear_public_proposals_V13(c, &method->nested.democracy_clear_public_proposals_V13))
         break;
     case 3598: /* module 14 call 14 */
         CHECK_ERROR(_readMethod_democracy_note_preimage_V13(c, &method->basic.democracy_note_preimage_V13))
@@ -1934,22 +1934,22 @@ parser_error_t _readMethod_V13(
         CHECK_ERROR(_readMethod_democracy_note_imminent_preimage_operational_V13(c, &method->basic.democracy_note_imminent_preimage_operational_V13))
         break;
     case 3602: /* module 14 call 18 */
-        CHECK_ERROR(_readMethod_democracy_reap_preimage_V13(c, &method->basic.democracy_reap_preimage_V13))
+        CHECK_ERROR(_readMethod_democracy_reap_preimage_V13(c, &method->nested.democracy_reap_preimage_V13))
         break;
     case 3603: /* module 14 call 19 */
-        CHECK_ERROR(_readMethod_democracy_unlock_V13(c, &method->basic.democracy_unlock_V13))
+        CHECK_ERROR(_readMethod_democracy_unlock_V13(c, &method->nested.democracy_unlock_V13))
         break;
     case 3604: /* module 14 call 20 */
-        CHECK_ERROR(_readMethod_democracy_remove_vote_V13(c, &method->basic.democracy_remove_vote_V13))
+        CHECK_ERROR(_readMethod_democracy_remove_vote_V13(c, &method->nested.democracy_remove_vote_V13))
         break;
     case 3605: /* module 14 call 21 */
-        CHECK_ERROR(_readMethod_democracy_remove_other_vote_V13(c, &method->basic.democracy_remove_other_vote_V13))
+        CHECK_ERROR(_readMethod_democracy_remove_other_vote_V13(c, &method->nested.democracy_remove_other_vote_V13))
         break;
     case 3606: /* module 14 call 22 */
-        CHECK_ERROR(_readMethod_democracy_enact_proposal_V13(c, &method->basic.democracy_enact_proposal_V13))
+        CHECK_ERROR(_readMethod_democracy_enact_proposal_V13(c, &method->nested.democracy_enact_proposal_V13))
         break;
     case 3608: /* module 14 call 24 */
-        CHECK_ERROR(_readMethod_democracy_cancel_proposal_V13(c, &method->basic.democracy_cancel_proposal_V13))
+        CHECK_ERROR(_readMethod_democracy_cancel_proposal_V13(c, &method->nested.democracy_cancel_proposal_V13))
         break;
     case 3840: /* module 15 call 0 */
         CHECK_ERROR(_readMethod_council_set_members_V13(c, &method->basic.council_set_members_V13))
@@ -5935,12 +5935,12 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_propose_V13 - proposal_hash */;
             return _toStringHash(
-                &m->basic.democracy_propose_V13.proposal_hash,
+                &m->nested.democracy_propose_V13.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_propose_V13 - amount */;
             return _toStringCompactBalance(
-                &m->basic.democracy_propose_V13.amount,
+                &m->nested.democracy_propose_V13.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5950,12 +5950,12 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_second_V13 - proposal */;
             return _toStringCompactu32(
-                &m->basic.democracy_second_V13.proposal,
+                &m->nested.democracy_second_V13.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_second_V13 - seconds_upper_bound */;
             return _toStringCompactu32(
-                &m->basic.democracy_second_V13.seconds_upper_bound,
+                &m->nested.democracy_second_V13.seconds_upper_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5965,12 +5965,12 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_vote_V13 - ref_index */;
             return _toStringCompactu32(
-                &m->basic.democracy_vote_V13.ref_index,
+                &m->nested.democracy_vote_V13.ref_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_vote_V13 - vote */;
             return _toStringAccountVote_V13(
-                &m->basic.democracy_vote_V13.vote,
+                &m->nested.democracy_vote_V13.vote,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5980,7 +5980,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_emergency_cancel_V13 - ref_index */;
             return _toStringReferendumIndex_V13(
-                &m->basic.democracy_emergency_cancel_V13.ref_index,
+                &m->nested.democracy_emergency_cancel_V13.ref_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5990,7 +5990,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_external_propose_V13 - proposal_hash */;
             return _toStringHash(
-                &m->basic.democracy_external_propose_V13.proposal_hash,
+                &m->nested.democracy_external_propose_V13.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6000,7 +6000,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_external_propose_majority_V13 - proposal_hash */;
             return _toStringHash(
-                &m->basic.democracy_external_propose_majority_V13.proposal_hash,
+                &m->nested.democracy_external_propose_majority_V13.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6010,7 +6010,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_external_propose_default_V13 - proposal_hash */;
             return _toStringHash(
-                &m->basic.democracy_external_propose_default_V13.proposal_hash,
+                &m->nested.democracy_external_propose_default_V13.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6020,17 +6020,17 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_fast_track_V13 - proposal_hash */;
             return _toStringHash(
-                &m->basic.democracy_fast_track_V13.proposal_hash,
+                &m->nested.democracy_fast_track_V13.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_fast_track_V13 - voting_period */;
             return _toStringBlockNumber(
-                &m->basic.democracy_fast_track_V13.voting_period,
+                &m->nested.democracy_fast_track_V13.voting_period,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* democracy_fast_track_V13 - delay */;
             return _toStringBlockNumber(
-                &m->basic.democracy_fast_track_V13.delay,
+                &m->nested.democracy_fast_track_V13.delay,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6040,7 +6040,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_veto_external_V13 - proposal_hash */;
             return _toStringHash(
-                &m->basic.democracy_veto_external_V13.proposal_hash,
+                &m->nested.democracy_veto_external_V13.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6050,7 +6050,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_cancel_referendum_V13 - ref_index */;
             return _toStringCompactu32(
-                &m->basic.democracy_cancel_referendum_V13.ref_index,
+                &m->nested.democracy_cancel_referendum_V13.ref_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6060,7 +6060,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_cancel_queued_V13 - which */;
             return _toStringReferendumIndex_V13(
-                &m->basic.democracy_cancel_queued_V13.which,
+                &m->nested.democracy_cancel_queued_V13.which,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6070,17 +6070,17 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_delegate_V13 - to */;
             return _toStringAccountId_V13(
-                &m->basic.democracy_delegate_V13.to,
+                &m->nested.democracy_delegate_V13.to,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_delegate_V13 - conviction */;
             return _toStringConviction_V13(
-                &m->basic.democracy_delegate_V13.conviction,
+                &m->nested.democracy_delegate_V13.conviction,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* democracy_delegate_V13 - balance */;
             return _toStringBalance(
-                &m->basic.democracy_delegate_V13.balance,
+                &m->nested.democracy_delegate_V13.balance,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6140,12 +6140,12 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_reap_preimage_V13 - proposal_hash */;
             return _toStringHash(
-                &m->basic.democracy_reap_preimage_V13.proposal_hash,
+                &m->nested.democracy_reap_preimage_V13.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_reap_preimage_V13 - proposal_len_upper_bound */;
             return _toStringCompactu32(
-                &m->basic.democracy_reap_preimage_V13.proposal_len_upper_bound,
+                &m->nested.democracy_reap_preimage_V13.proposal_len_upper_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6155,7 +6155,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_unlock_V13 - target */;
             return _toStringAccountId_V13(
-                &m->basic.democracy_unlock_V13.target,
+                &m->nested.democracy_unlock_V13.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6165,7 +6165,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_remove_vote_V13 - index */;
             return _toStringReferendumIndex_V13(
-                &m->basic.democracy_remove_vote_V13.index,
+                &m->nested.democracy_remove_vote_V13.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6175,12 +6175,12 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_remove_other_vote_V13 - target */;
             return _toStringAccountId_V13(
-                &m->basic.democracy_remove_other_vote_V13.target,
+                &m->nested.democracy_remove_other_vote_V13.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_remove_other_vote_V13 - index */;
             return _toStringReferendumIndex_V13(
-                &m->basic.democracy_remove_other_vote_V13.index,
+                &m->nested.democracy_remove_other_vote_V13.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6190,12 +6190,12 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_enact_proposal_V13 - proposal_hash */;
             return _toStringHash(
-                &m->basic.democracy_enact_proposal_V13.proposal_hash,
+                &m->nested.democracy_enact_proposal_V13.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_enact_proposal_V13 - index */;
             return _toStringReferendumIndex_V13(
-                &m->basic.democracy_enact_proposal_V13.index,
+                &m->nested.democracy_enact_proposal_V13.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6205,7 +6205,7 @@ parser_error_t _getMethod_ItemValue_V13(
         switch (itemIdx) {
         case 0: /* democracy_cancel_proposal_V13 - prop_index */;
             return _toStringCompactu32(
-                &m->basic.democracy_cancel_proposal_V13.prop_index,
+                &m->nested.democracy_cancel_proposal_V13.prop_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -8065,30 +8065,10 @@ bool _getMethod_IsNestingSupported_V13(uint8_t moduleIdx, uint8_t callIdx)
     case 2304: // Session:Set keys
     case 2305: // Session:Purge keys
     case 2818: // Grandpa:Note stalled
-    case 3584: // Democracy:Propose
-    case 3585: // Democracy:Second
-    case 3586: // Democracy:Vote
-    case 3587: // Democracy:Emergency cancel
-    case 3588: // Democracy:External propose
-    case 3589: // Democracy:External propose majority
-    case 3590: // Democracy:External propose default
-    case 3591: // Democracy:Fast track
-    case 3592: // Democracy:Veto external
-    case 3593: // Democracy:Cancel referendum
-    case 3594: // Democracy:Cancel queued
-    case 3595: // Democracy:Delegate
-    case 3596: // Democracy:Undelegate
-    case 3597: // Democracy:Clear public proposals
     case 3598: // Democracy:Note preimage
     case 3599: // Democracy:Note preimage operational
     case 3600: // Democracy:Note imminent preimage
     case 3601: // Democracy:Note imminent preimage operational
-    case 3602: // Democracy:Reap preimage
-    case 3603: // Democracy:Unlock
-    case 3604: // Democracy:Remove vote
-    case 3605: // Democracy:Remove other vote
-    case 3606: // Democracy:Enact proposal
-    case 3608: // Democracy:Cancel proposal
     case 3840: // Council:Set members
     case 3841: // Council:Execute
     case 3842: // Council:Propose
