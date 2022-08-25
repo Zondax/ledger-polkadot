@@ -68,6 +68,22 @@ parser_error_t _readAccountVote_V13(parser_context_t* c, pd_AccountVote_V13_t* v
     return parser_ok;
 }
 
+parser_error_t _readBondExtraBalanceOfT_V13(parser_context_t* c, pd_BondExtraBalanceOfT_V13_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0:
+        CHECK_ERROR(_readBalance(c, &v->freeBalance))
+        break;
+    case 1: // Rewards
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
 parser_error_t _readCompactAccountIndex_V13(parser_context_t* c, pd_CompactAccountIndex_V13_t* v)
 {
     return _readCompactInt(c, &v->value);
@@ -76,6 +92,57 @@ parser_error_t _readCompactAccountIndex_V13(parser_context_t* c, pd_CompactAccou
 parser_error_t _readCompactPerBill_V13(parser_context_t* c, pd_CompactPerBill_V13_t* v)
 {
     return _readCompactInt(c, &v->value);
+}
+
+parser_error_t _readConfigOpAccountId_V13(parser_context_t* c, pd_ConfigOpAccountId_V13_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0: // Noop
+    case 2: // Remove
+        break;
+    case 1:
+        CHECK_ERROR(_readAccountId_V13(c, &v->set))
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+parser_error_t _readConfigOpBalanceOfT_V13(parser_context_t* c, pd_ConfigOpBalanceOfT_V13_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0: // Noop
+    case 2: // Remove
+        break;
+    case 1:
+        CHECK_ERROR(_readBalance(c, &v->set))
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+parser_error_t _readConfigOpu32_V13(parser_context_t* c, pd_ConfigOpu32_V13_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0: // Noop
+    case 2: // Remove
+        break;
+    case 1:
+        CHECK_ERROR(_readUInt32(c, &v->set))
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
 }
 
 parser_error_t _readConviction_V13(parser_context_t* c, pd_Conviction_V13_t* v)
@@ -203,6 +270,13 @@ parser_error_t _readOpaqueCall_V13(parser_context_t* c, pd_OpaqueCall_V13_t* v)
     return _readCall(c, &v->call);
 }
 
+parser_error_t _readOverweightIndex_V13(parser_context_t* c, pd_OverweightIndex_V13_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt64(c, &v->value))
+    return parser_ok;
+}
+
 parser_error_t _readParaId_V13(parser_context_t* c, pd_ParaId_V13_t* v)
 {
     CHECK_INPUT()
@@ -214,6 +288,20 @@ parser_error_t _readPerbill_V13(parser_context_t* c, pd_Perbill_V13_t* v)
 {
     CHECK_INPUT()
     CHECK_ERROR(_readUInt32(c, &v->value))
+    return parser_ok;
+}
+
+parser_error_t _readPoolId_V13(parser_context_t* c, pd_PoolId_V13_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt32(c, &v->value))
+    return parser_ok;
+}
+
+parser_error_t _readPoolState_V13(parser_context_t* c, pd_PoolState_V13_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
     return parser_ok;
 }
 
@@ -501,6 +589,28 @@ parser_error_t _toStringAccountVote_V13(
     return parser_ok;
 }
 
+parser_error_t _toStringBondExtraBalanceOfT_V13(
+    const pd_BondExtraBalanceOfT_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    switch (v->value) {
+    case 0:
+        CHECK_ERROR(_toStringBalance(&v->freeBalance, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 1:
+        snprintf(outValue, outValueLen, "Rewards");
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
 parser_error_t _toStringCompactAccountIndex_V13(
     const pd_CompactAccountIndex_V13_t* v,
     char* outValue,
@@ -520,6 +630,81 @@ parser_error_t _toStringCompactPerBill_V13(
 {
     // 9 but shift 2 to show as percentage
     return _toStringCompactInt(&v->value, 7, false, "%", "", outValue, outValueLen, pageIdx, pageCount);
+}
+
+parser_error_t _toStringConfigOpAccountId_V13(
+    const pd_ConfigOpAccountId_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    switch (v->value) {
+    case 0:
+        snprintf(outValue, outValueLen, "Noop");
+        break;
+    case 1:
+        CHECK_ERROR(_toStringAccountId_V13(&v->set, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 2:
+        snprintf(outValue, outValueLen, "Remove");
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+parser_error_t _toStringConfigOpBalanceOfT_V13(
+    const pd_ConfigOpBalanceOfT_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    switch (v->value) {
+    case 0:
+        snprintf(outValue, outValueLen, "Noop");
+        break;
+    case 1:
+        CHECK_ERROR(_toStringBalance(&v->set, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 2:
+        snprintf(outValue, outValueLen, "Remove");
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+parser_error_t _toStringConfigOpu32_V13(
+    const pd_ConfigOpu32_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    switch (v->value) {
+    case 0:
+        snprintf(outValue, outValueLen, "Noop");
+        break;
+    case 1:
+        CHECK_ERROR(_toStringu32(&v->set, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 2:
+        snprintf(outValue, outValueLen, "Remove");
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
 }
 
 parser_error_t _toStringConviction_V13(
@@ -725,6 +910,16 @@ parser_error_t _toStringOpaqueCall_V13(
     return _toStringCall(&v->call, outValue, outValueLen, pageIdx, pageCount);
 }
 
+parser_error_t _toStringOverweightIndex_V13(
+    const pd_OverweightIndex_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    return _toStringu64(&v->value, outValue, outValueLen, pageIdx, pageCount);
+}
+
 parser_error_t _toStringParaId_V13(
     const pd_ParaId_V13_t* v,
     char* outValue,
@@ -755,6 +950,41 @@ parser_error_t _toStringPerbill_V13(
 
     snprintf(bufferUI, sizeof(bufferUI), "%s%%", ratioBuffer);
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
+    return parser_ok;
+}
+
+parser_error_t _toStringPoolId_V13(
+    const pd_PoolId_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    return _toStringu32(&v->value, outValue, outValueLen, pageIdx, pageCount);
+}
+
+parser_error_t _toStringPoolState_V13(
+    const pd_PoolState_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    switch (v->value) {
+    case 0:
+        snprintf(outValue, outValueLen, "Open");
+        break;
+    case 1:
+        snprintf(outValue, outValueLen, "Blocked");
+        break;
+    case 2:
+        snprintf(outValue, outValueLen, "Destroying");
+        break;
+    default:
+        return parser_unexpected_value;
+    }
     return parser_ok;
 }
 
