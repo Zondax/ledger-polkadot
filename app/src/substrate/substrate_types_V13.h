@@ -122,6 +122,21 @@ typedef struct {
 } pd_AccountVote_V13_t;
 
 typedef struct {
+    uint8_t value;
+    pd_Balance_t freeBalance;
+} pd_BondExtraBalanceOfT_V13_t;
+
+typedef struct {
+    uint8_t value;
+    pd_AccountId_V13_t set;
+} pd_ConfigOpAccountId_V13_t;
+
+typedef struct {
+    uint8_t value;
+    pd_Balance_t set;
+} pd_ConfigOpBalanceOfT_V13_t;
+
+typedef struct {
     pd_Call_t call;
 } pd_OpaqueCall_V13_t;
 
@@ -168,6 +183,11 @@ typedef struct {
 
 typedef struct {
     uint8_t value;
+    uint32_t set;
+} pd_ConfigOpu32_V13_t;
+
+typedef struct {
+    uint8_t value;
 } pd_Conviction_V13_t;
 
 typedef struct {
@@ -197,12 +217,24 @@ typedef struct {
 } pd_OptionProxyType_V13_t;
 
 typedef struct {
+    uint64_t value;
+} pd_OverweightIndex_V13_t;
+
+typedef struct {
     uint32_t value;
 } pd_ParaId_V13_t;
 
 typedef struct {
     uint32_t value;
 } pd_Perbill_V13_t;
+
+typedef struct {
+    uint32_t value;
+} pd_PoolId_V13_t;
+
+typedef struct {
+    uint8_t value;
+} pd_PoolState_V13_t;
 
 typedef struct {
     uint32_t value;
