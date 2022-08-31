@@ -256,6 +256,7 @@ static const char* STR_ME_EDIT = "Edit";
 static const char* STR_ME_ADD_MEMO = "Add memo";
 static const char* STR_ME_POKE = "Poke";
 static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
+static const char* STR_ME_SPEND = "Spend";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
