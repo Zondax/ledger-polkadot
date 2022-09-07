@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  (c) 2019 - 2022 Zondax GmbH
+ *  (c) 2019 - 2022 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -51,8 +51,10 @@ extern "C" {
 #define PD_CALL_TIPS_V13 35
 #define PD_CALL_ELECTIONPROVIDERMULTIPHASE_V13 36
 #define PD_CALL_VOTERLIST_V13 37
+#define PD_CALL_NOMINATIONPOOLS_V13 39
 #define PD_CALL_CONFIGURATION_V13 51
 #define PD_CALL_INITIALIZER_V13 57
+#define PD_CALL_UMP_V13 59
 #define PD_CALL_HRMP_V13 60
 #define PD_CALL_PARASDISPUTES_V13 62
 #define PD_CALL_REGISTRAR_V13 70
@@ -340,81 +342,6 @@ typedef struct {
     pd_BlockNumber_t best_finalized_block_number;
 } pd_grandpa_note_stalled_V13_t;
 
-#define PD_CALL_DEMOCRACY_PROPOSE_V13 0
-typedef struct {
-    pd_Hash_t proposal_hash;
-    pd_CompactBalance_t amount;
-} pd_democracy_propose_V13_t;
-
-#define PD_CALL_DEMOCRACY_SECOND_V13 1
-typedef struct {
-    pd_Compactu32_t proposal;
-    pd_Compactu32_t seconds_upper_bound;
-} pd_democracy_second_V13_t;
-
-#define PD_CALL_DEMOCRACY_VOTE_V13 2
-typedef struct {
-    pd_Compactu32_t ref_index;
-    pd_AccountVote_V13_t vote;
-} pd_democracy_vote_V13_t;
-
-#define PD_CALL_DEMOCRACY_EMERGENCY_CANCEL_V13 3
-typedef struct {
-    pd_ReferendumIndex_V13_t ref_index;
-} pd_democracy_emergency_cancel_V13_t;
-
-#define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_V13 4
-typedef struct {
-    pd_Hash_t proposal_hash;
-} pd_democracy_external_propose_V13_t;
-
-#define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_MAJORITY_V13 5
-typedef struct {
-    pd_Hash_t proposal_hash;
-} pd_democracy_external_propose_majority_V13_t;
-
-#define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_DEFAULT_V13 6
-typedef struct {
-    pd_Hash_t proposal_hash;
-} pd_democracy_external_propose_default_V13_t;
-
-#define PD_CALL_DEMOCRACY_FAST_TRACK_V13 7
-typedef struct {
-    pd_Hash_t proposal_hash;
-    pd_BlockNumber_t voting_period;
-    pd_BlockNumber_t delay;
-} pd_democracy_fast_track_V13_t;
-
-#define PD_CALL_DEMOCRACY_VETO_EXTERNAL_V13 8
-typedef struct {
-    pd_Hash_t proposal_hash;
-} pd_democracy_veto_external_V13_t;
-
-#define PD_CALL_DEMOCRACY_CANCEL_REFERENDUM_V13 9
-typedef struct {
-    pd_Compactu32_t ref_index;
-} pd_democracy_cancel_referendum_V13_t;
-
-#define PD_CALL_DEMOCRACY_CANCEL_QUEUED_V13 10
-typedef struct {
-    pd_ReferendumIndex_V13_t which;
-} pd_democracy_cancel_queued_V13_t;
-
-#define PD_CALL_DEMOCRACY_DELEGATE_V13 11
-typedef struct {
-    pd_AccountId_V13_t to;
-    pd_Conviction_V13_t conviction;
-    pd_Balance_t balance;
-} pd_democracy_delegate_V13_t;
-
-#define PD_CALL_DEMOCRACY_UNDELEGATE_V13 12
-typedef struct {
-} pd_democracy_undelegate_V13_t;
-
-#define PD_CALL_DEMOCRACY_CLEAR_PUBLIC_PROPOSALS_V13 13
-typedef struct {
-} pd_democracy_clear_public_proposals_V13_t;
-
 #define PD_CALL_DEMOCRACY_NOTE_PREIMAGE_V13 14
 typedef struct {
     pd_Bytes_t encoded_proposal;
@@ -434,39 +361,6 @@ typedef struct {
 typedef struct {
     pd_Bytes_t encoded_proposal;
 } pd_democracy_note_imminent_preimage_operational_V13_t;
-
-#define PD_CALL_DEMOCRACY_REAP_PREIMAGE_V13 18
-typedef struct {
-    pd_Hash_t proposal_hash;
-    pd_Compactu32_t proposal_len_upper_bound;
-} pd_democracy_reap_preimage_V13_t;
-
-#define PD_CALL_DEMOCRACY_UNLOCK_V13 19
-typedef struct {
-    pd_AccountId_V13_t target;
-} pd_democracy_unlock_V13_t;
-
-#define PD_CALL_DEMOCRACY_REMOVE_VOTE_V13 20
-typedef struct {
-    pd_ReferendumIndex_V13_t index;
-} pd_democracy_remove_vote_V13_t;
-
-#define PD_CALL_DEMOCRACY_REMOVE_OTHER_VOTE_V13 21
-typedef struct {
-    pd_AccountId_V13_t target;
-    pd_ReferendumIndex_V13_t index;
-} pd_democracy_remove_other_vote_V13_t;
-
-#define PD_CALL_DEMOCRACY_ENACT_PROPOSAL_V13 22
-typedef struct {
-    pd_Hash_t proposal_hash;
-    pd_ReferendumIndex_V13_t index;
-} pd_democracy_enact_proposal_V13_t;
-
-#define PD_CALL_DEMOCRACY_CANCEL_PROPOSAL_V13 24
-typedef struct {
-    pd_Compactu32_t prop_index;
-} pd_democracy_cancel_proposal_V13_t;
 
 #define PD_CALL_COUNCIL_SET_MEMBERS_V13 0
 typedef struct {
@@ -566,7 +460,8 @@ typedef struct {
 #define PD_CALL_PHRAGMENELECTION_REMOVE_MEMBER_V13 4
 typedef struct {
     pd_LookupasStaticLookupSource_V13_t who;
-    pd_bool_t has_replacement;
+    pd_bool_t slash_bond;
+    pd_bool_t rerun_election;
 } pd_phragmenelection_remove_member_V13_t;
 
 #define PD_CALL_PHRAGMENELECTION_CLEAN_DEFUNCT_VOTERS_V13 5
@@ -924,6 +819,87 @@ typedef struct {
     pd_AccountId_V13_t lighter;
 } pd_voterlist_put_in_front_of_V13_t;
 
+#define PD_CALL_NOMINATIONPOOLS_JOIN_V13 0
+typedef struct {
+    pd_Compactu128_t amount;
+    pd_PoolId_V13_t pool_id;
+} pd_nominationpools_join_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_BOND_EXTRA_V13 1
+typedef struct {
+    pd_BondExtraBalanceOfT_V13_t extra;
+} pd_nominationpools_bond_extra_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_CLAIM_PAYOUT_V13 2
+typedef struct {
+} pd_nominationpools_claim_payout_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_UNBOND_V13 3
+typedef struct {
+    pd_AccountId_V13_t member_account;
+    pd_Compactu128_t unbonding_points;
+} pd_nominationpools_unbond_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_POOL_WITHDRAW_UNBONDED_V13 4
+typedef struct {
+    pd_PoolId_V13_t pool_id;
+    pd_u32_t num_slashing_spans;
+} pd_nominationpools_pool_withdraw_unbonded_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_WITHDRAW_UNBONDED_V13 5
+typedef struct {
+    pd_AccountId_V13_t member_account;
+    pd_u32_t num_slashing_spans;
+} pd_nominationpools_withdraw_unbonded_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_CREATE_V13 6
+typedef struct {
+    pd_Compactu128_t amount;
+    pd_AccountId_V13_t root;
+    pd_AccountId_V13_t nominator;
+    pd_AccountId_V13_t state_toggler;
+} pd_nominationpools_create_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_NOMINATE_V13 7
+typedef struct {
+    pd_PoolId_V13_t pool_id;
+    pd_VecAccountId_V13_t validators;
+} pd_nominationpools_nominate_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_STATE_V13 8
+typedef struct {
+    pd_PoolId_V13_t pool_id;
+    pd_PoolState_V13_t state;
+} pd_nominationpools_set_state_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_METADATA_V13 9
+typedef struct {
+    pd_PoolId_V13_t pool_id;
+    pd_Vecu8_t metadata;
+} pd_nominationpools_set_metadata_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_CONFIGS_V13 10
+typedef struct {
+    pd_ConfigOpBalanceOfT_V13_t min_join_bond;
+    pd_ConfigOpBalanceOfT_V13_t min_create_bond;
+    pd_ConfigOpu32_V13_t max_pools;
+    pd_ConfigOpu32_V13_t max_members;
+    pd_ConfigOpu32_V13_t max_members_per_pool;
+} pd_nominationpools_set_configs_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_UPDATE_ROLES_V13 11
+typedef struct {
+    pd_PoolId_V13_t pool_id;
+    pd_ConfigOpAccountId_V13_t new_root;
+    pd_ConfigOpAccountId_V13_t new_nominator;
+    pd_ConfigOpAccountId_V13_t new_state_toggler;
+} pd_nominationpools_update_roles_V13_t;
+
+#define PD_CALL_NOMINATIONPOOLS_CHILL_V13 12
+typedef struct {
+    pd_PoolId_V13_t pool_id;
+} pd_nominationpools_chill_V13_t;
+
 #define PD_CALL_CONFIGURATION_SET_VALIDATION_UPGRADE_COOLDOWN_V13 0
 typedef struct {
     pd_BlockNumber_t new_;
@@ -1149,6 +1125,12 @@ typedef struct {
     pd_BlockNumber_t up_to;
 } pd_initializer_force_approve_V13_t;
 
+#define PD_CALL_UMP_SERVICE_OVERWEIGHT_V13 0
+typedef struct {
+    pd_OverweightIndex_V13_t index;
+    pd_Weight_V13_t weight_limit;
+} pd_ump_service_overweight_V13_t;
+
 #define PD_CALL_HRMP_FORCE_PROCESS_HRMP_OPEN_V13 4
 typedef struct {
     pd_u32_t channels;
@@ -1241,30 +1223,10 @@ typedef union {
     pd_staking_chill_other_V13_t staking_chill_other_V13;
     pd_staking_force_apply_min_commission_V13_t staking_force_apply_min_commission_V13;
     pd_grandpa_note_stalled_V13_t grandpa_note_stalled_V13;
-    pd_democracy_propose_V13_t democracy_propose_V13;
-    pd_democracy_second_V13_t democracy_second_V13;
-    pd_democracy_vote_V13_t democracy_vote_V13;
-    pd_democracy_emergency_cancel_V13_t democracy_emergency_cancel_V13;
-    pd_democracy_external_propose_V13_t democracy_external_propose_V13;
-    pd_democracy_external_propose_majority_V13_t democracy_external_propose_majority_V13;
-    pd_democracy_external_propose_default_V13_t democracy_external_propose_default_V13;
-    pd_democracy_fast_track_V13_t democracy_fast_track_V13;
-    pd_democracy_veto_external_V13_t democracy_veto_external_V13;
-    pd_democracy_cancel_referendum_V13_t democracy_cancel_referendum_V13;
-    pd_democracy_cancel_queued_V13_t democracy_cancel_queued_V13;
-    pd_democracy_delegate_V13_t democracy_delegate_V13;
-    pd_democracy_undelegate_V13_t democracy_undelegate_V13;
-    pd_democracy_clear_public_proposals_V13_t democracy_clear_public_proposals_V13;
     pd_democracy_note_preimage_V13_t democracy_note_preimage_V13;
     pd_democracy_note_preimage_operational_V13_t democracy_note_preimage_operational_V13;
     pd_democracy_note_imminent_preimage_V13_t democracy_note_imminent_preimage_V13;
     pd_democracy_note_imminent_preimage_operational_V13_t democracy_note_imminent_preimage_operational_V13;
-    pd_democracy_reap_preimage_V13_t democracy_reap_preimage_V13;
-    pd_democracy_unlock_V13_t democracy_unlock_V13;
-    pd_democracy_remove_vote_V13_t democracy_remove_vote_V13;
-    pd_democracy_remove_other_vote_V13_t democracy_remove_other_vote_V13;
-    pd_democracy_enact_proposal_V13_t democracy_enact_proposal_V13;
-    pd_democracy_cancel_proposal_V13_t democracy_cancel_proposal_V13;
     pd_council_set_members_V13_t council_set_members_V13;
     pd_council_execute_V13_t council_execute_V13;
     pd_council_propose_V13_t council_propose_V13;
@@ -1343,6 +1305,19 @@ typedef union {
     pd_electionprovidermultiphase_governance_fallback_V13_t electionprovidermultiphase_governance_fallback_V13;
     pd_voterlist_rebag_V13_t voterlist_rebag_V13;
     pd_voterlist_put_in_front_of_V13_t voterlist_put_in_front_of_V13;
+    pd_nominationpools_join_V13_t nominationpools_join_V13;
+    pd_nominationpools_bond_extra_V13_t nominationpools_bond_extra_V13;
+    pd_nominationpools_claim_payout_V13_t nominationpools_claim_payout_V13;
+    pd_nominationpools_unbond_V13_t nominationpools_unbond_V13;
+    pd_nominationpools_pool_withdraw_unbonded_V13_t nominationpools_pool_withdraw_unbonded_V13;
+    pd_nominationpools_withdraw_unbonded_V13_t nominationpools_withdraw_unbonded_V13;
+    pd_nominationpools_create_V13_t nominationpools_create_V13;
+    pd_nominationpools_nominate_V13_t nominationpools_nominate_V13;
+    pd_nominationpools_set_state_V13_t nominationpools_set_state_V13;
+    pd_nominationpools_set_metadata_V13_t nominationpools_set_metadata_V13;
+    pd_nominationpools_set_configs_V13_t nominationpools_set_configs_V13;
+    pd_nominationpools_update_roles_V13_t nominationpools_update_roles_V13;
+    pd_nominationpools_chill_V13_t nominationpools_chill_V13;
     pd_configuration_set_validation_upgrade_cooldown_V13_t configuration_set_validation_upgrade_cooldown_V13;
     pd_configuration_set_validation_upgrade_delay_V13_t configuration_set_validation_upgrade_delay_V13;
     pd_configuration_set_code_retention_period_V13_t configuration_set_code_retention_period_V13;
@@ -1388,6 +1363,7 @@ typedef union {
     pd_configuration_set_minimum_validation_upgrade_delay_V13_t configuration_set_minimum_validation_upgrade_delay_V13;
     pd_configuration_set_bypass_consistency_check_V13_t configuration_set_bypass_consistency_check_V13;
     pd_initializer_force_approve_V13_t initializer_force_approve_V13;
+    pd_ump_service_overweight_V13_t ump_service_overweight_V13;
     pd_hrmp_force_process_hrmp_open_V13_t hrmp_force_process_hrmp_open_V13;
     pd_hrmp_force_process_hrmp_close_V13_t hrmp_force_process_hrmp_close_V13;
     pd_parasdisputes_force_unfreeze_V13_t parasdisputes_force_unfreeze_V13;
@@ -1455,6 +1431,114 @@ typedef struct {
     pd_CompactBalance_t new_reserved;
 } pd_balances_set_balance_V13_t;
 
+#define PD_CALL_DEMOCRACY_PROPOSE_V13 0
+typedef struct {
+    pd_Hash_t proposal_hash;
+    pd_CompactBalance_t amount;
+} pd_democracy_propose_V13_t;
+
+#define PD_CALL_DEMOCRACY_SECOND_V13 1
+typedef struct {
+    pd_Compactu32_t proposal;
+    pd_Compactu32_t seconds_upper_bound;
+} pd_democracy_second_V13_t;
+
+#define PD_CALL_DEMOCRACY_VOTE_V13 2
+typedef struct {
+    pd_Compactu32_t ref_index;
+    pd_AccountVote_V13_t vote;
+} pd_democracy_vote_V13_t;
+
+#define PD_CALL_DEMOCRACY_EMERGENCY_CANCEL_V13 3
+typedef struct {
+    pd_ReferendumIndex_V13_t ref_index;
+} pd_democracy_emergency_cancel_V13_t;
+
+#define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_V13 4
+typedef struct {
+    pd_Hash_t proposal_hash;
+} pd_democracy_external_propose_V13_t;
+
+#define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_MAJORITY_V13 5
+typedef struct {
+    pd_Hash_t proposal_hash;
+} pd_democracy_external_propose_majority_V13_t;
+
+#define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_DEFAULT_V13 6
+typedef struct {
+    pd_Hash_t proposal_hash;
+} pd_democracy_external_propose_default_V13_t;
+
+#define PD_CALL_DEMOCRACY_FAST_TRACK_V13 7
+typedef struct {
+    pd_Hash_t proposal_hash;
+    pd_BlockNumber_t voting_period;
+    pd_BlockNumber_t delay;
+} pd_democracy_fast_track_V13_t;
+
+#define PD_CALL_DEMOCRACY_VETO_EXTERNAL_V13 8
+typedef struct {
+    pd_Hash_t proposal_hash;
+} pd_democracy_veto_external_V13_t;
+
+#define PD_CALL_DEMOCRACY_CANCEL_REFERENDUM_V13 9
+typedef struct {
+    pd_Compactu32_t ref_index;
+} pd_democracy_cancel_referendum_V13_t;
+
+#define PD_CALL_DEMOCRACY_CANCEL_QUEUED_V13 10
+typedef struct {
+    pd_ReferendumIndex_V13_t which;
+} pd_democracy_cancel_queued_V13_t;
+
+#define PD_CALL_DEMOCRACY_DELEGATE_V13 11
+typedef struct {
+    pd_AccountId_V13_t to;
+    pd_Conviction_V13_t conviction;
+    pd_Balance_t balance;
+} pd_democracy_delegate_V13_t;
+
+#define PD_CALL_DEMOCRACY_UNDELEGATE_V13 12
+typedef struct {
+} pd_democracy_undelegate_V13_t;
+
+#define PD_CALL_DEMOCRACY_CLEAR_PUBLIC_PROPOSALS_V13 13
+typedef struct {
+} pd_democracy_clear_public_proposals_V13_t;
+
+#define PD_CALL_DEMOCRACY_REAP_PREIMAGE_V13 18
+typedef struct {
+    pd_Hash_t proposal_hash;
+    pd_Compactu32_t proposal_len_upper_bound;
+} pd_democracy_reap_preimage_V13_t;
+
+#define PD_CALL_DEMOCRACY_UNLOCK_V13 19
+typedef struct {
+    pd_AccountId_V13_t target;
+} pd_democracy_unlock_V13_t;
+
+#define PD_CALL_DEMOCRACY_REMOVE_VOTE_V13 20
+typedef struct {
+    pd_ReferendumIndex_V13_t index;
+} pd_democracy_remove_vote_V13_t;
+
+#define PD_CALL_DEMOCRACY_REMOVE_OTHER_VOTE_V13 21
+typedef struct {
+    pd_AccountId_V13_t target;
+    pd_ReferendumIndex_V13_t index;
+} pd_democracy_remove_other_vote_V13_t;
+
+#define PD_CALL_DEMOCRACY_ENACT_PROPOSAL_V13 22
+typedef struct {
+    pd_Hash_t proposal_hash;
+    pd_ReferendumIndex_V13_t index;
+} pd_democracy_enact_proposal_V13_t;
+
+#define PD_CALL_DEMOCRACY_CANCEL_PROPOSAL_V13 24
+typedef struct {
+    pd_Compactu32_t prop_index;
+} pd_democracy_cancel_proposal_V13_t;
+
 #define PD_CALL_PROXY_PROXY_V13 0
 typedef struct {
     pd_AccountId_V13_t real;
@@ -1509,6 +1593,26 @@ typedef union {
     pd_system_set_code_without_checks_V13_t system_set_code_without_checks_V13;
     pd_system_remark_with_event_V13_t system_remark_with_event_V13;
     pd_balances_set_balance_V13_t balances_set_balance_V13;
+    pd_democracy_propose_V13_t democracy_propose_V13;
+    pd_democracy_second_V13_t democracy_second_V13;
+    pd_democracy_vote_V13_t democracy_vote_V13;
+    pd_democracy_emergency_cancel_V13_t democracy_emergency_cancel_V13;
+    pd_democracy_external_propose_V13_t democracy_external_propose_V13;
+    pd_democracy_external_propose_majority_V13_t democracy_external_propose_majority_V13;
+    pd_democracy_external_propose_default_V13_t democracy_external_propose_default_V13;
+    pd_democracy_fast_track_V13_t democracy_fast_track_V13;
+    pd_democracy_veto_external_V13_t democracy_veto_external_V13;
+    pd_democracy_cancel_referendum_V13_t democracy_cancel_referendum_V13;
+    pd_democracy_cancel_queued_V13_t democracy_cancel_queued_V13;
+    pd_democracy_delegate_V13_t democracy_delegate_V13;
+    pd_democracy_undelegate_V13_t democracy_undelegate_V13;
+    pd_democracy_clear_public_proposals_V13_t democracy_clear_public_proposals_V13;
+    pd_democracy_reap_preimage_V13_t democracy_reap_preimage_V13;
+    pd_democracy_unlock_V13_t democracy_unlock_V13;
+    pd_democracy_remove_vote_V13_t democracy_remove_vote_V13;
+    pd_democracy_remove_other_vote_V13_t democracy_remove_other_vote_V13;
+    pd_democracy_enact_proposal_V13_t democracy_enact_proposal_V13;
+    pd_democracy_cancel_proposal_V13_t democracy_cancel_proposal_V13;
     pd_proxy_proxy_V13_t proxy_proxy_V13;
     pd_multisig_as_multi_threshold_1_V13_t multisig_as_multi_threshold_1_V13;
     pd_multisig_as_multi_V13_t multisig_as_multi_V13;

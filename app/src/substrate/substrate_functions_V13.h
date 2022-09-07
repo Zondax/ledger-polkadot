@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  (c) 2019 - 2022 Zondax GmbH
+ *  (c) 2019 - 2022 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -31,8 +31,12 @@ parser_error_t _readAccountIndex_V13(parser_context_t* c, pd_AccountIndex_V13_t*
 parser_error_t _readAccountVoteSplit_V13(parser_context_t* c, pd_AccountVoteSplit_V13_t* v);
 parser_error_t _readAccountVoteStandard_V13(parser_context_t* c, pd_AccountVoteStandard_V13_t* v);
 parser_error_t _readAccountVote_V13(parser_context_t* c, pd_AccountVote_V13_t* v);
+parser_error_t _readBondExtraBalanceOfT_V13(parser_context_t* c, pd_BondExtraBalanceOfT_V13_t* v);
 parser_error_t _readCompactAccountIndex_V13(parser_context_t* c, pd_CompactAccountIndex_V13_t* v);
 parser_error_t _readCompactPerBill_V13(parser_context_t* c, pd_CompactPerBill_V13_t* v);
+parser_error_t _readConfigOpAccountId_V13(parser_context_t* c, pd_ConfigOpAccountId_V13_t* v);
+parser_error_t _readConfigOpBalanceOfT_V13(parser_context_t* c, pd_ConfigOpBalanceOfT_V13_t* v);
+parser_error_t _readConfigOpu32_V13(parser_context_t* c, pd_ConfigOpu32_V13_t* v);
 parser_error_t _readConviction_V13(parser_context_t* c, pd_Conviction_V13_t* v);
 parser_error_t _readEcdsaPublic_V13(parser_context_t* c, pd_EcdsaPublic_V13_t* v);
 parser_error_t _readEcdsaSignature_V13(parser_context_t* c, pd_EcdsaSignature_V13_t* v);
@@ -51,8 +55,11 @@ parser_error_t _readOptionMultiSignature_V13(parser_context_t* c, pd_OptionMulti
 parser_error_t _readOptionMultiSigner_V13(parser_context_t* c, pd_OptionMultiSigner_V13_t* v);
 parser_error_t _readOptionProxyType_V13(parser_context_t* c, pd_OptionProxyType_V13_t* v);
 parser_error_t _readOptionTimepoint_V13(parser_context_t* c, pd_OptionTimepoint_V13_t* v);
+parser_error_t _readOverweightIndex_V13(parser_context_t* c, pd_OverweightIndex_V13_t* v);
 parser_error_t _readParaId_V13(parser_context_t* c, pd_ParaId_V13_t* v);
 parser_error_t _readPerbill_V13(parser_context_t* c, pd_Perbill_V13_t* v);
+parser_error_t _readPoolId_V13(parser_context_t* c, pd_PoolId_V13_t* v);
+parser_error_t _readPoolState_V13(parser_context_t* c, pd_PoolState_V13_t* v);
 parser_error_t _readProxyType_V13(parser_context_t* c, pd_ProxyType_V13_t* v);
 parser_error_t _readReferendumIndex_V13(parser_context_t* c, pd_ReferendumIndex_V13_t* v);
 parser_error_t _readRegistrarIndex_V13(parser_context_t* c, pd_RegistrarIndex_V13_t* v);
@@ -104,6 +111,13 @@ parser_error_t _toStringAccountVote_V13(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringBondExtraBalanceOfT_V13(
+    const pd_BondExtraBalanceOfT_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringCompactAccountIndex_V13(
     const pd_CompactAccountIndex_V13_t* v,
     char* outValue,
@@ -113,6 +127,27 @@ parser_error_t _toStringCompactAccountIndex_V13(
 
 parser_error_t _toStringCompactPerBill_V13(
     const pd_CompactPerBill_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringConfigOpAccountId_V13(
+    const pd_ConfigOpAccountId_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringConfigOpBalanceOfT_V13(
+    const pd_ConfigOpBalanceOfT_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringConfigOpu32_V13(
+    const pd_ConfigOpu32_V13_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -244,6 +279,13 @@ parser_error_t _toStringOptionTimepoint_V13(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringOverweightIndex_V13(
+    const pd_OverweightIndex_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringParaId_V13(
     const pd_ParaId_V13_t* v,
     char* outValue,
@@ -253,6 +295,20 @@ parser_error_t _toStringParaId_V13(
 
 parser_error_t _toStringPerbill_V13(
     const pd_Perbill_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringPoolId_V13(
+    const pd_PoolId_V13_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringPoolState_V13(
+    const pd_PoolState_V13_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
