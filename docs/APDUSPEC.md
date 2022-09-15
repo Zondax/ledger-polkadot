@@ -68,18 +68,18 @@ The general structure of commands and responses is as follows:
 
 #### Command
 
-| Field   | Type     | Content                   | Expected   |
-| ------- | -------- | ------------------------- | ---------- |
-| CLA     | byte (1) | Application Identifier    | 0x90       |
-| INS     | byte (1) | Instruction ID            | 0x01       |
-| P1      | byte (1) | Request User confirmation | No = 0     |
-| P2      | byte (1) | Parameter 2               | ignored    |
-| L       | byte (1) | Bytes in payload          | (depends)  |
-| Path[0] | byte (4) | Derivation Path Data      | 0x80000000 | 44 |
-| Path[1] | byte (4) | Derivation Path Data      | 0x80000000 | ??? |
-| Path[2] | byte (4) | Derivation Path Data      | ?          |
-| Path[3] | byte (4) | Derivation Path Data      | ?          |
-| Path[4] | byte (4) | Derivation Path Data      | ?          |
+| Field   | Type     | Content                   | Expected   |     |
+| ------- | -------- | ------------------------- | ---------- | --- |
+| CLA     | byte (1) | Application Identifier    | 0x90       |     |
+| INS     | byte (1) | Instruction ID            | 0x01       |     |
+| P1      | byte (1) | Request User confirmation | No = 0     |     |
+| P2      | byte (1) | Parameter 2               | ignored    |     |
+| L       | byte (1) | Bytes in payload          | (depends)  |     |
+| Path[0] | byte (4) | Derivation Path Data      | 0x80000000 | 44  |
+| Path[1] | byte (4) | Derivation Path Data      | 0x80000000 | 354 |
+| Path[2] | byte (4) | Derivation Path Data      | ?          |     |
+| Path[3] | byte (4) | Derivation Path Data      | ?          |     |
+| Path[4] | byte (4) | Derivation Path Data      | ?          |     |
 
 #### Response
 
@@ -95,18 +95,18 @@ The general structure of commands and responses is as follows:
 
 #### Command
 
-| Field   | Type     | Content                   | Expected   |
-| ------- | -------- | ------------------------- | ---------- |
-| CLA     | byte (1) | Application Identifier    | 0x99       |
-| INS     | byte (1) | Instruction ID            | 0x11       |
-| P1      | byte (1) | Request User confirmation | No = 0     |
-| P2      | byte (1) | Parameter 2               | ignored    |
-| L       | byte (1) | Bytes in payload          | (depends)  |
-| Path[0] | byte (4) | Derivation Path Data      | 0x80000000 | 44 |
-| Path[1] | byte (4) | Derivation Path Data      | 0x80000000 | ??? |
-| Path[2] | byte (4) | Derivation Path Data      | ?          |
-| Path[3] | byte (4) | Derivation Path Data      | ?          |
-| Path[4] | byte (4) | Derivation Path Data      | ?          |
+| Field   | Type     | Content                   | Expected   |     |
+| ------- | -------- | ------------------------- | ---------- | --- |
+| CLA     | byte (1) | Application Identifier    | 0x90       |     |
+| INS     | byte (1) | Instruction ID            | 0x11       |     |
+| P1      | byte (1) | Request User confirmation | No = 0     |     |
+| P2      | byte (1) | Parameter 2               | ignored    |     |
+| L       | byte (1) | Bytes in payload          | (depends)  |     |
+| Path[0] | byte (4) | Derivation Path Data      | 0x80000000 | 44  |
+| Path[1] | byte (4) | Derivation Path Data      | 0x80000000 | 354 |
+| Path[2] | byte (4) | Derivation Path Data      | ?          |     |
+| Path[3] | byte (4) | Derivation Path Data      | ?          |     |
+| Path[4] | byte (4) | Derivation Path Data      | ?          |     |
 
 #### Response
 
@@ -141,7 +141,7 @@ All other packets/chunks contain data chunks that are described below
 | Field   | Type     | Content              | Expected |
 | ------- | -------- | -------------------- | -------- |
 | Path[0] | byte (4) | Derivation Path Data | 44       |
-| Path[1] | byte (4) | Derivation Path Data | 434      |
+| Path[1] | byte (4) | Derivation Path Data | 354      |
 | Path[2] | byte (4) | Derivation Path Data | ?        |
 | Path[3] | byte (4) | Derivation Path Data | ?        |
 | Path[4] | byte (4) | Derivation Path Data | ?        |
@@ -167,7 +167,7 @@ All other packets/chunks contain data chunks that are described below
 
 | Field | Type     | Content                | Expected  |
 | ----- | -------- | ---------------------- | --------- |
-| CLA   | byte (1) | Application Identifier | 0x99      |
+| CLA   | byte (1) | Application Identifier | 0x90      |
 | INS   | byte (1) | Instruction ID         | 0x12      |
 | P1    | byte (1) | Payload desc           | 0 = init  |
 |       |          |                        | 1 = add   |
@@ -184,7 +184,7 @@ All other packets/chunks contain data chunks that are described below
 | Field   | Type     | Content              | Expected |
 | ------- | -------- | -------------------- | -------- |
 | Path[0] | byte (4) | Derivation Path Data | 44       |
-| Path[1] | byte (4) | Derivation Path Data | 434      |
+| Path[1] | byte (4) | Derivation Path Data | 354      |
 | Path[2] | byte (4) | Derivation Path Data | ?        |
 | Path[3] | byte (4) | Derivation Path Data | ?        |
 | Path[4] | byte (4) | Derivation Path Data | ?        |
