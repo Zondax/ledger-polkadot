@@ -1,34 +1,4 @@
-# Ledger Polkadot App
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![GithubActions](https://github.com/zondax/ledger-polkadot/actions/workflows/main.yml/badge.svg)](https://github.com/Zondax/ledger-polkadot/blob/main/.github/workflows/main.yaml)
-
----
-
-![zondax_light](docs/zondax_light.png#gh-light-mode-only)
-![zondax_dark](docs/zondax_dark.png#gh-dark-mode-only)
-
-_Please visit our website at [zondax.ch](https://www.zondax.ch)_
-
----
-
-This project contains the Polkadot app (https://polkadot.network/) for Ledger Nano S and X.
-
-- Ledger Nano S/X BOLOS app
-- Specs / Documentation
-- C++ unit tests
-- Zemu tests
-
-For more information: [How to build](docs/build.md)
-
-## ATTENTION
-
-Please:
-
-- **Do not use in production**
-- **Do not use a Ledger device with funds for development purposes.**
-- **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot  13.9280.x
+# Polkadot  13.9270.x
 
 ## System
 
@@ -370,24 +340,6 @@ Please:
 |Rebag |    | :heavy_check_mark: |   | `AccountId` dislocated <br/> |
 |Put in front of |    | :heavy_check_mark: |   | `AccountId` lighter <br/> |
 
-## NominationPools
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Join |    | :heavy_check_mark: |   | `Compactu128` amount <br/>`PoolId` pool_id <br/> |
-|Bond extra |    | :heavy_check_mark: |   | `BondExtraBalanceOfT` extra <br/> |
-|Claim payout |    | :heavy_check_mark: |   |  |
-|Unbond |    | :heavy_check_mark: |   | `AccountId` member_account <br/>`Compactu128` unbonding_points <br/> |
-|Pool withdraw unbonded |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`u32` num_slashing_spans <br/> |
-|Withdraw Unbonded |    | :heavy_check_mark: |   | `AccountId` member_account <br/>`u32` num_slashing_spans <br/> |
-|Create |    | :heavy_check_mark: |   | `Compactu128` amount <br/>`AccountId` root <br/>`AccountId` nominator <br/>`AccountId` state_toggler <br/> |
-|Nominate |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`VecAccountId` validators <br/> |
-|Set state |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`PoolState` state <br/> |
-|Set metadata |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`Vecu8` metadata <br/> |
-|Set configs |    | :heavy_check_mark: |   | `ConfigOpBalanceOfT` min_join_bond <br/>`ConfigOpBalanceOfT` min_create_bond <br/>`ConfigOpu32` max_pools <br/>`ConfigOpu32` max_members <br/>`ConfigOpu32` max_members_per_pool <br/> |
-|Update roles |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`ConfigOpAccountId` new_root <br/>`ConfigOpAccountId` new_nominator <br/>`ConfigOpAccountId` new_state_toggler <br/> |
-|Chill |    | :heavy_check_mark: |   | `PoolId` pool_id <br/> |
-
 ## Configuration
 
 | Name        | Light | XL | Nesting | Arguments |
@@ -482,7 +434,7 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Service overweight |    | :heavy_check_mark: |   | `OverweightIndex` index <br/>`Weight` weight_limit <br/> |
+|Service overweight |    |   |   | `OverweightIndex` index <br/>`Weight` weight_limit <br/> |
 
 ## Hrmp
 
