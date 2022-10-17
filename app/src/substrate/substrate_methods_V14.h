@@ -821,7 +821,7 @@ typedef struct {
 
 #define PD_CALL_NOMINATIONPOOLS_JOIN_V14 0
 typedef struct {
-    pd_Compactu128_t amount;
+    pd_CompactBalance_t amount;
     pd_PoolId_V14_t pool_id;
 } pd_nominationpools_join_V14_t;
 
@@ -837,7 +837,7 @@ typedef struct {
 #define PD_CALL_NOMINATIONPOOLS_UNBOND_V14 3
 typedef struct {
     pd_AccountIdLookupOfT_V14_t member_account;
-    pd_Compactu128_t unbonding_points;
+    pd_CompactBalance_t unbonding_points;
 } pd_nominationpools_unbond_V14_t;
 
 #define PD_CALL_NOMINATIONPOOLS_POOL_WITHDRAW_UNBONDED_V14 4
@@ -854,7 +854,7 @@ typedef struct {
 
 #define PD_CALL_NOMINATIONPOOLS_CREATE_V14 6
 typedef struct {
-    pd_Compactu128_t amount;
+    pd_CompactBalance_t amount;
     pd_AccountIdLookupOfT_V14_t root;
     pd_AccountIdLookupOfT_V14_t nominator;
     pd_AccountIdLookupOfT_V14_t state_toggler;
