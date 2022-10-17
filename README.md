@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot  14.9290.x
+# Polkadot  15.9300.x
 
 ## System
 
@@ -129,7 +129,6 @@ Please:
 |Cancel deferred slash |    | :heavy_check_mark: |   | `EraIndex` era <br/>`Vecu32` slash_indices <br/> |
 |Payout stakers | :heavy_check_mark:  | :heavy_check_mark: |   | `AccountId` validator_stash <br/>`EraIndex` era <br/> |
 |Rebond | :heavy_check_mark:  | :heavy_check_mark: |   | `CompactBalance` amount <br/> |
-|Set history depth |    | :heavy_check_mark: |   | `Compactu32` new_history_depth <br/>`Compactu32` era_items_deleted <br/> |
 |Reap stash |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> |
 |Kick |    | :heavy_check_mark: |   | `VecAccountIdLookupOfT` who <br/> |
 |Set staking configs |    |   |   | `ConfigOpBalanceOfT` min_nominator_bond <br/>`ConfigOpBalanceOfT` min_validator_bond <br/>`ConfigOpu32` max_nominator_count <br/>`ConfigOpu32` max_validator_count <br/>`ConfigOpPercent` chill_threshold <br/>`ConfigOpPerbill` min_commission <br/> |
@@ -285,7 +284,7 @@ Please:
 |Set fee |    | :heavy_check_mark: |   | `Compactu32` index <br/>`Compactu128` fee <br/> |
 |Set account id |    | :heavy_check_mark: |   | `Compactu32` index <br/>`AccountIdLookupOfT` new_ <br/> |
 |Set fields |    |   |   | `Compactu32` index <br/>`IdentityFields` fields <br/> |
-|Provide judgement |    |   |   | `Compactu32` reg_index <br/>`AccountIdLookupOfT` target <br/>`JudgementBalanceOfT` judgement <br/> |
+|Provide judgement |    |   |   | `Compactu32` reg_index <br/>`AccountIdLookupOfT` target <br/>`JudgementBalanceOfT` judgement <br/>`Hash` identity <br/> |
 |Kill identity |    | :heavy_check_mark: |   | `AccountIdLookupOfT` target <br/> |
 |Add sub |    |   |   | `AccountIdLookupOfT` sub <br/>`Data` data <br/> |
 |Rename sub |    |   |   | `AccountIdLookupOfT` sub <br/>`Data` data <br/> |
@@ -300,8 +299,8 @@ Please:
 |Add proxy |    | :heavy_check_mark: |   | `AccountIdLookupOfT` delegate <br/>`ProxyType` proxy_type <br/>`BlockNumber` delay <br/> |
 |Remove proxy |    | :heavy_check_mark: |   | `AccountIdLookupOfT` delegate <br/>`ProxyType` proxy_type <br/>`BlockNumber` delay <br/> |
 |Remove proxies |    | :heavy_check_mark: |   |  |
-|Anonymous |    | :heavy_check_mark: |   | `ProxyType` proxy_type <br/>`BlockNumber` delay <br/>`u16` index <br/> |
-|Kill anonymous |    | :heavy_check_mark: |   | `AccountIdLookupOfT` spawner <br/>`ProxyType` proxy_type <br/>`u16` index <br/>`Compactu32` height <br/>`Compactu32` ext_index <br/> |
+|Create pure |    | :heavy_check_mark: |   | `ProxyType` proxy_type <br/>`BlockNumber` delay <br/>`u16` index <br/> |
+|Kill pure |    | :heavy_check_mark: |   | `AccountIdLookupOfT` spawner <br/>`ProxyType` proxy_type <br/>`u16` index <br/>`Compactu32` height <br/>`Compactu32` ext_index <br/> |
 |Announce |    |   |   | `AccountIdLookupOfT` real <br/>`CallHashOf` call_hash <br/> |
 |Remove announcement |    |   |   | `AccountIdLookupOfT` real <br/>`CallHashOf` call_hash <br/> |
 |Reject announcement |    |   |   | `AccountIdLookupOfT` delegate <br/>`CallHashOf` call_hash <br/> |
@@ -374,19 +373,27 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Join |    | :heavy_check_mark: |   | `Compactu128` amount <br/>`PoolId` pool_id <br/> |
+|Join |    | :heavy_check_mark: |   | `CompactBalance` amount <br/>`PoolId` pool_id <br/> |
 |Bond extra |    | :heavy_check_mark: |   | `BondExtraBalanceOfT` extra <br/> |
 |Claim payout |    | :heavy_check_mark: |   |  |
-|Unbond |    | :heavy_check_mark: |   | `AccountIdLookupOfT` member_account <br/>`Compactu128` unbonding_points <br/> |
+|Unbond |    | :heavy_check_mark: |   | `AccountIdLookupOfT` member_account <br/>`CompactBalance` unbonding_points <br/> |
 |Pool withdraw unbonded |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`u32` num_slashing_spans <br/> |
 |Withdraw Unbonded |    | :heavy_check_mark: |   | `AccountIdLookupOfT` member_account <br/>`u32` num_slashing_spans <br/> |
-|Create |    | :heavy_check_mark: |   | `Compactu128` amount <br/>`AccountIdLookupOfT` root <br/>`AccountIdLookupOfT` nominator <br/>`AccountIdLookupOfT` state_toggler <br/> |
+|Create |    | :heavy_check_mark: |   | `CompactBalance` amount <br/>`AccountIdLookupOfT` root <br/>`AccountIdLookupOfT` nominator <br/>`AccountIdLookupOfT` state_toggler <br/> |
 |Nominate |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`VecAccountId` validators <br/> |
 |Set state |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`PoolState` state <br/> |
 |Set metadata |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`Vecu8` metadata <br/> |
 |Set configs |    | :heavy_check_mark: |   | `ConfigOpBalanceOfT` min_join_bond <br/>`ConfigOpBalanceOfT` min_create_bond <br/>`ConfigOpu32` max_pools <br/>`ConfigOpu32` max_members <br/>`ConfigOpu32` max_members_per_pool <br/> |
 |Update roles |    | :heavy_check_mark: |   | `PoolId` pool_id <br/>`ConfigOpAccountId` new_root <br/>`ConfigOpAccountId` new_nominator <br/>`ConfigOpAccountId` new_state_toggler <br/> |
 |Chill |    | :heavy_check_mark: |   | `PoolId` pool_id <br/> |
+
+## FastUnstake
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Register fast unstake |    | :heavy_check_mark: |   |  |
+|Deregister |    | :heavy_check_mark: |   |  |
+|Control |    | :heavy_check_mark: |   | `EraIndex` unchecked_eras_to_check <br/> |
 
 ## Configuration
 
@@ -550,7 +557,7 @@ Please:
 |Send |    |   |   | `BoxVersionedMultiLocation` dest <br/>`BoxVersionedXcmTuple` message <br/> |
 |Teleport assets |    |   |   | `BoxVersionedMultiLocation` dest <br/>`BoxVersionedMultiLocation` beneficiary <br/>`BoxVersionedMultiAssets` assets <br/>`u32` fee_asset_item <br/> |
 |Reserve transfer assets |    |   |   | `BoxVersionedMultiLocation` dest <br/>`BoxVersionedMultiLocation` beneficiary <br/>`BoxVersionedMultiAssets` assets <br/>`u32` fee_asset_item <br/> |
-|Execute |    |   |   | `BoxVersionedXcmTasSysConfigCall` message <br/>`Weight` max_weight <br/> |
+|Execute |    |   |   | `BoxVersionedXcmTasSysConfigRuntimeCall` message <br/>`Weight` max_weight <br/> |
 |Force xcm version |    |   |   | `BoxMultiLocation` location <br/>`XcmVersion` xcm_version <br/> |
 |Force default xcm version |    |   |   | `OptionXcmVersion` maybe_xcm_version <br/> |
 |Force subscribe version notify |    |   |   | `BoxVersionedMultiLocation` location <br/> |
