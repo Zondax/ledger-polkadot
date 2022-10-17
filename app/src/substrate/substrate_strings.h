@@ -54,6 +54,7 @@ static const char* STR_MO_PARASDISPUTES = "Parasdisputes";
 static const char* STR_MO_REGISTRAR = "Registrar";
 static const char* STR_MO_AUCTIONS = "Auctions";
 static const char* STR_MO_CROWDLOAN = "Crowdloan";
+static const char* STR_MO_FASTUNSTAKE = "Fastunstake";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";
@@ -267,6 +268,11 @@ static const char* STR_ME_EDIT = "Edit";
 static const char* STR_ME_ADD_MEMO = "Add memo";
 static const char* STR_ME_POKE = "Poke";
 static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
+static const char* STR_ME_CREATE_PURE = "Create pure";
+static const char* STR_ME_KILL_PURE = "Kill pure";
+static const char* STR_ME_REGISTER_FAST_UNSTAKE = "Register fast unstake";
+static const char* STR_ME_DEREGISTER = "Deregister";
+static const char* STR_ME_CONTROL = "Control";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
@@ -445,6 +451,8 @@ static const char* STR_IT_end = "End";
 static const char* STR_IT_verifier = "Verifier";
 static const char* STR_IT_signature = "Signature";
 static const char* STR_IT_memo = "Memo";
+static const char* STR_IT_identity = "Identity";
+static const char* STR_IT_unchecked_eras_to_check = "Unchecked eras to check";
 
 #ifdef __cplusplus
 }
