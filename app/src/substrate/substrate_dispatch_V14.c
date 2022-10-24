@@ -1319,7 +1319,7 @@ __Z_INLINE parser_error_t _readMethod_voterlist_put_in_front_of_V14(
 __Z_INLINE parser_error_t _readMethod_nominationpools_join_V14(
     parser_context_t* c, pd_nominationpools_join_V14_t* m)
 {
-    CHECK_ERROR(_readCompactu128(c, &m->amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     CHECK_ERROR(_readPoolId_V14(c, &m->pool_id))
     return parser_ok;
 }
@@ -1341,7 +1341,7 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_unbond_V14(
     parser_context_t* c, pd_nominationpools_unbond_V14_t* m)
 {
     CHECK_ERROR(_readAccountIdLookupOfT_V14(c, &m->member_account))
-    CHECK_ERROR(_readCompactu128(c, &m->unbonding_points))
+    CHECK_ERROR(_readCompactBalance(c, &m->unbonding_points))
     return parser_ok;
 }
 
@@ -1364,7 +1364,7 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_withdraw_unbonded_V14(
 __Z_INLINE parser_error_t _readMethod_nominationpools_create_V14(
     parser_context_t* c, pd_nominationpools_create_V14_t* m)
 {
-    CHECK_ERROR(_readCompactu128(c, &m->amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     CHECK_ERROR(_readAccountIdLookupOfT_V14(c, &m->root))
     CHECK_ERROR(_readAccountIdLookupOfT_V14(c, &m->nominator))
     CHECK_ERROR(_readAccountIdLookupOfT_V14(c, &m->state_toggler))
@@ -7803,7 +7803,7 @@ parser_error_t _getMethod_ItemValue_V14(
     case 9984: /* module 39 call 0 */
         switch (itemIdx) {
         case 0: /* nominationpools_join_V14 - amount */;
-            return _toStringCompactu128(
+            return _toStringCompactBalance(
                 &m->basic.nominationpools_join_V14.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7838,7 +7838,7 @@ parser_error_t _getMethod_ItemValue_V14(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_unbond_V14 - unbonding_points */;
-            return _toStringCompactu128(
+            return _toStringCompactBalance(
                 &m->basic.nominationpools_unbond_V14.unbonding_points,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7878,7 +7878,7 @@ parser_error_t _getMethod_ItemValue_V14(
     case 9990: /* module 39 call 6 */
         switch (itemIdx) {
         case 0: /* nominationpools_create_V14 - amount */;
-            return _toStringCompactu128(
+            return _toStringCompactBalance(
                 &m->basic.nominationpools_create_V14.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
