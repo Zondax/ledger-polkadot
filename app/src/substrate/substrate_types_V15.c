@@ -381,13 +381,12 @@ parser_error_t _readVote_V15(parser_context_t* c, pd_Vote_V15_t* v)
 {
     CHECK_INPUT()
     CHECK_ERROR(_readUInt8(c, &v->value))
-
-    if (v->value & 0x7F) {
-        return parser_value_out_of_range;
+    const uint8_t aye = v->value & 0xF0;
+    const uint8_t conviction = v->value & 0x0F;
+    if ((aye == 0x80 || aye == 0x00) && conviction <= 0x06) {
+        return parser_ok;
     }
-    v->value = (v->value & 0x80u) >> 7u;
-
-    return parser_ok;
+    return parser_value_out_of_range;
 }
 
 parser_error_t _readWeight_V15(parser_context_t* c, pd_Weight_V15_t* v)
@@ -1234,19 +1233,35 @@ parser_error_t _toStringVote_V15(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
-
     *pageCount = 1;
-    switch (v->value) {
-    case 0:
-        snprintf(outValue, outValueLen, "Nay");
+    const uint8_t conviction = v->value & 0x0F;
+
+    switch (v->value & 0xF0) {
+    case 0x80:
+        snprintf(outValue, outValueLen, "Aye - ");
         break;
-    case 1:
-        snprintf(outValue, outValueLen, "Aye");
+    case 0x00:
+        snprintf(outValue, outValueLen, "Nay - ");
         break;
     default:
         return parser_unexpected_value;
     }
 
+    switch (conviction) {
+    case 0:
+        snprintf(outValue + 6, outValueLen - 6, "None");
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+        snprintf(outValue + 6, outValueLen - 6, "Locked%dx", conviction);
+        break;
+    default:
+        return parser_unexpected_value;
+    }
     return parser_ok;
 }
 
