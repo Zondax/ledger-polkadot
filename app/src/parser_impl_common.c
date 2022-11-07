@@ -90,8 +90,6 @@ const char *parser_getErrorDescription(parser_error_t err) {
             return "Max nested calls reached";
         case parser_tx_call_vec_too_large:
             return "Call vector exceeds limit";
-        case parser_junction_limit:
-            return "Max junctions reached";
         default:
             return "Unrecognized error code";
     }
