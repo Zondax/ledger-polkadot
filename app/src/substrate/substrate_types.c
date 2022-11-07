@@ -153,6 +153,10 @@ parser_error_t _readBalanceOf(parser_context_t* c, pd_BalanceOf_t* v)
     return _readBalance(c, &v->value);
 }
 
+parser_error_t _readH256(parser_context_t* c, pd_H256_t* v) {
+    GEN_DEF_READARRAY(32)
+}
+
 parser_error_t _readTupleDataData(parser_context_t* c, pd_TupleDataData_t* v)
 {
     CHECK_INPUT()
@@ -210,10 +214,6 @@ parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v)
     v->callTxVersion = c->tx_obj->transactionVersion;
 
     return parser_ok;
-}
-
-parser_error_t _readH256(parser_context_t* c, pd_H256_t* v) {
-    GEN_DEF_READARRAY(32)
 }
 
 parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v) {
@@ -470,6 +470,16 @@ parser_error_t _toStringBalanceOf(
     return _toStringBalance(&v->value, outValue, outValueLen, pageIdx, pageCount);
 }
 
+parser_error_t _toStringH256(
+    const pd_H256_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    GEN_DEF_TOSTRING_ARRAY(32);
+}
+
 parser_error_t _toStringTupleDataData(
     const pd_TupleDataData_t* v,
     char* outValue,
@@ -655,16 +665,6 @@ parser_error_t _toStringVecCall(
     }
 
     return parser_print_not_supported;
-}
-
-parser_error_t _toStringH256(
-    const pd_H256_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    GEN_DEF_TOSTRING_ARRAY(32);
 }
 
 parser_error_t _toStringHash(
