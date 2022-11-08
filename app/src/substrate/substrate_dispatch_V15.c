@@ -18,6 +18,9 @@
 #include "substrate_strings.h"
 #include "zxmacros.h"
 #include <stdint.h>
+#ifdef LEDGER_SPECIFIC
+#include "bolos_target.h"
+#endif
 
 __Z_INLINE parser_error_t _readMethod_balances_transfer_V15(
     parser_context_t* c, pd_balances_transfer_V15_t* m)
@@ -245,6 +248,27 @@ __Z_INLINE parser_error_t _readMethod_crowdloan_contribute_all_V15(
 }
 
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+__Z_INLINE parser_error_t _readMethod_xcmpallet_reserve_transfer_assets_V15(
+    parser_context_t* c, pd_xcmpallet_reserve_transfer_assets_V15_t* m)
+{
+    CHECK_ERROR(_readBoxVersionedMultiLocation_V15(c, &m->dest))
+    CHECK_ERROR(_readBoxVersionedMultiLocation_V15(c, &m->beneficiary))
+    CHECK_ERROR(_readBoxVersionedMultiAssets_V15(c, &m->assets))
+    CHECK_ERROR(_readu32(c, &m->fee_asset_item))
+    return parser_ok;
+}
+__Z_INLINE parser_error_t _readMethod_xcmpallet_limited_reserve_transfer_assets_V15(
+    parser_context_t* c, pd_xcmpallet_limited_reserve_transfer_assets_V15_t* m)
+{
+    CHECK_ERROR(_readBoxVersionedMultiLocation_V15(c, &m->dest))
+    CHECK_ERROR(_readBoxVersionedMultiLocation_V15(c, &m->beneficiary))
+    CHECK_ERROR(_readBoxVersionedMultiAssets_V15(c, &m->assets))
+    CHECK_ERROR(_readu32(c, &m->fee_asset_item))
+    CHECK_ERROR(_readWeightLimit_V15(c, &m->weight_limit))
+    return parser_ok;
+}
+#endif
 __Z_INLINE parser_error_t _readMethod_system_fill_block_V15(
     parser_context_t* c, pd_system_fill_block_V15_t* m)
 {
@@ -391,6 +415,13 @@ __Z_INLINE parser_error_t _readMethod_staking_increase_validator_count_V15(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_staking_scale_validator_count_V15(
+    parser_context_t* c, pd_staking_scale_validator_count_V15_t* m)
+{
+    CHECK_ERROR(_readPercent_V15(c, &m->factor))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_staking_force_no_eras_V15(
     parser_context_t* c, pd_staking_force_no_eras_V15_t* m)
 {
@@ -447,6 +478,18 @@ __Z_INLINE parser_error_t _readMethod_staking_kick_V15(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_staking_set_staking_configs_V15(
+    parser_context_t* c, pd_staking_set_staking_configs_V15_t* m)
+{
+    CHECK_ERROR(_readConfigOpBalanceOfT_V15(c, &m->min_nominator_bond))
+    CHECK_ERROR(_readConfigOpBalanceOfT_V15(c, &m->min_validator_bond))
+    CHECK_ERROR(_readConfigOpu32_V15(c, &m->max_nominator_count))
+    CHECK_ERROR(_readConfigOpu32_V15(c, &m->max_validator_count))
+    CHECK_ERROR(_readConfigOpPercent_V15(c, &m->chill_threshold))
+    CHECK_ERROR(_readConfigOpPerbill_V15(c, &m->min_commission))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_staking_chill_other_V15(
     parser_context_t* c, pd_staking_chill_other_V15_t* m)
 {
@@ -458,14 +501,6 @@ __Z_INLINE parser_error_t _readMethod_staking_force_apply_min_commission_V15(
     parser_context_t* c, pd_staking_force_apply_min_commission_V15_t* m)
 {
     CHECK_ERROR(_readAccountId_V15(c, &m->validator_stash))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_grandpa_note_stalled_V15(
-    parser_context_t* c, pd_grandpa_note_stalled_V15_t* m)
-{
-    CHECK_ERROR(_readBlockNumber(c, &m->delay))
-    CHECK_ERROR(_readBlockNumber(c, &m->best_finalized_block_number))
     return parser_ok;
 }
 
@@ -951,6 +986,20 @@ __Z_INLINE parser_error_t _readMethod_identity_add_registrar_V15(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_identity_set_identity_V15(
+    parser_context_t* c, pd_identity_set_identity_V15_t* m)
+{
+    CHECK_ERROR(_readIdentityInfo_V15(c, &m->info))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_identity_set_subs_V15(
+    parser_context_t* c, pd_identity_set_subs_V15_t* m)
+{
+    CHECK_ERROR(_readVecTupleAccountIdData_V15(c, &m->subs))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_identity_clear_identity_V15(
     parser_context_t* c, pd_identity_clear_identity_V15_t* m)
 {
@@ -988,10 +1037,36 @@ __Z_INLINE parser_error_t _readMethod_identity_set_account_id_V15(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_identity_provide_judgement_V15(
+    parser_context_t* c, pd_identity_provide_judgement_V15_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->reg_index))
+    CHECK_ERROR(_readAccountIdLookupOfT_V15(c, &m->target))
+    CHECK_ERROR(_readJudgementBalanceOfT_V15(c, &m->judgement))
+    CHECK_ERROR(_readHash(c, &m->identity))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_identity_kill_identity_V15(
     parser_context_t* c, pd_identity_kill_identity_V15_t* m)
 {
     CHECK_ERROR(_readAccountIdLookupOfT_V15(c, &m->target))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_identity_add_sub_V15(
+    parser_context_t* c, pd_identity_add_sub_V15_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT_V15(c, &m->sub))
+    CHECK_ERROR(_readData(c, &m->data))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_identity_rename_sub_V15(
+    parser_context_t* c, pd_identity_rename_sub_V15_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT_V15(c, &m->sub))
+    CHECK_ERROR(_readData(c, &m->data))
     return parser_ok;
 }
 
@@ -1283,14 +1358,6 @@ __Z_INLINE parser_error_t _readMethod_tips_slash_tip_V15(
     parser_context_t* c, pd_tips_slash_tip_V15_t* m)
 {
     CHECK_ERROR(_readHash(c, &m->hash))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_governance_fallback_V15(
-    parser_context_t* c, pd_electionprovidermultiphase_governance_fallback_V15_t* m)
-{
-    CHECK_ERROR(_readOptionu32(c, &m->maybe_max_voters))
-    CHECK_ERROR(_readOptionu32(c, &m->maybe_max_targets))
     return parser_ok;
 }
 
@@ -1757,28 +1824,8 @@ __Z_INLINE parser_error_t _readMethod_ump_service_overweight_V15(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_hrmp_force_process_hrmp_open_V15(
-    parser_context_t* c, pd_hrmp_force_process_hrmp_open_V15_t* m)
-{
-    CHECK_ERROR(_readu32(c, &m->channels))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_hrmp_force_process_hrmp_close_V15(
-    parser_context_t* c, pd_hrmp_force_process_hrmp_close_V15_t* m)
-{
-    CHECK_ERROR(_readu32(c, &m->channels))
-    return parser_ok;
-}
-
 __Z_INLINE parser_error_t _readMethod_parasdisputes_force_unfreeze_V15(
     parser_context_t* c, pd_parasdisputes_force_unfreeze_V15_t* m)
-{
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_registrar_reserve_V15(
-    parser_context_t* c, pd_registrar_reserve_V15_t* m)
 {
     return parser_ok;
 }
@@ -1909,6 +1956,14 @@ parser_error_t _readMethod_V15(
         break;
 
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+    case 25346: /* module 99 call 2 */
+        CHECK_ERROR(_readMethod_xcmpallet_reserve_transfer_assets_V15(c, &method->basic.xcmpallet_reserve_transfer_assets_V15))
+        break;
+    case 25352: /* module 99 call 8 */
+        CHECK_ERROR(_readMethod_xcmpallet_limited_reserve_transfer_assets_V15(c, &method->basic.xcmpallet_limited_reserve_transfer_assets_V15))
+        break;
+#endif
     case 0: /* module 0 call 0 */
         CHECK_ERROR(_readMethod_system_fill_block_V15(c, &method->nested.system_fill_block_V15))
         break;
@@ -1969,6 +2024,9 @@ parser_error_t _readMethod_V15(
     case 1802: /* module 7 call 10 */
         CHECK_ERROR(_readMethod_staking_increase_validator_count_V15(c, &method->basic.staking_increase_validator_count_V15))
         break;
+    case 1803: /* module 7 call 11 */
+        CHECK_ERROR(_readMethod_staking_scale_validator_count_V15(c, &method->basic.staking_scale_validator_count_V15))
+        break;
     case 1804: /* module 7 call 12 */
         CHECK_ERROR(_readMethod_staking_force_no_eras_V15(c, &method->basic.staking_force_no_eras_V15))
         break;
@@ -1993,14 +2051,14 @@ parser_error_t _readMethod_V15(
     case 1813: /* module 7 call 21 */
         CHECK_ERROR(_readMethod_staking_kick_V15(c, &method->basic.staking_kick_V15))
         break;
+    case 1814: /* module 7 call 22 */
+        CHECK_ERROR(_readMethod_staking_set_staking_configs_V15(c, &method->basic.staking_set_staking_configs_V15))
+        break;
     case 1815: /* module 7 call 23 */
         CHECK_ERROR(_readMethod_staking_chill_other_V15(c, &method->basic.staking_chill_other_V15))
         break;
     case 1816: /* module 7 call 24 */
         CHECK_ERROR(_readMethod_staking_force_apply_min_commission_V15(c, &method->basic.staking_force_apply_min_commission_V15))
-        break;
-    case 2818: /* module 11 call 2 */
-        CHECK_ERROR(_readMethod_grandpa_note_stalled_V15(c, &method->basic.grandpa_note_stalled_V15))
         break;
     case 3584: /* module 14 call 0 */
         CHECK_ERROR(_readMethod_democracy_propose_V15(c, &method->nested.democracy_propose_V15))
@@ -2191,6 +2249,12 @@ parser_error_t _readMethod_V15(
     case 7168: /* module 28 call 0 */
         CHECK_ERROR(_readMethod_identity_add_registrar_V15(c, &method->basic.identity_add_registrar_V15))
         break;
+    case 7169: /* module 28 call 1 */
+        CHECK_ERROR(_readMethod_identity_set_identity_V15(c, &method->basic.identity_set_identity_V15))
+        break;
+    case 7170: /* module 28 call 2 */
+        CHECK_ERROR(_readMethod_identity_set_subs_V15(c, &method->basic.identity_set_subs_V15))
+        break;
     case 7171: /* module 28 call 3 */
         CHECK_ERROR(_readMethod_identity_clear_identity_V15(c, &method->basic.identity_clear_identity_V15))
         break;
@@ -2206,8 +2270,17 @@ parser_error_t _readMethod_V15(
     case 7175: /* module 28 call 7 */
         CHECK_ERROR(_readMethod_identity_set_account_id_V15(c, &method->basic.identity_set_account_id_V15))
         break;
+    case 7177: /* module 28 call 9 */
+        CHECK_ERROR(_readMethod_identity_provide_judgement_V15(c, &method->basic.identity_provide_judgement_V15))
+        break;
     case 7178: /* module 28 call 10 */
         CHECK_ERROR(_readMethod_identity_kill_identity_V15(c, &method->basic.identity_kill_identity_V15))
+        break;
+    case 7179: /* module 28 call 11 */
+        CHECK_ERROR(_readMethod_identity_add_sub_V15(c, &method->basic.identity_add_sub_V15))
+        break;
+    case 7180: /* module 28 call 12 */
+        CHECK_ERROR(_readMethod_identity_rename_sub_V15(c, &method->basic.identity_rename_sub_V15))
         break;
     case 7181: /* module 28 call 13 */
         CHECK_ERROR(_readMethod_identity_remove_sub_V15(c, &method->basic.identity_remove_sub_V15))
@@ -2313,9 +2386,6 @@ parser_error_t _readMethod_V15(
         break;
     case 8965: /* module 35 call 5 */
         CHECK_ERROR(_readMethod_tips_slash_tip_V15(c, &method->basic.tips_slash_tip_V15))
-        break;
-    case 9220: /* module 36 call 4 */
-        CHECK_ERROR(_readMethod_electionprovidermultiphase_governance_fallback_V15(c, &method->basic.electionprovidermultiphase_governance_fallback_V15))
         break;
     case 9472: /* module 37 call 0 */
         CHECK_ERROR(_readMethod_voterlist_rebag_V15(c, &method->basic.voterlist_rebag_V15))
@@ -2509,17 +2579,8 @@ parser_error_t _readMethod_V15(
     case 15104: /* module 59 call 0 */
         CHECK_ERROR(_readMethod_ump_service_overweight_V15(c, &method->basic.ump_service_overweight_V15))
         break;
-    case 15364: /* module 60 call 4 */
-        CHECK_ERROR(_readMethod_hrmp_force_process_hrmp_open_V15(c, &method->basic.hrmp_force_process_hrmp_open_V15))
-        break;
-    case 15365: /* module 60 call 5 */
-        CHECK_ERROR(_readMethod_hrmp_force_process_hrmp_close_V15(c, &method->basic.hrmp_force_process_hrmp_close_V15))
-        break;
     case 15872: /* module 62 call 0 */
         CHECK_ERROR(_readMethod_parasdisputes_force_unfreeze_V15(c, &method->basic.parasdisputes_force_unfreeze_V15))
-        break;
-    case 17925: /* module 70 call 5 */
-        CHECK_ERROR(_readMethod_registrar_reserve_V15(c, &method->basic.registrar_reserve_V15))
         break;
     case 18432: /* module 72 call 0 */
         CHECK_ERROR(_readMethod_auctions_new_auction_V15(c, &method->basic.auctions_new_auction_V15))
@@ -2557,6 +2618,10 @@ const char* _getMethod_ModuleName_V15(uint8_t moduleIdx)
     case 73:
         return STR_MO_CROWDLOAN;
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+    case 99:
+        return STR_MO_XCMPALLET;
+#endif
     case 0:
         return STR_MO_SYSTEM;
     case 10:
@@ -2565,8 +2630,6 @@ const char* _getMethod_ModuleName_V15(uint8_t moduleIdx)
         return STR_MO_TIMESTAMP;
     case 4:
         return STR_MO_INDICES;
-    case 11:
-        return STR_MO_GRANDPA;
     case 14:
         return STR_MO_DEMOCRACY;
     case 15:
@@ -2595,8 +2658,6 @@ const char* _getMethod_ModuleName_V15(uint8_t moduleIdx)
         return STR_MO_CHILDBOUNTIES;
     case 35:
         return STR_MO_TIPS;
-    case 36:
-        return STR_MO_ELECTIONPROVIDERMULTIPHASE;
     case 37:
         return STR_MO_VOTERLIST;
     case 39:
@@ -2609,12 +2670,8 @@ const char* _getMethod_ModuleName_V15(uint8_t moduleIdx)
         return STR_MO_INITIALIZER;
     case 59:
         return STR_MO_UMP;
-    case 60:
-        return STR_MO_HRMP;
     case 62:
         return STR_MO_PARASDISPUTES;
-    case 70:
-        return STR_MO_REGISTRAR;
     case 72:
         return STR_MO_AUCTIONS;
 #endif
@@ -2699,6 +2756,12 @@ const char* _getMethod_Name_V15_ParserFull(uint16_t callPrivIdx)
 {
     switch (callPrivIdx) {
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+    case 25346: /* module 99 call 2 */
+        return STR_ME_RESERVE_TRANSFER_ASSETS;
+    case 25352: /* module 99 call 8 */
+        return STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS;
+#endif
     case 0: /* module 0 call 0 */
         return STR_ME_FILL_BLOCK;
     case 1: /* module 0 call 1 */
@@ -2739,6 +2802,8 @@ const char* _getMethod_Name_V15_ParserFull(uint16_t callPrivIdx)
         return STR_ME_SET_VALIDATOR_COUNT;
     case 1802: /* module 7 call 10 */
         return STR_ME_INCREASE_VALIDATOR_COUNT;
+    case 1803: /* module 7 call 11 */
+        return STR_ME_SCALE_VALIDATOR_COUNT;
     case 1804: /* module 7 call 12 */
         return STR_ME_FORCE_NO_ERAS;
     case 1805: /* module 7 call 13 */
@@ -2755,12 +2820,12 @@ const char* _getMethod_Name_V15_ParserFull(uint16_t callPrivIdx)
         return STR_ME_REAP_STASH;
     case 1813: /* module 7 call 21 */
         return STR_ME_KICK;
+    case 1814: /* module 7 call 22 */
+        return STR_ME_SET_STAKING_CONFIGS;
     case 1815: /* module 7 call 23 */
         return STR_ME_CHILL_OTHER;
     case 1816: /* module 7 call 24 */
         return STR_ME_FORCE_APPLY_MIN_COMMISSION;
-    case 2818: /* module 11 call 2 */
-        return STR_ME_NOTE_STALLED;
     case 3584: /* module 14 call 0 */
         return STR_ME_PROPOSE;
     case 3585: /* module 14 call 1 */
@@ -2887,6 +2952,10 @@ const char* _getMethod_Name_V15_ParserFull(uint16_t callPrivIdx)
         return STR_ME_MERGE_SCHEDULES;
     case 7168: /* module 28 call 0 */
         return STR_ME_ADD_REGISTRAR;
+    case 7169: /* module 28 call 1 */
+        return STR_ME_SET_IDENTITY;
+    case 7170: /* module 28 call 2 */
+        return STR_ME_SET_SUBS;
     case 7171: /* module 28 call 3 */
         return STR_ME_CLEAR_IDENTITY;
     case 7172: /* module 28 call 4 */
@@ -2897,8 +2966,14 @@ const char* _getMethod_Name_V15_ParserFull(uint16_t callPrivIdx)
         return STR_ME_SET_FEE;
     case 7175: /* module 28 call 7 */
         return STR_ME_SET_ACCOUNT_ID;
+    case 7177: /* module 28 call 9 */
+        return STR_ME_PROVIDE_JUDGEMENT;
     case 7178: /* module 28 call 10 */
         return STR_ME_KILL_IDENTITY;
+    case 7179: /* module 28 call 11 */
+        return STR_ME_ADD_SUB;
+    case 7180: /* module 28 call 12 */
+        return STR_ME_RENAME_SUB;
     case 7181: /* module 28 call 13 */
         return STR_ME_REMOVE_SUB;
     case 7182: /* module 28 call 14 */
@@ -2969,8 +3044,6 @@ const char* _getMethod_Name_V15_ParserFull(uint16_t callPrivIdx)
         return STR_ME_CLOSE_TIP;
     case 8965: /* module 35 call 5 */
         return STR_ME_SLASH_TIP;
-    case 9220: /* module 36 call 4 */
-        return STR_ME_GOVERNANCE_FALLBACK;
     case 9472: /* module 37 call 0 */
         return STR_ME_REBAG;
     case 9473: /* module 37 call 1 */
@@ -3099,14 +3172,8 @@ const char* _getMethod_Name_V15_ParserFull(uint16_t callPrivIdx)
         return STR_ME_FORCE_APPROVE;
     case 15104: /* module 59 call 0 */
         return STR_ME_SERVICE_OVERWEIGHT;
-    case 15364: /* module 60 call 4 */
-        return STR_ME_FORCE_PROCESS_HRMP_OPEN;
-    case 15365: /* module 60 call 5 */
-        return STR_ME_FORCE_PROCESS_HRMP_CLOSE;
     case 15872: /* module 62 call 0 */
         return STR_ME_FORCE_UNFREEZE;
-    case 17925: /* module 70 call 5 */
-        return STR_ME_RESERVE;
     case 18432: /* module 72 call 0 */
         return STR_ME_NEW_AUCTION;
     case 18433: /* module 72 call 1 */
@@ -3185,6 +3252,12 @@ uint8_t _getMethod_NumItems_V15(uint8_t moduleIdx, uint8_t callIdx)
     case 18696: /* module 73 call 8 */
         return 2;
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+    case 25346: /* module 99 call 2 */
+        return 4;
+    case 25352: /* module 99 call 8 */
+        return 5;
+#endif
     case 0: /* module 0 call 0 */
         return 1;
     case 1: /* module 0 call 1 */
@@ -3225,6 +3298,8 @@ uint8_t _getMethod_NumItems_V15(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 1802: /* module 7 call 10 */
         return 1;
+    case 1803: /* module 7 call 11 */
+        return 1;
     case 1804: /* module 7 call 12 */
         return 0;
     case 1805: /* module 7 call 13 */
@@ -3241,12 +3316,12 @@ uint8_t _getMethod_NumItems_V15(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 1813: /* module 7 call 21 */
         return 1;
+    case 1814: /* module 7 call 22 */
+        return 6;
     case 1815: /* module 7 call 23 */
         return 1;
     case 1816: /* module 7 call 24 */
         return 1;
-    case 2818: /* module 11 call 2 */
-        return 2;
     case 3584: /* module 14 call 0 */
         return 2;
     case 3585: /* module 14 call 1 */
@@ -3373,6 +3448,10 @@ uint8_t _getMethod_NumItems_V15(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 7168: /* module 28 call 0 */
         return 1;
+    case 7169: /* module 28 call 1 */
+        return 1;
+    case 7170: /* module 28 call 2 */
+        return 1;
     case 7171: /* module 28 call 3 */
         return 0;
     case 7172: /* module 28 call 4 */
@@ -3383,8 +3462,14 @@ uint8_t _getMethod_NumItems_V15(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 7175: /* module 28 call 7 */
         return 2;
+    case 7177: /* module 28 call 9 */
+        return 4;
     case 7178: /* module 28 call 10 */
         return 1;
+    case 7179: /* module 28 call 11 */
+        return 2;
+    case 7180: /* module 28 call 12 */
+        return 2;
     case 7181: /* module 28 call 13 */
         return 1;
     case 7182: /* module 28 call 14 */
@@ -3455,8 +3540,6 @@ uint8_t _getMethod_NumItems_V15(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 8965: /* module 35 call 5 */
         return 1;
-    case 9220: /* module 36 call 4 */
-        return 2;
     case 9472: /* module 37 call 0 */
         return 1;
     case 9473: /* module 37 call 1 */
@@ -3585,13 +3668,7 @@ uint8_t _getMethod_NumItems_V15(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 15104: /* module 59 call 0 */
         return 2;
-    case 15364: /* module 60 call 4 */
-        return 1;
-    case 15365: /* module 60 call 5 */
-        return 1;
     case 15872: /* module 62 call 0 */
-        return 0;
-    case 17925: /* module 70 call 5 */
         return 0;
     case 18432: /* module 72 call 0 */
         return 2;
@@ -3860,6 +3937,36 @@ const char* _getMethod_ItemName_V15(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
             return NULL;
         }
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+    case 25346: /* module 99 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_dest;
+        case 1:
+            return STR_IT_beneficiary;
+        case 2:
+            return STR_IT_assets;
+        case 3:
+            return STR_IT_fee_asset_item;
+        default:
+            return NULL;
+        }
+    case 25352: /* module 99 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_dest;
+        case 1:
+            return STR_IT_beneficiary;
+        case 2:
+            return STR_IT_assets;
+        case 3:
+            return STR_IT_fee_asset_item;
+        case 4:
+            return STR_IT_weight_limit;
+        default:
+            return NULL;
+        }
+#endif
     case 0: /* module 0 call 0 */
         switch (itemIdx) {
         case 0:
@@ -4012,6 +4119,13 @@ const char* _getMethod_ItemName_V15(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         default:
             return NULL;
         }
+    case 1803: /* module 7 call 11 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_factor;
+        default:
+            return NULL;
+        }
     case 1804: /* module 7 call 12 */
         switch (itemIdx) {
         default:
@@ -4068,6 +4182,23 @@ const char* _getMethod_ItemName_V15(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         default:
             return NULL;
         }
+    case 1814: /* module 7 call 22 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_min_nominator_bond;
+        case 1:
+            return STR_IT_min_validator_bond;
+        case 2:
+            return STR_IT_max_nominator_count;
+        case 3:
+            return STR_IT_max_validator_count;
+        case 4:
+            return STR_IT_chill_threshold;
+        case 5:
+            return STR_IT_min_commission;
+        default:
+            return NULL;
+        }
     case 1815: /* module 7 call 23 */
         switch (itemIdx) {
         case 0:
@@ -4079,15 +4210,6 @@ const char* _getMethod_ItemName_V15(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         switch (itemIdx) {
         case 0:
             return STR_IT_validator_stash;
-        default:
-            return NULL;
-        }
-    case 2818: /* module 11 call 2 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_delay;
-        case 1:
-            return STR_IT_best_finalized_block_number;
         default:
             return NULL;
         }
@@ -4614,6 +4736,20 @@ const char* _getMethod_ItemName_V15(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         default:
             return NULL;
         }
+    case 7169: /* module 28 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_info;
+        default:
+            return NULL;
+        }
+    case 7170: /* module 28 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_subs;
+        default:
+            return NULL;
+        }
     case 7171: /* module 28 call 3 */
         switch (itemIdx) {
         default:
@@ -4653,10 +4789,41 @@ const char* _getMethod_ItemName_V15(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         default:
             return NULL;
         }
+    case 7177: /* module 28 call 9 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_reg_index;
+        case 1:
+            return STR_IT_target;
+        case 2:
+            return STR_IT_judgement;
+        case 3:
+            return STR_IT_identity;
+        default:
+            return NULL;
+        }
     case 7178: /* module 28 call 10 */
         switch (itemIdx) {
         case 0:
             return STR_IT_target;
+        default:
+            return NULL;
+        }
+    case 7179: /* module 28 call 11 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_sub;
+        case 1:
+            return STR_IT_data;
+        default:
+            return NULL;
+        }
+    case 7180: /* module 28 call 12 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_sub;
+        case 1:
+            return STR_IT_data;
         default:
             return NULL;
         }
@@ -4994,15 +5161,6 @@ const char* _getMethod_ItemName_V15(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         switch (itemIdx) {
         case 0:
             return STR_IT_hash;
-        default:
-            return NULL;
-        }
-    case 9220: /* module 36 call 4 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_maybe_max_voters;
-        case 1:
-            return STR_IT_maybe_max_targets;
         default:
             return NULL;
         }
@@ -5484,26 +5642,7 @@ const char* _getMethod_ItemName_V15(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         default:
             return NULL;
         }
-    case 15364: /* module 60 call 4 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_channels;
-        default:
-            return NULL;
-        }
-    case 15365: /* module 60 call 5 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_channels;
-        default:
-            return NULL;
-        }
     case 15872: /* module 62 call 0 */
-        switch (itemIdx) {
-        default:
-            return NULL;
-        }
-    case 17925: /* module 70 call 5 */
         switch (itemIdx) {
         default:
             return NULL;
@@ -5955,6 +6094,63 @@ parser_error_t _getMethod_ItemValue_V15(
             return parser_no_data;
         }
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+    case 25346: /* module 99 call 2 */
+        switch (itemIdx) {
+        case 0: /* xcmpallet_reserve_transfer_assets_V15 - dest */;
+            return _toStringBoxVersionedMultiLocation_V15(
+                &m->basic.xcmpallet_reserve_transfer_assets_V15.dest,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* xcmpallet_reserve_transfer_assets_V15 - beneficiary */;
+            return _toStringBoxVersionedMultiLocation_V15(
+                &m->basic.xcmpallet_reserve_transfer_assets_V15.beneficiary,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* xcmpallet_reserve_transfer_assets_V15 - assets */;
+            return _toStringBoxVersionedMultiAssets_V15(
+                &m->basic.xcmpallet_reserve_transfer_assets_V15.assets,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* xcmpallet_reserve_transfer_assets_V15 - fee_asset_item */;
+            return _toStringu32(
+                &m->basic.xcmpallet_reserve_transfer_assets_V15.fee_asset_item,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 25352: /* module 99 call 8 */
+        switch (itemIdx) {
+        case 0: /* xcmpallet_limited_reserve_transfer_assets_V15 - dest */;
+            return _toStringBoxVersionedMultiLocation_V15(
+                &m->basic.xcmpallet_limited_reserve_transfer_assets_V15.dest,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* xcmpallet_limited_reserve_transfer_assets_V15 - beneficiary */;
+            return _toStringBoxVersionedMultiLocation_V15(
+                &m->basic.xcmpallet_limited_reserve_transfer_assets_V15.beneficiary,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* xcmpallet_limited_reserve_transfer_assets_V15 - assets */;
+            return _toStringBoxVersionedMultiAssets_V15(
+                &m->basic.xcmpallet_limited_reserve_transfer_assets_V15.assets,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* xcmpallet_limited_reserve_transfer_assets_V15 - fee_asset_item */;
+            return _toStringu32(
+                &m->basic.xcmpallet_limited_reserve_transfer_assets_V15.fee_asset_item,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 4: /* xcmpallet_limited_reserve_transfer_assets_V15 - weight_limit */;
+            return _toStringWeightLimit_V15(
+                &m->basic.xcmpallet_limited_reserve_transfer_assets_V15.weight_limit,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+#endif
     case 0: /* module 0 call 0 */
         switch (itemIdx) {
         case 0: /* system_fill_block_V15 - ratio */;
@@ -6185,6 +6381,16 @@ parser_error_t _getMethod_ItemValue_V15(
         default:
             return parser_no_data;
         }
+    case 1803: /* module 7 call 11 */
+        switch (itemIdx) {
+        case 0: /* staking_scale_validator_count_V15 - factor */;
+            return _toStringPercent_V15(
+                &m->basic.staking_scale_validator_count_V15.factor,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 1804: /* module 7 call 12 */
         switch (itemIdx) {
         default:
@@ -6265,6 +6471,41 @@ parser_error_t _getMethod_ItemValue_V15(
         default:
             return parser_no_data;
         }
+    case 1814: /* module 7 call 22 */
+        switch (itemIdx) {
+        case 0: /* staking_set_staking_configs_V15 - min_nominator_bond */;
+            return _toStringConfigOpBalanceOfT_V15(
+                &m->basic.staking_set_staking_configs_V15.min_nominator_bond,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* staking_set_staking_configs_V15 - min_validator_bond */;
+            return _toStringConfigOpBalanceOfT_V15(
+                &m->basic.staking_set_staking_configs_V15.min_validator_bond,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* staking_set_staking_configs_V15 - max_nominator_count */;
+            return _toStringConfigOpu32_V15(
+                &m->basic.staking_set_staking_configs_V15.max_nominator_count,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* staking_set_staking_configs_V15 - max_validator_count */;
+            return _toStringConfigOpu32_V15(
+                &m->basic.staking_set_staking_configs_V15.max_validator_count,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 4: /* staking_set_staking_configs_V15 - chill_threshold */;
+            return _toStringConfigOpPercent_V15(
+                &m->basic.staking_set_staking_configs_V15.chill_threshold,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 5: /* staking_set_staking_configs_V15 - min_commission */;
+            return _toStringConfigOpPerbill_V15(
+                &m->basic.staking_set_staking_configs_V15.min_commission,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 1815: /* module 7 call 23 */
         switch (itemIdx) {
         case 0: /* staking_chill_other_V15 - controller */;
@@ -6280,21 +6521,6 @@ parser_error_t _getMethod_ItemValue_V15(
         case 0: /* staking_force_apply_min_commission_V15 - validator_stash */;
             return _toStringAccountId_V15(
                 &m->basic.staking_force_apply_min_commission_V15.validator_stash,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 2818: /* module 11 call 2 */
-        switch (itemIdx) {
-        case 0: /* grandpa_note_stalled_V15 - delay */;
-            return _toStringBlockNumber(
-                &m->basic.grandpa_note_stalled_V15.delay,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* grandpa_note_stalled_V15 - best_finalized_block_number */;
-            return _toStringBlockNumber(
-                &m->basic.grandpa_note_stalled_V15.best_finalized_block_number,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -7135,6 +7361,26 @@ parser_error_t _getMethod_ItemValue_V15(
         default:
             return parser_no_data;
         }
+    case 7169: /* module 28 call 1 */
+        switch (itemIdx) {
+        case 0: /* identity_set_identity_V15 - info */;
+            return _toStringIdentityInfo_V15(
+                &m->basic.identity_set_identity_V15.info,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7170: /* module 28 call 2 */
+        switch (itemIdx) {
+        case 0: /* identity_set_subs_V15 - subs */;
+            return _toStringVecTupleAccountIdData_V15(
+                &m->basic.identity_set_subs_V15.subs,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 7171: /* module 28 call 3 */
         switch (itemIdx) {
         default:
@@ -7195,11 +7441,66 @@ parser_error_t _getMethod_ItemValue_V15(
         default:
             return parser_no_data;
         }
+    case 7177: /* module 28 call 9 */
+        switch (itemIdx) {
+        case 0: /* identity_provide_judgement_V15 - reg_index */;
+            return _toStringCompactu32(
+                &m->basic.identity_provide_judgement_V15.reg_index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* identity_provide_judgement_V15 - target */;
+            return _toStringAccountIdLookupOfT_V15(
+                &m->basic.identity_provide_judgement_V15.target,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* identity_provide_judgement_V15 - judgement */;
+            return _toStringJudgementBalanceOfT_V15(
+                &m->basic.identity_provide_judgement_V15.judgement,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* identity_provide_judgement_V15 - identity */;
+            return _toStringHash(
+                &m->basic.identity_provide_judgement_V15.identity,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 7178: /* module 28 call 10 */
         switch (itemIdx) {
         case 0: /* identity_kill_identity_V15 - target */;
             return _toStringAccountIdLookupOfT_V15(
                 &m->basic.identity_kill_identity_V15.target,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7179: /* module 28 call 11 */
+        switch (itemIdx) {
+        case 0: /* identity_add_sub_V15 - sub */;
+            return _toStringAccountIdLookupOfT_V15(
+                &m->basic.identity_add_sub_V15.sub,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* identity_add_sub_V15 - data */;
+            return _toStringData(
+                &m->basic.identity_add_sub_V15.data,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7180: /* module 28 call 12 */
+        switch (itemIdx) {
+        case 0: /* identity_rename_sub_V15 - sub */;
+            return _toStringAccountIdLookupOfT_V15(
+                &m->basic.identity_rename_sub_V15.sub,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* identity_rename_sub_V15 - data */;
+            return _toStringData(
+                &m->basic.identity_rename_sub_V15.data,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -7780,21 +8081,6 @@ parser_error_t _getMethod_ItemValue_V15(
         case 0: /* tips_slash_tip_V15 - hash */;
             return _toStringHash(
                 &m->basic.tips_slash_tip_V15.hash,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 9220: /* module 36 call 4 */
-        switch (itemIdx) {
-        case 0: /* electionprovidermultiphase_governance_fallback_V15 - maybe_max_voters */;
-            return _toStringOptionu32(
-                &m->basic.electionprovidermultiphase_governance_fallback_V15.maybe_max_voters,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* electionprovidermultiphase_governance_fallback_V15 - maybe_max_targets */;
-            return _toStringOptionu32(
-                &m->basic.electionprovidermultiphase_governance_fallback_V15.maybe_max_targets,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -8515,32 +8801,7 @@ parser_error_t _getMethod_ItemValue_V15(
         default:
             return parser_no_data;
         }
-    case 15364: /* module 60 call 4 */
-        switch (itemIdx) {
-        case 0: /* hrmp_force_process_hrmp_open_V15 - channels */;
-            return _toStringu32(
-                &m->basic.hrmp_force_process_hrmp_open_V15.channels,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 15365: /* module 60 call 5 */
-        switch (itemIdx) {
-        case 0: /* hrmp_force_process_hrmp_close_V15 - channels */;
-            return _toStringu32(
-                &m->basic.hrmp_force_process_hrmp_close_V15.channels,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
     case 15872: /* module 62 call 0 */
-        switch (itemIdx) {
-        default:
-            return parser_no_data;
-        }
-    case 17925: /* module 70 call 5 */
         switch (itemIdx) {
         default:
             return parser_no_data;
@@ -8677,6 +8938,7 @@ bool _getMethod_IsNestingSupported_V15(uint8_t moduleIdx, uint8_t callIdx)
     case 1800: // Staking:Set controller
     case 1801: // Staking:Set validator count
     case 1802: // Staking:Increase validator count
+    case 1803: // Staking:Scale validator count
     case 1804: // Staking:Force no eras
     case 1805: // Staking:Force new era
     case 1806: // Staking:Set invulnerables
@@ -8687,11 +8949,11 @@ bool _getMethod_IsNestingSupported_V15(uint8_t moduleIdx, uint8_t callIdx)
     case 1811: // Staking:Rebond
     case 1812: // Staking:Reap stash
     case 1813: // Staking:Kick
+    case 1814: // Staking:Set staking configs
     case 1815: // Staking:Chill other
     case 1816: // Staking:Force apply min commission
     case 2304: // Session:Set keys
     case 2305: // Session:Purge keys
-    case 2818: // Grandpa:Note stalled
     case 3598: // Democracy:Note preimage
     case 3599: // Democracy:Note preimage operational
     case 3600: // Democracy:Note imminent preimage
@@ -8738,12 +9000,17 @@ bool _getMethod_IsNestingSupported_V15(uint8_t moduleIdx, uint8_t callIdx)
     case 6658: // Utility:Batch all
     case 6660: // Utility:Force batch
     case 7168: // Identity:Add registrar
+    case 7169: // Identity:Set identity
+    case 7170: // Identity:Set subs
     case 7171: // Identity:Clear identity
     case 7172: // Identity:Request judgement
     case 7173: // Identity:Cancel request
     case 7174: // Identity:Set fee
     case 7175: // Identity:Set account id
+    case 7177: // Identity:Provide judgement
     case 7178: // Identity:Kill identity
+    case 7179: // Identity:Add sub
+    case 7180: // Identity:Rename sub
     case 7181: // Identity:Remove sub
     case 7182: // Identity:Quit sub
     case 7425: // Proxy:Add proxy
@@ -8774,7 +9041,6 @@ bool _getMethod_IsNestingSupported_V15(uint8_t moduleIdx, uint8_t callIdx)
     case 8963: // Tips:Tip
     case 8964: // Tips:Close tip
     case 8965: // Tips:Slash tip
-    case 9220: // ElectionProviderMultiPhase:Governance fallback
     case 9472: // VoterList:Rebag
     case 9473: // VoterList:Put in front of
     case 9984: // NominationPools:Join
@@ -8839,10 +9105,7 @@ bool _getMethod_IsNestingSupported_V15(uint8_t moduleIdx, uint8_t callIdx)
     case 13100: // Configuration:Set bypass consistency check
     case 14592: // Initializer:Force approve
     case 15104: // Ump:Service overweight
-    case 15364: // Hrmp:Force process hrmp open
-    case 15365: // Hrmp:Force process hrmp close
     case 15872: // ParasDisputes:Force unfreeze
-    case 17925: // Registrar:Reserve
     case 18432: // Auctions:New auction
     case 18433: // Auctions:Bid
     case 18434: // Auctions:Cancel auction
@@ -8855,6 +9118,8 @@ bool _getMethod_IsNestingSupported_V15(uint8_t moduleIdx, uint8_t callIdx)
     case 18694: // Crowdloan:Add memo
     case 18695: // Crowdloan:Poke
     case 18696: // Crowdloan:Contribute all
+    case 25346: // XcmPallet:Reserve transfer assets
+    case 25352: // XcmPallet:Limited reserve transfer assets
         return false;
     default:
         return true;
