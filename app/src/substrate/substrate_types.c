@@ -112,15 +112,6 @@ parser_error_t _readCompactu128(parser_context_t* c, pd_Compactu128_t* v)
     return _readCompactInt(c, v);
 }
 
-parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v) {
-    GEN_DEF_READARRAY(16)
-}
-
-parser_error_t _readBalanceOf(parser_context_t* c, pd_BalanceOf_t* v)
-{
-    return _readBalance(c, &v->value);
-}
-
 parser_error_t _readBytes(parser_context_t* c, pd_Bytes_t* v)
 {
     CHECK_INPUT()
@@ -131,6 +122,46 @@ parser_error_t _readBytes(parser_context_t* c, pd_Bytes_t* v)
 
     v->_ptr = c->buffer + c->offset;
     CTX_CHECK_AND_ADVANCE(c, v->_len);
+    return parser_ok;
+}
+
+parser_error_t _readu8_array_20(parser_context_t* c, pd_u8_array_20_t* v) {
+    GEN_DEF_READARRAY(20)
+}
+
+parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v) {
+    GEN_DEF_READARRAY(16)
+}
+
+parser_error_t _readData(parser_context_t* c, pd_Data_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    if (v->value <= 1) {
+        return parser_ok;
+    } else if (v->value <= 37) {
+        const uint8_t length = v->value <= 32 ? v->value - 1 : 32;
+        GEN_DEF_READARRAY(length)
+    } else {
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+parser_error_t _readBalanceOf(parser_context_t* c, pd_BalanceOf_t* v)
+{
+    return _readBalance(c, &v->value);
+}
+
+parser_error_t _readH256(parser_context_t* c, pd_H256_t* v) {
+    GEN_DEF_READARRAY(32)
+}
+
+parser_error_t _readTupleDataData(parser_context_t* c, pd_TupleDataData_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readData(c, &v->data1))
+    CHECK_ERROR(_readData(c, &v->data2))
     return parser_ok;
 }
 
@@ -185,12 +216,12 @@ parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v)
     return parser_ok;
 }
 
-parser_error_t _readH256(parser_context_t* c, pd_H256_t* v) {
+parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v) {
     GEN_DEF_READARRAY(32)
 }
 
-parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v) {
-    GEN_DEF_READARRAY(32)
+parser_error_t _readVecTupleDataData(parser_context_t* c, pd_VecTupleDataData_t* v) {
+    GEN_DEF_READVECTOR(TupleDataData)
 }
 
 parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v) {
@@ -199,6 +230,15 @@ parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v) {
 
 parser_error_t _readVecu8(parser_context_t* c, pd_Vecu8_t* v) {
     GEN_DEF_READVECTOR(u8)
+}
+
+parser_error_t _readOptionu8_array_20(parser_context_t* c, pd_Optionu8_array_20_t* v)
+{
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readu8_array_20(c, &v->contained))
+    }
+    return parser_ok;
 }
 
 parser_error_t _readOptionu32(parser_context_t* c, pd_Optionu32_t* v)
@@ -340,6 +380,25 @@ parser_error_t _toStringCompactu128(
     return _toStringCompactInt(v, 0, false, "", "", outValue, outValueLen, pageIdx, pageCount);
 }
 
+parser_error_t _toStringBytes(
+    const pd_Bytes_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    GEN_DEF_TOSTRING_ARRAY(v->_len);
+}
+
+parser_error_t _toStringu8_array_20(
+    const pd_u8_array_20_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount) {
+    GEN_DEF_TOSTRING_ARRAY(20)
+}
+
 parser_error_t _toStringBalance(
     const pd_Balance_t* v,
     char* outValue,
@@ -377,6 +436,30 @@ parser_error_t _toStringBalance(
     return parser_ok;
 }
 
+parser_error_t _toStringData(
+    const pd_Data_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    if (v->value == 0) {
+        snprintf(outValue, outValueLen, "None");
+        return parser_ok;
+    } else if (v->value == 1) {
+        snprintf(outValue, outValueLen, "Empty raw");
+        return parser_ok;
+    } else if (v->value <= 37) {
+        const uint8_t length = v->value <= 32 ? v->value - 1 : 32;
+        GEN_DEF_TOSTRING_ARRAY(length)
+    } else {
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
 parser_error_t _toStringBalanceOf(
     const pd_BalanceOf_t* v,
     char* outValue,
@@ -387,14 +470,51 @@ parser_error_t _toStringBalanceOf(
     return _toStringBalance(&v->value, outValue, outValueLen, pageIdx, pageCount);
 }
 
-parser_error_t _toStringBytes(
-    const pd_Bytes_t* v,
+parser_error_t _toStringH256(
+    const pd_H256_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    GEN_DEF_TOSTRING_ARRAY(v->_len);
+    GEN_DEF_TOSTRING_ARRAY(32);
+}
+
+parser_error_t _toStringTupleDataData(
+    const pd_TupleDataData_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    // First measure number of pages
+    uint8_t pages[2] = { 0 };
+    CHECK_ERROR(_toStringData(&v->data1, outValue, outValueLen, 0, &pages[0]))
+    CHECK_ERROR(_toStringData(&v->data2, outValue, outValueLen, 0, &pages[1]))
+
+    *pageCount = 0;
+    for (uint8_t i = 0; i < (uint8_t)sizeof(pages); i++) {
+        *pageCount += pages[i];
+    }
+
+    if (pageIdx > *pageCount) {
+        return parser_display_idx_out_of_range;
+    }
+
+    if (pageIdx < pages[0]) {
+        CHECK_ERROR(_toStringData(&v->data1, outValue, outValueLen, pageIdx, &pages[0]))
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringData(&v->data2, outValue, outValueLen, pageIdx, &pages[1]))
+        return parser_ok;
+    }
+
+    return parser_display_idx_out_of_range;
 }
 
 parser_error_t _toStringCall(
@@ -547,16 +667,6 @@ parser_error_t _toStringVecCall(
     return parser_print_not_supported;
 }
 
-parser_error_t _toStringH256(
-    const pd_H256_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    GEN_DEF_TOSTRING_ARRAY(32);
-}
-
 parser_error_t _toStringHash(
     const pd_Hash_t* v,
     char* outValue,
@@ -564,6 +674,16 @@ parser_error_t _toStringHash(
     uint8_t pageIdx,
     uint8_t* pageCount) {
     GEN_DEF_TOSTRING_ARRAY(32)
+}
+
+parser_error_t _toStringVecTupleDataData(
+    const pd_VecTupleDataData_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    GEN_DEF_TOSTRING_VECTOR(TupleDataData);
 }
 
 parser_error_t _toStringVecu32(
@@ -584,6 +704,27 @@ parser_error_t _toStringVecu8(
     uint8_t* pageCount)
 {
     GEN_DEF_TOSTRING_VECTOR(u8);
+}
+
+parser_error_t _toStringOptionu8_array_20(
+    const pd_Optionu8_array_20_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    *pageCount = 1;
+    if (v->some > 0) {
+        CHECK_ERROR(_toStringu8_array_20(
+            &v->contained,
+            outValue, outValueLen,
+            pageIdx, pageCount));
+    } else {
+        snprintf(outValue, outValueLen, "None");
+    }
+    return parser_ok;
 }
 
 parser_error_t _toStringOptionu32(

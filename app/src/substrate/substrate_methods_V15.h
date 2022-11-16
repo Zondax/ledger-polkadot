@@ -25,6 +25,9 @@ extern "C" {
 #include "substrate_types_V15.h"
 #include <stddef.h>
 #include <stdint.h>
+#ifdef LEDGER_SPECIFIC
+#include "bolos_target.h"
+#endif
 
 #define PD_CALL_SYSTEM_V15 0
 #define PD_CALL_PREIMAGE_V15 10
@@ -33,7 +36,6 @@ extern "C" {
 #define PD_CALL_BALANCES_V15 5
 #define PD_CALL_STAKING_V15 7
 #define PD_CALL_SESSION_V15 9
-#define PD_CALL_GRANDPA_V15 11
 #define PD_CALL_DEMOCRACY_V15 14
 #define PD_CALL_COUNCIL_V15 15
 #define PD_CALL_TECHNICALCOMMITTEE_V15 16
@@ -49,18 +51,16 @@ extern "C" {
 #define PD_CALL_BOUNTIES_V15 34
 #define PD_CALL_CHILDBOUNTIES_V15 38
 #define PD_CALL_TIPS_V15 35
-#define PD_CALL_ELECTIONPROVIDERMULTIPHASE_V15 36
 #define PD_CALL_VOTERLIST_V15 37
 #define PD_CALL_NOMINATIONPOOLS_V15 39
 #define PD_CALL_FASTUNSTAKE_V15 40
 #define PD_CALL_CONFIGURATION_V15 51
 #define PD_CALL_INITIALIZER_V15 57
 #define PD_CALL_UMP_V15 59
-#define PD_CALL_HRMP_V15 60
 #define PD_CALL_PARASDISPUTES_V15 62
-#define PD_CALL_REGISTRAR_V15 70
 #define PD_CALL_AUCTIONS_V15 72
 #define PD_CALL_CROWDLOAN_V15 73
+#define PD_CALL_XCMPALLET_V15 99
 
 #define PD_CALL_BALANCES_TRANSFER_ALL_V15 4
 typedef struct {
@@ -211,6 +211,23 @@ typedef struct {
 } pd_crowdloan_contribute_all_V15_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+#define PD_CALL_XCMPALLET_RESERVE_TRANSFER_ASSETS_V15 2
+typedef struct {
+    pd_BoxVersionedMultiLocation_V15_t dest;
+    pd_BoxVersionedMultiLocation_V15_t beneficiary;
+    pd_BoxVersionedMultiAssets_V15_t assets;
+    pd_u32_t fee_asset_item;
+} pd_xcmpallet_reserve_transfer_assets_V15_t;
+#define PD_CALL_XCMPALLET_LIMITED_RESERVE_TRANSFER_ASSETS_V15 8
+typedef struct {
+    pd_BoxVersionedMultiLocation_V15_t dest;
+    pd_BoxVersionedMultiLocation_V15_t beneficiary;
+    pd_BoxVersionedMultiAssets_V15_t assets;
+    pd_u32_t fee_asset_item;
+    pd_WeightLimit_V15_t weight_limit;
+} pd_xcmpallet_limited_reserve_transfer_assets_V15_t;
+#endif
 
 #define PD_CALL_PREIMAGE_NOTE_PREIMAGE_V15 0
 typedef struct {
@@ -281,6 +298,11 @@ typedef struct {
     pd_Compactu32_t additional;
 } pd_staking_increase_validator_count_V15_t;
 
+#define PD_CALL_STAKING_SCALE_VALIDATOR_COUNT_V15 11
+typedef struct {
+    pd_Percent_V15_t factor;
+} pd_staking_scale_validator_count_V15_t;
+
 #define PD_CALL_STAKING_FORCE_NO_ERAS_V15 12
 typedef struct {
 } pd_staking_force_no_eras_V15_t;
@@ -321,6 +343,16 @@ typedef struct {
     pd_VecAccountIdLookupOfT_V15_t who;
 } pd_staking_kick_V15_t;
 
+#define PD_CALL_STAKING_SET_STAKING_CONFIGS_V15 22
+typedef struct {
+    pd_ConfigOpBalanceOfT_V15_t min_nominator_bond;
+    pd_ConfigOpBalanceOfT_V15_t min_validator_bond;
+    pd_ConfigOpu32_V15_t max_nominator_count;
+    pd_ConfigOpu32_V15_t max_validator_count;
+    pd_ConfigOpPercent_V15_t chill_threshold;
+    pd_ConfigOpPerbill_V15_t min_commission;
+} pd_staking_set_staking_configs_V15_t;
+
 #define PD_CALL_STAKING_CHILL_OTHER_V15 23
 typedef struct {
     pd_AccountId_V15_t controller;
@@ -330,12 +362,6 @@ typedef struct {
 typedef struct {
     pd_AccountId_V15_t validator_stash;
 } pd_staking_force_apply_min_commission_V15_t;
-
-#define PD_CALL_GRANDPA_NOTE_STALLED_V15 2
-typedef struct {
-    pd_BlockNumber_t delay;
-    pd_BlockNumber_t best_finalized_block_number;
-} pd_grandpa_note_stalled_V15_t;
 
 #define PD_CALL_DEMOCRACY_NOTE_PREIMAGE_V15 14
 typedef struct {
@@ -585,6 +611,16 @@ typedef struct {
     pd_AccountIdLookupOfT_V15_t account;
 } pd_identity_add_registrar_V15_t;
 
+#define PD_CALL_IDENTITY_SET_IDENTITY_V15 1
+typedef struct {
+    pd_IdentityInfo_V15_t info;
+} pd_identity_set_identity_V15_t;
+
+#define PD_CALL_IDENTITY_SET_SUBS_V15 2
+typedef struct {
+    pd_VecTupleAccountIdData_V15_t subs;
+} pd_identity_set_subs_V15_t;
+
 #define PD_CALL_IDENTITY_CLEAR_IDENTITY_V15 3
 typedef struct {
 } pd_identity_clear_identity_V15_t;
@@ -612,10 +648,30 @@ typedef struct {
     pd_AccountIdLookupOfT_V15_t new_;
 } pd_identity_set_account_id_V15_t;
 
+#define PD_CALL_IDENTITY_PROVIDE_JUDGEMENT_V15 9
+typedef struct {
+    pd_Compactu32_t reg_index;
+    pd_AccountIdLookupOfT_V15_t target;
+    pd_JudgementBalanceOfT_V15_t judgement;
+    pd_Hash_t identity;
+} pd_identity_provide_judgement_V15_t;
+
 #define PD_CALL_IDENTITY_KILL_IDENTITY_V15 10
 typedef struct {
     pd_AccountIdLookupOfT_V15_t target;
 } pd_identity_kill_identity_V15_t;
+
+#define PD_CALL_IDENTITY_ADD_SUB_V15 11
+typedef struct {
+    pd_AccountIdLookupOfT_V15_t sub;
+    pd_Data_t data;
+} pd_identity_add_sub_V15_t;
+
+#define PD_CALL_IDENTITY_RENAME_SUB_V15 12
+typedef struct {
+    pd_AccountIdLookupOfT_V15_t sub;
+    pd_Data_t data;
+} pd_identity_rename_sub_V15_t;
 
 #define PD_CALL_IDENTITY_REMOVE_SUB_V15 13
 typedef struct {
@@ -797,12 +853,6 @@ typedef struct {
 typedef struct {
     pd_Hash_t hash;
 } pd_tips_slash_tip_V15_t;
-
-#define PD_CALL_ELECTIONPROVIDERMULTIPHASE_GOVERNANCE_FALLBACK_V15 4
-typedef struct {
-    pd_Optionu32_t maybe_max_voters;
-    pd_Optionu32_t maybe_max_targets;
-} pd_electionprovidermultiphase_governance_fallback_V15_t;
 
 #define PD_CALL_VOTERLIST_REBAG_V15 0
 typedef struct {
@@ -1139,23 +1189,9 @@ typedef struct {
     pd_Weight_V15_t weight_limit;
 } pd_ump_service_overweight_V15_t;
 
-#define PD_CALL_HRMP_FORCE_PROCESS_HRMP_OPEN_V15 4
-typedef struct {
-    pd_u32_t channels;
-} pd_hrmp_force_process_hrmp_open_V15_t;
-
-#define PD_CALL_HRMP_FORCE_PROCESS_HRMP_CLOSE_V15 5
-typedef struct {
-    pd_u32_t channels;
-} pd_hrmp_force_process_hrmp_close_V15_t;
-
 #define PD_CALL_PARASDISPUTES_FORCE_UNFREEZE_V15 0
 typedef struct {
 } pd_parasdisputes_force_unfreeze_V15_t;
-
-#define PD_CALL_REGISTRAR_RESERVE_V15 5
-typedef struct {
-} pd_registrar_reserve_V15_t;
 
 #define PD_CALL_AUCTIONS_NEW_AUCTION_V15 0
 typedef struct {
@@ -1206,6 +1242,10 @@ typedef union {
     pd_crowdloan_poke_V15_t crowdloan_poke_V15;
     pd_crowdloan_contribute_all_V15_t crowdloan_contribute_all_V15;
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+    pd_xcmpallet_reserve_transfer_assets_V15_t xcmpallet_reserve_transfer_assets_V15;
+    pd_xcmpallet_limited_reserve_transfer_assets_V15_t xcmpallet_limited_reserve_transfer_assets_V15;
+#endif
     pd_preimage_note_preimage_V15_t preimage_note_preimage_V15;
     pd_preimage_unnote_preimage_V15_t preimage_unnote_preimage_V15;
     pd_preimage_request_preimage_V15_t preimage_request_preimage_V15;
@@ -1219,6 +1259,7 @@ typedef union {
     pd_balances_force_unreserve_V15_t balances_force_unreserve_V15;
     pd_staking_set_validator_count_V15_t staking_set_validator_count_V15;
     pd_staking_increase_validator_count_V15_t staking_increase_validator_count_V15;
+    pd_staking_scale_validator_count_V15_t staking_scale_validator_count_V15;
     pd_staking_force_no_eras_V15_t staking_force_no_eras_V15;
     pd_staking_force_new_era_V15_t staking_force_new_era_V15;
     pd_staking_set_invulnerables_V15_t staking_set_invulnerables_V15;
@@ -1227,9 +1268,9 @@ typedef union {
     pd_staking_cancel_deferred_slash_V15_t staking_cancel_deferred_slash_V15;
     pd_staking_reap_stash_V15_t staking_reap_stash_V15;
     pd_staking_kick_V15_t staking_kick_V15;
+    pd_staking_set_staking_configs_V15_t staking_set_staking_configs_V15;
     pd_staking_chill_other_V15_t staking_chill_other_V15;
     pd_staking_force_apply_min_commission_V15_t staking_force_apply_min_commission_V15;
-    pd_grandpa_note_stalled_V15_t grandpa_note_stalled_V15;
     pd_democracy_note_preimage_V15_t democracy_note_preimage_V15;
     pd_democracy_note_preimage_operational_V15_t democracy_note_preimage_operational_V15;
     pd_democracy_note_imminent_preimage_V15_t democracy_note_imminent_preimage_V15;
@@ -1273,12 +1314,17 @@ typedef union {
     pd_vesting_force_vested_transfer_V15_t vesting_force_vested_transfer_V15;
     pd_vesting_merge_schedules_V15_t vesting_merge_schedules_V15;
     pd_identity_add_registrar_V15_t identity_add_registrar_V15;
+    pd_identity_set_identity_V15_t identity_set_identity_V15;
+    pd_identity_set_subs_V15_t identity_set_subs_V15;
     pd_identity_clear_identity_V15_t identity_clear_identity_V15;
     pd_identity_request_judgement_V15_t identity_request_judgement_V15;
     pd_identity_cancel_request_V15_t identity_cancel_request_V15;
     pd_identity_set_fee_V15_t identity_set_fee_V15;
     pd_identity_set_account_id_V15_t identity_set_account_id_V15;
+    pd_identity_provide_judgement_V15_t identity_provide_judgement_V15;
     pd_identity_kill_identity_V15_t identity_kill_identity_V15;
+    pd_identity_add_sub_V15_t identity_add_sub_V15;
+    pd_identity_rename_sub_V15_t identity_rename_sub_V15;
     pd_identity_remove_sub_V15_t identity_remove_sub_V15;
     pd_identity_quit_sub_V15_t identity_quit_sub_V15;
     pd_proxy_add_proxy_V15_t proxy_add_proxy_V15;
@@ -1309,7 +1355,6 @@ typedef union {
     pd_tips_tip_V15_t tips_tip_V15;
     pd_tips_close_tip_V15_t tips_close_tip_V15;
     pd_tips_slash_tip_V15_t tips_slash_tip_V15;
-    pd_electionprovidermultiphase_governance_fallback_V15_t electionprovidermultiphase_governance_fallback_V15;
     pd_voterlist_rebag_V15_t voterlist_rebag_V15;
     pd_voterlist_put_in_front_of_V15_t voterlist_put_in_front_of_V15;
     pd_nominationpools_join_V15_t nominationpools_join_V15;
@@ -1374,10 +1419,7 @@ typedef union {
     pd_configuration_set_bypass_consistency_check_V15_t configuration_set_bypass_consistency_check_V15;
     pd_initializer_force_approve_V15_t initializer_force_approve_V15;
     pd_ump_service_overweight_V15_t ump_service_overweight_V15;
-    pd_hrmp_force_process_hrmp_open_V15_t hrmp_force_process_hrmp_open_V15;
-    pd_hrmp_force_process_hrmp_close_V15_t hrmp_force_process_hrmp_close_V15;
     pd_parasdisputes_force_unfreeze_V15_t parasdisputes_force_unfreeze_V15;
-    pd_registrar_reserve_V15_t registrar_reserve_V15;
     pd_auctions_new_auction_V15_t auctions_new_auction_V15;
     pd_auctions_bid_V15_t auctions_bid_V15;
     pd_auctions_cancel_auction_V15_t auctions_cancel_auction_V15;
@@ -1404,6 +1446,8 @@ typedef struct {
 } pd_balances_transfer_keep_alive_V15_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+#endif
 #define PD_CALL_SYSTEM_FILL_BLOCK_V15 0
 typedef struct {
     pd_Perbill_V15_t ratio;
@@ -1596,6 +1640,8 @@ typedef union {
     pd_balances_force_transfer_V15_t balances_force_transfer_V15;
     pd_balances_transfer_keep_alive_V15_t balances_transfer_keep_alive_V15;
 #ifdef SUBSTRATE_PARSER_FULL
+#ifndef TARGET_NANOS
+#endif
     pd_system_fill_block_V15_t system_fill_block_V15;
     pd_system_remark_V15_t system_remark_V15;
     pd_system_set_heap_pages_V15_t system_set_heap_pages_V15;
