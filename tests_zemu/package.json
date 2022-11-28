@@ -14,8 +14,9 @@
     "Ledger"
   ],
   "scripts": {
-    "test": "ts-node tests/pullImageKillOld.ts && jest -t 'Recovery' && jest -t 'Standard'",
-    "testSR25519": "ts-node tests/pullImageKillOld.ts && jest tests/sr25519.test.ts"
+    "clean": "ts-node tests/pullImageKillOld.ts",
+    "test": "yarn clean && jest tests/recovery.test.ts tests/standard.test.ts",
+    "testSR25519": "yarn clean && jest tests/sr25519.test.ts"
   },
   "dependencies": {
     "@zondax/ledger-substrate": "^0.39.0",
