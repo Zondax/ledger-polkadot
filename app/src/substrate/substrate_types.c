@@ -451,11 +451,22 @@ parser_error_t _toStringData(
     } else if (v->value == 1) {
         snprintf(outValue, outValueLen, "Empty raw");
         return parser_ok;
-    } else if (v->value <= 37) {
-        const uint8_t length = v->value <= 32 ? v->value - 1 : 32;
-        GEN_DEF_TOSTRING_ARRAY(length)
-    } else {
+    } else if (v->value > 37) {
         return parser_unexpected_value;
+    }
+    const uint8_t length = v->value <= 32 ? v->value - 1 : 32;
+    bool allPrintable = true;
+    if (v->value <= 33) {
+        for (uint8_t i = 0; i < length; i++) {
+            allPrintable &= IS_PRINTABLE(v->_ptr[i]);
+        }
+    }
+    if (v->value <= 33 && allPrintable) {
+        char bufferUI[40] = { 0 };
+        snprintf(bufferUI, length + 1, "%s", v->_ptr); // it counts null terminator
+        pageString(outValue, outValueLen, (const char*)bufferUI, pageIdx, pageCount);
+    } else {
+        GEN_DEF_TOSTRING_ARRAY(length)
     }
     return parser_ok;
 }
