@@ -68,13 +68,6 @@ typedef struct {
     pd_bool_t keep_alive;
 } pd_balances_transfer_all_V16_t;
 
-#define PD_CALL_STAKING_BOND_V16 0
-typedef struct {
-    pd_AccountIdLookupOfT_V16_t controller;
-    pd_CompactBalance_t amount;
-    pd_RewardDestination_V16_t payee;
-} pd_staking_bond_V16_t;
-
 #define PD_CALL_STAKING_BOND_EXTRA_V16 1
 typedef struct {
     pd_CompactBalance_t amount;
@@ -94,11 +87,6 @@ typedef struct {
 typedef struct {
     pd_ValidatorPrefs_V16_t prefs;
 } pd_staking_validate_V16_t;
-
-#define PD_CALL_STAKING_NOMINATE_V16 5
-typedef struct {
-    pd_VecAccountIdLookupOfT_V16_t targets;
-} pd_staking_nominate_V16_t;
 
 #define PD_CALL_STAKING_CHILL_V16 6
 typedef struct {
@@ -1218,12 +1206,10 @@ typedef struct {
 
 typedef union {
     pd_balances_transfer_all_V16_t balances_transfer_all_V16;
-    pd_staking_bond_V16_t staking_bond_V16;
     pd_staking_bond_extra_V16_t staking_bond_extra_V16;
     pd_staking_unbond_V16_t staking_unbond_V16;
     pd_staking_withdraw_unbonded_V16_t staking_withdraw_unbonded_V16;
     pd_staking_validate_V16_t staking_validate_V16;
-    pd_staking_nominate_V16_t staking_nominate_V16;
     pd_staking_chill_V16_t staking_chill_V16;
     pd_staking_set_payee_V16_t staking_set_payee_V16;
     pd_staking_set_controller_V16_t staking_set_controller_V16;
@@ -1446,6 +1432,18 @@ typedef struct {
     pd_CompactBalance_t amount;
 } pd_balances_transfer_keep_alive_V16_t;
 
+#define PD_CALL_STAKING_BOND_V16 0
+typedef struct {
+    pd_AccountIdLookupOfT_V16_t controller;
+    pd_CompactBalance_t amount;
+    pd_RewardDestination_V16_t payee;
+} pd_staking_bond_V16_t;
+
+#define PD_CALL_STAKING_NOMINATE_V16 5
+typedef struct {
+    pd_VecAccountIdLookupOfT_V16_t targets;
+} pd_staking_nominate_V16_t;
+
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
@@ -1621,6 +1619,8 @@ typedef union {
     pd_balances_transfer_V16_t balances_transfer_V16;
     pd_balances_force_transfer_V16_t balances_force_transfer_V16;
     pd_balances_transfer_keep_alive_V16_t balances_transfer_keep_alive_V16;
+    pd_staking_bond_V16_t staking_bond_V16;
+    pd_staking_nominate_V16_t staking_nominate_V16;
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
