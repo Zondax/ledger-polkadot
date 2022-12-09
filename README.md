@@ -28,21 +28,20 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot 17.9330.x
+# Polkadot 18.9340.x
 
 ## System
 
 | Name                    | Nano S | Nano S XL          | Nano SP/X          | Nesting            | Arguments                         |
 | ----------------------- | ------ | ------------------ | ------------------ | ------------------ | --------------------------------- |
-| Fill block              |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Perbill`ratio<br/>               |
-| Remark                  |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Vecu8`remark<br/>                |
+| Remark                  |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Bytes`remark<br/>                |
 | Set heap pages          |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `u64`pages<br/>                   |
 | Set code                |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Vecu8`code<br/>                  |
 | Set code without checks |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Vecu8`code<br/>                  |
 | Set storage             |        |                    |                    |                    | `VecKeyValue`items<br/>           |
 | Kill storage            |        |                    |                    |                    | `VecKey`keys<br/>                 |
 | Kill prefix             |        |                    |                    |                    | `Key`prefix<br/>`u32`subkeys<br/> |
-| Remark with event       |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Vecu8`remark<br/>                |
+| Remark with event       |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Bytes`remark<br/>                |
 
 ## Scheduler
 
@@ -265,6 +264,7 @@ Please:
 | Batch all     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |         | `VecCall`calls<br/>                             |
 | Dispatch as   |                    |                    |                    |         | `BoxPalletsOrigin`as_origin<br/>`Call`call<br/> |
 | Force batch   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |         | `VecCall`calls<br/>                             |
+| With weight   |                    | :heavy_check_mark: | :heavy_check_mark: |         | `Call`call<br/>`Weight`weight<br/>              |
 
 ## Identity
 
