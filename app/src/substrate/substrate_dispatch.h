@@ -22,7 +22,7 @@ extern "C" {
 #include "parser_common.h"
 #include "stdbool.h"
 #include "substrate_dispatch_V15.h"
-#include "substrate_dispatch_V18.h"
+#include "substrate_dispatch_V19.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -33,8 +33,8 @@ extern "C" {
     {                                              \
         switch (txVersion) {                       \
                                                    \
-        case 18:                                   \
-            return PD_CALL_##CALL##_V18;           \
+        case 19:                                   \
+            return PD_CALL_##CALL##_V19;           \
                                                    \
         case 15:                                   \
             return PD_CALL_##CALL##_V15;           \

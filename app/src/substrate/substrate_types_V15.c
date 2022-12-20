@@ -1111,7 +1111,8 @@ parser_error_t _readWeight_V15(parser_context_t* c, pd_Weight_V15_t* v)
 {
     CHECK_INPUT()
     CHECK_ERROR(_readUInt64(c, &v->value))
-    return parser_ok;}
+    return parser_ok;
+}
 
 parser_error_t _readu8_array_32_V15(parser_context_t* c, pd_u8_array_32_V15_t* v) {
     GEN_DEF_READARRAY(32)

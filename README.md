@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot 18.9340.x
+# Polkadot 19.9360.x
 
 ## System
 
