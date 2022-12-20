@@ -16,16 +16,41 @@
 ********************************************************************************/
 #include "app_main.h"
 #include "view.h"
+#include "swap.h"
 
 #include <os_io_seproxyhal.h>
 
+static void app_exit(void) {
+    BEGIN_TRY_L(exit) {
+        TRY_L(exit) {
+            os_sched_exit(-1);
+        }
+        FINALLY_L(exit) {
+        }
+    }
+    END_TRY_L(exit);
+}
+
 __attribute__((section(".boot"))) int
-main(void) {
+main(int arg0) {
     // exit critical section
     __asm volatile("cpsie i");
 
     view_init();
     os_boot();
+
+    if (arg0) {
+        libargs_s *args = (libargs_s *) arg0;
+        if (args->id != 0x100) {
+            app_exit();
+            return 0;
+        }
+
+        swap_handle_command(args);
+        if (!G_swap_state.called_from_swap) {
+            os_lib_end();
+        }
+    }
 
     BEGIN_TRY
     {

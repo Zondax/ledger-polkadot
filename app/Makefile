@@ -99,7 +99,7 @@ APP_LOAD_PARAMS = --curve ed25519 $(COMMON_LOAD_PARAMS) --path $(APPPATH)
 
 ifeq ($(TARGET_NAME),TARGET_NANOS)
 APP_LOAD_PARAMS += --appFlags 0x000
-APP_STACK_SIZE:=3216
+APP_STACK_SIZE:=3160
 ICONNAME:=$(CURDIR)/nanos_icon.gif
 OUTPUT_ELF ?= $(CURDIR)/output/app_s.elf
 OUTPUT_INSTALLER := $(CURDIR)/pkg/installer_s.sh

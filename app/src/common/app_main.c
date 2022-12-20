@@ -29,6 +29,7 @@
 #include "coin.h"
 #include "zxmacros.h"
 #include "app_mode.h"
+#include "swap.h"
 
 unsigned char G_io_seproxyhal_spi_buffer[IO_SEPROXYHAL_BUFFER_SIZE_B];
 
@@ -192,7 +193,11 @@ void app_main() {
                 tx += 2;
             }
             FINALLY;
-            {}
+            {
+                if (G_swap_state.called_from_swap && G_swap_state.should_exit) {
+                    os_lib_end();
+                }
+            }
         }
         END_TRY;
     }
