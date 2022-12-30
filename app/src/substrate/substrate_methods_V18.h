@@ -73,11 +73,6 @@ typedef struct {
     pd_CompactBalance_t amount;
 } pd_staking_bond_extra_V18_t;
 
-#define PD_CALL_STAKING_UNBOND_V18 2
-typedef struct {
-    pd_CompactBalance_t amount;
-} pd_staking_unbond_V18_t;
-
 #define PD_CALL_STAKING_WITHDRAW_UNBONDED_V18 3
 typedef struct {
     pd_u32_t num_slashing_spans;
@@ -88,19 +83,10 @@ typedef struct {
     pd_ValidatorPrefs_V18_t prefs;
 } pd_staking_validate_V18_t;
 
-#define PD_CALL_STAKING_CHILL_V18 6
-typedef struct {
-} pd_staking_chill_V18_t;
-
 #define PD_CALL_STAKING_SET_PAYEE_V18 7
 typedef struct {
     pd_RewardDestination_V18_t payee;
 } pd_staking_set_payee_V18_t;
-
-#define PD_CALL_STAKING_SET_CONTROLLER_V18 8
-typedef struct {
-    pd_AccountIdLookupOfT_V18_t controller;
-} pd_staking_set_controller_V18_t;
 
 #define PD_CALL_STAKING_PAYOUT_STAKERS_V18 18
 typedef struct {
@@ -893,14 +879,6 @@ typedef struct {
     pd_u32_t num_slashing_spans;
 } pd_nominationpools_withdraw_unbonded_V18_t;
 
-#define PD_CALL_NOMINATIONPOOLS_CREATE_V18 6
-typedef struct {
-    pd_CompactBalance_t amount;
-    pd_AccountIdLookupOfT_V18_t root;
-    pd_AccountIdLookupOfT_V18_t nominator;
-    pd_AccountIdLookupOfT_V18_t state_toggler;
-} pd_nominationpools_create_V18_t;
-
 #define PD_CALL_NOMINATIONPOOLS_CREATE_WITH_POOL_ID_V18 7
 typedef struct {
     pd_CompactBalance_t amount;
@@ -910,23 +888,11 @@ typedef struct {
     pd_PoolId_V18_t pool_id;
 } pd_nominationpools_create_with_pool_id_V18_t;
 
-#define PD_CALL_NOMINATIONPOOLS_NOMINATE_V18 8
-typedef struct {
-    pd_PoolId_V18_t pool_id;
-    pd_VecAccountId_V18_t validators;
-} pd_nominationpools_nominate_V18_t;
-
 #define PD_CALL_NOMINATIONPOOLS_SET_STATE_V18 9
 typedef struct {
     pd_PoolId_V18_t pool_id;
     pd_PoolState_V18_t state;
 } pd_nominationpools_set_state_V18_t;
-
-#define PD_CALL_NOMINATIONPOOLS_SET_METADATA_V18 10
-typedef struct {
-    pd_PoolId_V18_t pool_id;
-    pd_Vecu8_t metadata;
-} pd_nominationpools_set_metadata_V18_t;
 
 #define PD_CALL_NOMINATIONPOOLS_SET_CONFIGS_V18 11
 typedef struct {
@@ -1222,12 +1188,9 @@ typedef struct {
 typedef union {
     pd_balances_transfer_all_V18_t balances_transfer_all_V18;
     pd_staking_bond_extra_V18_t staking_bond_extra_V18;
-    pd_staking_unbond_V18_t staking_unbond_V18;
     pd_staking_withdraw_unbonded_V18_t staking_withdraw_unbonded_V18;
     pd_staking_validate_V18_t staking_validate_V18;
-    pd_staking_chill_V18_t staking_chill_V18;
     pd_staking_set_payee_V18_t staking_set_payee_V18;
-    pd_staking_set_controller_V18_t staking_set_controller_V18;
     pd_staking_payout_stakers_V18_t staking_payout_stakers_V18;
     pd_staking_rebond_V18_t staking_rebond_V18;
     pd_session_set_keys_V18_t session_set_keys_V18;
@@ -1366,11 +1329,8 @@ typedef union {
     pd_nominationpools_unbond_V18_t nominationpools_unbond_V18;
     pd_nominationpools_pool_withdraw_unbonded_V18_t nominationpools_pool_withdraw_unbonded_V18;
     pd_nominationpools_withdraw_unbonded_V18_t nominationpools_withdraw_unbonded_V18;
-    pd_nominationpools_create_V18_t nominationpools_create_V18;
     pd_nominationpools_create_with_pool_id_V18_t nominationpools_create_with_pool_id_V18;
-    pd_nominationpools_nominate_V18_t nominationpools_nominate_V18;
     pd_nominationpools_set_state_V18_t nominationpools_set_state_V18;
-    pd_nominationpools_set_metadata_V18_t nominationpools_set_metadata_V18;
     pd_nominationpools_set_configs_V18_t nominationpools_set_configs_V18;
     pd_nominationpools_update_roles_V18_t nominationpools_update_roles_V18;
     pd_nominationpools_chill_V18_t nominationpools_chill_V18;
@@ -1456,10 +1416,24 @@ typedef struct {
     pd_RewardDestination_V18_t payee;
 } pd_staking_bond_V18_t;
 
+#define PD_CALL_STAKING_UNBOND_V18 2
+typedef struct {
+    pd_CompactBalance_t amount;
+} pd_staking_unbond_V18_t;
+
 #define PD_CALL_STAKING_NOMINATE_V18 5
 typedef struct {
     pd_VecAccountIdLookupOfT_V18_t targets;
 } pd_staking_nominate_V18_t;
+
+#define PD_CALL_STAKING_CHILL_V18 6
+typedef struct {
+} pd_staking_chill_V18_t;
+
+#define PD_CALL_STAKING_SET_CONTROLLER_V18 8
+typedef struct {
+    pd_AccountIdLookupOfT_V18_t controller;
+} pd_staking_set_controller_V18_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
@@ -1625,6 +1599,26 @@ typedef struct {
     pd_H256_t call_hash;
 } pd_multisig_cancel_as_multi_V18_t;
 
+#define PD_CALL_NOMINATIONPOOLS_CREATE_V18 6
+typedef struct {
+    pd_CompactBalance_t amount;
+    pd_AccountIdLookupOfT_V18_t root;
+    pd_AccountIdLookupOfT_V18_t nominator;
+    pd_AccountIdLookupOfT_V18_t state_toggler;
+} pd_nominationpools_create_V18_t;
+
+#define PD_CALL_NOMINATIONPOOLS_NOMINATE_V18 8
+typedef struct {
+    pd_PoolId_V18_t pool_id;
+    pd_VecAccountId_V18_t validators;
+} pd_nominationpools_nominate_V18_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_METADATA_V18 10
+typedef struct {
+    pd_PoolId_V18_t pool_id;
+    pd_Vecu8_t metadata;
+} pd_nominationpools_set_metadata_V18_t;
+
 #endif
 
 typedef union {
@@ -1632,7 +1626,10 @@ typedef union {
     pd_balances_force_transfer_V18_t balances_force_transfer_V18;
     pd_balances_transfer_keep_alive_V18_t balances_transfer_keep_alive_V18;
     pd_staking_bond_V18_t staking_bond_V18;
+    pd_staking_unbond_V18_t staking_unbond_V18;
     pd_staking_nominate_V18_t staking_nominate_V18;
+    pd_staking_chill_V18_t staking_chill_V18;
+    pd_staking_set_controller_V18_t staking_set_controller_V18;
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
@@ -1664,6 +1661,9 @@ typedef union {
     pd_multisig_as_multi_V18_t multisig_as_multi_V18;
     pd_multisig_approve_as_multi_V18_t multisig_approve_as_multi_V18;
     pd_multisig_cancel_as_multi_V18_t multisig_cancel_as_multi_V18;
+    pd_nominationpools_create_V18_t nominationpools_create_V18;
+    pd_nominationpools_nominate_V18_t nominationpools_nominate_V18;
+    pd_nominationpools_set_metadata_V18_t nominationpools_set_metadata_V18;
 #endif
 } pd_MethodNested_V18_t;
 
