@@ -1873,7 +1873,7 @@ parser_error_t _readMethod_V19(
         CHECK_ERROR(_readMethod_staking_bond_extra_V19(c, &method->basic.staking_bond_extra_V19))
         break;
     case 1794: /* module 7 call 2 */
-        CHECK_ERROR(_readMethod_staking_unbond_V19(c, &method->basic.staking_unbond_V19))
+        CHECK_ERROR(_readMethod_staking_unbond_V19(c, &method->nested.staking_unbond_V19))
         break;
     case 1795: /* module 7 call 3 */
         CHECK_ERROR(_readMethod_staking_withdraw_unbonded_V19(c, &method->basic.staking_withdraw_unbonded_V19))
@@ -1885,13 +1885,13 @@ parser_error_t _readMethod_V19(
         CHECK_ERROR(_readMethod_staking_nominate_V19(c, &method->nested.staking_nominate_V19))
         break;
     case 1798: /* module 7 call 6 */
-        CHECK_ERROR(_readMethod_staking_chill_V19(c, &method->basic.staking_chill_V19))
+        CHECK_ERROR(_readMethod_staking_chill_V19(c, &method->nested.staking_chill_V19))
         break;
     case 1799: /* module 7 call 7 */
         CHECK_ERROR(_readMethod_staking_set_payee_V19(c, &method->basic.staking_set_payee_V19))
         break;
     case 1800: /* module 7 call 8 */
-        CHECK_ERROR(_readMethod_staking_set_controller_V19(c, &method->basic.staking_set_controller_V19))
+        CHECK_ERROR(_readMethod_staking_set_controller_V19(c, &method->nested.staking_set_controller_V19))
         break;
     case 1810: /* module 7 call 18 */
         CHECK_ERROR(_readMethod_staking_payout_stakers_V19(c, &method->basic.staking_payout_stakers_V19))
@@ -2387,19 +2387,19 @@ parser_error_t _readMethod_V19(
         CHECK_ERROR(_readMethod_nominationpools_withdraw_unbonded_V19(c, &method->basic.nominationpools_withdraw_unbonded_V19))
         break;
     case 9990: /* module 39 call 6 */
-        CHECK_ERROR(_readMethod_nominationpools_create_V19(c, &method->basic.nominationpools_create_V19))
+        CHECK_ERROR(_readMethod_nominationpools_create_V19(c, &method->nested.nominationpools_create_V19))
         break;
     case 9991: /* module 39 call 7 */
         CHECK_ERROR(_readMethod_nominationpools_create_with_pool_id_V19(c, &method->basic.nominationpools_create_with_pool_id_V19))
         break;
     case 9992: /* module 39 call 8 */
-        CHECK_ERROR(_readMethod_nominationpools_nominate_V19(c, &method->basic.nominationpools_nominate_V19))
+        CHECK_ERROR(_readMethod_nominationpools_nominate_V19(c, &method->nested.nominationpools_nominate_V19))
         break;
     case 9993: /* module 39 call 9 */
         CHECK_ERROR(_readMethod_nominationpools_set_state_V19(c, &method->basic.nominationpools_set_state_V19))
         break;
     case 9994: /* module 39 call 10 */
-        CHECK_ERROR(_readMethod_nominationpools_set_metadata_V19(c, &method->basic.nominationpools_set_metadata_V19))
+        CHECK_ERROR(_readMethod_nominationpools_set_metadata_V19(c, &method->nested.nominationpools_set_metadata_V19))
         break;
     case 9995: /* module 39 call 11 */
         CHECK_ERROR(_readMethod_nominationpools_set_configs_V19(c, &method->basic.nominationpools_set_configs_V19))
@@ -5753,7 +5753,7 @@ parser_error_t _getMethod_ItemValue_V19(
         switch (itemIdx) {
         case 0: /* staking_unbond_V19 - amount */;
             return _toStringCompactBalance(
-                &m->basic.staking_unbond_V19.amount,
+                &m->nested.staking_unbond_V19.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5808,7 +5808,7 @@ parser_error_t _getMethod_ItemValue_V19(
         switch (itemIdx) {
         case 0: /* staking_set_controller_V19 - controller */;
             return _toStringAccountIdLookupOfT_V19(
-                &m->basic.staking_set_controller_V19.controller,
+                &m->nested.staking_set_controller_V19.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -8126,22 +8126,22 @@ parser_error_t _getMethod_ItemValue_V19(
         switch (itemIdx) {
         case 0: /* nominationpools_create_V19 - amount */;
             return _toStringCompactBalance(
-                &m->basic.nominationpools_create_V19.amount,
+                &m->nested.nominationpools_create_V19.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_create_V19 - root */;
             return _toStringAccountIdLookupOfT_V19(
-                &m->basic.nominationpools_create_V19.root,
+                &m->nested.nominationpools_create_V19.root,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* nominationpools_create_V19 - nominator */;
             return _toStringAccountIdLookupOfT_V19(
-                &m->basic.nominationpools_create_V19.nominator,
+                &m->nested.nominationpools_create_V19.nominator,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* nominationpools_create_V19 - state_toggler */;
             return _toStringAccountIdLookupOfT_V19(
-                &m->basic.nominationpools_create_V19.state_toggler,
+                &m->nested.nominationpools_create_V19.state_toggler,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -8181,12 +8181,12 @@ parser_error_t _getMethod_ItemValue_V19(
         switch (itemIdx) {
         case 0: /* nominationpools_nominate_V19 - pool_id */;
             return _toStringPoolId_V19(
-                &m->basic.nominationpools_nominate_V19.pool_id,
+                &m->nested.nominationpools_nominate_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_nominate_V19 - validators */;
             return _toStringVecAccountId_V19(
-                &m->basic.nominationpools_nominate_V19.validators,
+                &m->nested.nominationpools_nominate_V19.validators,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -8211,12 +8211,12 @@ parser_error_t _getMethod_ItemValue_V19(
         switch (itemIdx) {
         case 0: /* nominationpools_set_metadata_V19 - pool_id */;
             return _toStringPoolId_V19(
-                &m->basic.nominationpools_set_metadata_V19.pool_id,
+                &m->nested.nominationpools_set_metadata_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_set_metadata_V19 - metadata */;
             return _toStringVecu8(
-                &m->basic.nominationpools_set_metadata_V19.metadata,
+                &m->nested.nominationpools_set_metadata_V19.metadata,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -8899,12 +8899,9 @@ bool _getMethod_IsNestingSupported_V19(uint8_t moduleIdx, uint8_t callIdx)
     case 1284: // Balances:Transfer all
     case 1285: // Balances:Force unreserve
     case 1793: // Staking:Bond extra
-    case 1794: // Staking:Unbond
     case 1795: // Staking:Withdraw Unbonded
     case 1796: // Staking:Validate
-    case 1798: // Staking:Chill
     case 1799: // Staking:Set payee
-    case 1800: // Staking:Set controller
     case 1801: // Staking:Set validator count
     case 1802: // Staking:Increase validator count
     case 1803: // Staking:Scale validator count
@@ -9018,11 +9015,8 @@ bool _getMethod_IsNestingSupported_V19(uint8_t moduleIdx, uint8_t callIdx)
     case 9987: // NominationPools:Unbond
     case 9988: // NominationPools:Pool withdraw unbonded
     case 9989: // NominationPools:Withdraw Unbonded
-    case 9990: // NominationPools:Create
     case 9991: // NominationPools:Create with pool id
-    case 9992: // NominationPools:Nominate
     case 9993: // NominationPools:Set state
-    case 9994: // NominationPools:Set metadata
     case 9995: // NominationPools:Set configs
     case 9996: // NominationPools:Update roles
     case 9997: // NominationPools:Chill

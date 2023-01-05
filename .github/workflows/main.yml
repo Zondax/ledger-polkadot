@@ -64,21 +64,33 @@ jobs:
       BOLOS_SDK: ${{ github.workspace }}/deps/nanos-secure-sdk
       BOLOS_ENV: /opt/bolos
       HOME: /home/zondax_circle
+    outputs:
+      size: ${{steps.build.outputs.size}}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: true
       - name: Build Standard app
+        id: build
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
-          make
+          SUBSTRATE_PARSER_FULL=1 make
+          echo "size=$(python3 deps/ledger-zxlib/scripts/getSize.py s)" >> $GITHUB_OUTPUT
       - name: Build SR25519 app
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
           SUPPORT_SR25519=1 make
+
+  size_nano_s:
+    needs: build_ledger
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "LNS app size: ${{needs.build_ledger.outputs.size}} KiB"
+          [ ${{needs.build_ledger.outputs.size}} -le 136 ]
 
   test_zemu:
     runs-on: ubuntu-latest
