@@ -268,6 +268,7 @@ static const char* STR_ME_POKE = "Poke";
 static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
 static const char* STR_ME_RESERVE_TRANSFER_ASSETS = "Reserve transfer assets";
 static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
+static const char* STR_ME_SET_MIN_COMMISSION = "Set min commission";
 
 // Items names
 static const char* STR_IT_remark = "Remark";
