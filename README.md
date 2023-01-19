@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot 19.9360.x
+# Polkadot 20.9370.x
 
 ## System
 
@@ -133,6 +133,7 @@ Please:
 | Set staking configs        |                    | :heavy_check_mark: | :heavy_check_mark: |                    | `ConfigOpBalanceOfT`min_nominator_bond<br/>`ConfigOpBalanceOfT`min_validator_bond<br/>`ConfigOpu32`max_nominator_count<br/>`ConfigOpu32`max_validator_count<br/>`ConfigOpPercent`chill_threshold<br/>`ConfigOpPerbill`min_commission<br/> |
 | Chill other                |                    | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountId`controller<br/>                                                                                                                                                                                                                |
 | Force apply min commission |                    | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountId`validator_stash<br/>                                                                                                                                                                                                           |
+| Set min commission         |                    | :heavy_check_mark: | :heavy_check_mark: |                    | `Perbill`new\_<br/>                                                                                                                                                                                                                       |
 
 ## Session
 
@@ -411,7 +412,6 @@ Please:
 | Set max validators                            |        | :heavy_check_mark: | :heavy_check_mark: |         | `Optionu32`new\_<br/>    |
 | Set dispute period                            |        |                    |                    |         | `SessionIndex`new\_<br/> |
 | Set dispute post conclusion acceptance period |        | :heavy_check_mark: | :heavy_check_mark: |         | `BlockNumber`new\_<br/>  |
-| Set dispute max spam slots                    |        | :heavy_check_mark: | :heavy_check_mark: |         | `u32`new\_<br/>          |
 | Set dispute conclusion by time out period     |        | :heavy_check_mark: | :heavy_check_mark: |         | `BlockNumber`new\_<br/>  |
 | Set no show slots                             |        | :heavy_check_mark: | :heavy_check_mark: |         | `u32`new\_<br/>          |
 | Set n delay tranches                          |        | :heavy_check_mark: | :heavy_check_mark: |         | `u32`new\_<br/>          |
