@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  (c) 2019 - 2022 Zondax AG
+ *  (c) 2019 - 2023 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
 __Z_INLINE parser_error_t _readMethod_balances_transfer_V19(
     parser_context_t* c, pd_balances_transfer_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->dest))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
@@ -33,8 +33,8 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_V19(
 __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V19(
     parser_context_t* c, pd_balances_force_transfer_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->source))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->dest))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->source))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
@@ -42,7 +42,7 @@ __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V19(
 __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive_V19(
     parser_context_t* c, pd_balances_transfer_keep_alive_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->dest))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
@@ -50,7 +50,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive_V19(
 __Z_INLINE parser_error_t _readMethod_balances_transfer_all_V19(
     parser_context_t* c, pd_balances_transfer_all_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->dest))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
     CHECK_ERROR(_readbool(c, &m->keep_alive))
     return parser_ok;
 }
@@ -58,9 +58,9 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_all_V19(
 __Z_INLINE parser_error_t _readMethod_staking_bond_V19(
     parser_context_t* c, pd_staking_bond_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->controller))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->controller))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    CHECK_ERROR(_readRewardDestination_V19(c, &m->payee))
+    CHECK_ERROR(_readRewardDestination(c, &m->payee))
     return parser_ok;
 }
 
@@ -88,14 +88,14 @@ __Z_INLINE parser_error_t _readMethod_staking_withdraw_unbonded_V19(
 __Z_INLINE parser_error_t _readMethod_staking_validate_V19(
     parser_context_t* c, pd_staking_validate_V19_t* m)
 {
-    CHECK_ERROR(_readValidatorPrefs_V19(c, &m->prefs))
+    CHECK_ERROR(_readValidatorPrefs(c, &m->prefs))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_nominate_V19(
     parser_context_t* c, pd_staking_nominate_V19_t* m)
 {
-    CHECK_ERROR(_readVecAccountIdLookupOfT_V19(c, &m->targets))
+    CHECK_ERROR(_readVecAccountIdLookupOfT(c, &m->targets))
     return parser_ok;
 }
 
@@ -108,22 +108,22 @@ __Z_INLINE parser_error_t _readMethod_staking_chill_V19(
 __Z_INLINE parser_error_t _readMethod_staking_set_payee_V19(
     parser_context_t* c, pd_staking_set_payee_V19_t* m)
 {
-    CHECK_ERROR(_readRewardDestination_V19(c, &m->payee))
+    CHECK_ERROR(_readRewardDestination(c, &m->payee))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_set_controller_V19(
     parser_context_t* c, pd_staking_set_controller_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->controller))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->controller))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_payout_stakers_V19(
     parser_context_t* c, pd_staking_payout_stakers_V19_t* m)
 {
-    CHECK_ERROR(_readAccountId_V19(c, &m->validator_stash))
-    CHECK_ERROR(_readEraIndex_V19(c, &m->era))
+    CHECK_ERROR(_readAccountId(c, &m->validator_stash))
+    CHECK_ERROR(_readEraIndex(c, &m->era))
     return parser_ok;
 }
 
@@ -137,7 +137,7 @@ __Z_INLINE parser_error_t _readMethod_staking_rebond_V19(
 __Z_INLINE parser_error_t _readMethod_session_set_keys_V19(
     parser_context_t* c, pd_session_set_keys_V19_t* m)
 {
-    CHECK_ERROR(_readKeys_V19(c, &m->keys))
+    CHECK_ERROR(_readKeys(c, &m->keys))
     CHECK_ERROR(_readBytes(c, &m->proof))
     return parser_ok;
 }
@@ -177,7 +177,7 @@ __Z_INLINE parser_error_t _readMethod_crowdloan_create_V19(
     CHECK_ERROR(_readCompactu32(c, &m->first_period))
     CHECK_ERROR(_readCompactu32(c, &m->last_period))
     CHECK_ERROR(_readCompactu32(c, &m->end))
-    CHECK_ERROR(_readOptionMultiSigner_V19(c, &m->verifier))
+    CHECK_ERROR(_readOptionMultiSigner(c, &m->verifier))
     return parser_ok;
 }
 
@@ -186,14 +186,14 @@ __Z_INLINE parser_error_t _readMethod_crowdloan_contribute_V19(
 {
     CHECK_ERROR(_readCompactu32(c, &m->index))
     CHECK_ERROR(_readCompactu128(c, &m->amount))
-    CHECK_ERROR(_readOptionMultiSignature_V19(c, &m->signature))
+    CHECK_ERROR(_readOptionMultiSignature(c, &m->signature))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_crowdloan_withdraw_V19(
     parser_context_t* c, pd_crowdloan_withdraw_V19_t* m)
 {
-    CHECK_ERROR(_readAccountId_V19(c, &m->who))
+    CHECK_ERROR(_readAccountId(c, &m->who))
     CHECK_ERROR(_readCompactu32(c, &m->index))
     return parser_ok;
 }
@@ -220,14 +220,14 @@ __Z_INLINE parser_error_t _readMethod_crowdloan_edit_V19(
     CHECK_ERROR(_readCompactu32(c, &m->first_period))
     CHECK_ERROR(_readCompactu32(c, &m->last_period))
     CHECK_ERROR(_readCompactu32(c, &m->end))
-    CHECK_ERROR(_readOptionMultiSigner_V19(c, &m->verifier))
+    CHECK_ERROR(_readOptionMultiSigner(c, &m->verifier))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_crowdloan_add_memo_V19(
     parser_context_t* c, pd_crowdloan_add_memo_V19_t* m)
 {
-    CHECK_ERROR(_readParaId_V19(c, &m->index))
+    CHECK_ERROR(_readParaId(c, &m->index))
     CHECK_ERROR(_readVecu8(c, &m->memo))
     return parser_ok;
 }
@@ -235,7 +235,7 @@ __Z_INLINE parser_error_t _readMethod_crowdloan_add_memo_V19(
 __Z_INLINE parser_error_t _readMethod_crowdloan_poke_V19(
     parser_context_t* c, pd_crowdloan_poke_V19_t* m)
 {
-    CHECK_ERROR(_readParaId_V19(c, &m->index))
+    CHECK_ERROR(_readParaId(c, &m->index))
     return parser_ok;
 }
 
@@ -243,7 +243,7 @@ __Z_INLINE parser_error_t _readMethod_crowdloan_contribute_all_V19(
     parser_context_t* c, pd_crowdloan_contribute_all_V19_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readOptionMultiSignature_V19(c, &m->signature))
+    CHECK_ERROR(_readOptionMultiSignature(c, &m->signature))
     return parser_ok;
 }
 
@@ -252,20 +252,20 @@ __Z_INLINE parser_error_t _readMethod_crowdloan_contribute_all_V19(
 __Z_INLINE parser_error_t _readMethod_xcmpallet_reserve_transfer_assets_V19(
     parser_context_t* c, pd_xcmpallet_reserve_transfer_assets_V19_t* m)
 {
-    CHECK_ERROR(_readBoxVersionedMultiLocation_V19(c, &m->dest))
-    CHECK_ERROR(_readBoxVersionedMultiLocation_V19(c, &m->beneficiary))
-    CHECK_ERROR(_readBoxVersionedMultiAssets_V19(c, &m->assets))
+    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->dest))
+    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->beneficiary))
+    CHECK_ERROR(_readBoxVersionedMultiAssets(c, &m->assets))
     CHECK_ERROR(_readu32(c, &m->fee_asset_item))
     return parser_ok;
 }
 __Z_INLINE parser_error_t _readMethod_xcmpallet_limited_reserve_transfer_assets_V19(
     parser_context_t* c, pd_xcmpallet_limited_reserve_transfer_assets_V19_t* m)
 {
-    CHECK_ERROR(_readBoxVersionedMultiLocation_V19(c, &m->dest))
-    CHECK_ERROR(_readBoxVersionedMultiLocation_V19(c, &m->beneficiary))
-    CHECK_ERROR(_readBoxVersionedMultiAssets_V19(c, &m->assets))
+    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->dest))
+    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->beneficiary))
+    CHECK_ERROR(_readBoxVersionedMultiAssets(c, &m->assets))
     CHECK_ERROR(_readu32(c, &m->fee_asset_item))
-    CHECK_ERROR(_readWeightLimit_V19(c, &m->weight_limit))
+    CHECK_ERROR(_readWeightLimit(c, &m->weight_limit))
     return parser_ok;
 }
 #endif
@@ -342,30 +342,30 @@ __Z_INLINE parser_error_t _readMethod_timestamp_set_V19(
 __Z_INLINE parser_error_t _readMethod_indices_claim_V19(
     parser_context_t* c, pd_indices_claim_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIndex_V19(c, &m->index))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_indices_transfer_V19(
     parser_context_t* c, pd_indices_transfer_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->new_))
-    CHECK_ERROR(_readAccountIndex_V19(c, &m->index))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->new_))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_indices_free_V19(
     parser_context_t* c, pd_indices_free_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIndex_V19(c, &m->index))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_indices_force_transfer_V19(
     parser_context_t* c, pd_indices_force_transfer_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->new_))
-    CHECK_ERROR(_readAccountIndex_V19(c, &m->index))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->new_))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     CHECK_ERROR(_readbool(c, &m->freeze))
     return parser_ok;
 }
@@ -373,14 +373,14 @@ __Z_INLINE parser_error_t _readMethod_indices_force_transfer_V19(
 __Z_INLINE parser_error_t _readMethod_indices_freeze_V19(
     parser_context_t* c, pd_indices_freeze_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIndex_V19(c, &m->index))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_balances_set_balance_V19(
     parser_context_t* c, pd_balances_set_balance_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     CHECK_ERROR(_readCompactBalance(c, &m->new_free))
     CHECK_ERROR(_readCompactBalance(c, &m->new_reserved))
     return parser_ok;
@@ -389,7 +389,7 @@ __Z_INLINE parser_error_t _readMethod_balances_set_balance_V19(
 __Z_INLINE parser_error_t _readMethod_balances_force_unreserve_V19(
     parser_context_t* c, pd_balances_force_unreserve_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     CHECK_ERROR(_readBalance(c, &m->amount))
     return parser_ok;
 }
@@ -411,7 +411,7 @@ __Z_INLINE parser_error_t _readMethod_staking_increase_validator_count_V19(
 __Z_INLINE parser_error_t _readMethod_staking_scale_validator_count_V19(
     parser_context_t* c, pd_staking_scale_validator_count_V19_t* m)
 {
-    CHECK_ERROR(_readPercent_V19(c, &m->factor))
+    CHECK_ERROR(_readPercent(c, &m->factor))
     return parser_ok;
 }
 
@@ -430,14 +430,14 @@ __Z_INLINE parser_error_t _readMethod_staking_force_new_era_V19(
 __Z_INLINE parser_error_t _readMethod_staking_set_invulnerables_V19(
     parser_context_t* c, pd_staking_set_invulnerables_V19_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->invulnerables))
+    CHECK_ERROR(_readVecAccountId(c, &m->invulnerables))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_force_unstake_V19(
     parser_context_t* c, pd_staking_force_unstake_V19_t* m)
 {
-    CHECK_ERROR(_readAccountId_V19(c, &m->stash))
+    CHECK_ERROR(_readAccountId(c, &m->stash))
     CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
     return parser_ok;
 }
@@ -451,7 +451,7 @@ __Z_INLINE parser_error_t _readMethod_staking_force_new_era_always_V19(
 __Z_INLINE parser_error_t _readMethod_staking_cancel_deferred_slash_V19(
     parser_context_t* c, pd_staking_cancel_deferred_slash_V19_t* m)
 {
-    CHECK_ERROR(_readEraIndex_V19(c, &m->era))
+    CHECK_ERROR(_readEraIndex(c, &m->era))
     CHECK_ERROR(_readVecu32(c, &m->slash_indices))
     return parser_ok;
 }
@@ -459,7 +459,7 @@ __Z_INLINE parser_error_t _readMethod_staking_cancel_deferred_slash_V19(
 __Z_INLINE parser_error_t _readMethod_staking_reap_stash_V19(
     parser_context_t* c, pd_staking_reap_stash_V19_t* m)
 {
-    CHECK_ERROR(_readAccountId_V19(c, &m->stash))
+    CHECK_ERROR(_readAccountId(c, &m->stash))
     CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
     return parser_ok;
 }
@@ -467,40 +467,40 @@ __Z_INLINE parser_error_t _readMethod_staking_reap_stash_V19(
 __Z_INLINE parser_error_t _readMethod_staking_kick_V19(
     parser_context_t* c, pd_staking_kick_V19_t* m)
 {
-    CHECK_ERROR(_readVecAccountIdLookupOfT_V19(c, &m->who))
+    CHECK_ERROR(_readVecAccountIdLookupOfT(c, &m->who))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_set_staking_configs_V19(
     parser_context_t* c, pd_staking_set_staking_configs_V19_t* m)
 {
-    CHECK_ERROR(_readConfigOpBalanceOfT_V19(c, &m->min_nominator_bond))
-    CHECK_ERROR(_readConfigOpBalanceOfT_V19(c, &m->min_validator_bond))
-    CHECK_ERROR(_readConfigOpu32_V19(c, &m->max_nominator_count))
-    CHECK_ERROR(_readConfigOpu32_V19(c, &m->max_validator_count))
-    CHECK_ERROR(_readConfigOpPercent_V19(c, &m->chill_threshold))
-    CHECK_ERROR(_readConfigOpPerbill_V19(c, &m->min_commission))
+    CHECK_ERROR(_readConfigOpBalanceOfT(c, &m->min_nominator_bond))
+    CHECK_ERROR(_readConfigOpBalanceOfT(c, &m->min_validator_bond))
+    CHECK_ERROR(_readConfigOpu32(c, &m->max_nominator_count))
+    CHECK_ERROR(_readConfigOpu32(c, &m->max_validator_count))
+    CHECK_ERROR(_readConfigOpPercent(c, &m->chill_threshold))
+    CHECK_ERROR(_readConfigOpPerbill(c, &m->min_commission))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_chill_other_V19(
     parser_context_t* c, pd_staking_chill_other_V19_t* m)
 {
-    CHECK_ERROR(_readAccountId_V19(c, &m->controller))
+    CHECK_ERROR(_readAccountId(c, &m->controller))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_force_apply_min_commission_V19(
     parser_context_t* c, pd_staking_force_apply_min_commission_V19_t* m)
 {
-    CHECK_ERROR(_readAccountId_V19(c, &m->validator_stash))
+    CHECK_ERROR(_readAccountId(c, &m->validator_stash))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_democracy_propose_V19(
     parser_context_t* c, pd_democracy_propose_V19_t* m)
 {
-    CHECK_ERROR(_readBoundedCallOfT_V19(c, &m->proposal))
+    CHECK_ERROR(_readBoundedCallOfT(c, &m->proposal))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
@@ -516,35 +516,35 @@ __Z_INLINE parser_error_t _readMethod_democracy_vote_V19(
     parser_context_t* c, pd_democracy_vote_V19_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->ref_index))
-    CHECK_ERROR(_readAccountVote_V19(c, &m->vote))
+    CHECK_ERROR(_readAccountVote(c, &m->vote))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_democracy_emergency_cancel_V19(
     parser_context_t* c, pd_democracy_emergency_cancel_V19_t* m)
 {
-    CHECK_ERROR(_readReferendumIndex_V19(c, &m->ref_index))
+    CHECK_ERROR(_readReferendumIndex(c, &m->ref_index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_democracy_external_propose_V19(
     parser_context_t* c, pd_democracy_external_propose_V19_t* m)
 {
-    CHECK_ERROR(_readBoundedCallOfT_V19(c, &m->proposal))
+    CHECK_ERROR(_readBoundedCallOfT(c, &m->proposal))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_democracy_external_propose_majority_V19(
     parser_context_t* c, pd_democracy_external_propose_majority_V19_t* m)
 {
-    CHECK_ERROR(_readBoundedCallOfT_V19(c, &m->proposal))
+    CHECK_ERROR(_readBoundedCallOfT(c, &m->proposal))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_democracy_external_propose_default_V19(
     parser_context_t* c, pd_democracy_external_propose_default_V19_t* m)
 {
-    CHECK_ERROR(_readBoundedCallOfT_V19(c, &m->proposal))
+    CHECK_ERROR(_readBoundedCallOfT(c, &m->proposal))
     return parser_ok;
 }
 
@@ -574,8 +574,8 @@ __Z_INLINE parser_error_t _readMethod_democracy_cancel_referendum_V19(
 __Z_INLINE parser_error_t _readMethod_democracy_delegate_V19(
     parser_context_t* c, pd_democracy_delegate_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->to))
-    CHECK_ERROR(_readConviction_V19(c, &m->conviction))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->to))
+    CHECK_ERROR(_readConviction(c, &m->conviction))
     CHECK_ERROR(_readBalance(c, &m->balance))
     return parser_ok;
 }
@@ -595,22 +595,22 @@ __Z_INLINE parser_error_t _readMethod_democracy_clear_public_proposals_V19(
 __Z_INLINE parser_error_t _readMethod_democracy_unlock_V19(
     parser_context_t* c, pd_democracy_unlock_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->target))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_democracy_remove_vote_V19(
     parser_context_t* c, pd_democracy_remove_vote_V19_t* m)
 {
-    CHECK_ERROR(_readReferendumIndex_V19(c, &m->index))
+    CHECK_ERROR(_readReferendumIndex(c, &m->index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_democracy_remove_other_vote_V19(
     parser_context_t* c, pd_democracy_remove_other_vote_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->target))
-    CHECK_ERROR(_readReferendumIndex_V19(c, &m->index))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
+    CHECK_ERROR(_readReferendumIndex(c, &m->index))
     return parser_ok;
 }
 
@@ -618,7 +618,7 @@ __Z_INLINE parser_error_t _readMethod_democracy_blacklist_V19(
     parser_context_t* c, pd_democracy_blacklist_V19_t* m)
 {
     CHECK_ERROR(_readH256(c, &m->proposal_hash))
-    CHECK_ERROR(_readOptionReferendumIndex_V19(c, &m->maybe_ref_index))
+    CHECK_ERROR(_readOptionReferendumIndex(c, &m->maybe_ref_index))
     return parser_ok;
 }
 
@@ -632,9 +632,9 @@ __Z_INLINE parser_error_t _readMethod_democracy_cancel_proposal_V19(
 __Z_INLINE parser_error_t _readMethod_council_set_members_V19(
     parser_context_t* c, pd_council_set_members_V19_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->new_members))
-    CHECK_ERROR(_readOptionAccountId_V19(c, &m->prime))
-    CHECK_ERROR(_readMemberCount_V19(c, &m->old_count))
+    CHECK_ERROR(_readVecAccountId(c, &m->new_members))
+    CHECK_ERROR(_readOptionAccountId(c, &m->prime))
+    CHECK_ERROR(_readMemberCount(c, &m->old_count))
     return parser_ok;
 }
 
@@ -686,7 +686,7 @@ __Z_INLINE parser_error_t _readMethod_council_close_V19(
 {
     CHECK_ERROR(_readHash(c, &m->proposal_hash))
     CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readWeight_V19(c, &m->proposal_weight_bound))
+    CHECK_ERROR(_readWeight(c, &m->proposal_weight_bound))
     CHECK_ERROR(_readCompactu32(c, &m->length_bound))
     return parser_ok;
 }
@@ -694,9 +694,9 @@ __Z_INLINE parser_error_t _readMethod_council_close_V19(
 __Z_INLINE parser_error_t _readMethod_technicalcommittee_set_members_V19(
     parser_context_t* c, pd_technicalcommittee_set_members_V19_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->new_members))
-    CHECK_ERROR(_readOptionAccountId_V19(c, &m->prime))
-    CHECK_ERROR(_readMemberCount_V19(c, &m->old_count))
+    CHECK_ERROR(_readVecAccountId(c, &m->new_members))
+    CHECK_ERROR(_readOptionAccountId(c, &m->prime))
+    CHECK_ERROR(_readMemberCount(c, &m->old_count))
     return parser_ok;
 }
 
@@ -748,7 +748,7 @@ __Z_INLINE parser_error_t _readMethod_technicalcommittee_close_V19(
 {
     CHECK_ERROR(_readHash(c, &m->proposal_hash))
     CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readWeight_V19(c, &m->proposal_weight_bound))
+    CHECK_ERROR(_readWeight(c, &m->proposal_weight_bound))
     CHECK_ERROR(_readCompactu32(c, &m->length_bound))
     return parser_ok;
 }
@@ -756,7 +756,7 @@ __Z_INLINE parser_error_t _readMethod_technicalcommittee_close_V19(
 __Z_INLINE parser_error_t _readMethod_phragmenelection_vote_V19(
     parser_context_t* c, pd_phragmenelection_vote_V19_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->votes))
+    CHECK_ERROR(_readVecAccountId(c, &m->votes))
     CHECK_ERROR(_readCompactu128(c, &m->amount))
     return parser_ok;
 }
@@ -777,7 +777,7 @@ __Z_INLINE parser_error_t _readMethod_phragmenelection_submit_candidacy_V19(
 __Z_INLINE parser_error_t _readMethod_phragmenelection_remove_member_V19(
     parser_context_t* c, pd_phragmenelection_remove_member_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     CHECK_ERROR(_readbool(c, &m->slash_bond))
     CHECK_ERROR(_readbool(c, &m->rerun_election))
     return parser_ok;
@@ -794,43 +794,43 @@ __Z_INLINE parser_error_t _readMethod_phragmenelection_clean_defunct_voters_V19(
 __Z_INLINE parser_error_t _readMethod_technicalmembership_add_member_V19(
     parser_context_t* c, pd_technicalmembership_add_member_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_technicalmembership_remove_member_V19(
     parser_context_t* c, pd_technicalmembership_remove_member_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_technicalmembership_swap_member_V19(
     parser_context_t* c, pd_technicalmembership_swap_member_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->remove))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->add))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->remove))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->add))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_technicalmembership_reset_members_V19(
     parser_context_t* c, pd_technicalmembership_reset_members_V19_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->members))
+    CHECK_ERROR(_readVecAccountId(c, &m->members))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_technicalmembership_change_key_V19(
     parser_context_t* c, pd_technicalmembership_change_key_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->new_))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->new_))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_technicalmembership_set_prime_V19(
     parser_context_t* c, pd_technicalmembership_set_prime_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     return parser_ok;
 }
 
@@ -844,7 +844,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_propose_spend_V19(
     parser_context_t* c, pd_treasury_propose_spend_V19_t* m)
 {
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->beneficiary))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -866,7 +866,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_spend_V19(
     parser_context_t* c, pd_treasury_spend_V19_t* m)
 {
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->beneficiary))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -880,16 +880,16 @@ __Z_INLINE parser_error_t _readMethod_treasury_remove_approval_V19(
 __Z_INLINE parser_error_t _readMethod_claims_claim_V19(
     parser_context_t* c, pd_claims_claim_V19_t* m)
 {
-    CHECK_ERROR(_readAccountId_V19(c, &m->dest))
-    CHECK_ERROR(_readEcdsaSignature_V19(c, &m->ethereum_signature))
+    CHECK_ERROR(_readAccountId(c, &m->dest))
+    CHECK_ERROR(_readEcdsaSignature(c, &m->ethereum_signature))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_claims_claim_attest_V19(
     parser_context_t* c, pd_claims_claim_attest_V19_t* m)
 {
-    CHECK_ERROR(_readAccountId_V19(c, &m->dest))
-    CHECK_ERROR(_readEcdsaSignature_V19(c, &m->ethereum_signature))
+    CHECK_ERROR(_readAccountId(c, &m->dest))
+    CHECK_ERROR(_readEcdsaSignature(c, &m->ethereum_signature))
     CHECK_ERROR(_readBytes(c, &m->statement))
     return parser_ok;
 }
@@ -904,9 +904,9 @@ __Z_INLINE parser_error_t _readMethod_claims_attest_V19(
 __Z_INLINE parser_error_t _readMethod_claims_move_claim_V19(
     parser_context_t* c, pd_claims_move_claim_V19_t* m)
 {
-    CHECK_ERROR(_readEthereumAddress_V19(c, &m->old))
-    CHECK_ERROR(_readEthereumAddress_V19(c, &m->new_))
-    CHECK_ERROR(_readOptionAccountId_V19(c, &m->maybe_preclaim))
+    CHECK_ERROR(_readEthereumAddress(c, &m->old))
+    CHECK_ERROR(_readEthereumAddress(c, &m->new_))
+    CHECK_ERROR(_readOptionAccountId(c, &m->maybe_preclaim))
     return parser_ok;
 }
 
@@ -919,24 +919,24 @@ __Z_INLINE parser_error_t _readMethod_vesting_vest_V19(
 __Z_INLINE parser_error_t _readMethod_vesting_vest_other_V19(
     parser_context_t* c, pd_vesting_vest_other_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->target))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_vesting_vested_transfer_V19(
     parser_context_t* c, pd_vesting_vested_transfer_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->target))
-    CHECK_ERROR(_readVestingInfo_V19(c, &m->schedule))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
+    CHECK_ERROR(_readVestingInfo(c, &m->schedule))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_vesting_force_vested_transfer_V19(
     parser_context_t* c, pd_vesting_force_vested_transfer_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->source))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->target))
-    CHECK_ERROR(_readVestingInfo_V19(c, &m->schedule))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->source))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
+    CHECK_ERROR(_readVestingInfo(c, &m->schedule))
     return parser_ok;
 }
 
@@ -952,28 +952,28 @@ __Z_INLINE parser_error_t _readMethod_utility_with_weight_V19(
     parser_context_t* c, pd_utility_with_weight_V19_t* m)
 {
     CHECK_ERROR(_readCall(c, &m->call))
-    CHECK_ERROR(_readWeight_V19(c, &m->weight))
+    CHECK_ERROR(_readWeight(c, &m->weight))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_identity_add_registrar_V19(
     parser_context_t* c, pd_identity_add_registrar_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->account))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->account))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_identity_set_identity_V19(
     parser_context_t* c, pd_identity_set_identity_V19_t* m)
 {
-    CHECK_ERROR(_readIdentityInfo_V19(c, &m->info))
+    CHECK_ERROR(_readIdentityInfo(c, &m->info))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_identity_set_subs_V19(
     parser_context_t* c, pd_identity_set_subs_V19_t* m)
 {
-    CHECK_ERROR(_readVecTupleAccountIdData_V19(c, &m->subs))
+    CHECK_ERROR(_readVecTupleAccountIdData(c, &m->subs))
     return parser_ok;
 }
 
@@ -994,7 +994,7 @@ __Z_INLINE parser_error_t _readMethod_identity_request_judgement_V19(
 __Z_INLINE parser_error_t _readMethod_identity_cancel_request_V19(
     parser_context_t* c, pd_identity_cancel_request_V19_t* m)
 {
-    CHECK_ERROR(_readRegistrarIndex_V19(c, &m->reg_index))
+    CHECK_ERROR(_readRegistrarIndex(c, &m->reg_index))
     return parser_ok;
 }
 
@@ -1010,7 +1010,7 @@ __Z_INLINE parser_error_t _readMethod_identity_set_account_id_V19(
     parser_context_t* c, pd_identity_set_account_id_V19_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->new_))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->new_))
     return parser_ok;
 }
 
@@ -1018,8 +1018,8 @@ __Z_INLINE parser_error_t _readMethod_identity_provide_judgement_V19(
     parser_context_t* c, pd_identity_provide_judgement_V19_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->reg_index))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->target))
-    CHECK_ERROR(_readJudgementBalanceOfT_V19(c, &m->judgement))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
+    CHECK_ERROR(_readJudgementBalanceOfT(c, &m->judgement))
     CHECK_ERROR(_readHash(c, &m->identity))
     return parser_ok;
 }
@@ -1027,14 +1027,14 @@ __Z_INLINE parser_error_t _readMethod_identity_provide_judgement_V19(
 __Z_INLINE parser_error_t _readMethod_identity_kill_identity_V19(
     parser_context_t* c, pd_identity_kill_identity_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->target))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_identity_add_sub_V19(
     parser_context_t* c, pd_identity_add_sub_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->sub))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->sub))
     CHECK_ERROR(_readData(c, &m->data))
     return parser_ok;
 }
@@ -1042,7 +1042,7 @@ __Z_INLINE parser_error_t _readMethod_identity_add_sub_V19(
 __Z_INLINE parser_error_t _readMethod_identity_rename_sub_V19(
     parser_context_t* c, pd_identity_rename_sub_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->sub))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->sub))
     CHECK_ERROR(_readData(c, &m->data))
     return parser_ok;
 }
@@ -1050,7 +1050,7 @@ __Z_INLINE parser_error_t _readMethod_identity_rename_sub_V19(
 __Z_INLINE parser_error_t _readMethod_identity_remove_sub_V19(
     parser_context_t* c, pd_identity_remove_sub_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->sub))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->sub))
     return parser_ok;
 }
 
@@ -1063,8 +1063,8 @@ __Z_INLINE parser_error_t _readMethod_identity_quit_sub_V19(
 __Z_INLINE parser_error_t _readMethod_proxy_proxy_V19(
     parser_context_t* c, pd_proxy_proxy_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->real))
-    CHECK_ERROR(_readOptionProxyType_V19(c, &m->force_proxy_type))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->real))
+    CHECK_ERROR(_readOptionProxyType(c, &m->force_proxy_type))
     CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
@@ -1072,8 +1072,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_proxy_V19(
 __Z_INLINE parser_error_t _readMethod_proxy_add_proxy_V19(
     parser_context_t* c, pd_proxy_add_proxy_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->delegate))
-    CHECK_ERROR(_readProxyType_V19(c, &m->proxy_type))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->delegate))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readBlockNumber(c, &m->delay))
     return parser_ok;
 }
@@ -1081,8 +1081,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_add_proxy_V19(
 __Z_INLINE parser_error_t _readMethod_proxy_remove_proxy_V19(
     parser_context_t* c, pd_proxy_remove_proxy_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->delegate))
-    CHECK_ERROR(_readProxyType_V19(c, &m->proxy_type))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->delegate))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readBlockNumber(c, &m->delay))
     return parser_ok;
 }
@@ -1096,7 +1096,7 @@ __Z_INLINE parser_error_t _readMethod_proxy_remove_proxies_V19(
 __Z_INLINE parser_error_t _readMethod_proxy_create_pure_V19(
     parser_context_t* c, pd_proxy_create_pure_V19_t* m)
 {
-    CHECK_ERROR(_readProxyType_V19(c, &m->proxy_type))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readBlockNumber(c, &m->delay))
     CHECK_ERROR(_readu16(c, &m->index))
     return parser_ok;
@@ -1105,8 +1105,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_create_pure_V19(
 __Z_INLINE parser_error_t _readMethod_proxy_kill_pure_V19(
     parser_context_t* c, pd_proxy_kill_pure_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->spawner))
-    CHECK_ERROR(_readProxyType_V19(c, &m->proxy_type))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->spawner))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readu16(c, &m->index))
     CHECK_ERROR(_readCompactu32(c, &m->height))
     CHECK_ERROR(_readCompactu32(c, &m->ext_index))
@@ -1116,9 +1116,9 @@ __Z_INLINE parser_error_t _readMethod_proxy_kill_pure_V19(
 __Z_INLINE parser_error_t _readMethod_proxy_proxy_announced_V19(
     parser_context_t* c, pd_proxy_proxy_announced_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->delegate))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->real))
-    CHECK_ERROR(_readOptionProxyType_V19(c, &m->force_proxy_type))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->delegate))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->real))
+    CHECK_ERROR(_readOptionProxyType(c, &m->force_proxy_type))
     CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
@@ -1126,7 +1126,7 @@ __Z_INLINE parser_error_t _readMethod_proxy_proxy_announced_V19(
 __Z_INLINE parser_error_t _readMethod_multisig_as_multi_threshold_1_V19(
     parser_context_t* c, pd_multisig_as_multi_threshold_1_V19_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->other_signatories))
+    CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
     CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
@@ -1135,10 +1135,10 @@ __Z_INLINE parser_error_t _readMethod_multisig_as_multi_V19(
     parser_context_t* c, pd_multisig_as_multi_V19_t* m)
 {
     CHECK_ERROR(_readu16(c, &m->threshold))
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->other_signatories))
-    CHECK_ERROR(_readOptionTimepoint_V19(c, &m->maybe_timepoint))
+    CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
+    CHECK_ERROR(_readOptionTimepoint(c, &m->maybe_timepoint))
     CHECK_ERROR(_readCall(c, &m->call))
-    CHECK_ERROR(_readWeight_V19(c, &m->max_weight))
+    CHECK_ERROR(_readWeight(c, &m->max_weight))
     return parser_ok;
 }
 
@@ -1146,10 +1146,10 @@ __Z_INLINE parser_error_t _readMethod_multisig_approve_as_multi_V19(
     parser_context_t* c, pd_multisig_approve_as_multi_V19_t* m)
 {
     CHECK_ERROR(_readu16(c, &m->threshold))
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->other_signatories))
-    CHECK_ERROR(_readOptionTimepoint_V19(c, &m->maybe_timepoint))
+    CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
+    CHECK_ERROR(_readOptionTimepoint(c, &m->maybe_timepoint))
     CHECK_ERROR(_readH256(c, &m->call_hash))
-    CHECK_ERROR(_readWeight_V19(c, &m->max_weight))
+    CHECK_ERROR(_readWeight(c, &m->max_weight))
     return parser_ok;
 }
 
@@ -1157,8 +1157,8 @@ __Z_INLINE parser_error_t _readMethod_multisig_cancel_as_multi_V19(
     parser_context_t* c, pd_multisig_cancel_as_multi_V19_t* m)
 {
     CHECK_ERROR(_readu16(c, &m->threshold))
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->other_signatories))
-    CHECK_ERROR(_readTimepoint_V19(c, &m->timepoint))
+    CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
+    CHECK_ERROR(_readTimepoint(c, &m->timepoint))
     CHECK_ERROR(_readH256(c, &m->call_hash))
     return parser_ok;
 }
@@ -1182,7 +1182,7 @@ __Z_INLINE parser_error_t _readMethod_bounties_propose_curator_V19(
     parser_context_t* c, pd_bounties_propose_curator_V19_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->bounty_id))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->curator))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->curator))
     CHECK_ERROR(_readCompactBalance(c, &m->fee))
     return parser_ok;
 }
@@ -1205,7 +1205,7 @@ __Z_INLINE parser_error_t _readMethod_bounties_award_bounty_V19(
     parser_context_t* c, pd_bounties_award_bounty_V19_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->bounty_id))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->beneficiary))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -1245,7 +1245,7 @@ __Z_INLINE parser_error_t _readMethod_childbounties_propose_curator_V19(
 {
     CHECK_ERROR(_readCompactu32(c, &m->parent_bounty_id))
     CHECK_ERROR(_readCompactu32(c, &m->child_bounty_id))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->curator))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->curator))
     CHECK_ERROR(_readCompactBalance(c, &m->fee))
     return parser_ok;
 }
@@ -1271,7 +1271,7 @@ __Z_INLINE parser_error_t _readMethod_childbounties_award_child_bounty_V19(
 {
     CHECK_ERROR(_readCompactu32(c, &m->parent_bounty_id))
     CHECK_ERROR(_readCompactu32(c, &m->child_bounty_id))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->beneficiary))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -1295,7 +1295,7 @@ __Z_INLINE parser_error_t _readMethod_tips_report_awesome_V19(
     parser_context_t* c, pd_tips_report_awesome_V19_t* m)
 {
     CHECK_ERROR(_readBytes(c, &m->reason))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     return parser_ok;
 }
 
@@ -1310,7 +1310,7 @@ __Z_INLINE parser_error_t _readMethod_tips_tip_new_V19(
     parser_context_t* c, pd_tips_tip_new_V19_t* m)
 {
     CHECK_ERROR(_readBytes(c, &m->reason))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     CHECK_ERROR(_readCompactu128(c, &m->tip_value))
     return parser_ok;
 }
@@ -1340,14 +1340,14 @@ __Z_INLINE parser_error_t _readMethod_tips_slash_tip_V19(
 __Z_INLINE parser_error_t _readMethod_voterlist_rebag_V19(
     parser_context_t* c, pd_voterlist_rebag_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->dislocated))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dislocated))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_voterlist_put_in_front_of_V19(
     parser_context_t* c, pd_voterlist_put_in_front_of_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->lighter))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->lighter))
     return parser_ok;
 }
 
@@ -1355,14 +1355,14 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_join_V19(
     parser_context_t* c, pd_nominationpools_join_V19_t* m)
 {
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    CHECK_ERROR(_readPoolId_V19(c, &m->pool_id))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_nominationpools_bond_extra_V19(
     parser_context_t* c, pd_nominationpools_bond_extra_V19_t* m)
 {
-    CHECK_ERROR(_readBondExtraBalanceOfT_V19(c, &m->extra))
+    CHECK_ERROR(_readBondExtraBalanceOfT(c, &m->extra))
     return parser_ok;
 }
 
@@ -1375,7 +1375,7 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_claim_payout_V19(
 __Z_INLINE parser_error_t _readMethod_nominationpools_unbond_V19(
     parser_context_t* c, pd_nominationpools_unbond_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->member_account))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->member_account))
     CHECK_ERROR(_readCompactBalance(c, &m->unbonding_points))
     return parser_ok;
 }
@@ -1383,7 +1383,7 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_unbond_V19(
 __Z_INLINE parser_error_t _readMethod_nominationpools_pool_withdraw_unbonded_V19(
     parser_context_t* c, pd_nominationpools_pool_withdraw_unbonded_V19_t* m)
 {
-    CHECK_ERROR(_readPoolId_V19(c, &m->pool_id))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
     CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
     return parser_ok;
 }
@@ -1391,7 +1391,7 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_pool_withdraw_unbonded_V19
 __Z_INLINE parser_error_t _readMethod_nominationpools_withdraw_unbonded_V19(
     parser_context_t* c, pd_nominationpools_withdraw_unbonded_V19_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->member_account))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->member_account))
     CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
     return parser_ok;
 }
@@ -1400,9 +1400,9 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_create_V19(
     parser_context_t* c, pd_nominationpools_create_V19_t* m)
 {
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->root))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->nominator))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->state_toggler))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->root))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->nominator))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->state_toggler))
     return parser_ok;
 }
 
@@ -1410,33 +1410,33 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_create_with_pool_id_V19(
     parser_context_t* c, pd_nominationpools_create_with_pool_id_V19_t* m)
 {
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->root))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->nominator))
-    CHECK_ERROR(_readAccountIdLookupOfT_V19(c, &m->state_toggler))
-    CHECK_ERROR(_readPoolId_V19(c, &m->pool_id))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->root))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->nominator))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->state_toggler))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_nominationpools_nominate_V19(
     parser_context_t* c, pd_nominationpools_nominate_V19_t* m)
 {
-    CHECK_ERROR(_readPoolId_V19(c, &m->pool_id))
-    CHECK_ERROR(_readVecAccountId_V19(c, &m->validators))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readVecAccountId(c, &m->validators))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_nominationpools_set_state_V19(
     parser_context_t* c, pd_nominationpools_set_state_V19_t* m)
 {
-    CHECK_ERROR(_readPoolId_V19(c, &m->pool_id))
-    CHECK_ERROR(_readPoolState_V19(c, &m->state))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readPoolState(c, &m->state))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_nominationpools_set_metadata_V19(
     parser_context_t* c, pd_nominationpools_set_metadata_V19_t* m)
 {
-    CHECK_ERROR(_readPoolId_V19(c, &m->pool_id))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
     CHECK_ERROR(_readVecu8(c, &m->metadata))
     return parser_ok;
 }
@@ -1444,28 +1444,28 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_set_metadata_V19(
 __Z_INLINE parser_error_t _readMethod_nominationpools_set_configs_V19(
     parser_context_t* c, pd_nominationpools_set_configs_V19_t* m)
 {
-    CHECK_ERROR(_readConfigOpBalanceOfT_V19(c, &m->min_join_bond))
-    CHECK_ERROR(_readConfigOpBalanceOfT_V19(c, &m->min_create_bond))
-    CHECK_ERROR(_readConfigOpu32_V19(c, &m->max_pools))
-    CHECK_ERROR(_readConfigOpu32_V19(c, &m->max_members))
-    CHECK_ERROR(_readConfigOpu32_V19(c, &m->max_members_per_pool))
+    CHECK_ERROR(_readConfigOpBalanceOfT(c, &m->min_join_bond))
+    CHECK_ERROR(_readConfigOpBalanceOfT(c, &m->min_create_bond))
+    CHECK_ERROR(_readConfigOpu32(c, &m->max_pools))
+    CHECK_ERROR(_readConfigOpu32(c, &m->max_members))
+    CHECK_ERROR(_readConfigOpu32(c, &m->max_members_per_pool))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_nominationpools_update_roles_V19(
     parser_context_t* c, pd_nominationpools_update_roles_V19_t* m)
 {
-    CHECK_ERROR(_readPoolId_V19(c, &m->pool_id))
-    CHECK_ERROR(_readConfigOpAccountId_V19(c, &m->new_root))
-    CHECK_ERROR(_readConfigOpAccountId_V19(c, &m->new_nominator))
-    CHECK_ERROR(_readConfigOpAccountId_V19(c, &m->new_state_toggler))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readConfigOpAccountId(c, &m->new_root))
+    CHECK_ERROR(_readConfigOpAccountId(c, &m->new_nominator))
+    CHECK_ERROR(_readConfigOpAccountId(c, &m->new_state_toggler))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_nominationpools_chill_V19(
     parser_context_t* c, pd_nominationpools_chill_V19_t* m)
 {
-    CHECK_ERROR(_readPoolId_V19(c, &m->pool_id))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
     return parser_ok;
 }
 
@@ -1484,7 +1484,7 @@ __Z_INLINE parser_error_t _readMethod_fastunstake_deregister_V19(
 __Z_INLINE parser_error_t _readMethod_fastunstake_control_V19(
     parser_context_t* c, pd_fastunstake_control_V19_t* m)
 {
-    CHECK_ERROR(_readEraIndex_V19(c, &m->unchecked_eras_to_check))
+    CHECK_ERROR(_readEraIndex(c, &m->unchecked_eras_to_check))
     return parser_ok;
 }
 
@@ -1666,7 +1666,7 @@ __Z_INLINE parser_error_t _readMethod_configuration_set_max_downward_message_siz
 __Z_INLINE parser_error_t _readMethod_configuration_set_ump_service_total_weight_V19(
     parser_context_t* c, pd_configuration_set_ump_service_total_weight_V19_t* m)
 {
-    CHECK_ERROR(_readWeight_V19(c, &m->new_))
+    CHECK_ERROR(_readWeight(c, &m->new_))
     return parser_ok;
 }
 
@@ -1764,7 +1764,7 @@ __Z_INLINE parser_error_t _readMethod_configuration_set_hrmp_max_message_num_per
 __Z_INLINE parser_error_t _readMethod_configuration_set_ump_max_individual_weight_V19(
     parser_context_t* c, pd_configuration_set_ump_max_individual_weight_V19_t* m)
 {
-    CHECK_ERROR(_readWeight_V19(c, &m->new_))
+    CHECK_ERROR(_readWeight(c, &m->new_))
     return parser_ok;
 }
 
@@ -1778,7 +1778,7 @@ __Z_INLINE parser_error_t _readMethod_configuration_set_pvf_checking_enabled_V19
 __Z_INLINE parser_error_t _readMethod_configuration_set_pvf_voting_ttl_V19(
     parser_context_t* c, pd_configuration_set_pvf_voting_ttl_V19_t* m)
 {
-    CHECK_ERROR(_readSessionIndex_V19(c, &m->new_))
+    CHECK_ERROR(_readSessionIndex(c, &m->new_))
     return parser_ok;
 }
 
@@ -1806,8 +1806,8 @@ __Z_INLINE parser_error_t _readMethod_initializer_force_approve_V19(
 __Z_INLINE parser_error_t _readMethod_ump_service_overweight_V19(
     parser_context_t* c, pd_ump_service_overweight_V19_t* m)
 {
-    CHECK_ERROR(_readOverweightIndex_V19(c, &m->index))
-    CHECK_ERROR(_readWeight_V19(c, &m->weight_limit))
+    CHECK_ERROR(_readOverweightIndex(c, &m->index))
+    CHECK_ERROR(_readWeight(c, &m->weight_limit))
     return parser_ok;
 }
 
@@ -5657,7 +5657,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1280: /* module 5 call 0 */
         switch (itemIdx) {
         case 0: /* balances_transfer_V19 - dest */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_transfer_V19.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5672,12 +5672,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1282: /* module 5 call 2 */
         switch (itemIdx) {
         case 0: /* balances_force_transfer_V19 - source */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_force_transfer_V19.source,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* balances_force_transfer_V19 - dest */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_force_transfer_V19.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5692,7 +5692,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1283: /* module 5 call 3 */
         switch (itemIdx) {
         case 0: /* balances_transfer_keep_alive_V19 - dest */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_transfer_keep_alive_V19.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5707,7 +5707,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1284: /* module 5 call 4 */
         switch (itemIdx) {
         case 0: /* balances_transfer_all_V19 - dest */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.balances_transfer_all_V19.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5722,7 +5722,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1792: /* module 7 call 0 */
         switch (itemIdx) {
         case 0: /* staking_bond_V19 - controller */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.staking_bond_V19.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5732,7 +5732,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* staking_bond_V19 - payee */;
-            return _toStringRewardDestination_V19(
+            return _toStringRewardDestination(
                 &m->nested.staking_bond_V19.payee,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5772,7 +5772,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1796: /* module 7 call 4 */
         switch (itemIdx) {
         case 0: /* staking_validate_V19 - prefs */;
-            return _toStringValidatorPrefs_V19(
+            return _toStringValidatorPrefs(
                 &m->basic.staking_validate_V19.prefs,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5782,7 +5782,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1797: /* module 7 call 5 */
         switch (itemIdx) {
         case 0: /* staking_nominate_V19 - targets */;
-            return _toStringVecAccountIdLookupOfT_V19(
+            return _toStringVecAccountIdLookupOfT(
                 &m->nested.staking_nominate_V19.targets,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5797,7 +5797,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1799: /* module 7 call 7 */
         switch (itemIdx) {
         case 0: /* staking_set_payee_V19 - payee */;
-            return _toStringRewardDestination_V19(
+            return _toStringRewardDestination(
                 &m->basic.staking_set_payee_V19.payee,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5807,7 +5807,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1800: /* module 7 call 8 */
         switch (itemIdx) {
         case 0: /* staking_set_controller_V19 - controller */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.staking_set_controller_V19.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5817,12 +5817,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1810: /* module 7 call 18 */
         switch (itemIdx) {
         case 0: /* staking_payout_stakers_V19 - validator_stash */;
-            return _toStringAccountId_V19(
+            return _toStringAccountId(
                 &m->basic.staking_payout_stakers_V19.validator_stash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* staking_payout_stakers_V19 - era */;
-            return _toStringEraIndex_V19(
+            return _toStringEraIndex(
                 &m->basic.staking_payout_stakers_V19.era,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5842,7 +5842,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 2304: /* module 9 call 0 */
         switch (itemIdx) {
         case 0: /* session_set_keys_V19 - keys */;
-            return _toStringKeys_V19(
+            return _toStringKeys(
                 &m->basic.session_set_keys_V19.keys,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5917,7 +5917,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 5: /* crowdloan_create_V19 - verifier */;
-            return _toStringOptionMultiSigner_V19(
+            return _toStringOptionMultiSigner(
                 &m->basic.crowdloan_create_V19.verifier,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5937,7 +5937,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* crowdloan_contribute_V19 - signature */;
-            return _toStringOptionMultiSignature_V19(
+            return _toStringOptionMultiSignature(
                 &m->basic.crowdloan_contribute_V19.signature,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -5947,7 +5947,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 18690: /* module 73 call 2 */
         switch (itemIdx) {
         case 0: /* crowdloan_withdraw_V19 - who */;
-            return _toStringAccountId_V19(
+            return _toStringAccountId(
                 &m->basic.crowdloan_withdraw_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6007,7 +6007,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 5: /* crowdloan_edit_V19 - verifier */;
-            return _toStringOptionMultiSigner_V19(
+            return _toStringOptionMultiSigner(
                 &m->basic.crowdloan_edit_V19.verifier,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6017,7 +6017,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 18694: /* module 73 call 6 */
         switch (itemIdx) {
         case 0: /* crowdloan_add_memo_V19 - index */;
-            return _toStringParaId_V19(
+            return _toStringParaId(
                 &m->basic.crowdloan_add_memo_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6032,7 +6032,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 18695: /* module 73 call 7 */
         switch (itemIdx) {
         case 0: /* crowdloan_poke_V19 - index */;
-            return _toStringParaId_V19(
+            return _toStringParaId(
                 &m->basic.crowdloan_poke_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6047,7 +6047,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* crowdloan_contribute_all_V19 - signature */;
-            return _toStringOptionMultiSignature_V19(
+            return _toStringOptionMultiSignature(
                 &m->basic.crowdloan_contribute_all_V19.signature,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6059,17 +6059,17 @@ parser_error_t _getMethod_ItemValue_V19(
     case 25346: /* module 99 call 2 */
         switch (itemIdx) {
         case 0: /* xcmpallet_reserve_transfer_assets_V19 - dest */;
-            return _toStringBoxVersionedMultiLocation_V19(
+            return _toStringBoxVersionedMultiLocation(
                 &m->basic.xcmpallet_reserve_transfer_assets_V19.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* xcmpallet_reserve_transfer_assets_V19 - beneficiary */;
-            return _toStringBoxVersionedMultiLocation_V19(
+            return _toStringBoxVersionedMultiLocation(
                 &m->basic.xcmpallet_reserve_transfer_assets_V19.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* xcmpallet_reserve_transfer_assets_V19 - assets */;
-            return _toStringBoxVersionedMultiAssets_V19(
+            return _toStringBoxVersionedMultiAssets(
                 &m->basic.xcmpallet_reserve_transfer_assets_V19.assets,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6084,17 +6084,17 @@ parser_error_t _getMethod_ItemValue_V19(
     case 25352: /* module 99 call 8 */
         switch (itemIdx) {
         case 0: /* xcmpallet_limited_reserve_transfer_assets_V19 - dest */;
-            return _toStringBoxVersionedMultiLocation_V19(
+            return _toStringBoxVersionedMultiLocation(
                 &m->basic.xcmpallet_limited_reserve_transfer_assets_V19.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* xcmpallet_limited_reserve_transfer_assets_V19 - beneficiary */;
-            return _toStringBoxVersionedMultiLocation_V19(
+            return _toStringBoxVersionedMultiLocation(
                 &m->basic.xcmpallet_limited_reserve_transfer_assets_V19.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* xcmpallet_limited_reserve_transfer_assets_V19 - assets */;
-            return _toStringBoxVersionedMultiAssets_V19(
+            return _toStringBoxVersionedMultiAssets(
                 &m->basic.xcmpallet_limited_reserve_transfer_assets_V19.assets,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6104,7 +6104,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* xcmpallet_limited_reserve_transfer_assets_V19 - weight_limit */;
-            return _toStringWeightLimit_V19(
+            return _toStringWeightLimit(
                 &m->basic.xcmpallet_limited_reserve_transfer_assets_V19.weight_limit,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6215,7 +6215,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1024: /* module 4 call 0 */
         switch (itemIdx) {
         case 0: /* indices_claim_V19 - index */;
-            return _toStringAccountIndex_V19(
+            return _toStringAccountIndex(
                 &m->basic.indices_claim_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6225,12 +6225,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1025: /* module 4 call 1 */
         switch (itemIdx) {
         case 0: /* indices_transfer_V19 - new_ */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.indices_transfer_V19.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* indices_transfer_V19 - index */;
-            return _toStringAccountIndex_V19(
+            return _toStringAccountIndex(
                 &m->basic.indices_transfer_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6240,7 +6240,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1026: /* module 4 call 2 */
         switch (itemIdx) {
         case 0: /* indices_free_V19 - index */;
-            return _toStringAccountIndex_V19(
+            return _toStringAccountIndex(
                 &m->basic.indices_free_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6250,12 +6250,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1027: /* module 4 call 3 */
         switch (itemIdx) {
         case 0: /* indices_force_transfer_V19 - new_ */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.indices_force_transfer_V19.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* indices_force_transfer_V19 - index */;
-            return _toStringAccountIndex_V19(
+            return _toStringAccountIndex(
                 &m->basic.indices_force_transfer_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6270,7 +6270,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1028: /* module 4 call 4 */
         switch (itemIdx) {
         case 0: /* indices_freeze_V19 - index */;
-            return _toStringAccountIndex_V19(
+            return _toStringAccountIndex(
                 &m->basic.indices_freeze_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6280,7 +6280,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1281: /* module 5 call 1 */
         switch (itemIdx) {
         case 0: /* balances_set_balance_V19 - who */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_set_balance_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6300,7 +6300,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1285: /* module 5 call 5 */
         switch (itemIdx) {
         case 0: /* balances_force_unreserve_V19 - who */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.balances_force_unreserve_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6335,7 +6335,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1803: /* module 7 call 11 */
         switch (itemIdx) {
         case 0: /* staking_scale_validator_count_V19 - factor */;
-            return _toStringPercent_V19(
+            return _toStringPercent(
                 &m->basic.staking_scale_validator_count_V19.factor,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6355,7 +6355,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1806: /* module 7 call 14 */
         switch (itemIdx) {
         case 0: /* staking_set_invulnerables_V19 - invulnerables */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->basic.staking_set_invulnerables_V19.invulnerables,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6365,7 +6365,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1807: /* module 7 call 15 */
         switch (itemIdx) {
         case 0: /* staking_force_unstake_V19 - stash */;
-            return _toStringAccountId_V19(
+            return _toStringAccountId(
                 &m->basic.staking_force_unstake_V19.stash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6385,7 +6385,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1809: /* module 7 call 17 */
         switch (itemIdx) {
         case 0: /* staking_cancel_deferred_slash_V19 - era */;
-            return _toStringEraIndex_V19(
+            return _toStringEraIndex(
                 &m->basic.staking_cancel_deferred_slash_V19.era,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6400,7 +6400,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1812: /* module 7 call 20 */
         switch (itemIdx) {
         case 0: /* staking_reap_stash_V19 - stash */;
-            return _toStringAccountId_V19(
+            return _toStringAccountId(
                 &m->basic.staking_reap_stash_V19.stash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6415,7 +6415,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1813: /* module 7 call 21 */
         switch (itemIdx) {
         case 0: /* staking_kick_V19 - who */;
-            return _toStringVecAccountIdLookupOfT_V19(
+            return _toStringVecAccountIdLookupOfT(
                 &m->basic.staking_kick_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6425,32 +6425,32 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1814: /* module 7 call 22 */
         switch (itemIdx) {
         case 0: /* staking_set_staking_configs_V19 - min_nominator_bond */;
-            return _toStringConfigOpBalanceOfT_V19(
+            return _toStringConfigOpBalanceOfT(
                 &m->basic.staking_set_staking_configs_V19.min_nominator_bond,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* staking_set_staking_configs_V19 - min_validator_bond */;
-            return _toStringConfigOpBalanceOfT_V19(
+            return _toStringConfigOpBalanceOfT(
                 &m->basic.staking_set_staking_configs_V19.min_validator_bond,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* staking_set_staking_configs_V19 - max_nominator_count */;
-            return _toStringConfigOpu32_V19(
+            return _toStringConfigOpu32(
                 &m->basic.staking_set_staking_configs_V19.max_nominator_count,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* staking_set_staking_configs_V19 - max_validator_count */;
-            return _toStringConfigOpu32_V19(
+            return _toStringConfigOpu32(
                 &m->basic.staking_set_staking_configs_V19.max_validator_count,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* staking_set_staking_configs_V19 - chill_threshold */;
-            return _toStringConfigOpPercent_V19(
+            return _toStringConfigOpPercent(
                 &m->basic.staking_set_staking_configs_V19.chill_threshold,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 5: /* staking_set_staking_configs_V19 - min_commission */;
-            return _toStringConfigOpPerbill_V19(
+            return _toStringConfigOpPerbill(
                 &m->basic.staking_set_staking_configs_V19.min_commission,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6460,7 +6460,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1815: /* module 7 call 23 */
         switch (itemIdx) {
         case 0: /* staking_chill_other_V19 - controller */;
-            return _toStringAccountId_V19(
+            return _toStringAccountId(
                 &m->basic.staking_chill_other_V19.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6470,7 +6470,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 1816: /* module 7 call 24 */
         switch (itemIdx) {
         case 0: /* staking_force_apply_min_commission_V19 - validator_stash */;
-            return _toStringAccountId_V19(
+            return _toStringAccountId(
                 &m->basic.staking_force_apply_min_commission_V19.validator_stash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6480,7 +6480,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3584: /* module 14 call 0 */
         switch (itemIdx) {
         case 0: /* democracy_propose_V19 - proposal */;
-            return _toStringBoundedCallOfT_V19(
+            return _toStringBoundedCallOfT(
                 &m->nested.democracy_propose_V19.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6510,7 +6510,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_vote_V19 - vote */;
-            return _toStringAccountVote_V19(
+            return _toStringAccountVote(
                 &m->nested.democracy_vote_V19.vote,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6520,7 +6520,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3587: /* module 14 call 3 */
         switch (itemIdx) {
         case 0: /* democracy_emergency_cancel_V19 - ref_index */;
-            return _toStringReferendumIndex_V19(
+            return _toStringReferendumIndex(
                 &m->nested.democracy_emergency_cancel_V19.ref_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6530,7 +6530,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3588: /* module 14 call 4 */
         switch (itemIdx) {
         case 0: /* democracy_external_propose_V19 - proposal */;
-            return _toStringBoundedCallOfT_V19(
+            return _toStringBoundedCallOfT(
                 &m->nested.democracy_external_propose_V19.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6540,7 +6540,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3589: /* module 14 call 5 */
         switch (itemIdx) {
         case 0: /* democracy_external_propose_majority_V19 - proposal */;
-            return _toStringBoundedCallOfT_V19(
+            return _toStringBoundedCallOfT(
                 &m->nested.democracy_external_propose_majority_V19.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6550,7 +6550,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3590: /* module 14 call 6 */
         switch (itemIdx) {
         case 0: /* democracy_external_propose_default_V19 - proposal */;
-            return _toStringBoundedCallOfT_V19(
+            return _toStringBoundedCallOfT(
                 &m->nested.democracy_external_propose_default_V19.proposal,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6600,12 +6600,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3594: /* module 14 call 10 */
         switch (itemIdx) {
         case 0: /* democracy_delegate_V19 - to */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.democracy_delegate_V19.to,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_delegate_V19 - conviction */;
-            return _toStringConviction_V19(
+            return _toStringConviction(
                 &m->nested.democracy_delegate_V19.conviction,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6630,7 +6630,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3597: /* module 14 call 13 */
         switch (itemIdx) {
         case 0: /* democracy_unlock_V19 - target */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.democracy_unlock_V19.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6640,7 +6640,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3598: /* module 14 call 14 */
         switch (itemIdx) {
         case 0: /* democracy_remove_vote_V19 - index */;
-            return _toStringReferendumIndex_V19(
+            return _toStringReferendumIndex(
                 &m->nested.democracy_remove_vote_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6650,12 +6650,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3599: /* module 14 call 15 */
         switch (itemIdx) {
         case 0: /* democracy_remove_other_vote_V19 - target */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.democracy_remove_other_vote_V19.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_remove_other_vote_V19 - index */;
-            return _toStringReferendumIndex_V19(
+            return _toStringReferendumIndex(
                 &m->nested.democracy_remove_other_vote_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6670,7 +6670,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* democracy_blacklist_V19 - maybe_ref_index */;
-            return _toStringOptionReferendumIndex_V19(
+            return _toStringOptionReferendumIndex(
                 &m->basic.democracy_blacklist_V19.maybe_ref_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6690,17 +6690,17 @@ parser_error_t _getMethod_ItemValue_V19(
     case 3840: /* module 15 call 0 */
         switch (itemIdx) {
         case 0: /* council_set_members_V19 - new_members */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->basic.council_set_members_V19.new_members,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* council_set_members_V19 - prime */;
-            return _toStringOptionAccountId_V19(
+            return _toStringOptionAccountId(
                 &m->basic.council_set_members_V19.prime,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* council_set_members_V19 - old_count */;
-            return _toStringMemberCount_V19(
+            return _toStringMemberCount(
                 &m->basic.council_set_members_V19.old_count,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6810,7 +6810,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* council_close_V19 - proposal_weight_bound */;
-            return _toStringWeight_V19(
+            return _toStringWeight(
                 &m->basic.council_close_V19.proposal_weight_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6825,17 +6825,17 @@ parser_error_t _getMethod_ItemValue_V19(
     case 4096: /* module 16 call 0 */
         switch (itemIdx) {
         case 0: /* technicalcommittee_set_members_V19 - new_members */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->basic.technicalcommittee_set_members_V19.new_members,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* technicalcommittee_set_members_V19 - prime */;
-            return _toStringOptionAccountId_V19(
+            return _toStringOptionAccountId(
                 &m->basic.technicalcommittee_set_members_V19.prime,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* technicalcommittee_set_members_V19 - old_count */;
-            return _toStringMemberCount_V19(
+            return _toStringMemberCount(
                 &m->basic.technicalcommittee_set_members_V19.old_count,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6945,7 +6945,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* technicalcommittee_close_V19 - proposal_weight_bound */;
-            return _toStringWeight_V19(
+            return _toStringWeight(
                 &m->basic.technicalcommittee_close_V19.proposal_weight_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6960,7 +6960,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 4352: /* module 17 call 0 */
         switch (itemIdx) {
         case 0: /* phragmenelection_vote_V19 - votes */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->basic.phragmenelection_vote_V19.votes,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6990,7 +6990,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 4356: /* module 17 call 4 */
         switch (itemIdx) {
         case 0: /* phragmenelection_remove_member_V19 - who */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.phragmenelection_remove_member_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7025,7 +7025,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 4608: /* module 18 call 0 */
         switch (itemIdx) {
         case 0: /* technicalmembership_add_member_V19 - who */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.technicalmembership_add_member_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7035,7 +7035,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 4609: /* module 18 call 1 */
         switch (itemIdx) {
         case 0: /* technicalmembership_remove_member_V19 - who */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.technicalmembership_remove_member_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7045,12 +7045,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 4610: /* module 18 call 2 */
         switch (itemIdx) {
         case 0: /* technicalmembership_swap_member_V19 - remove */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.technicalmembership_swap_member_V19.remove,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* technicalmembership_swap_member_V19 - add */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.technicalmembership_swap_member_V19.add,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7060,7 +7060,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 4611: /* module 18 call 3 */
         switch (itemIdx) {
         case 0: /* technicalmembership_reset_members_V19 - members */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->basic.technicalmembership_reset_members_V19.members,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7070,7 +7070,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 4612: /* module 18 call 4 */
         switch (itemIdx) {
         case 0: /* technicalmembership_change_key_V19 - new_ */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.technicalmembership_change_key_V19.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7080,7 +7080,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 4613: /* module 18 call 5 */
         switch (itemIdx) {
         case 0: /* technicalmembership_set_prime_V19 - who */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.technicalmembership_set_prime_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7100,7 +7100,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_spend_V19 - beneficiary */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.treasury_propose_spend_V19.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7135,7 +7135,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_spend_V19 - beneficiary */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.treasury_spend_V19.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7155,12 +7155,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 6144: /* module 24 call 0 */
         switch (itemIdx) {
         case 0: /* claims_claim_V19 - dest */;
-            return _toStringAccountId_V19(
+            return _toStringAccountId(
                 &m->basic.claims_claim_V19.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* claims_claim_V19 - ethereum_signature */;
-            return _toStringEcdsaSignature_V19(
+            return _toStringEcdsaSignature(
                 &m->basic.claims_claim_V19.ethereum_signature,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7170,12 +7170,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 6146: /* module 24 call 2 */
         switch (itemIdx) {
         case 0: /* claims_claim_attest_V19 - dest */;
-            return _toStringAccountId_V19(
+            return _toStringAccountId(
                 &m->basic.claims_claim_attest_V19.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* claims_claim_attest_V19 - ethereum_signature */;
-            return _toStringEcdsaSignature_V19(
+            return _toStringEcdsaSignature(
                 &m->basic.claims_claim_attest_V19.ethereum_signature,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7200,17 +7200,17 @@ parser_error_t _getMethod_ItemValue_V19(
     case 6148: /* module 24 call 4 */
         switch (itemIdx) {
         case 0: /* claims_move_claim_V19 - old */;
-            return _toStringEthereumAddress_V19(
+            return _toStringEthereumAddress(
                 &m->basic.claims_move_claim_V19.old,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* claims_move_claim_V19 - new_ */;
-            return _toStringEthereumAddress_V19(
+            return _toStringEthereumAddress(
                 &m->basic.claims_move_claim_V19.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* claims_move_claim_V19 - maybe_preclaim */;
-            return _toStringOptionAccountId_V19(
+            return _toStringOptionAccountId(
                 &m->basic.claims_move_claim_V19.maybe_preclaim,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7225,7 +7225,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 6401: /* module 25 call 1 */
         switch (itemIdx) {
         case 0: /* vesting_vest_other_V19 - target */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.vesting_vest_other_V19.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7235,12 +7235,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 6402: /* module 25 call 2 */
         switch (itemIdx) {
         case 0: /* vesting_vested_transfer_V19 - target */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.vesting_vested_transfer_V19.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* vesting_vested_transfer_V19 - schedule */;
-            return _toStringVestingInfo_V19(
+            return _toStringVestingInfo(
                 &m->basic.vesting_vested_transfer_V19.schedule,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7250,17 +7250,17 @@ parser_error_t _getMethod_ItemValue_V19(
     case 6403: /* module 25 call 3 */
         switch (itemIdx) {
         case 0: /* vesting_force_vested_transfer_V19 - source */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.vesting_force_vested_transfer_V19.source,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* vesting_force_vested_transfer_V19 - target */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.vesting_force_vested_transfer_V19.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* vesting_force_vested_transfer_V19 - schedule */;
-            return _toStringVestingInfo_V19(
+            return _toStringVestingInfo(
                 &m->basic.vesting_force_vested_transfer_V19.schedule,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7290,7 +7290,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* utility_with_weight_V19 - weight */;
-            return _toStringWeight_V19(
+            return _toStringWeight(
                 &m->basic.utility_with_weight_V19.weight,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7300,7 +7300,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7168: /* module 28 call 0 */
         switch (itemIdx) {
         case 0: /* identity_add_registrar_V19 - account */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_add_registrar_V19.account,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7310,7 +7310,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7169: /* module 28 call 1 */
         switch (itemIdx) {
         case 0: /* identity_set_identity_V19 - info */;
-            return _toStringIdentityInfo_V19(
+            return _toStringIdentityInfo(
                 &m->basic.identity_set_identity_V19.info,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7320,7 +7320,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7170: /* module 28 call 2 */
         switch (itemIdx) {
         case 0: /* identity_set_subs_V19 - subs */;
-            return _toStringVecTupleAccountIdData_V19(
+            return _toStringVecTupleAccountIdData(
                 &m->basic.identity_set_subs_V19.subs,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7350,7 +7350,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7173: /* module 28 call 5 */
         switch (itemIdx) {
         case 0: /* identity_cancel_request_V19 - reg_index */;
-            return _toStringRegistrarIndex_V19(
+            return _toStringRegistrarIndex(
                 &m->basic.identity_cancel_request_V19.reg_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7380,7 +7380,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* identity_set_account_id_V19 - new_ */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_set_account_id_V19.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7395,12 +7395,12 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* identity_provide_judgement_V19 - target */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_provide_judgement_V19.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* identity_provide_judgement_V19 - judgement */;
-            return _toStringJudgementBalanceOfT_V19(
+            return _toStringJudgementBalanceOfT(
                 &m->basic.identity_provide_judgement_V19.judgement,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7415,7 +7415,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7178: /* module 28 call 10 */
         switch (itemIdx) {
         case 0: /* identity_kill_identity_V19 - target */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_kill_identity_V19.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7425,7 +7425,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7179: /* module 28 call 11 */
         switch (itemIdx) {
         case 0: /* identity_add_sub_V19 - sub */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_add_sub_V19.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7440,7 +7440,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7180: /* module 28 call 12 */
         switch (itemIdx) {
         case 0: /* identity_rename_sub_V19 - sub */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_rename_sub_V19.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7455,7 +7455,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7181: /* module 28 call 13 */
         switch (itemIdx) {
         case 0: /* identity_remove_sub_V19 - sub */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_remove_sub_V19.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7470,12 +7470,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7424: /* module 29 call 0 */
         switch (itemIdx) {
         case 0: /* proxy_proxy_V19 - real */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.proxy_proxy_V19.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_proxy_V19 - force_proxy_type */;
-            return _toStringOptionProxyType_V19(
+            return _toStringOptionProxyType(
                 &m->nested.proxy_proxy_V19.force_proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7490,12 +7490,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7425: /* module 29 call 1 */
         switch (itemIdx) {
         case 0: /* proxy_add_proxy_V19 - delegate */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.proxy_add_proxy_V19.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_add_proxy_V19 - proxy_type */;
-            return _toStringProxyType_V19(
+            return _toStringProxyType(
                 &m->basic.proxy_add_proxy_V19.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7510,12 +7510,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7426: /* module 29 call 2 */
         switch (itemIdx) {
         case 0: /* proxy_remove_proxy_V19 - delegate */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.proxy_remove_proxy_V19.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_remove_proxy_V19 - proxy_type */;
-            return _toStringProxyType_V19(
+            return _toStringProxyType(
                 &m->basic.proxy_remove_proxy_V19.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7535,7 +7535,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7428: /* module 29 call 4 */
         switch (itemIdx) {
         case 0: /* proxy_create_pure_V19 - proxy_type */;
-            return _toStringProxyType_V19(
+            return _toStringProxyType(
                 &m->basic.proxy_create_pure_V19.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7555,12 +7555,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7429: /* module 29 call 5 */
         switch (itemIdx) {
         case 0: /* proxy_kill_pure_V19 - spawner */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.proxy_kill_pure_V19.spawner,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_kill_pure_V19 - proxy_type */;
-            return _toStringProxyType_V19(
+            return _toStringProxyType(
                 &m->basic.proxy_kill_pure_V19.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7585,17 +7585,17 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7433: /* module 29 call 9 */
         switch (itemIdx) {
         case 0: /* proxy_proxy_announced_V19 - delegate */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.proxy_proxy_announced_V19.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_proxy_announced_V19 - real */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.proxy_proxy_announced_V19.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* proxy_proxy_announced_V19 - force_proxy_type */;
-            return _toStringOptionProxyType_V19(
+            return _toStringOptionProxyType(
                 &m->basic.proxy_proxy_announced_V19.force_proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7610,7 +7610,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 7680: /* module 30 call 0 */
         switch (itemIdx) {
         case 0: /* multisig_as_multi_threshold_1_V19 - other_signatories */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->nested.multisig_as_multi_threshold_1_V19.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7630,12 +7630,12 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* multisig_as_multi_V19 - other_signatories */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->nested.multisig_as_multi_V19.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* multisig_as_multi_V19 - maybe_timepoint */;
-            return _toStringOptionTimepoint_V19(
+            return _toStringOptionTimepoint(
                 &m->nested.multisig_as_multi_V19.maybe_timepoint,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7645,7 +7645,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* multisig_as_multi_V19 - max_weight */;
-            return _toStringWeight_V19(
+            return _toStringWeight(
                 &m->nested.multisig_as_multi_V19.max_weight,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7660,12 +7660,12 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* multisig_approve_as_multi_V19 - other_signatories */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->nested.multisig_approve_as_multi_V19.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* multisig_approve_as_multi_V19 - maybe_timepoint */;
-            return _toStringOptionTimepoint_V19(
+            return _toStringOptionTimepoint(
                 &m->nested.multisig_approve_as_multi_V19.maybe_timepoint,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7675,7 +7675,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* multisig_approve_as_multi_V19 - max_weight */;
-            return _toStringWeight_V19(
+            return _toStringWeight(
                 &m->nested.multisig_approve_as_multi_V19.max_weight,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7690,12 +7690,12 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* multisig_cancel_as_multi_V19 - other_signatories */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->nested.multisig_cancel_as_multi_V19.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* multisig_cancel_as_multi_V19 - timepoint */;
-            return _toStringTimepoint_V19(
+            return _toStringTimepoint(
                 &m->nested.multisig_cancel_as_multi_V19.timepoint,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7740,7 +7740,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* bounties_propose_curator_V19 - curator */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.bounties_propose_curator_V19.curator,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7780,7 +7780,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* bounties_award_bounty_V19 - beneficiary */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.bounties_award_bounty_V19.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7855,7 +7855,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* childbounties_propose_curator_V19 - curator */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.childbounties_propose_curator_V19.curator,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7910,7 +7910,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* childbounties_award_child_bounty_V19 - beneficiary */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.childbounties_award_child_bounty_V19.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7955,7 +7955,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* tips_report_awesome_V19 - who */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.tips_report_awesome_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7980,7 +7980,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* tips_tip_new_V19 - who */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.tips_tip_new_V19.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8030,7 +8030,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9472: /* module 37 call 0 */
         switch (itemIdx) {
         case 0: /* voterlist_rebag_V19 - dislocated */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.voterlist_rebag_V19.dislocated,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8040,7 +8040,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9473: /* module 37 call 1 */
         switch (itemIdx) {
         case 0: /* voterlist_put_in_front_of_V19 - lighter */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.voterlist_put_in_front_of_V19.lighter,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8055,7 +8055,7 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_join_V19 - pool_id */;
-            return _toStringPoolId_V19(
+            return _toStringPoolId(
                 &m->basic.nominationpools_join_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8065,7 +8065,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9985: /* module 39 call 1 */
         switch (itemIdx) {
         case 0: /* nominationpools_bond_extra_V19 - extra */;
-            return _toStringBondExtraBalanceOfT_V19(
+            return _toStringBondExtraBalanceOfT(
                 &m->basic.nominationpools_bond_extra_V19.extra,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8080,7 +8080,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9987: /* module 39 call 3 */
         switch (itemIdx) {
         case 0: /* nominationpools_unbond_V19 - member_account */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.nominationpools_unbond_V19.member_account,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8095,7 +8095,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9988: /* module 39 call 4 */
         switch (itemIdx) {
         case 0: /* nominationpools_pool_withdraw_unbonded_V19 - pool_id */;
-            return _toStringPoolId_V19(
+            return _toStringPoolId(
                 &m->basic.nominationpools_pool_withdraw_unbonded_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8110,7 +8110,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9989: /* module 39 call 5 */
         switch (itemIdx) {
         case 0: /* nominationpools_withdraw_unbonded_V19 - member_account */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.nominationpools_withdraw_unbonded_V19.member_account,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8130,17 +8130,17 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_create_V19 - root */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.nominationpools_create_V19.root,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* nominationpools_create_V19 - nominator */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.nominationpools_create_V19.nominator,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* nominationpools_create_V19 - state_toggler */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.nominationpools_create_V19.state_toggler,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8155,22 +8155,22 @@ parser_error_t _getMethod_ItemValue_V19(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_create_with_pool_id_V19 - root */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.nominationpools_create_with_pool_id_V19.root,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* nominationpools_create_with_pool_id_V19 - nominator */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.nominationpools_create_with_pool_id_V19.nominator,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* nominationpools_create_with_pool_id_V19 - state_toggler */;
-            return _toStringAccountIdLookupOfT_V19(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.nominationpools_create_with_pool_id_V19.state_toggler,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* nominationpools_create_with_pool_id_V19 - pool_id */;
-            return _toStringPoolId_V19(
+            return _toStringPoolId(
                 &m->basic.nominationpools_create_with_pool_id_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8180,12 +8180,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9992: /* module 39 call 8 */
         switch (itemIdx) {
         case 0: /* nominationpools_nominate_V19 - pool_id */;
-            return _toStringPoolId_V19(
+            return _toStringPoolId(
                 &m->nested.nominationpools_nominate_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_nominate_V19 - validators */;
-            return _toStringVecAccountId_V19(
+            return _toStringVecAccountId(
                 &m->nested.nominationpools_nominate_V19.validators,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8195,12 +8195,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9993: /* module 39 call 9 */
         switch (itemIdx) {
         case 0: /* nominationpools_set_state_V19 - pool_id */;
-            return _toStringPoolId_V19(
+            return _toStringPoolId(
                 &m->basic.nominationpools_set_state_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_set_state_V19 - state */;
-            return _toStringPoolState_V19(
+            return _toStringPoolState(
                 &m->basic.nominationpools_set_state_V19.state,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8210,7 +8210,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9994: /* module 39 call 10 */
         switch (itemIdx) {
         case 0: /* nominationpools_set_metadata_V19 - pool_id */;
-            return _toStringPoolId_V19(
+            return _toStringPoolId(
                 &m->nested.nominationpools_set_metadata_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8225,27 +8225,27 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9995: /* module 39 call 11 */
         switch (itemIdx) {
         case 0: /* nominationpools_set_configs_V19 - min_join_bond */;
-            return _toStringConfigOpBalanceOfT_V19(
+            return _toStringConfigOpBalanceOfT(
                 &m->basic.nominationpools_set_configs_V19.min_join_bond,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_set_configs_V19 - min_create_bond */;
-            return _toStringConfigOpBalanceOfT_V19(
+            return _toStringConfigOpBalanceOfT(
                 &m->basic.nominationpools_set_configs_V19.min_create_bond,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* nominationpools_set_configs_V19 - max_pools */;
-            return _toStringConfigOpu32_V19(
+            return _toStringConfigOpu32(
                 &m->basic.nominationpools_set_configs_V19.max_pools,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* nominationpools_set_configs_V19 - max_members */;
-            return _toStringConfigOpu32_V19(
+            return _toStringConfigOpu32(
                 &m->basic.nominationpools_set_configs_V19.max_members,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* nominationpools_set_configs_V19 - max_members_per_pool */;
-            return _toStringConfigOpu32_V19(
+            return _toStringConfigOpu32(
                 &m->basic.nominationpools_set_configs_V19.max_members_per_pool,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8255,22 +8255,22 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9996: /* module 39 call 12 */
         switch (itemIdx) {
         case 0: /* nominationpools_update_roles_V19 - pool_id */;
-            return _toStringPoolId_V19(
+            return _toStringPoolId(
                 &m->basic.nominationpools_update_roles_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* nominationpools_update_roles_V19 - new_root */;
-            return _toStringConfigOpAccountId_V19(
+            return _toStringConfigOpAccountId(
                 &m->basic.nominationpools_update_roles_V19.new_root,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* nominationpools_update_roles_V19 - new_nominator */;
-            return _toStringConfigOpAccountId_V19(
+            return _toStringConfigOpAccountId(
                 &m->basic.nominationpools_update_roles_V19.new_nominator,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* nominationpools_update_roles_V19 - new_state_toggler */;
-            return _toStringConfigOpAccountId_V19(
+            return _toStringConfigOpAccountId(
                 &m->basic.nominationpools_update_roles_V19.new_state_toggler,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8280,7 +8280,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 9997: /* module 39 call 13 */
         switch (itemIdx) {
         case 0: /* nominationpools_chill_V19 - pool_id */;
-            return _toStringPoolId_V19(
+            return _toStringPoolId(
                 &m->basic.nominationpools_chill_V19.pool_id,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8300,7 +8300,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 10242: /* module 40 call 2 */
         switch (itemIdx) {
         case 0: /* fastunstake_control_V19 - unchecked_eras_to_check */;
-            return _toStringEraIndex_V19(
+            return _toStringEraIndex(
                 &m->basic.fastunstake_control_V19.unchecked_eras_to_check,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8560,7 +8560,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 13082: /* module 51 call 26 */
         switch (itemIdx) {
         case 0: /* configuration_set_ump_service_total_weight_V19 - new_ */;
-            return _toStringWeight_V19(
+            return _toStringWeight(
                 &m->basic.configuration_set_ump_service_total_weight_V19.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8700,7 +8700,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 13096: /* module 51 call 40 */
         switch (itemIdx) {
         case 0: /* configuration_set_ump_max_individual_weight_V19 - new_ */;
-            return _toStringWeight_V19(
+            return _toStringWeight(
                 &m->basic.configuration_set_ump_max_individual_weight_V19.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8720,7 +8720,7 @@ parser_error_t _getMethod_ItemValue_V19(
     case 13098: /* module 51 call 42 */
         switch (itemIdx) {
         case 0: /* configuration_set_pvf_voting_ttl_V19 - new_ */;
-            return _toStringSessionIndex_V19(
+            return _toStringSessionIndex(
                 &m->basic.configuration_set_pvf_voting_ttl_V19.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -8760,12 +8760,12 @@ parser_error_t _getMethod_ItemValue_V19(
     case 15104: /* module 59 call 0 */
         switch (itemIdx) {
         case 0: /* ump_service_overweight_V19 - index */;
-            return _toStringOverweightIndex_V19(
+            return _toStringOverweightIndex(
                 &m->basic.ump_service_overweight_V19.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* ump_service_overweight_V19 - weight_limit */;
-            return _toStringWeight_V19(
+            return _toStringWeight(
                 &m->basic.ump_service_overweight_V19.weight_limit,
                 outValue, outValueLen,
                 pageIdx, pageCount);

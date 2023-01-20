@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  (c) 2019 - 2022 Zondax AG
+ *  (c) 2019 - 2023 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ extern "C" {
 
 #define PD_CALL_BALANCES_TRANSFER_ALL_V19 4
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t dest;
+    pd_AccountIdLookupOfT_t dest;
     pd_bool_t keep_alive;
 } pd_balances_transfer_all_V19_t;
 
@@ -80,18 +80,18 @@ typedef struct {
 
 #define PD_CALL_STAKING_VALIDATE_V19 4
 typedef struct {
-    pd_ValidatorPrefs_V19_t prefs;
+    pd_ValidatorPrefs_t prefs;
 } pd_staking_validate_V19_t;
 
 #define PD_CALL_STAKING_SET_PAYEE_V19 7
 typedef struct {
-    pd_RewardDestination_V19_t payee;
+    pd_RewardDestination_t payee;
 } pd_staking_set_payee_V19_t;
 
 #define PD_CALL_STAKING_PAYOUT_STAKERS_V19 18
 typedef struct {
-    pd_AccountId_V19_t validator_stash;
-    pd_EraIndex_V19_t era;
+    pd_AccountId_t validator_stash;
+    pd_EraIndex_t era;
 } pd_staking_payout_stakers_V19_t;
 
 #define PD_CALL_STAKING_REBOND_V19 19
@@ -101,7 +101,7 @@ typedef struct {
 
 #define PD_CALL_SESSION_SET_KEYS_V19 0
 typedef struct {
-    pd_Keys_V19_t keys;
+    pd_Keys_t keys;
     pd_Bytes_t proof;
 } pd_session_set_keys_V19_t;
 
@@ -131,19 +131,19 @@ typedef struct {
     pd_Compactu32_t first_period;
     pd_Compactu32_t last_period;
     pd_Compactu32_t end;
-    pd_OptionMultiSigner_V19_t verifier;
+    pd_OptionMultiSigner_t verifier;
 } pd_crowdloan_create_V19_t;
 
 #define PD_CALL_CROWDLOAN_CONTRIBUTE_V19 1
 typedef struct {
     pd_Compactu32_t index;
     pd_Compactu128_t amount;
-    pd_OptionMultiSignature_V19_t signature;
+    pd_OptionMultiSignature_t signature;
 } pd_crowdloan_contribute_V19_t;
 
 #define PD_CALL_CROWDLOAN_WITHDRAW_V19 2
 typedef struct {
-    pd_AccountId_V19_t who;
+    pd_AccountId_t who;
     pd_Compactu32_t index;
 } pd_crowdloan_withdraw_V19_t;
 
@@ -164,42 +164,42 @@ typedef struct {
     pd_Compactu32_t first_period;
     pd_Compactu32_t last_period;
     pd_Compactu32_t end;
-    pd_OptionMultiSigner_V19_t verifier;
+    pd_OptionMultiSigner_t verifier;
 } pd_crowdloan_edit_V19_t;
 
 #define PD_CALL_CROWDLOAN_ADD_MEMO_V19 6
 typedef struct {
-    pd_ParaId_V19_t index;
+    pd_ParaId_t index;
     pd_Vecu8_t memo;
 } pd_crowdloan_add_memo_V19_t;
 
 #define PD_CALL_CROWDLOAN_POKE_V19 7
 typedef struct {
-    pd_ParaId_V19_t index;
+    pd_ParaId_t index;
 } pd_crowdloan_poke_V19_t;
 
 #define PD_CALL_CROWDLOAN_CONTRIBUTE_ALL_V19 8
 typedef struct {
     pd_Compactu32_t index;
-    pd_OptionMultiSignature_V19_t signature;
+    pd_OptionMultiSignature_t signature;
 } pd_crowdloan_contribute_all_V19_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #define PD_CALL_XCMPALLET_RESERVE_TRANSFER_ASSETS_V19 2
 typedef struct {
-    pd_BoxVersionedMultiLocation_V19_t dest;
-    pd_BoxVersionedMultiLocation_V19_t beneficiary;
-    pd_BoxVersionedMultiAssets_V19_t assets;
+    pd_BoxVersionedMultiLocation_t dest;
+    pd_BoxVersionedMultiLocation_t beneficiary;
+    pd_BoxVersionedMultiAssets_t assets;
     pd_u32_t fee_asset_item;
 } pd_xcmpallet_reserve_transfer_assets_V19_t;
 #define PD_CALL_XCMPALLET_LIMITED_RESERVE_TRANSFER_ASSETS_V19 8
 typedef struct {
-    pd_BoxVersionedMultiLocation_V19_t dest;
-    pd_BoxVersionedMultiLocation_V19_t beneficiary;
-    pd_BoxVersionedMultiAssets_V19_t assets;
+    pd_BoxVersionedMultiLocation_t dest;
+    pd_BoxVersionedMultiLocation_t beneficiary;
+    pd_BoxVersionedMultiAssets_t assets;
     pd_u32_t fee_asset_item;
-    pd_WeightLimit_V19_t weight_limit;
+    pd_WeightLimit_t weight_limit;
 } pd_xcmpallet_limited_reserve_transfer_assets_V19_t;
 #endif
 
@@ -230,35 +230,35 @@ typedef struct {
 
 #define PD_CALL_INDICES_CLAIM_V19 0
 typedef struct {
-    pd_AccountIndex_V19_t index;
+    pd_AccountIndex_t index;
 } pd_indices_claim_V19_t;
 
 #define PD_CALL_INDICES_TRANSFER_V19 1
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t new_;
-    pd_AccountIndex_V19_t index;
+    pd_AccountIdLookupOfT_t new_;
+    pd_AccountIndex_t index;
 } pd_indices_transfer_V19_t;
 
 #define PD_CALL_INDICES_FREE_V19 2
 typedef struct {
-    pd_AccountIndex_V19_t index;
+    pd_AccountIndex_t index;
 } pd_indices_free_V19_t;
 
 #define PD_CALL_INDICES_FORCE_TRANSFER_V19 3
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t new_;
-    pd_AccountIndex_V19_t index;
+    pd_AccountIdLookupOfT_t new_;
+    pd_AccountIndex_t index;
     pd_bool_t freeze;
 } pd_indices_force_transfer_V19_t;
 
 #define PD_CALL_INDICES_FREEZE_V19 4
 typedef struct {
-    pd_AccountIndex_V19_t index;
+    pd_AccountIndex_t index;
 } pd_indices_freeze_V19_t;
 
 #define PD_CALL_BALANCES_FORCE_UNRESERVE_V19 5
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t who;
+    pd_AccountIdLookupOfT_t who;
     pd_Balance_t amount;
 } pd_balances_force_unreserve_V19_t;
 
@@ -274,7 +274,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_SCALE_VALIDATOR_COUNT_V19 11
 typedef struct {
-    pd_Percent_V19_t factor;
+    pd_Percent_t factor;
 } pd_staking_scale_validator_count_V19_t;
 
 #define PD_CALL_STAKING_FORCE_NO_ERAS_V19 12
@@ -287,12 +287,12 @@ typedef struct {
 
 #define PD_CALL_STAKING_SET_INVULNERABLES_V19 14
 typedef struct {
-    pd_VecAccountId_V19_t invulnerables;
+    pd_VecAccountId_t invulnerables;
 } pd_staking_set_invulnerables_V19_t;
 
 #define PD_CALL_STAKING_FORCE_UNSTAKE_V19 15
 typedef struct {
-    pd_AccountId_V19_t stash;
+    pd_AccountId_t stash;
     pd_u32_t num_slashing_spans;
 } pd_staking_force_unstake_V19_t;
 
@@ -302,52 +302,52 @@ typedef struct {
 
 #define PD_CALL_STAKING_CANCEL_DEFERRED_SLASH_V19 17
 typedef struct {
-    pd_EraIndex_V19_t era;
+    pd_EraIndex_t era;
     pd_Vecu32_t slash_indices;
 } pd_staking_cancel_deferred_slash_V19_t;
 
 #define PD_CALL_STAKING_REAP_STASH_V19 20
 typedef struct {
-    pd_AccountId_V19_t stash;
+    pd_AccountId_t stash;
     pd_u32_t num_slashing_spans;
 } pd_staking_reap_stash_V19_t;
 
 #define PD_CALL_STAKING_KICK_V19 21
 typedef struct {
-    pd_VecAccountIdLookupOfT_V19_t who;
+    pd_VecAccountIdLookupOfT_t who;
 } pd_staking_kick_V19_t;
 
 #define PD_CALL_STAKING_SET_STAKING_CONFIGS_V19 22
 typedef struct {
-    pd_ConfigOpBalanceOfT_V19_t min_nominator_bond;
-    pd_ConfigOpBalanceOfT_V19_t min_validator_bond;
-    pd_ConfigOpu32_V19_t max_nominator_count;
-    pd_ConfigOpu32_V19_t max_validator_count;
-    pd_ConfigOpPercent_V19_t chill_threshold;
-    pd_ConfigOpPerbill_V19_t min_commission;
+    pd_ConfigOpBalanceOfT_t min_nominator_bond;
+    pd_ConfigOpBalanceOfT_t min_validator_bond;
+    pd_ConfigOpu32_t max_nominator_count;
+    pd_ConfigOpu32_t max_validator_count;
+    pd_ConfigOpPercent_t chill_threshold;
+    pd_ConfigOpPerbill_t min_commission;
 } pd_staking_set_staking_configs_V19_t;
 
 #define PD_CALL_STAKING_CHILL_OTHER_V19 23
 typedef struct {
-    pd_AccountId_V19_t controller;
+    pd_AccountId_t controller;
 } pd_staking_chill_other_V19_t;
 
 #define PD_CALL_STAKING_FORCE_APPLY_MIN_COMMISSION_V19 24
 typedef struct {
-    pd_AccountId_V19_t validator_stash;
+    pd_AccountId_t validator_stash;
 } pd_staking_force_apply_min_commission_V19_t;
 
 #define PD_CALL_DEMOCRACY_BLACKLIST_V19 16
 typedef struct {
     pd_H256_t proposal_hash;
-    pd_OptionReferendumIndex_V19_t maybe_ref_index;
+    pd_OptionReferendumIndex_t maybe_ref_index;
 } pd_democracy_blacklist_V19_t;
 
 #define PD_CALL_COUNCIL_SET_MEMBERS_V19 0
 typedef struct {
-    pd_VecAccountId_V19_t new_members;
-    pd_OptionAccountId_V19_t prime;
-    pd_MemberCount_V19_t old_count;
+    pd_VecAccountId_t new_members;
+    pd_OptionAccountId_t prime;
+    pd_MemberCount_t old_count;
 } pd_council_set_members_V19_t;
 
 #define PD_CALL_COUNCIL_EXECUTE_V19 1
@@ -387,15 +387,15 @@ typedef struct {
 typedef struct {
     pd_Hash_t proposal_hash;
     pd_Compactu32_t index;
-    pd_Weight_V19_t proposal_weight_bound;
+    pd_Weight_t proposal_weight_bound;
     pd_Compactu32_t length_bound;
 } pd_council_close_V19_t;
 
 #define PD_CALL_TECHNICALCOMMITTEE_SET_MEMBERS_V19 0
 typedef struct {
-    pd_VecAccountId_V19_t new_members;
-    pd_OptionAccountId_V19_t prime;
-    pd_MemberCount_V19_t old_count;
+    pd_VecAccountId_t new_members;
+    pd_OptionAccountId_t prime;
+    pd_MemberCount_t old_count;
 } pd_technicalcommittee_set_members_V19_t;
 
 #define PD_CALL_TECHNICALCOMMITTEE_EXECUTE_V19 1
@@ -435,13 +435,13 @@ typedef struct {
 typedef struct {
     pd_Hash_t proposal_hash;
     pd_Compactu32_t index;
-    pd_Weight_V19_t proposal_weight_bound;
+    pd_Weight_t proposal_weight_bound;
     pd_Compactu32_t length_bound;
 } pd_technicalcommittee_close_V19_t;
 
 #define PD_CALL_PHRAGMENELECTION_VOTE_V19 0
 typedef struct {
-    pd_VecAccountId_V19_t votes;
+    pd_VecAccountId_t votes;
     pd_Compactu128_t amount;
 } pd_phragmenelection_vote_V19_t;
 
@@ -456,7 +456,7 @@ typedef struct {
 
 #define PD_CALL_PHRAGMENELECTION_REMOVE_MEMBER_V19 4
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t who;
+    pd_AccountIdLookupOfT_t who;
     pd_bool_t slash_bond;
     pd_bool_t rerun_election;
 } pd_phragmenelection_remove_member_V19_t;
@@ -469,33 +469,33 @@ typedef struct {
 
 #define PD_CALL_TECHNICALMEMBERSHIP_ADD_MEMBER_V19 0
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t who;
+    pd_AccountIdLookupOfT_t who;
 } pd_technicalmembership_add_member_V19_t;
 
 #define PD_CALL_TECHNICALMEMBERSHIP_REMOVE_MEMBER_V19 1
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t who;
+    pd_AccountIdLookupOfT_t who;
 } pd_technicalmembership_remove_member_V19_t;
 
 #define PD_CALL_TECHNICALMEMBERSHIP_SWAP_MEMBER_V19 2
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t remove;
-    pd_AccountIdLookupOfT_V19_t add;
+    pd_AccountIdLookupOfT_t remove;
+    pd_AccountIdLookupOfT_t add;
 } pd_technicalmembership_swap_member_V19_t;
 
 #define PD_CALL_TECHNICALMEMBERSHIP_RESET_MEMBERS_V19 3
 typedef struct {
-    pd_VecAccountId_V19_t members;
+    pd_VecAccountId_t members;
 } pd_technicalmembership_reset_members_V19_t;
 
 #define PD_CALL_TECHNICALMEMBERSHIP_CHANGE_KEY_V19 4
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t new_;
+    pd_AccountIdLookupOfT_t new_;
 } pd_technicalmembership_change_key_V19_t;
 
 #define PD_CALL_TECHNICALMEMBERSHIP_SET_PRIME_V19 5
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t who;
+    pd_AccountIdLookupOfT_t who;
 } pd_technicalmembership_set_prime_V19_t;
 
 #define PD_CALL_TECHNICALMEMBERSHIP_CLEAR_PRIME_V19 6
@@ -505,7 +505,7 @@ typedef struct {
 #define PD_CALL_TREASURY_PROPOSE_SPEND_V19 0
 typedef struct {
     pd_CompactBalance_t amount;
-    pd_AccountIdLookupOfT_V19_t beneficiary;
+    pd_AccountIdLookupOfT_t beneficiary;
 } pd_treasury_propose_spend_V19_t;
 
 #define PD_CALL_TREASURY_REJECT_PROPOSAL_V19 1
@@ -521,7 +521,7 @@ typedef struct {
 #define PD_CALL_TREASURY_SPEND_V19 3
 typedef struct {
     pd_CompactBalance_t amount;
-    pd_AccountIdLookupOfT_V19_t beneficiary;
+    pd_AccountIdLookupOfT_t beneficiary;
 } pd_treasury_spend_V19_t;
 
 #define PD_CALL_TREASURY_REMOVE_APPROVAL_V19 4
@@ -531,14 +531,14 @@ typedef struct {
 
 #define PD_CALL_CLAIMS_CLAIM_V19 0
 typedef struct {
-    pd_AccountId_V19_t dest;
-    pd_EcdsaSignature_V19_t ethereum_signature;
+    pd_AccountId_t dest;
+    pd_EcdsaSignature_t ethereum_signature;
 } pd_claims_claim_V19_t;
 
 #define PD_CALL_CLAIMS_CLAIM_ATTEST_V19 2
 typedef struct {
-    pd_AccountId_V19_t dest;
-    pd_EcdsaSignature_V19_t ethereum_signature;
+    pd_AccountId_t dest;
+    pd_EcdsaSignature_t ethereum_signature;
     pd_Bytes_t statement;
 } pd_claims_claim_attest_V19_t;
 
@@ -549,9 +549,9 @@ typedef struct {
 
 #define PD_CALL_CLAIMS_MOVE_CLAIM_V19 4
 typedef struct {
-    pd_EthereumAddress_V19_t old;
-    pd_EthereumAddress_V19_t new_;
-    pd_OptionAccountId_V19_t maybe_preclaim;
+    pd_EthereumAddress_t old;
+    pd_EthereumAddress_t new_;
+    pd_OptionAccountId_t maybe_preclaim;
 } pd_claims_move_claim_V19_t;
 
 #define PD_CALL_VESTING_VEST_V19 0
@@ -560,20 +560,20 @@ typedef struct {
 
 #define PD_CALL_VESTING_VEST_OTHER_V19 1
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t target;
+    pd_AccountIdLookupOfT_t target;
 } pd_vesting_vest_other_V19_t;
 
 #define PD_CALL_VESTING_VESTED_TRANSFER_V19 2
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t target;
-    pd_VestingInfo_V19_t schedule;
+    pd_AccountIdLookupOfT_t target;
+    pd_VestingInfo_t schedule;
 } pd_vesting_vested_transfer_V19_t;
 
 #define PD_CALL_VESTING_FORCE_VESTED_TRANSFER_V19 3
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t source;
-    pd_AccountIdLookupOfT_V19_t target;
-    pd_VestingInfo_V19_t schedule;
+    pd_AccountIdLookupOfT_t source;
+    pd_AccountIdLookupOfT_t target;
+    pd_VestingInfo_t schedule;
 } pd_vesting_force_vested_transfer_V19_t;
 
 #define PD_CALL_VESTING_MERGE_SCHEDULES_V19 4
@@ -585,22 +585,22 @@ typedef struct {
 #define PD_CALL_UTILITY_WITH_WEIGHT_V19 5
 typedef struct {
     pd_Call_t call;
-    pd_Weight_V19_t weight;
+    pd_Weight_t weight;
 } pd_utility_with_weight_V19_t;
 
 #define PD_CALL_IDENTITY_ADD_REGISTRAR_V19 0
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t account;
+    pd_AccountIdLookupOfT_t account;
 } pd_identity_add_registrar_V19_t;
 
 #define PD_CALL_IDENTITY_SET_IDENTITY_V19 1
 typedef struct {
-    pd_IdentityInfo_V19_t info;
+    pd_IdentityInfo_t info;
 } pd_identity_set_identity_V19_t;
 
 #define PD_CALL_IDENTITY_SET_SUBS_V19 2
 typedef struct {
-    pd_VecTupleAccountIdData_V19_t subs;
+    pd_VecTupleAccountIdData_t subs;
 } pd_identity_set_subs_V19_t;
 
 #define PD_CALL_IDENTITY_CLEAR_IDENTITY_V19 3
@@ -615,7 +615,7 @@ typedef struct {
 
 #define PD_CALL_IDENTITY_CANCEL_REQUEST_V19 5
 typedef struct {
-    pd_RegistrarIndex_V19_t reg_index;
+    pd_RegistrarIndex_t reg_index;
 } pd_identity_cancel_request_V19_t;
 
 #define PD_CALL_IDENTITY_SET_FEE_V19 6
@@ -627,37 +627,37 @@ typedef struct {
 #define PD_CALL_IDENTITY_SET_ACCOUNT_ID_V19 7
 typedef struct {
     pd_Compactu32_t index;
-    pd_AccountIdLookupOfT_V19_t new_;
+    pd_AccountIdLookupOfT_t new_;
 } pd_identity_set_account_id_V19_t;
 
 #define PD_CALL_IDENTITY_PROVIDE_JUDGEMENT_V19 9
 typedef struct {
     pd_Compactu32_t reg_index;
-    pd_AccountIdLookupOfT_V19_t target;
-    pd_JudgementBalanceOfT_V19_t judgement;
+    pd_AccountIdLookupOfT_t target;
+    pd_JudgementBalanceOfT_t judgement;
     pd_Hash_t identity;
 } pd_identity_provide_judgement_V19_t;
 
 #define PD_CALL_IDENTITY_KILL_IDENTITY_V19 10
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t target;
+    pd_AccountIdLookupOfT_t target;
 } pd_identity_kill_identity_V19_t;
 
 #define PD_CALL_IDENTITY_ADD_SUB_V19 11
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t sub;
+    pd_AccountIdLookupOfT_t sub;
     pd_Data_t data;
 } pd_identity_add_sub_V19_t;
 
 #define PD_CALL_IDENTITY_RENAME_SUB_V19 12
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t sub;
+    pd_AccountIdLookupOfT_t sub;
     pd_Data_t data;
 } pd_identity_rename_sub_V19_t;
 
 #define PD_CALL_IDENTITY_REMOVE_SUB_V19 13
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t sub;
+    pd_AccountIdLookupOfT_t sub;
 } pd_identity_remove_sub_V19_t;
 
 #define PD_CALL_IDENTITY_QUIT_SUB_V19 14
@@ -666,15 +666,15 @@ typedef struct {
 
 #define PD_CALL_PROXY_ADD_PROXY_V19 1
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t delegate;
-    pd_ProxyType_V19_t proxy_type;
+    pd_AccountIdLookupOfT_t delegate;
+    pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
 } pd_proxy_add_proxy_V19_t;
 
 #define PD_CALL_PROXY_REMOVE_PROXY_V19 2
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t delegate;
-    pd_ProxyType_V19_t proxy_type;
+    pd_AccountIdLookupOfT_t delegate;
+    pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
 } pd_proxy_remove_proxy_V19_t;
 
@@ -684,15 +684,15 @@ typedef struct {
 
 #define PD_CALL_PROXY_CREATE_PURE_V19 4
 typedef struct {
-    pd_ProxyType_V19_t proxy_type;
+    pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
     pd_u16_t index;
 } pd_proxy_create_pure_V19_t;
 
 #define PD_CALL_PROXY_KILL_PURE_V19 5
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t spawner;
-    pd_ProxyType_V19_t proxy_type;
+    pd_AccountIdLookupOfT_t spawner;
+    pd_ProxyType_t proxy_type;
     pd_u16_t index;
     pd_Compactu32_t height;
     pd_Compactu32_t ext_index;
@@ -700,9 +700,9 @@ typedef struct {
 
 #define PD_CALL_PROXY_PROXY_ANNOUNCED_V19 9
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t delegate;
-    pd_AccountIdLookupOfT_V19_t real;
-    pd_OptionProxyType_V19_t force_proxy_type;
+    pd_AccountIdLookupOfT_t delegate;
+    pd_AccountIdLookupOfT_t real;
+    pd_OptionProxyType_t force_proxy_type;
     pd_Call_t call;
 } pd_proxy_proxy_announced_V19_t;
 
@@ -720,7 +720,7 @@ typedef struct {
 #define PD_CALL_BOUNTIES_PROPOSE_CURATOR_V19 2
 typedef struct {
     pd_Compactu32_t bounty_id;
-    pd_AccountIdLookupOfT_V19_t curator;
+    pd_AccountIdLookupOfT_t curator;
     pd_CompactBalance_t fee;
 } pd_bounties_propose_curator_V19_t;
 
@@ -737,7 +737,7 @@ typedef struct {
 #define PD_CALL_BOUNTIES_AWARD_BOUNTY_V19 5
 typedef struct {
     pd_Compactu32_t bounty_id;
-    pd_AccountIdLookupOfT_V19_t beneficiary;
+    pd_AccountIdLookupOfT_t beneficiary;
 } pd_bounties_award_bounty_V19_t;
 
 #define PD_CALL_BOUNTIES_CLAIM_BOUNTY_V19 6
@@ -767,7 +767,7 @@ typedef struct {
 typedef struct {
     pd_Compactu32_t parent_bounty_id;
     pd_Compactu32_t child_bounty_id;
-    pd_AccountIdLookupOfT_V19_t curator;
+    pd_AccountIdLookupOfT_t curator;
     pd_CompactBalance_t fee;
 } pd_childbounties_propose_curator_V19_t;
 
@@ -787,7 +787,7 @@ typedef struct {
 typedef struct {
     pd_Compactu32_t parent_bounty_id;
     pd_Compactu32_t child_bounty_id;
-    pd_AccountIdLookupOfT_V19_t beneficiary;
+    pd_AccountIdLookupOfT_t beneficiary;
 } pd_childbounties_award_child_bounty_V19_t;
 
 #define PD_CALL_CHILDBOUNTIES_CLAIM_CHILD_BOUNTY_V19 5
@@ -805,7 +805,7 @@ typedef struct {
 #define PD_CALL_TIPS_REPORT_AWESOME_V19 0
 typedef struct {
     pd_Bytes_t reason;
-    pd_AccountIdLookupOfT_V19_t who;
+    pd_AccountIdLookupOfT_t who;
 } pd_tips_report_awesome_V19_t;
 
 #define PD_CALL_TIPS_RETRACT_TIP_V19 1
@@ -816,7 +816,7 @@ typedef struct {
 #define PD_CALL_TIPS_TIP_NEW_V19 2
 typedef struct {
     pd_Bytes_t reason;
-    pd_AccountIdLookupOfT_V19_t who;
+    pd_AccountIdLookupOfT_t who;
     pd_Compactu128_t tip_value;
 } pd_tips_tip_new_V19_t;
 
@@ -838,23 +838,23 @@ typedef struct {
 
 #define PD_CALL_VOTERLIST_REBAG_V19 0
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t dislocated;
+    pd_AccountIdLookupOfT_t dislocated;
 } pd_voterlist_rebag_V19_t;
 
 #define PD_CALL_VOTERLIST_PUT_IN_FRONT_OF_V19 1
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t lighter;
+    pd_AccountIdLookupOfT_t lighter;
 } pd_voterlist_put_in_front_of_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_JOIN_V19 0
 typedef struct {
     pd_CompactBalance_t amount;
-    pd_PoolId_V19_t pool_id;
+    pd_PoolId_t pool_id;
 } pd_nominationpools_join_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_BOND_EXTRA_V19 1
 typedef struct {
-    pd_BondExtraBalanceOfT_V19_t extra;
+    pd_BondExtraBalanceOfT_t extra;
 } pd_nominationpools_bond_extra_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_CLAIM_PAYOUT_V19 2
@@ -863,57 +863,57 @@ typedef struct {
 
 #define PD_CALL_NOMINATIONPOOLS_UNBOND_V19 3
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t member_account;
+    pd_AccountIdLookupOfT_t member_account;
     pd_CompactBalance_t unbonding_points;
 } pd_nominationpools_unbond_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_POOL_WITHDRAW_UNBONDED_V19 4
 typedef struct {
-    pd_PoolId_V19_t pool_id;
+    pd_PoolId_t pool_id;
     pd_u32_t num_slashing_spans;
 } pd_nominationpools_pool_withdraw_unbonded_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_WITHDRAW_UNBONDED_V19 5
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t member_account;
+    pd_AccountIdLookupOfT_t member_account;
     pd_u32_t num_slashing_spans;
 } pd_nominationpools_withdraw_unbonded_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_CREATE_WITH_POOL_ID_V19 7
 typedef struct {
     pd_CompactBalance_t amount;
-    pd_AccountIdLookupOfT_V19_t root;
-    pd_AccountIdLookupOfT_V19_t nominator;
-    pd_AccountIdLookupOfT_V19_t state_toggler;
-    pd_PoolId_V19_t pool_id;
+    pd_AccountIdLookupOfT_t root;
+    pd_AccountIdLookupOfT_t nominator;
+    pd_AccountIdLookupOfT_t state_toggler;
+    pd_PoolId_t pool_id;
 } pd_nominationpools_create_with_pool_id_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_SET_STATE_V19 9
 typedef struct {
-    pd_PoolId_V19_t pool_id;
-    pd_PoolState_V19_t state;
+    pd_PoolId_t pool_id;
+    pd_PoolState_t state;
 } pd_nominationpools_set_state_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_SET_CONFIGS_V19 11
 typedef struct {
-    pd_ConfigOpBalanceOfT_V19_t min_join_bond;
-    pd_ConfigOpBalanceOfT_V19_t min_create_bond;
-    pd_ConfigOpu32_V19_t max_pools;
-    pd_ConfigOpu32_V19_t max_members;
-    pd_ConfigOpu32_V19_t max_members_per_pool;
+    pd_ConfigOpBalanceOfT_t min_join_bond;
+    pd_ConfigOpBalanceOfT_t min_create_bond;
+    pd_ConfigOpu32_t max_pools;
+    pd_ConfigOpu32_t max_members;
+    pd_ConfigOpu32_t max_members_per_pool;
 } pd_nominationpools_set_configs_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_UPDATE_ROLES_V19 12
 typedef struct {
-    pd_PoolId_V19_t pool_id;
-    pd_ConfigOpAccountId_V19_t new_root;
-    pd_ConfigOpAccountId_V19_t new_nominator;
-    pd_ConfigOpAccountId_V19_t new_state_toggler;
+    pd_PoolId_t pool_id;
+    pd_ConfigOpAccountId_t new_root;
+    pd_ConfigOpAccountId_t new_nominator;
+    pd_ConfigOpAccountId_t new_state_toggler;
 } pd_nominationpools_update_roles_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_CHILL_V19 13
 typedef struct {
-    pd_PoolId_V19_t pool_id;
+    pd_PoolId_t pool_id;
 } pd_nominationpools_chill_V19_t;
 
 #define PD_CALL_FASTUNSTAKE_REGISTER_FAST_UNSTAKE_V19 0
@@ -926,7 +926,7 @@ typedef struct {
 
 #define PD_CALL_FASTUNSTAKE_CONTROL_V19 2
 typedef struct {
-    pd_EraIndex_V19_t unchecked_eras_to_check;
+    pd_EraIndex_t unchecked_eras_to_check;
 } pd_fastunstake_control_V19_t;
 
 #define PD_CALL_CONFIGURATION_SET_VALIDATION_UPGRADE_COOLDOWN_V19 0
@@ -1056,7 +1056,7 @@ typedef struct {
 
 #define PD_CALL_CONFIGURATION_SET_UMP_SERVICE_TOTAL_WEIGHT_V19 26
 typedef struct {
-    pd_Weight_V19_t new_;
+    pd_Weight_t new_;
 } pd_configuration_set_ump_service_total_weight_V19_t;
 
 #define PD_CALL_CONFIGURATION_SET_MAX_UPWARD_MESSAGE_SIZE_V19 27
@@ -1126,7 +1126,7 @@ typedef struct {
 
 #define PD_CALL_CONFIGURATION_SET_UMP_MAX_INDIVIDUAL_WEIGHT_V19 40
 typedef struct {
-    pd_Weight_V19_t new_;
+    pd_Weight_t new_;
 } pd_configuration_set_ump_max_individual_weight_V19_t;
 
 #define PD_CALL_CONFIGURATION_SET_PVF_CHECKING_ENABLED_V19 41
@@ -1136,7 +1136,7 @@ typedef struct {
 
 #define PD_CALL_CONFIGURATION_SET_PVF_VOTING_TTL_V19 42
 typedef struct {
-    pd_SessionIndex_V19_t new_;
+    pd_SessionIndex_t new_;
 } pd_configuration_set_pvf_voting_ttl_V19_t;
 
 #define PD_CALL_CONFIGURATION_SET_MINIMUM_VALIDATION_UPGRADE_DELAY_V19 43
@@ -1156,8 +1156,8 @@ typedef struct {
 
 #define PD_CALL_UMP_SERVICE_OVERWEIGHT_V19 0
 typedef struct {
-    pd_OverweightIndex_V19_t index;
-    pd_Weight_V19_t weight_limit;
+    pd_OverweightIndex_t index;
+    pd_Weight_t weight_limit;
 } pd_ump_service_overweight_V19_t;
 
 #define PD_CALL_PARASDISPUTES_FORCE_UNFREEZE_V19 0
@@ -1392,28 +1392,28 @@ typedef union {
 
 #define PD_CALL_BALANCES_TRANSFER_V19 0
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t dest;
+    pd_AccountIdLookupOfT_t dest;
     pd_CompactBalance_t amount;
 } pd_balances_transfer_V19_t;
 
 #define PD_CALL_BALANCES_FORCE_TRANSFER_V19 2
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t source;
-    pd_AccountIdLookupOfT_V19_t dest;
+    pd_AccountIdLookupOfT_t source;
+    pd_AccountIdLookupOfT_t dest;
     pd_CompactBalance_t amount;
 } pd_balances_force_transfer_V19_t;
 
 #define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE_V19 3
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t dest;
+    pd_AccountIdLookupOfT_t dest;
     pd_CompactBalance_t amount;
 } pd_balances_transfer_keep_alive_V19_t;
 
 #define PD_CALL_STAKING_BOND_V19 0
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t controller;
+    pd_AccountIdLookupOfT_t controller;
     pd_CompactBalance_t amount;
-    pd_RewardDestination_V19_t payee;
+    pd_RewardDestination_t payee;
 } pd_staking_bond_V19_t;
 
 #define PD_CALL_STAKING_UNBOND_V19 2
@@ -1423,7 +1423,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_NOMINATE_V19 5
 typedef struct {
-    pd_VecAccountIdLookupOfT_V19_t targets;
+    pd_VecAccountIdLookupOfT_t targets;
 } pd_staking_nominate_V19_t;
 
 #define PD_CALL_STAKING_CHILL_V19 6
@@ -1432,7 +1432,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_SET_CONTROLLER_V19 8
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t controller;
+    pd_AccountIdLookupOfT_t controller;
 } pd_staking_set_controller_V19_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
@@ -1465,14 +1465,14 @@ typedef struct {
 
 #define PD_CALL_BALANCES_SET_BALANCE_V19 1
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t who;
+    pd_AccountIdLookupOfT_t who;
     pd_CompactBalance_t new_free;
     pd_CompactBalance_t new_reserved;
 } pd_balances_set_balance_V19_t;
 
 #define PD_CALL_DEMOCRACY_PROPOSE_V19 0
 typedef struct {
-    pd_BoundedCallOfT_V19_t proposal;
+    pd_BoundedCallOfT_t proposal;
     pd_CompactBalance_t amount;
 } pd_democracy_propose_V19_t;
 
@@ -1484,27 +1484,27 @@ typedef struct {
 #define PD_CALL_DEMOCRACY_VOTE_V19 2
 typedef struct {
     pd_Compactu32_t ref_index;
-    pd_AccountVote_V19_t vote;
+    pd_AccountVote_t vote;
 } pd_democracy_vote_V19_t;
 
 #define PD_CALL_DEMOCRACY_EMERGENCY_CANCEL_V19 3
 typedef struct {
-    pd_ReferendumIndex_V19_t ref_index;
+    pd_ReferendumIndex_t ref_index;
 } pd_democracy_emergency_cancel_V19_t;
 
 #define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_V19 4
 typedef struct {
-    pd_BoundedCallOfT_V19_t proposal;
+    pd_BoundedCallOfT_t proposal;
 } pd_democracy_external_propose_V19_t;
 
 #define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_MAJORITY_V19 5
 typedef struct {
-    pd_BoundedCallOfT_V19_t proposal;
+    pd_BoundedCallOfT_t proposal;
 } pd_democracy_external_propose_majority_V19_t;
 
 #define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_DEFAULT_V19 6
 typedef struct {
-    pd_BoundedCallOfT_V19_t proposal;
+    pd_BoundedCallOfT_t proposal;
 } pd_democracy_external_propose_default_V19_t;
 
 #define PD_CALL_DEMOCRACY_FAST_TRACK_V19 7
@@ -1526,8 +1526,8 @@ typedef struct {
 
 #define PD_CALL_DEMOCRACY_DELEGATE_V19 10
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t to;
-    pd_Conviction_V19_t conviction;
+    pd_AccountIdLookupOfT_t to;
+    pd_Conviction_t conviction;
     pd_Balance_t balance;
 } pd_democracy_delegate_V19_t;
 
@@ -1541,18 +1541,18 @@ typedef struct {
 
 #define PD_CALL_DEMOCRACY_UNLOCK_V19 13
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t target;
+    pd_AccountIdLookupOfT_t target;
 } pd_democracy_unlock_V19_t;
 
 #define PD_CALL_DEMOCRACY_REMOVE_VOTE_V19 14
 typedef struct {
-    pd_ReferendumIndex_V19_t index;
+    pd_ReferendumIndex_t index;
 } pd_democracy_remove_vote_V19_t;
 
 #define PD_CALL_DEMOCRACY_REMOVE_OTHER_VOTE_V19 15
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t target;
-    pd_ReferendumIndex_V19_t index;
+    pd_AccountIdLookupOfT_t target;
+    pd_ReferendumIndex_t index;
 } pd_democracy_remove_other_vote_V19_t;
 
 #define PD_CALL_DEMOCRACY_CANCEL_PROPOSAL_V19 17
@@ -1562,60 +1562,60 @@ typedef struct {
 
 #define PD_CALL_PROXY_PROXY_V19 0
 typedef struct {
-    pd_AccountIdLookupOfT_V19_t real;
-    pd_OptionProxyType_V19_t force_proxy_type;
+    pd_AccountIdLookupOfT_t real;
+    pd_OptionProxyType_t force_proxy_type;
     pd_Call_t call;
 } pd_proxy_proxy_V19_t;
 
 #define PD_CALL_MULTISIG_AS_MULTI_THRESHOLD_1_V19 0
 typedef struct {
-    pd_VecAccountId_V19_t other_signatories;
+    pd_VecAccountId_t other_signatories;
     pd_Call_t call;
 } pd_multisig_as_multi_threshold_1_V19_t;
 
 #define PD_CALL_MULTISIG_AS_MULTI_V19 1
 typedef struct {
     pd_u16_t threshold;
-    pd_VecAccountId_V19_t other_signatories;
-    pd_OptionTimepoint_V19_t maybe_timepoint;
+    pd_VecAccountId_t other_signatories;
+    pd_OptionTimepoint_t maybe_timepoint;
     pd_Call_t call;
-    pd_Weight_V19_t max_weight;
+    pd_Weight_t max_weight;
 } pd_multisig_as_multi_V19_t;
 
 #define PD_CALL_MULTISIG_APPROVE_AS_MULTI_V19 2
 typedef struct {
     pd_u16_t threshold;
-    pd_VecAccountId_V19_t other_signatories;
-    pd_OptionTimepoint_V19_t maybe_timepoint;
+    pd_VecAccountId_t other_signatories;
+    pd_OptionTimepoint_t maybe_timepoint;
     pd_H256_t call_hash;
-    pd_Weight_V19_t max_weight;
+    pd_Weight_t max_weight;
 } pd_multisig_approve_as_multi_V19_t;
 
 #define PD_CALL_MULTISIG_CANCEL_AS_MULTI_V19 3
 typedef struct {
     pd_u16_t threshold;
-    pd_VecAccountId_V19_t other_signatories;
-    pd_Timepoint_V19_t timepoint;
+    pd_VecAccountId_t other_signatories;
+    pd_Timepoint_t timepoint;
     pd_H256_t call_hash;
 } pd_multisig_cancel_as_multi_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_CREATE_V19 6
 typedef struct {
     pd_CompactBalance_t amount;
-    pd_AccountIdLookupOfT_V19_t root;
-    pd_AccountIdLookupOfT_V19_t nominator;
-    pd_AccountIdLookupOfT_V19_t state_toggler;
+    pd_AccountIdLookupOfT_t root;
+    pd_AccountIdLookupOfT_t nominator;
+    pd_AccountIdLookupOfT_t state_toggler;
 } pd_nominationpools_create_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_NOMINATE_V19 8
 typedef struct {
-    pd_PoolId_V19_t pool_id;
-    pd_VecAccountId_V19_t validators;
+    pd_PoolId_t pool_id;
+    pd_VecAccountId_t validators;
 } pd_nominationpools_nominate_V19_t;
 
 #define PD_CALL_NOMINATIONPOOLS_SET_METADATA_V19 10
 typedef struct {
-    pd_PoolId_V19_t pool_id;
+    pd_PoolId_t pool_id;
     pd_Vecu8_t metadata;
 } pd_nominationpools_set_metadata_V19_t;
 

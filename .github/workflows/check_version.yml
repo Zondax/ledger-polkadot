@@ -1,6 +1,7 @@
-name: "Verify PRs to main"
+name: Verify PRs to main
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
@@ -13,7 +14,7 @@ jobs:
       uid_gid: ${{ steps.get-user.outputs.uid_gid }}
     steps:
       - id: get-user
-        run: echo "::set-output name=uid_gid::$(id -u):$(id -g)"
+        run: echo "uid_gid=$(id -u):$(id -g)" >> $GITHUB_OUTPUT
 
   get_version:
     needs: configure
@@ -28,7 +29,7 @@ jobs:
       version: ${{ steps.store-version.outputs.version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: true
 
@@ -39,7 +40,7 @@ jobs:
         run: make version
 
       - id: store-version
-        run: echo ::set-output name=version::$(cat ./app/app.version)
+        run: echo "version=$(cat ./app/app.version)" >> $GITHUB_OUTPUT
 
   check_app_version:
     needs: get_version
@@ -57,4 +58,3 @@ jobs:
       - name: Tag exists
         if: ${{ steps.checkTag.outputs.exists == 'true' }}
         run: exit 1
-
