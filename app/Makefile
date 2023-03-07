@@ -100,8 +100,11 @@ APP_SOURCE_PATH += $(CURDIR)/rust/include
 rust:
 	cd rust && CARGO_HOME="$(CURDIR)/rust/.cargo" cargo build --target thumbv6m-none-eabi --release
 
-# Before linking, we need to be sure rust lib is there
-bin/app.elf: rust
+# Force rust dependency before c compilation in parallel mode (-j option).
+.DEFAULT_GOAL := build_with_rust
+.PHONY: build_with_rust
+build_with_rust: rust
+	$(MAKE) all
 
 .PHONY: rust_clean
 rust_clean:
