@@ -27,10 +27,6 @@ const defaultOptions = {
 
 jest.setTimeout(60000)
 
-beforeAll(async () => {
-  await Zemu.checkAndPullImage()
-})
-
 async function activateSecretMode(sim: any) {
   // Get to Zondax.ch menu
   for (let i = 0; i < 3; i += 1) {
@@ -57,7 +53,7 @@ async function activateSecretMode(sim: any) {
 }
 
 describe('Recovery', function () {
-  test.each(models)('main secret menu (%s)', async function (m) {
+  test.concurrent.each(models)('main secret menu (%s)', async function (m) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({ ...defaultOptions, model: m.name })
