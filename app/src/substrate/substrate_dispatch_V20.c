@@ -252,20 +252,20 @@ __Z_INLINE parser_error_t _readMethod_crowdloan_contribute_all_V20(
 __Z_INLINE parser_error_t _readMethod_xcmpallet_reserve_transfer_assets_V20(
     parser_context_t* c, pd_xcmpallet_reserve_transfer_assets_V20_t* m)
 {
-    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->dest))
-    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->beneficiary))
-    CHECK_ERROR(_readBoxVersionedMultiAssets(c, &m->assets))
+    CHECK_ERROR(_readBoxVersionedMultiLocation_V20(c, &m->dest))
+    CHECK_ERROR(_readBoxVersionedMultiLocation_V20(c, &m->beneficiary))
+    CHECK_ERROR(_readBoxVersionedMultiAssets_V20(c, &m->assets))
     CHECK_ERROR(_readu32(c, &m->fee_asset_item))
     return parser_ok;
 }
 __Z_INLINE parser_error_t _readMethod_xcmpallet_limited_reserve_transfer_assets_V20(
     parser_context_t* c, pd_xcmpallet_limited_reserve_transfer_assets_V20_t* m)
 {
-    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->dest))
-    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->beneficiary))
-    CHECK_ERROR(_readBoxVersionedMultiAssets(c, &m->assets))
+    CHECK_ERROR(_readBoxVersionedMultiLocation_V20(c, &m->dest))
+    CHECK_ERROR(_readBoxVersionedMultiLocation_V20(c, &m->beneficiary))
+    CHECK_ERROR(_readBoxVersionedMultiAssets_V20(c, &m->assets))
     CHECK_ERROR(_readu32(c, &m->fee_asset_item))
-    CHECK_ERROR(_readWeightLimit(c, &m->weight_limit))
+    CHECK_ERROR(_readWeightLimit_V20(c, &m->weight_limit))
     return parser_ok;
 }
 #endif
@@ -764,7 +764,7 @@ __Z_INLINE parser_error_t _readMethod_phragmenelection_vote_V20(
     parser_context_t* c, pd_phragmenelection_vote_V20_t* m)
 {
     CHECK_ERROR(_readVecAccountId(c, &m->votes))
-    CHECK_ERROR(_readCompactu128(c, &m->amount))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -2279,10 +2279,10 @@ parser_error_t _readMethod_V20(
         CHECK_ERROR(_readMethod_proxy_remove_proxies_V20(c, &method->basic.proxy_remove_proxies_V20))
         break;
     case 7428: /* module 29 call 4 */
-        CHECK_ERROR(_readMethod_proxy_create_pure_V20(c, &method->basic.proxy_create_pure_V20))
+        CHECK_ERROR(_readMethod_proxy_create_pure_V20(c, &method->nested.proxy_create_pure_V20))
         break;
     case 7429: /* module 29 call 5 */
-        CHECK_ERROR(_readMethod_proxy_kill_pure_V20(c, &method->basic.proxy_kill_pure_V20))
+        CHECK_ERROR(_readMethod_proxy_kill_pure_V20(c, &method->nested.proxy_kill_pure_V20))
         break;
     case 7433: /* module 29 call 9 */
         CHECK_ERROR(_readMethod_proxy_proxy_announced_V20(c, &method->basic.proxy_proxy_announced_V20))
@@ -6059,17 +6059,17 @@ parser_error_t _getMethod_ItemValue_V20(
     case 25346: /* module 99 call 2 */
         switch (itemIdx) {
         case 0: /* xcmpallet_reserve_transfer_assets_V20 - dest */;
-            return _toStringBoxVersionedMultiLocation(
+            return _toStringBoxVersionedMultiLocation_V20(
                 &m->basic.xcmpallet_reserve_transfer_assets_V20.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* xcmpallet_reserve_transfer_assets_V20 - beneficiary */;
-            return _toStringBoxVersionedMultiLocation(
+            return _toStringBoxVersionedMultiLocation_V20(
                 &m->basic.xcmpallet_reserve_transfer_assets_V20.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* xcmpallet_reserve_transfer_assets_V20 - assets */;
-            return _toStringBoxVersionedMultiAssets(
+            return _toStringBoxVersionedMultiAssets_V20(
                 &m->basic.xcmpallet_reserve_transfer_assets_V20.assets,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6084,17 +6084,17 @@ parser_error_t _getMethod_ItemValue_V20(
     case 25352: /* module 99 call 8 */
         switch (itemIdx) {
         case 0: /* xcmpallet_limited_reserve_transfer_assets_V20 - dest */;
-            return _toStringBoxVersionedMultiLocation(
+            return _toStringBoxVersionedMultiLocation_V20(
                 &m->basic.xcmpallet_limited_reserve_transfer_assets_V20.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* xcmpallet_limited_reserve_transfer_assets_V20 - beneficiary */;
-            return _toStringBoxVersionedMultiLocation(
+            return _toStringBoxVersionedMultiLocation_V20(
                 &m->basic.xcmpallet_limited_reserve_transfer_assets_V20.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* xcmpallet_limited_reserve_transfer_assets_V20 - assets */;
-            return _toStringBoxVersionedMultiAssets(
+            return _toStringBoxVersionedMultiAssets_V20(
                 &m->basic.xcmpallet_limited_reserve_transfer_assets_V20.assets,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6104,7 +6104,7 @@ parser_error_t _getMethod_ItemValue_V20(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* xcmpallet_limited_reserve_transfer_assets_V20 - weight_limit */;
-            return _toStringWeightLimit(
+            return _toStringWeightLimit_V20(
                 &m->basic.xcmpallet_limited_reserve_transfer_assets_V20.weight_limit,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -6975,7 +6975,7 @@ parser_error_t _getMethod_ItemValue_V20(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* phragmenelection_vote_V20 - amount */;
-            return _toStringCompactu128(
+            return _toStringCompactBalance(
                 &m->basic.phragmenelection_vote_V20.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -7546,17 +7546,17 @@ parser_error_t _getMethod_ItemValue_V20(
         switch (itemIdx) {
         case 0: /* proxy_create_pure_V20 - proxy_type */;
             return _toStringProxyType(
-                &m->basic.proxy_create_pure_V20.proxy_type,
+                &m->nested.proxy_create_pure_V20.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_create_pure_V20 - delay */;
             return _toStringBlockNumber(
-                &m->basic.proxy_create_pure_V20.delay,
+                &m->nested.proxy_create_pure_V20.delay,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* proxy_create_pure_V20 - index */;
             return _toStringu16(
-                &m->basic.proxy_create_pure_V20.index,
+                &m->nested.proxy_create_pure_V20.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -7566,27 +7566,27 @@ parser_error_t _getMethod_ItemValue_V20(
         switch (itemIdx) {
         case 0: /* proxy_kill_pure_V20 - spawner */;
             return _toStringAccountIdLookupOfT(
-                &m->basic.proxy_kill_pure_V20.spawner,
+                &m->nested.proxy_kill_pure_V20.spawner,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_kill_pure_V20 - proxy_type */;
             return _toStringProxyType(
-                &m->basic.proxy_kill_pure_V20.proxy_type,
+                &m->nested.proxy_kill_pure_V20.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* proxy_kill_pure_V20 - index */;
             return _toStringu16(
-                &m->basic.proxy_kill_pure_V20.index,
+                &m->nested.proxy_kill_pure_V20.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* proxy_kill_pure_V20 - height */;
             return _toStringCompactu32(
-                &m->basic.proxy_kill_pure_V20.height,
+                &m->nested.proxy_kill_pure_V20.height,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* proxy_kill_pure_V20 - ext_index */;
             return _toStringCompactu32(
-                &m->basic.proxy_kill_pure_V20.ext_index,
+                &m->nested.proxy_kill_pure_V20.ext_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -8983,8 +8983,6 @@ bool _getMethod_IsNestingSupported_V20(uint8_t moduleIdx, uint8_t callIdx)
     case 7425: // Proxy:Add proxy
     case 7426: // Proxy:Remove proxy
     case 7427: // Proxy:Remove proxies
-    case 7428: // Proxy:Create pure
-    case 7429: // Proxy:Kill pure
     case 7433: // Proxy:Proxy announced
     case 8704: // Bounties:Propose bounty
     case 8705: // Bounties:Approve bounty

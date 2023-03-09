@@ -188,18 +188,18 @@ typedef struct {
 #ifndef TARGET_NANOS
 #define PD_CALL_XCMPALLET_RESERVE_TRANSFER_ASSETS_V20 2
 typedef struct {
-    pd_BoxVersionedMultiLocation_t dest;
-    pd_BoxVersionedMultiLocation_t beneficiary;
-    pd_BoxVersionedMultiAssets_t assets;
+    pd_BoxVersionedMultiLocation_V20_t dest;
+    pd_BoxVersionedMultiLocation_V20_t beneficiary;
+    pd_BoxVersionedMultiAssets_V20_t assets;
     pd_u32_t fee_asset_item;
 } pd_xcmpallet_reserve_transfer_assets_V20_t;
 #define PD_CALL_XCMPALLET_LIMITED_RESERVE_TRANSFER_ASSETS_V20 8
 typedef struct {
-    pd_BoxVersionedMultiLocation_t dest;
-    pd_BoxVersionedMultiLocation_t beneficiary;
-    pd_BoxVersionedMultiAssets_t assets;
+    pd_BoxVersionedMultiLocation_V20_t dest;
+    pd_BoxVersionedMultiLocation_V20_t beneficiary;
+    pd_BoxVersionedMultiAssets_V20_t assets;
     pd_u32_t fee_asset_item;
-    pd_WeightLimit_t weight_limit;
+    pd_WeightLimit_V20_t weight_limit;
 } pd_xcmpallet_limited_reserve_transfer_assets_V20_t;
 #endif
 
@@ -447,7 +447,7 @@ typedef struct {
 #define PD_CALL_PHRAGMENELECTION_VOTE_V20 0
 typedef struct {
     pd_VecAccountId_t votes;
-    pd_Compactu128_t amount;
+    pd_CompactBalance_t amount;
 } pd_phragmenelection_vote_V20_t;
 
 #define PD_CALL_PHRAGMENELECTION_REMOVE_VOTER_V20 1
@@ -686,22 +686,6 @@ typedef struct {
 #define PD_CALL_PROXY_REMOVE_PROXIES_V20 3
 typedef struct {
 } pd_proxy_remove_proxies_V20_t;
-
-#define PD_CALL_PROXY_CREATE_PURE_V20 4
-typedef struct {
-    pd_ProxyType_t proxy_type;
-    pd_BlockNumber_t delay;
-    pd_u16_t index;
-} pd_proxy_create_pure_V20_t;
-
-#define PD_CALL_PROXY_KILL_PURE_V20 5
-typedef struct {
-    pd_AccountIdLookupOfT_t spawner;
-    pd_ProxyType_t proxy_type;
-    pd_u16_t index;
-    pd_Compactu32_t height;
-    pd_Compactu32_t ext_index;
-} pd_proxy_kill_pure_V20_t;
 
 #define PD_CALL_PROXY_PROXY_ANNOUNCED_V20 9
 typedef struct {
@@ -1297,8 +1281,6 @@ typedef union {
     pd_proxy_add_proxy_V20_t proxy_add_proxy_V20;
     pd_proxy_remove_proxy_V20_t proxy_remove_proxy_V20;
     pd_proxy_remove_proxies_V20_t proxy_remove_proxies_V20;
-    pd_proxy_create_pure_V20_t proxy_create_pure_V20;
-    pd_proxy_kill_pure_V20_t proxy_kill_pure_V20;
     pd_proxy_proxy_announced_V20_t proxy_proxy_announced_V20;
     pd_bounties_propose_bounty_V20_t bounties_propose_bounty_V20;
     pd_bounties_approve_bounty_V20_t bounties_approve_bounty_V20;
@@ -1567,6 +1549,22 @@ typedef struct {
     pd_Call_t call;
 } pd_proxy_proxy_V20_t;
 
+#define PD_CALL_PROXY_CREATE_PURE_V20 4
+typedef struct {
+    pd_ProxyType_t proxy_type;
+    pd_BlockNumber_t delay;
+    pd_u16_t index;
+} pd_proxy_create_pure_V20_t;
+
+#define PD_CALL_PROXY_KILL_PURE_V20 5
+typedef struct {
+    pd_AccountIdLookupOfT_t spawner;
+    pd_ProxyType_t proxy_type;
+    pd_u16_t index;
+    pd_Compactu32_t height;
+    pd_Compactu32_t ext_index;
+} pd_proxy_kill_pure_V20_t;
+
 #define PD_CALL_MULTISIG_AS_MULTI_THRESHOLD_1_V20 0
 typedef struct {
     pd_VecAccountId_t other_signatories;
@@ -1657,6 +1655,8 @@ typedef union {
     pd_democracy_remove_other_vote_V20_t democracy_remove_other_vote_V20;
     pd_democracy_cancel_proposal_V20_t democracy_cancel_proposal_V20;
     pd_proxy_proxy_V20_t proxy_proxy_V20;
+    pd_proxy_create_pure_V20_t proxy_create_pure_V20;
+    pd_proxy_kill_pure_V20_t proxy_kill_pure_V20;
     pd_multisig_as_multi_threshold_1_V20_t multisig_as_multi_threshold_1_V20;
     pd_multisig_as_multi_V20_t multisig_as_multi_V20;
     pd_multisig_approve_as_multi_V20_t multisig_approve_as_multi_V20;
