@@ -117,6 +117,15 @@ typedef struct {
 } pd_CompactBalance_t;
 
 typedef struct {
+    const uint8_t* _ptr;
+} pd_u8_array_32_t;
+
+typedef struct {
+    uint64_t blockNumber;
+    pd_u8_array_32_t blockHash;
+} pd_ByFork_t;
+
+typedef struct {
     uint64_t _len;
     const uint8_t* _ptr;
 } pd_Bytes_t;
@@ -129,10 +138,35 @@ typedef struct {
 typedef struct {
     uint8_t value;
     union {
+        pd_u8_array_32_t byGenesis;
+        pd_ByFork_t byFork;
+        pd_Compactu64_t chainId;
+    };
+} pd_NetworkIdV3_t;
+
+typedef struct {
+    uint8_t value;
+    union {
         pd_Bytes_t named;
         pd_Compactu32_t index;
     };
 } pd_BodyId_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_Bytes_t named;
+        pd_Compactu32_t index;
+    };
+} pd_BodyIdV2_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        const uint8_t* _ptr;
+        pd_Compactu32_t index;
+    };
+} pd_BodyIdV3_t;
 
 typedef struct {
     uint8_t value;
@@ -148,12 +182,18 @@ typedef struct {
 } pd_NetworkId_t;
 
 typedef struct {
-    const uint8_t* _ptr;
-} pd_u8_array_20_t;
+    uint8_t value;
+    pd_Bytes_t named;
+} pd_NetworkIdV2_t;
+
+typedef struct {
+    uint8_t some;
+    pd_NetworkIdV3_t contained;
+} pd_OptionNetworkIdV3_t;
 
 typedef struct {
     const uint8_t* _ptr;
-} pd_u8_array_32_t;
+} pd_u8_array_20_t;
 
 typedef struct {
     pd_NetworkId_t networkId;
@@ -161,21 +201,66 @@ typedef struct {
 } pd_AccountId32_t;
 
 typedef struct {
+    pd_NetworkIdV2_t networkId;
+    pd_u8_array_32_t key;
+} pd_AccountId32V2_t;
+
+typedef struct {
+    pd_OptionNetworkIdV3_t networkId;
+    pd_u8_array_32_t key;
+} pd_AccountId32V3_t;
+
+typedef struct {
     pd_NetworkId_t networkId;
     pd_Compactu64_t index;
 } pd_AccountIndex64_t;
+
+typedef struct {
+    pd_NetworkIdV2_t networkId;
+    pd_Compactu64_t index;
+} pd_AccountIndex64V2_t;
+
+typedef struct {
+    pd_OptionNetworkIdV3_t networkId;
+    pd_Compactu64_t index;
+} pd_AccountIndex64V3_t;
 
 typedef struct {
     pd_NetworkId_t networkId;
     pd_u8_array_20_t key;
 } pd_AccountKey20_t;
 
+typedef struct {
+    pd_NetworkIdV2_t networkId;
+    pd_u8_array_20_t key;
+} pd_AccountKey20V2_t;
+
+typedef struct {
+    pd_OptionNetworkIdV3_t networkId;
+    pd_u8_array_20_t key;
+} pd_AccountKey20V3_t;
+
 typedef compactInt_t pd_Compactu128_t;
+
+typedef struct {
+    uint8_t length;
+    pd_u8_array_32_t data;
+} pd_GeneralKeyV3_t;
 
 typedef struct {
     pd_BodyId_t id;
     pd_BodyPart_t part;
 } pd_Plurality_t;
+
+typedef struct {
+    pd_BodyIdV2_t id;
+    pd_BodyPart_t part;
+} pd_PluralityV2_t;
+
+typedef struct {
+    pd_BodyIdV3_t id;
+    pd_BodyPart_t part;
+} pd_PluralityV3_t;
 
 typedef struct {
     uint8_t value;
@@ -204,6 +289,35 @@ typedef struct {
         pd_Plurality_t plurality;
     };
 } pd_JunctionV1_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_Compactu32_t parachain;
+        pd_AccountId32V2_t accountId32;
+        pd_AccountIndex64V2_t accountIndex64;
+        pd_AccountKey20V2_t accountKey20;
+        uint8_t palletInstance;
+        pd_Compactu128_t generalIndex;
+        pd_Bytes_t generalKey;
+        pd_PluralityV2_t plurality;
+    };
+} pd_JunctionV2_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_Compactu32_t parachain;
+        pd_AccountId32V3_t accountId32;
+        pd_AccountIndex64V3_t accountIndex64;
+        pd_AccountKey20V3_t accountKey20;
+        uint8_t palletInstance;
+        pd_Compactu128_t generalIndex;
+        pd_GeneralKeyV3_t generalKey;
+        pd_PluralityV3_t plurality;
+        pd_NetworkIdV3_t globalConsensus;
+    };
+} pd_JunctionV3_t;
 
 typedef struct {
     pd_JunctionV0_t junction;
@@ -326,6 +440,126 @@ typedef struct {
 } pd_JunctionV1X8_t;
 
 typedef struct {
+    pd_JunctionV2_t junction;
+} pd_JunctionV2X1_t;
+
+typedef struct {
+    pd_JunctionV2_t junction0;
+    pd_JunctionV2_t junction1;
+} pd_JunctionV2X2_t;
+
+typedef struct {
+    pd_JunctionV2_t junction0;
+    pd_JunctionV2_t junction1;
+    pd_JunctionV2_t junction2;
+} pd_JunctionV2X3_t;
+
+typedef struct {
+    pd_JunctionV2_t junction0;
+    pd_JunctionV2_t junction1;
+    pd_JunctionV2_t junction2;
+    pd_JunctionV2_t junction3;
+} pd_JunctionV2X4_t;
+
+typedef struct {
+    pd_JunctionV2_t junction0;
+    pd_JunctionV2_t junction1;
+    pd_JunctionV2_t junction2;
+    pd_JunctionV2_t junction3;
+    pd_JunctionV2_t junction4;
+} pd_JunctionV2X5_t;
+
+typedef struct {
+    pd_JunctionV2_t junction0;
+    pd_JunctionV2_t junction1;
+    pd_JunctionV2_t junction2;
+    pd_JunctionV2_t junction3;
+    pd_JunctionV2_t junction4;
+    pd_JunctionV2_t junction5;
+} pd_JunctionV2X6_t;
+
+typedef struct {
+    pd_JunctionV2_t junction0;
+    pd_JunctionV2_t junction1;
+    pd_JunctionV2_t junction2;
+    pd_JunctionV2_t junction3;
+    pd_JunctionV2_t junction4;
+    pd_JunctionV2_t junction5;
+    pd_JunctionV2_t junction6;
+} pd_JunctionV2X7_t;
+
+typedef struct {
+    pd_JunctionV2_t junction0;
+    pd_JunctionV2_t junction1;
+    pd_JunctionV2_t junction2;
+    pd_JunctionV2_t junction3;
+    pd_JunctionV2_t junction4;
+    pd_JunctionV2_t junction5;
+    pd_JunctionV2_t junction6;
+    pd_JunctionV2_t junction7;
+} pd_JunctionV2X8_t;
+
+typedef struct {
+    pd_JunctionV3_t junction;
+} pd_JunctionV3X1_t;
+
+typedef struct {
+    pd_JunctionV3_t junction0;
+    pd_JunctionV3_t junction1;
+} pd_JunctionV3X2_t;
+
+typedef struct {
+    pd_JunctionV3_t junction0;
+    pd_JunctionV3_t junction1;
+    pd_JunctionV3_t junction2;
+} pd_JunctionV3X3_t;
+
+typedef struct {
+    pd_JunctionV3_t junction0;
+    pd_JunctionV3_t junction1;
+    pd_JunctionV3_t junction2;
+    pd_JunctionV3_t junction3;
+} pd_JunctionV3X4_t;
+
+typedef struct {
+    pd_JunctionV3_t junction0;
+    pd_JunctionV3_t junction1;
+    pd_JunctionV3_t junction2;
+    pd_JunctionV3_t junction3;
+    pd_JunctionV3_t junction4;
+} pd_JunctionV3X5_t;
+
+typedef struct {
+    pd_JunctionV3_t junction0;
+    pd_JunctionV3_t junction1;
+    pd_JunctionV3_t junction2;
+    pd_JunctionV3_t junction3;
+    pd_JunctionV3_t junction4;
+    pd_JunctionV3_t junction5;
+} pd_JunctionV3X6_t;
+
+typedef struct {
+    pd_JunctionV3_t junction0;
+    pd_JunctionV3_t junction1;
+    pd_JunctionV3_t junction2;
+    pd_JunctionV3_t junction3;
+    pd_JunctionV3_t junction4;
+    pd_JunctionV3_t junction5;
+    pd_JunctionV3_t junction6;
+} pd_JunctionV3X7_t;
+
+typedef struct {
+    pd_JunctionV3_t junction0;
+    pd_JunctionV3_t junction1;
+    pd_JunctionV3_t junction2;
+    pd_JunctionV3_t junction3;
+    pd_JunctionV3_t junction4;
+    pd_JunctionV3_t junction5;
+    pd_JunctionV3_t junction6;
+    pd_JunctionV3_t junction7;
+} pd_JunctionV3X8_t;
+
+typedef struct {
     uint8_t value;
     union {
         pd_JunctionV0X1_t x1;
@@ -356,11 +590,56 @@ typedef struct {
 typedef struct {
     uint8_t value;
     union {
+        pd_JunctionV2X1_t x1;
+        pd_JunctionV2X2_t x2;
+        pd_JunctionV2X3_t x3;
+        pd_JunctionV2X4_t x4;
+        pd_JunctionV2X5_t x5;
+        pd_JunctionV2X6_t x6;
+        pd_JunctionV2X7_t x7;
+        pd_JunctionV2X8_t x8;
+    };
+} pd_JunctionsV2_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_JunctionV3X1_t x1;
+        pd_JunctionV3X2_t x2;
+        pd_JunctionV3X3_t x3;
+        pd_JunctionV3X4_t x4;
+        pd_JunctionV3X5_t x5;
+        pd_JunctionV3X6_t x6;
+        pd_JunctionV3X7_t x7;
+        pd_JunctionV3X8_t x8;
+    };
+} pd_JunctionsV3_t;
+
+typedef struct {
+    uint8_t value;
+    union {
         const uint8_t* _ptr;
         pd_Compactu128_t index;
         pd_Bytes_t blob;
     };
 } pd_AssetInstance_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        const uint8_t* _ptr;
+        pd_Compactu128_t index;
+        pd_Bytes_t blob;
+    };
+} pd_AssetInstanceV2_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        const uint8_t* _ptr;
+        pd_Compactu128_t index;
+    };
+} pd_AssetInstanceV3_t;
 
 typedef struct {
     pd_JunctionsV0_t junctions;
@@ -372,6 +651,25 @@ typedef struct {
 } pd_MultiLocationV1_t;
 
 typedef struct {
+    uint8_t parents;
+    pd_JunctionsV2_t interior;
+} pd_MultiLocationV2_t;
+
+typedef struct {
+    uint8_t parents;
+    pd_JunctionsV3_t interior;
+} pd_MultiLocationV3_t;
+
+typedef struct {
+    const uint8_t* _ptr;
+} pd_Balance_t;
+
+typedef struct {
+    uint8_t value;
+    const uint8_t* _ptr;
+} pd_Data_t;
+
+typedef struct {
     pd_Bytes_t id;
     pd_Compactu128_t amount;
 } pd_AbstractFungible_t;
@@ -380,10 +678,6 @@ typedef struct {
     pd_Bytes_t _class;
     pd_AssetInstance_t instance;
 } pd_AbstractNonFungible_t;
-
-typedef struct {
-    const uint8_t* _ptr;
-} pd_Balance_t;
 
 typedef struct {
     pd_MultiLocationV0_t id;
@@ -397,11 +691,6 @@ typedef struct {
 
 typedef struct {
     uint8_t value;
-    const uint8_t* _ptr;
-} pd_Data_t;
-
-typedef struct {
-    uint8_t value;
     union {
         pd_Compactu128_t fungible;
         pd_AssetInstance_t nonFungible;
@@ -411,10 +700,42 @@ typedef struct {
 typedef struct {
     uint8_t value;
     union {
+        pd_Compactu128_t fungible;
+        pd_AssetInstanceV2_t nonFungible;
+    };
+} pd_FungibilityV2_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_Compactu128_t fungible;
+        pd_AssetInstanceV3_t nonFungible;
+    };
+} pd_FungibilityV3_t;
+
+typedef struct {
+    uint8_t value;
+    union {
         pd_MultiLocationV1_t concrete;
         pd_Bytes_t abstract;
     };
 } pd_MultiAssetId_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_MultiLocationV2_t concrete;
+        pd_Bytes_t abstract;
+    };
+} pd_MultiAssetIdV2_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_MultiLocationV3_t concrete;
+        pd_u8_array_32_t abstract;
+    };
+} pd_MultiAssetIdV3_t;
 
 typedef struct {
     const uint8_t* _ptr;
@@ -464,6 +785,16 @@ typedef struct {
     pd_MultiAssetId_t assetId;
     pd_Fungibility_t fungibility;
 } pd_MultiAssetV1_t;
+
+typedef struct {
+    pd_MultiAssetIdV2_t assetId;
+    pd_FungibilityV2_t fungibility;
+} pd_MultiAssetV2_t;
+
+typedef struct {
+    pd_MultiAssetIdV3_t assetId;
+    pd_FungibilityV3_t fungibility;
+} pd_MultiAssetV3_t;
 
 typedef struct {
     const uint8_t* _ptr;
@@ -544,6 +875,14 @@ typedef struct {
 } pd_Percent_t;
 
 typedef struct {
+    const uint8_t* _ptr;
+} pd_PreimageHash_t;
+
+typedef struct {
+    uint32_t value;
+} pd_PropIndex_t;
+
+typedef struct {
     uint8_t value;
 } pd_ProxyType_t;
 
@@ -582,7 +921,24 @@ typedef struct {
     uint64_t _len;
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
+} pd_VecMultiAssetV2_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecMultiAssetV3_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
 } pd_VecTupleDataData_t;
+
+typedef struct {
+    pd_Compactu64_t refTime;
+    pd_Compactu64_t proofSize;
+} pd_Weight_t;
 
 typedef struct {
     uint8_t value;
@@ -609,16 +965,16 @@ typedef struct {
 typedef struct {
     uint8_t value;
     union {
-        pd_VecMultiAssetV0_t vecMultiassetV0;
-        pd_VecMultiAssetV1_t vecMultiassetV1;
+        pd_VecMultiAssetV2_t vecMultiassetV2;
+        pd_VecMultiAssetV3_t vecMultiassetV3;
     };
 } pd_BoxVersionedMultiAssets_t;
 
 typedef struct {
     uint8_t value;
     union {
-        pd_MultiLocationV0_t multilocationV0;
-        pd_MultiLocationV1_t multilocationV1;
+        pd_MultiLocationV2_t multilocationV2;
+        pd_MultiLocationV3_t multilocationV3;
     };
 } pd_BoxVersionedMultiLocation_t;
 
@@ -658,6 +1014,14 @@ typedef struct {
     uint8_t value;
     pd_Balance_t feePaid;
 } pd_JudgementBalanceOfT_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_PropIndex_t proposal;
+        pd_ReferendumIndex_t referendum;
+    };
+} pd_MetadataOwner_t;
 
 typedef struct {
     uint8_t some;
@@ -715,17 +1079,16 @@ typedef struct {
 
 typedef struct {
     uint8_t value;
-    pd_Compactu64_t limited;
+    pd_Weight_t limited;
 } pd_WeightLimit_t;
-
-typedef struct {
-    pd_Compactu64_t refTime;
-    pd_Compactu64_t proofSize;
-} pd_Weight_t;
 
 typedef struct {
     uint32_t value;
 } pd_AccountIndex_t;
+
+typedef struct {
+    uint8_t value;
+} pd_ClaimPermission_t;
 
 typedef struct {
     uint8_t value;
@@ -760,6 +1123,11 @@ typedef struct {
     uint8_t some;
     pd_AccountId_t contained;
 } pd_OptionAccountId_t;
+
+typedef struct {
+    uint8_t some;
+    pd_PreimageHash_t contained;
+} pd_OptionPreimageHash_t;
 
 typedef struct {
     uint8_t some;

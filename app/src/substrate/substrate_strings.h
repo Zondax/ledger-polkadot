@@ -98,6 +98,7 @@ static const char* STR_ME_KICK = "Kick";
 static const char* STR_ME_SET_STAKING_CONFIGS = "Set staking configs";
 static const char* STR_ME_CHILL_OTHER = "Chill other";
 static const char* STR_ME_FORCE_APPLY_MIN_COMMISSION = "Force apply min commission";
+static const char* STR_ME_SET_MIN_COMMISSION = "Set min commission";
 static const char* STR_ME_SET_KEYS = "Set keys";
 static const char* STR_ME_PURGE_KEYS = "Purge keys";
 static const char* STR_ME_PROPOSE = "Propose";
@@ -223,7 +224,6 @@ static const char* STR_ME_SET_SCHEDULING_LOOKAHEAD = "Set scheduling lookahead";
 static const char* STR_ME_SET_MAX_VALIDATORS_PER_CORE = "Set max validators per core";
 static const char* STR_ME_SET_MAX_VALIDATORS = "Set max validators";
 static const char* STR_ME_SET_DISPUTE_POST_CONCLUSION_ACCEPTANCE_PERIOD = "Set dispute post conclusion acceptance period";
-static const char* STR_ME_SET_DISPUTE_MAX_SPAM_SLOTS = "Set dispute max spam slots";
 static const char* STR_ME_SET_DISPUTE_CONCLUSION_BY_TIME_OUT_PERIOD = "Set dispute conclusion by time out period";
 static const char* STR_ME_SET_NO_SHOW_SLOTS = "Set no show slots";
 static const char* STR_ME_SET_N_DELAY_TRANCHES = "Set n delay tranches";
@@ -268,7 +268,9 @@ static const char* STR_ME_POKE = "Poke";
 static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
 static const char* STR_ME_RESERVE_TRANSFER_ASSETS = "Reserve transfer assets";
 static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
-static const char* STR_ME_SET_MIN_COMMISSION = "Set min commission";
+static const char* STR_ME_BOND_EXTRA_OTHER = "Bond extra other";
+static const char* STR_ME_SET_CLAIM_PERMISSION = "Set claim permission";
+static const char* STR_ME_CLAIM_PAYOUT_OTHER = "Claim payout other";
 
 // Items names
 static const char* STR_IT_remark = "Remark";
@@ -425,6 +427,14 @@ static const char* STR_IT_fee_asset_item = "Fee asset item";
 static const char* STR_IT_location = "Location";
 static const char* STR_IT_xcm_version = "Xcm version";
 static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
+static const char* STR_IT_owner = "Owner";
+static const char* STR_IT_maybe_hash = "Maybe hash";
+static const char* STR_IT_bouncer = "Bouncer";
+static const char* STR_IT_new_bouncer = "New bouncer";
+static const char* STR_IT_member = "Member";
+static const char* STR_IT_permission = "Permission";
+static const char* STR_IT_other = "Other";
+static const char* STR_IT_eras_to_check = "Eras to check";
 
 #ifdef __cplusplus
 }
