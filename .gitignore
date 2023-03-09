@@ -68,6 +68,7 @@ fuzz/corpora
 
 !build/.gitkeep
 build/*
+app/build
 cmake-build-debug
 
 tests_zemu/snapshots-tmp
