@@ -52,6 +52,10 @@ extern "C" {
 
 #define GEN_DEF_TOSTRING_ARRAY(SIZE) \
     CLEAN_AND_CHECK();                                                                  \
+    if ((SIZE) == 0) {                                                                  \
+        snprintf(outValue, outValueLen, "Empty");                                       \
+        return parser_ok;                                                               \
+    }                                                                                   \
     if (v->_ptr == NULL || outValueLen == 0 ) return parser_unexpected_buffer_end;      \
     const uint16_t outLenNormalized = (outValueLen - 1) / 2;                            \
     if (outLenNormalized == 0 ) return parser_unexpected_buffer_end;                    \
@@ -128,7 +132,7 @@ GEN_DEC_READFIX_UNSIGNED(64);
     *pageCount = 0;                                         \
     pd_##TYPE##_t tmp;                                      \
     parser_context_t ctx;                                   \
-    uint8_t chunkPageCount;                                 \
+    uint8_t chunkPageCount = 0;                             \
     uint16_t currentPage, currentTotalPage = 0;             \
     if(v->_len == 0) {                                      \
         *pageCount = 1;                                     \

@@ -26,10 +26,10 @@ parser_error_t _readMethod(
     pd_Method_t* method)
 {
     switch (c->tx_obj->transactionVersion) {
+    case 21:
+        return _readMethod_V21(c, moduleIdx, callIdx, &method->V21);
     case 20:
         return _readMethod_V20(c, moduleIdx, callIdx, &method->V20);
-    case 19:
-        return _readMethod_V19(c, moduleIdx, callIdx, &method->V19);
     default:
         return parser_tx_version_not_supported;
     }
@@ -38,10 +38,10 @@ parser_error_t _readMethod(
 uint8_t _getMethod_NumItems(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx)
 {
     switch (transactionVersion) {
+    case 21:
+        return _getMethod_NumItems_V21(moduleIdx, callIdx);
     case 20:
         return _getMethod_NumItems_V20(moduleIdx, callIdx);
-    case 19:
-        return _getMethod_NumItems_V19(moduleIdx, callIdx);
     default:
         return parser_tx_version_not_supported;
     }
@@ -50,10 +50,10 @@ uint8_t _getMethod_NumItems(uint32_t transactionVersion, uint8_t moduleIdx, uint
 const char* _getMethod_ModuleName(uint32_t transactionVersion, uint8_t moduleIdx)
 {
     switch (transactionVersion) {
+    case 21:
+        return _getMethod_ModuleName_V21(moduleIdx);
     case 20:
         return _getMethod_ModuleName_V20(moduleIdx);
-    case 19:
-        return _getMethod_ModuleName_V19(moduleIdx);
     default:
         return NULL;
     }
@@ -62,10 +62,10 @@ const char* _getMethod_ModuleName(uint32_t transactionVersion, uint8_t moduleIdx
 const char* _getMethod_Name(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx)
 {
     switch (transactionVersion) {
+    case 21:
+        return _getMethod_Name_V21(moduleIdx, callIdx);
     case 20:
         return _getMethod_Name_V20(moduleIdx, callIdx);
-    case 19:
-        return _getMethod_Name_V19(moduleIdx, callIdx);
     default:
         return 0;
     }
@@ -74,10 +74,10 @@ const char* _getMethod_Name(uint32_t transactionVersion, uint8_t moduleIdx, uint
 const char* _getMethod_ItemName(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx)
 {
     switch (transactionVersion) {
+    case 21:
+        return _getMethod_ItemName_V21(moduleIdx, callIdx, itemIdx);
     case 20:
         return _getMethod_ItemName_V20(moduleIdx, callIdx, itemIdx);
-    case 19:
-        return _getMethod_ItemName_V19(moduleIdx, callIdx, itemIdx);
     default:
         return NULL;
     }
@@ -88,11 +88,11 @@ parser_error_t _getMethod_ItemValue(uint32_t transactionVersion, pd_Method_t* m,
     uint8_t pageIdx, uint8_t* pageCount)
 {
     switch (transactionVersion) {
+    case 21:
+        return _getMethod_ItemValue_V21(&m->V21, moduleIdx, callIdx, itemIdx, outValue,
+            outValueLen, pageIdx, pageCount);
     case 20:
         return _getMethod_ItemValue_V20(&m->V20, moduleIdx, callIdx, itemIdx, outValue,
-            outValueLen, pageIdx, pageCount);
-    case 19:
-        return _getMethod_ItemValue_V19(&m->V19, moduleIdx, callIdx, itemIdx, outValue,
             outValueLen, pageIdx, pageCount);
     default:
         return parser_tx_version_not_supported;
@@ -102,10 +102,10 @@ parser_error_t _getMethod_ItemValue(uint32_t transactionVersion, pd_Method_t* m,
 bool _getMethod_ItemIsExpert(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx)
 {
     switch (transactionVersion) {
+    case 21:
+        return _getMethod_ItemIsExpert_V21(moduleIdx, callIdx, itemIdx);
     case 20:
         return _getMethod_ItemIsExpert_V20(moduleIdx, callIdx, itemIdx);
-    case 19:
-        return _getMethod_ItemIsExpert_V19(moduleIdx, callIdx, itemIdx);
     default:
         return false;
     }
@@ -114,10 +114,10 @@ bool _getMethod_ItemIsExpert(uint32_t transactionVersion, uint8_t moduleIdx, uin
 bool _getMethod_IsNestingSupported(uint32_t transactionVersion, uint8_t moduleIdx, uint8_t callIdx)
 {
     switch (transactionVersion) {
+    case 21:
+        return _getMethod_IsNestingSupported_V21(moduleIdx, callIdx);
     case 20:
         return _getMethod_IsNestingSupported_V20(moduleIdx, callIdx);
-    case 19:
-        return _getMethod_IsNestingSupported_V19(moduleIdx, callIdx);
     default:
         return false;
     }

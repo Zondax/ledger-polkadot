@@ -1,5 +1,5 @@
 #*******************************************************************************
-#*   (c) 2019 Zondax GmbH
+#*   (c) 2019 - 2023 Zondax AG
 #*
 #*  Licensed under the Apache License, Version 2.0 (the "License");
 #*  you may not use this file except in compliance with the License.
@@ -46,8 +46,6 @@ zemu_install: tests_tools_build
 
 test_all:
 	make zemu_install
-	# test sr25519
-	make clean_build && SUBSTRATE_PARSER_FULL=1 SUPPORT_SR25519=1 make buildS
-	cd tests_zemu && yarn testSR25519
-	make clean_build && SUBSTRATE_PARSER_FULL=1 make
+	SUBSTRATE_PARSER_FULL=1 make
+	SUBSTRATE_PARSER_FULL=1 SUPPORT_SR25519=1 make buildS
 	make zemu_test
