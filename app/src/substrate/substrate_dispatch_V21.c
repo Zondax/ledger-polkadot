@@ -249,6 +249,15 @@ __Z_INLINE parser_error_t _readMethod_crowdloan_contribute_all_V21(
 
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
+__Z_INLINE parser_error_t _readMethod_xcmpallet_teleport_assets_V21(
+    parser_context_t* c, pd_xcmpallet_teleport_assets_V21_t* m)
+{
+    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->dest))
+    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->beneficiary))
+    CHECK_ERROR(_readBoxVersionedMultiAssets(c, &m->assets))
+    CHECK_ERROR(_readu32(c, &m->fee_asset_item))
+    return parser_ok;
+}
 __Z_INLINE parser_error_t _readMethod_xcmpallet_reserve_transfer_assets_V21(
     parser_context_t* c, pd_xcmpallet_reserve_transfer_assets_V21_t* m)
 {
@@ -260,6 +269,16 @@ __Z_INLINE parser_error_t _readMethod_xcmpallet_reserve_transfer_assets_V21(
 }
 __Z_INLINE parser_error_t _readMethod_xcmpallet_limited_reserve_transfer_assets_V21(
     parser_context_t* c, pd_xcmpallet_limited_reserve_transfer_assets_V21_t* m)
+{
+    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->dest))
+    CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->beneficiary))
+    CHECK_ERROR(_readBoxVersionedMultiAssets(c, &m->assets))
+    CHECK_ERROR(_readu32(c, &m->fee_asset_item))
+    CHECK_ERROR(_readWeightLimit(c, &m->weight_limit))
+    return parser_ok;
+}
+__Z_INLINE parser_error_t _readMethod_xcmpallet_limited_teleport_assets_V21(
+    parser_context_t* c, pd_xcmpallet_limited_teleport_assets_V21_t* m)
 {
     CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->dest))
     CHECK_ERROR(_readBoxVersionedMultiLocation(c, &m->beneficiary))
@@ -1974,11 +1993,17 @@ parser_error_t _readMethod_V21(
 
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
+    case 25345: /* module 99 call 1 */
+        CHECK_ERROR(_readMethod_xcmpallet_teleport_assets_V21(c, &method->basic.xcmpallet_teleport_assets_V21))
+        break;
     case 25346: /* module 99 call 2 */
         CHECK_ERROR(_readMethod_xcmpallet_reserve_transfer_assets_V21(c, &method->basic.xcmpallet_reserve_transfer_assets_V21))
         break;
     case 25352: /* module 99 call 8 */
         CHECK_ERROR(_readMethod_xcmpallet_limited_reserve_transfer_assets_V21(c, &method->basic.xcmpallet_limited_reserve_transfer_assets_V21))
+        break;
+    case 25353: /* module 99 call 9 */
+        CHECK_ERROR(_readMethod_xcmpallet_limited_teleport_assets_V21(c, &method->basic.xcmpallet_limited_teleport_assets_V21))
         break;
 #endif
     case 0: /* module 0 call 0 */
@@ -2777,10 +2802,14 @@ const char* _getMethod_Name_V21_ParserFull(uint16_t callPrivIdx)
     switch (callPrivIdx) {
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
+    case 25345: /* module 99 call 1 */
+        return STR_ME_TELEPORT_ASSETS;
     case 25346: /* module 99 call 2 */
         return STR_ME_RESERVE_TRANSFER_ASSETS;
     case 25352: /* module 99 call 8 */
         return STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS;
+    case 25353: /* module 99 call 9 */
+        return STR_ME_LIMITED_TELEPORT_ASSETS;
 #endif
     case 0: /* module 0 call 0 */
         return STR_ME_REMARK;
@@ -3275,9 +3304,13 @@ uint8_t _getMethod_NumItems_V21(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
+    case 25345: /* module 99 call 1 */
+        return 4;
     case 25346: /* module 99 call 2 */
         return 4;
     case 25352: /* module 99 call 8 */
+        return 5;
+    case 25353: /* module 99 call 9 */
         return 5;
 #endif
     case 0: /* module 0 call 0 */
@@ -3962,6 +3995,19 @@ const char* _getMethod_ItemName_V21(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         }
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
+    case 25345: /* module 99 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_dest;
+        case 1:
+            return STR_IT_beneficiary;
+        case 2:
+            return STR_IT_assets;
+        case 3:
+            return STR_IT_fee_asset_item;
+        default:
+            return NULL;
+        }
     case 25346: /* module 99 call 2 */
         switch (itemIdx) {
         case 0:
@@ -3976,6 +4022,21 @@ const char* _getMethod_ItemName_V21(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
             return NULL;
         }
     case 25352: /* module 99 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_dest;
+        case 1:
+            return STR_IT_beneficiary;
+        case 2:
+            return STR_IT_assets;
+        case 3:
+            return STR_IT_fee_asset_item;
+        case 4:
+            return STR_IT_weight_limit;
+        default:
+            return NULL;
+        }
+    case 25353: /* module 99 call 9 */
         switch (itemIdx) {
         case 0:
             return STR_IT_dest;
@@ -6146,6 +6207,31 @@ parser_error_t _getMethod_ItemValue_V21(
         }
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
+    case 25345: /* module 99 call 1 */
+        switch (itemIdx) {
+        case 0: /* xcmpallet_teleport_assets_V21 - dest */;
+            return _toStringBoxVersionedMultiLocation(
+                &m->basic.xcmpallet_teleport_assets_V21.dest,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* xcmpallet_teleport_assets_V21 - beneficiary */;
+            return _toStringBoxVersionedMultiLocation(
+                &m->basic.xcmpallet_teleport_assets_V21.beneficiary,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* xcmpallet_teleport_assets_V21 - assets */;
+            return _toStringBoxVersionedMultiAssets(
+                &m->basic.xcmpallet_teleport_assets_V21.assets,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* xcmpallet_teleport_assets_V21 - fee_asset_item */;
+            return _toStringu32(
+                &m->basic.xcmpallet_teleport_assets_V21.fee_asset_item,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 25346: /* module 99 call 2 */
         switch (itemIdx) {
         case 0: /* xcmpallet_reserve_transfer_assets_V21 - dest */;
@@ -6196,6 +6282,36 @@ parser_error_t _getMethod_ItemValue_V21(
         case 4: /* xcmpallet_limited_reserve_transfer_assets_V21 - weight_limit */;
             return _toStringWeightLimit(
                 &m->basic.xcmpallet_limited_reserve_transfer_assets_V21.weight_limit,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 25353: /* module 99 call 9 */
+        switch (itemIdx) {
+        case 0: /* xcmpallet_limited_teleport_assets_V21 - dest */;
+            return _toStringBoxVersionedMultiLocation(
+                &m->basic.xcmpallet_limited_teleport_assets_V21.dest,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* xcmpallet_limited_teleport_assets_V21 - beneficiary */;
+            return _toStringBoxVersionedMultiLocation(
+                &m->basic.xcmpallet_limited_teleport_assets_V21.beneficiary,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* xcmpallet_limited_teleport_assets_V21 - assets */;
+            return _toStringBoxVersionedMultiAssets(
+                &m->basic.xcmpallet_limited_teleport_assets_V21.assets,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* xcmpallet_limited_teleport_assets_V21 - fee_asset_item */;
+            return _toStringu32(
+                &m->basic.xcmpallet_limited_teleport_assets_V21.fee_asset_item,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 4: /* xcmpallet_limited_teleport_assets_V21 - weight_limit */;
+            return _toStringWeightLimit(
+                &m->basic.xcmpallet_limited_teleport_assets_V21.weight_limit,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -9224,8 +9340,10 @@ bool _getMethod_IsNestingSupported_V21(uint8_t moduleIdx, uint8_t callIdx)
     case 18694: // Crowdloan:Add memo
     case 18695: // Crowdloan:Poke
     case 18696: // Crowdloan:Contribute all
+    case 25345: // XcmPallet:Teleport assets
     case 25346: // XcmPallet:Reserve transfer assets
     case 25352: // XcmPallet:Limited reserve transfer assets
+    case 25353: // XcmPallet:Limited teleport assets
         return false;
     default:
         return true;

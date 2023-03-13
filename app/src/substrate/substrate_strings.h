@@ -271,6 +271,8 @@ static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve tra
 static const char* STR_ME_BOND_EXTRA_OTHER = "Bond extra other";
 static const char* STR_ME_SET_CLAIM_PERMISSION = "Set claim permission";
 static const char* STR_ME_CLAIM_PAYOUT_OTHER = "Claim payout other";
+static const char* STR_ME_TELEPORT_ASSETS = "Teleport assets";
+static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
 
 // Items names
 static const char* STR_IT_remark = "Remark";

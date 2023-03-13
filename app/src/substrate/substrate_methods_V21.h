@@ -186,6 +186,13 @@ typedef struct {
 
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
+#define PD_CALL_XCMPALLET_TELEPORT_ASSETS_V21 1
+typedef struct {
+    pd_BoxVersionedMultiLocation_t dest;
+    pd_BoxVersionedMultiLocation_t beneficiary;
+    pd_BoxVersionedMultiAssets_t assets;
+    pd_u32_t fee_asset_item;
+} pd_xcmpallet_teleport_assets_V21_t;
 #define PD_CALL_XCMPALLET_RESERVE_TRANSFER_ASSETS_V21 2
 typedef struct {
     pd_BoxVersionedMultiLocation_t dest;
@@ -201,6 +208,14 @@ typedef struct {
     pd_u32_t fee_asset_item;
     pd_WeightLimit_t weight_limit;
 } pd_xcmpallet_limited_reserve_transfer_assets_V21_t;
+#define PD_CALL_XCMPALLET_LIMITED_TELEPORT_ASSETS_V21 9
+typedef struct {
+    pd_BoxVersionedMultiLocation_t dest;
+    pd_BoxVersionedMultiLocation_t beneficiary;
+    pd_BoxVersionedMultiAssets_t assets;
+    pd_u32_t fee_asset_item;
+    pd_WeightLimit_t weight_limit;
+} pd_xcmpallet_limited_teleport_assets_V21_t;
 #endif
 
 #define PD_CALL_PREIMAGE_NOTE_PREIMAGE_V21 0
@@ -1215,8 +1230,10 @@ typedef union {
     pd_crowdloan_contribute_all_V21_t crowdloan_contribute_all_V21;
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
+    pd_xcmpallet_teleport_assets_V21_t xcmpallet_teleport_assets_V21;
     pd_xcmpallet_reserve_transfer_assets_V21_t xcmpallet_reserve_transfer_assets_V21;
     pd_xcmpallet_limited_reserve_transfer_assets_V21_t xcmpallet_limited_reserve_transfer_assets_V21;
+    pd_xcmpallet_limited_teleport_assets_V21_t xcmpallet_limited_teleport_assets_V21;
 #endif
     pd_preimage_note_preimage_V21_t preimage_note_preimage_V21;
     pd_preimage_unnote_preimage_V21_t preimage_unnote_preimage_V21;
