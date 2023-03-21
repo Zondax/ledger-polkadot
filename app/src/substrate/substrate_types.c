@@ -1700,10 +1700,10 @@ parser_error_t _readBoxVersionedMultiAssets(parser_context_t* c, pd_BoxVersioned
     CHECK_INPUT()
     CHECK_ERROR(_readUInt8(c, &v->value))
     switch (v->value) {
-    case 0: // V2
+    case 1: // V2
         CHECK_ERROR(_readVecMultiAssetV2(c, &v->vecMultiassetV2))
         break;
-    case 1: // V3
+    case 3: // V3
         CHECK_ERROR(_readVecMultiAssetV3(c, &v->vecMultiassetV3))
         break;
     default:
@@ -1718,10 +1718,10 @@ parser_error_t _readBoxVersionedMultiLocation(parser_context_t* c, pd_BoxVersion
     CHECK_INPUT()
     CHECK_ERROR(_readUInt8(c, &v->value))
     switch (v->value) {
-    case 0: // V2
+    case 1: // V2
         CHECK_ERROR(_readMultiLocationV2(c, &v->multilocationV2))
         break;
-    case 1: // V3
+    case 3: // V3
         CHECK_ERROR(_readMultiLocationV3(c, &v->multilocationV3))
         break;
     default:
@@ -6773,10 +6773,10 @@ parser_error_t _toStringBoxVersionedMultiAssets(
 {
     CLEAN_AND_CHECK()
     switch (v->value) {
-    case 0: // V2
+    case 1: // V2
         CHECK_ERROR(_toStringVecMultiAssetV2(&v->vecMultiassetV2, outValue, outValueLen, pageIdx, pageCount))
         break;
-    case 1: // V3
+    case 3: // V3
         CHECK_ERROR(_toStringVecMultiAssetV3(&v->vecMultiassetV3, outValue, outValueLen, pageIdx, pageCount))
         break;
     default:
@@ -6795,10 +6795,10 @@ parser_error_t _toStringBoxVersionedMultiLocation(
 {
     CLEAN_AND_CHECK()
     switch (v->value) {
-    case 0: // V2
+    case 1: // V2
         CHECK_ERROR(_toStringMultiLocationV2(&v->multilocationV2, outValue, outValueLen, pageIdx, pageCount))
         break;
-    case 1: // V3
+    case 3: // V3
         CHECK_ERROR(_toStringMultiLocationV3(&v->multilocationV3, outValue, outValueLen, pageIdx, pageCount))
         break;
     default:
