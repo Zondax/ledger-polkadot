@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadot 20.9370.x
+# Polkadot 21.9391.x
 
 ## System
 
@@ -97,12 +97,6 @@ Please:
 | Transfer keep alive | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`dest<br/>`CompactBalance`amount<br/>                                   |
 | Transfer all        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountIdLookupOfT`dest<br/>`bool`keep_alive<br/>                                         |
 | Force unreserve     |                    | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountIdLookupOfT`who<br/>`Balance`amount<br/>                                           |
-
-## Authorship
-
-| Name       | Nano S | Nano S XL | Nano SP/X | Nesting | Arguments                  |
-| ---------- | ------ | --------- | --------- | ------- | -------------------------- |
-| Set uncles |        |           |           |         | `VecHeader`new_uncles<br/> |
 
 ## Staking
 
@@ -178,6 +172,7 @@ Please:
 | Remove other vote         |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`target<br/>`ReferendumIndex`index<br/>                     |
 | Blacklist                 |        | :heavy_check_mark: | :heavy_check_mark: |                    | `H256`proposal_hash<br/>`OptionReferendumIndex`maybe_ref_index<br/>            |
 | Cancel proposal           |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Compactu32`prop_index<br/>                                                    |
+| Set metadata              |        | :heavy_check_mark: | :heavy_check_mark: |                    | `MetadataOwner`owner<br/>`OptionPreimageHash`maybe_hash<br/>                   |
 
 ## Council
 
@@ -207,7 +202,7 @@ Please:
 
 | Name                 | Nano S | Nano S XL          | Nano SP/X          | Nesting | Arguments                                                                  |
 | -------------------- | ------ | ------------------ | ------------------ | ------- | -------------------------------------------------------------------------- |
-| Vote                 |        | :heavy_check_mark: | :heavy_check_mark: |         | `VecAccountId`votes<br/>`Compactu128`amount<br/>                           |
+| Vote                 |        | :heavy_check_mark: | :heavy_check_mark: |         | `VecAccountId`votes<br/>`CompactBalance`amount<br/>                        |
 | Remove voter         |        | :heavy_check_mark: | :heavy_check_mark: |         |                                                                            |
 | Submit candidacy     |        | :heavy_check_mark: | :heavy_check_mark: |         | `Compactu32`candidate_count<br/>                                           |
 | Renounce candidacy   |        |                    |                    |         | `Renouncing`renouncing<br/>                                                |
@@ -295,8 +290,8 @@ Please:
 | Add proxy           |        | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
 | Remove proxy        |        | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountIdLookupOfT`delegate<br/>`ProxyType`proxy_type<br/>`BlockNumber`delay<br/>                                         |
 | Remove proxies      |        | :heavy_check_mark: | :heavy_check_mark: |                    |                                                                                                                            |
-| Create pure         |        | :heavy_check_mark: | :heavy_check_mark: |                    | `ProxyType`proxy_type<br/>`BlockNumber`delay<br/>`u16`index<br/>                                                           |
-| Kill pure           |        | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountIdLookupOfT`spawner<br/>`ProxyType`proxy_type<br/>`u16`index<br/>`Compactu32`height<br/>`Compactu32`ext_index<br/> |
+| Create pure         |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `ProxyType`proxy_type<br/>`BlockNumber`delay<br/>`u16`index<br/>                                                           |
+| Kill pure           |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`spawner<br/>`ProxyType`proxy_type<br/>`u16`index<br/>`Compactu32`height<br/>`Compactu32`ext_index<br/> |
 | Announce            |        |                    |                    |                    | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
 | Remove announcement |        |                    |                    |                    | `AccountIdLookupOfT`real<br/>`CallHashOf`call_hash<br/>                                                                    |
 | Reject announcement |        |                    |                    |                    | `AccountIdLookupOfT`delegate<br/>`CallHashOf`call_hash<br/>                                                                |
@@ -375,22 +370,25 @@ Please:
 | Unbond                 |        | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountIdLookupOfT`member_account<br/>`CompactBalance`unbonding_points<br/>                                                                                                 |
 | Pool withdraw unbonded |        | :heavy_check_mark: | :heavy_check_mark: |                    | `PoolId`pool_id<br/>`u32`num_slashing_spans<br/>                                                                                                                             |
 | Withdraw Unbonded      |        | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountIdLookupOfT`member_account<br/>`u32`num_slashing_spans<br/>                                                                                                          |
-| Create                 |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `CompactBalance`amount<br/>`AccountIdLookupOfT`root<br/>`AccountIdLookupOfT`nominator<br/>`AccountIdLookupOfT`state_toggler<br/>                                             |
-| Create with pool id    |        | :heavy_check_mark: | :heavy_check_mark: |                    | `CompactBalance`amount<br/>`AccountIdLookupOfT`root<br/>`AccountIdLookupOfT`nominator<br/>`AccountIdLookupOfT`state_toggler<br/>`PoolId`pool_id<br/>                         |
+| Create                 |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `CompactBalance`amount<br/>`AccountIdLookupOfT`root<br/>`AccountIdLookupOfT`nominator<br/>`AccountIdLookupOfT`bouncer<br/>                                                   |
+| Create with pool id    |        | :heavy_check_mark: | :heavy_check_mark: |                    | `CompactBalance`amount<br/>`AccountIdLookupOfT`root<br/>`AccountIdLookupOfT`nominator<br/>`AccountIdLookupOfT`bouncer<br/>`PoolId`pool_id<br/>                               |
 | Nominate               |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>`VecAccountId`validators<br/>                                                                                                                            |
 | Set state              |        | :heavy_check_mark: | :heavy_check_mark: |                    | `PoolId`pool_id<br/>`PoolState`state<br/>                                                                                                                                    |
 | Set metadata           |        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>`Vecu8`metadata<br/>                                                                                                                                     |
 | Set configs            |        | :heavy_check_mark: | :heavy_check_mark: |                    | `ConfigOpBalanceOfT`min_join_bond<br/>`ConfigOpBalanceOfT`min_create_bond<br/>`ConfigOpu32`max_pools<br/>`ConfigOpu32`max_members<br/>`ConfigOpu32`max_members_per_pool<br/> |
-| Update roles           |        | :heavy_check_mark: | :heavy_check_mark: |                    | `PoolId`pool_id<br/>`ConfigOpAccountId`new_root<br/>`ConfigOpAccountId`new_nominator<br/>`ConfigOpAccountId`new_state_toggler<br/>                                           |
+| Update roles           |        | :heavy_check_mark: | :heavy_check_mark: |                    | `PoolId`pool_id<br/>`ConfigOpAccountId`new_root<br/>`ConfigOpAccountId`new_nominator<br/>`ConfigOpAccountId`new_bouncer<br/>                                                 |
 | Chill                  |        | :heavy_check_mark: | :heavy_check_mark: |                    | `PoolId`pool_id<br/>                                                                                                                                                         |
+| Bond extra other       |        | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountIdLookupOfT`member<br/>`BondExtraBalanceOfT`extra<br/>                                                                                                               |
+| Set claim permission   |        | :heavy_check_mark: | :heavy_check_mark: |                    | `ClaimPermission`permission<br/>                                                                                                                                             |
+| Claim payout other     |        | :heavy_check_mark: | :heavy_check_mark: |                    | `AccountId`other<br/>                                                                                                                                                        |
 
 ## FastUnstake
 
-| Name                  | Nano S | Nano S XL          | Nano SP/X          | Nesting | Arguments                              |
-| --------------------- | ------ | ------------------ | ------------------ | ------- | -------------------------------------- |
-| Register fast unstake |        | :heavy_check_mark: | :heavy_check_mark: |         |                                        |
-| Deregister            |        | :heavy_check_mark: | :heavy_check_mark: |         |                                        |
-| Control               |        | :heavy_check_mark: | :heavy_check_mark: |         | `EraIndex`unchecked_eras_to_check<br/> |
+| Name                  | Nano S | Nano S XL          | Nano SP/X          | Nesting | Arguments                    |
+| --------------------- | ------ | ------------------ | ------------------ | ------- | ---------------------------- |
+| Register fast unstake |        | :heavy_check_mark: | :heavy_check_mark: |         |                              |
+| Deregister            |        | :heavy_check_mark: | :heavy_check_mark: |         |                              |
+| Control               |        | :heavy_check_mark: | :heavy_check_mark: |         | `EraIndex`eras_to_check<br/> |
 
 ## Configuration
 
@@ -555,12 +553,12 @@ Please:
 | Name                             | Nano S | Nano S XL | Nano SP/X          | Nesting | Arguments                                                                                                                                                                 |
 | -------------------------------- | ------ | --------- | ------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Send                             |        |           |                    |         | `BoxVersionedMultiLocation`dest<br/>`BoxVersionedXcmTuple`message<br/>                                                                                                    |
-| Teleport assets                  |        |           |                    |         | `BoxVersionedMultiLocation`dest<br/>`BoxVersionedMultiLocation`beneficiary<br/>`BoxVersionedMultiAssets`assets<br/>`u32`fee_asset_item<br/>                               |
+| Teleport assets                  |        |           | :heavy_check_mark: |         | `BoxVersionedMultiLocation`dest<br/>`BoxVersionedMultiLocation`beneficiary<br/>`BoxVersionedMultiAssets`assets<br/>`u32`fee_asset_item<br/>                               |
 | Reserve transfer assets          |        |           | :heavy_check_mark: |         | `BoxVersionedMultiLocation`dest<br/>`BoxVersionedMultiLocation`beneficiary<br/>`BoxVersionedMultiAssets`assets<br/>`u32`fee_asset_item<br/>                               |
-| Execute                          |        |           |                    |         | `BoxVersionedXcmTasSysConfigRuntimeCall`message<br/>`XcmWeight`max_weight<br/>                                                                                            |
+| Execute                          |        |           |                    |         | `BoxVersionedXcmTasSysConfigRuntimeCall`message<br/>`Weight`max_weight<br/>                                                                                               |
 | Force xcm version                |        |           |                    |         | `BoxMultiLocation`location<br/>`XcmVersion`xcm_version<br/>                                                                                                               |
 | Force default xcm version        |        |           |                    |         | `OptionXcmVersion`maybe_xcm_version<br/>                                                                                                                                  |
 | Force subscribe version notify   |        |           |                    |         | `BoxVersionedMultiLocation`location<br/>                                                                                                                                  |
 | Force unsubscribe version notify |        |           |                    |         | `BoxVersionedMultiLocation`location<br/>                                                                                                                                  |
 | Limited reserve transfer assets  |        |           | :heavy_check_mark: |         | `BoxVersionedMultiLocation`dest<br/>`BoxVersionedMultiLocation`beneficiary<br/>`BoxVersionedMultiAssets`assets<br/>`u32`fee_asset_item<br/>`WeightLimit`weight_limit<br/> |
-| Limited teleport assets          |        |           |                    |         | `BoxVersionedMultiLocation`dest<br/>`BoxVersionedMultiLocation`beneficiary<br/>`BoxVersionedMultiAssets`assets<br/>`u32`fee_asset_item<br/>`WeightLimit`weight_limit<br/> |
+| Limited teleport assets          |        |           | :heavy_check_mark: |         | `BoxVersionedMultiLocation`dest<br/>`BoxVersionedMultiLocation`beneficiary<br/>`BoxVersionedMultiAssets`assets<br/>`u32`fee_asset_item<br/>`WeightLimit`weight_limit<br/> |
