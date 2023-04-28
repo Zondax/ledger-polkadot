@@ -90,19 +90,16 @@ endif
 
 include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.platform
 LDFLAGS += -z muldefs
+
+ifeq ($(SUPPORT_SR25519),1)
+APP_CUSTOM_LINK_DEPENDENCIES = rust
 LDLIBS += -Lrust/target/thumbv6m-none-eabi/release -lrslib
-CFLAGS += -Wvla
 APP_SOURCE_PATH += $(CURDIR)/rust/include
+endif
 
 .PHONY: rust
 rust:
 	cd rust && CARGO_HOME="$(CURDIR)/rust/.cargo" cargo build --target thumbv6m-none-eabi --release
-
-# Force rust dependency before c compilation in parallel mode (-j option).
-.DEFAULT_GOAL := build_with_rust
-.PHONY: build_with_rust
-build_with_rust: rust
-	$(MAKE) all
 
 .PHONY: rust_clean
 rust_clean:
