@@ -27,31 +27,6 @@ const defaultOptions = {
 
 jest.setTimeout(60000)
 
-async function activateSecretMode(sim: any) {
-  // Get to Zondax.ch menu
-  for (let i = 0; i < 3; i += 1) {
-    await sim.clickRight()
-  }
-
-  // Activate secret features
-  for (let i = 0; i < 10; i += 1) {
-    await sim.clickBoth('', false)
-  }
-
-  let reviewSteps = 6
-  if (sim.startOptions.model === 'nanos') {
-    reviewSteps = 7
-  }
-
-  // Review warning message
-  for (let i = 0; i < reviewSteps; i += 1) {
-    await sim.clickRight()
-  }
-
-  // Accept
-  await sim.clickBoth()
-}
-
 describe('Recovery', function () {
   test.concurrent.each(models)('main secret menu (%s)', async function (m) {
     const sim = new Zemu(m.path)
@@ -74,7 +49,7 @@ describe('Recovery', function () {
       expect(resp.address).toEqual(polkadot_expected_address)
       expect(resp.pubKey).toEqual(polkadot_expected_pk)
 
-      await activateSecretMode(sim)
+      await sim.enableSpecialMode('Zondax', true)
 
       resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
 
