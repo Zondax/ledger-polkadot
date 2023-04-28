@@ -142,14 +142,14 @@ GEN_DEC_READFIX_UNSIGNED(64);
     /* We need to do it twice because there is no memory to keep intermediate results*/ \
     /* First count*/ \
     parser_init(&ctx, v->_ptr, v->_lenBuffer);\
-    for (uint16_t i = 0; i < v->_len; i++) {\
+    for (uint64_t i = 0; i < v->_len; i++) {\
         CHECK_ERROR(_read##TYPE(&ctx, &tmp));\
         CHECK_ERROR(_toString##TYPE(&tmp, outValue, outValueLen, 0, &chunkPageCount));\
         (*pageCount)+=chunkPageCount;\
     }\
     /* Then iterate until we can print the corresponding chunk*/ \
     parser_init(&ctx, v->_ptr, v->_lenBuffer);\
-    for (uint16_t i = 0; i < v->_len; i++) {\
+    for (uint64_t i = 0; i < v->_len; i++) {\
         CHECK_ERROR(_read##TYPE(&ctx, &tmp));\
         chunkPageCount = 1;\
         currentPage = 0;\
@@ -188,8 +188,8 @@ uint16_t _detectAddressType(const parser_context_t *c);
 
 parser_error_t _toStringCompactInt(const compactInt_t *c, uint8_t decimalPlaces,
                                    bool trimTrailingZeros,
-                                   char postfix[],
-                                   char prefix[],
+                                   const char postfix[],
+                                   const char prefix[],
                                    char *outValue, uint16_t outValueLen,
                                    uint8_t pageIdx, uint8_t *pageCount);
 

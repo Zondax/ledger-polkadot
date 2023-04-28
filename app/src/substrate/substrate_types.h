@@ -23,9 +23,11 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextern-c-compat"
 #pragma clang diagnostic pop
+#endif
 
 // https://github.com/paritytech/substrate/blob/effe489951d1edab9d34846b1eefdfaf9511dab9/frame/identity/src/lib.rs
 #define Data_e_NONE 0
@@ -957,7 +959,7 @@ typedef struct {
     uint8_t value;
     union {
         pd_H256_t legacy;
-        pd_Bytes_t _inline;
+        pd_Bytes_t bytes_inline;
         pd_TupleH256u32_t lookup;
     };
 } pd_BoundedCallOfT_t;
