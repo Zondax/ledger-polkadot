@@ -35,9 +35,7 @@ zxerr_t addr_getItem(int8_t displayIdx,
                      char *outKey, uint16_t outKeyLen,
                      char *outVal, uint16_t outValLen,
                      uint8_t pageIdx, uint8_t *pageCount) {
-    char buffer[30];
-    snprintf(buffer, sizeof(buffer), "addr_getItem %d/%d", displayIdx, pageIdx);
-    zemu_log_stack(buffer);
+    ZEMU_LOGF(50, "addr_getItem %d/%d", displayIdx, pageIdx)
 
     switch (displayIdx) {
         case 0:

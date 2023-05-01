@@ -16,7 +16,6 @@
 #include <zxmacros.h>
 #include "ristretto.h"
 #include "cx.h"
-#include "rslib.h"
 
 unsigned char const ED25519_GEN[ED25519_SDKPOINT_BYTES] = {
         //uncompressed
