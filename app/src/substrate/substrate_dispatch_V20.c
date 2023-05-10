@@ -8871,7 +8871,7 @@ parser_error_t _getMethod_ItemValue_V20(
     return parser_ok;
 }
 
-bool _getMethod_ItemIsExpert_V20(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx)
+bool _getMethod_ItemIsExpert_V20(uint8_t moduleIdx, uint8_t callIdx, __Z_UNUSED uint8_t itemIdx)
 {
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 

@@ -23,7 +23,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
-// Versioned types functions for tx version V21
+// Versioned types functions for tx version V23
 
 #ifdef __cplusplus
 }
