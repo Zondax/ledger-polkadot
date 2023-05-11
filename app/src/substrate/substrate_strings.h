@@ -52,6 +52,9 @@ static const char* STR_MO_PARASDISPUTES = "Parasdisputes";
 static const char* STR_MO_AUCTIONS = "Auctions";
 static const char* STR_MO_CROWDLOAN = "Crowdloan";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
+static const char* STR_MO_CONVICTIONVOTING = "Convictionvoting";
+static const char* STR_MO_REFERENDA = "Referenda";
+static const char* STR_MO_WHITELIST = "Whitelist";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
@@ -266,13 +269,36 @@ static const char* STR_ME_EDIT = "Edit";
 static const char* STR_ME_ADD_MEMO = "Add memo";
 static const char* STR_ME_POKE = "Poke";
 static const char* STR_ME_CONTRIBUTE_ALL = "Contribute all";
+static const char* STR_ME_TELEPORT_ASSETS = "Teleport assets";
 static const char* STR_ME_RESERVE_TRANSFER_ASSETS = "Reserve transfer assets";
 static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
+static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
+static const char* STR_ME_TRANSFER_ALLOW_DEATH = "Transfer allow death";
+static const char* STR_ME_SET_BALANCE_DEPRECATED = "Set balance deprecated";
+static const char* STR_ME_UPGRADE_ACCOUNTS = "Upgrade accounts";
+static const char* STR_ME_FORCE_SET_BALANCE = "Force set balance";
+static const char* STR_ME_SUBMIT = "Submit";
+static const char* STR_ME_PLACE_DECISION_DEPOSIT = "Place decision deposit";
+static const char* STR_ME_REFUND_DECISION_DEPOSIT = "Refund decision deposit";
+static const char* STR_ME_CANCEL = "Cancel";
+static const char* STR_ME_KILL = "Kill";
+static const char* STR_ME_NUDGE_REFERENDUM = "Nudge referendum";
+static const char* STR_ME_ONE_FEWER_DECIDING = "One fewer deciding";
+static const char* STR_ME_REFUND_SUBMISSION_DEPOSIT = "Refund submission deposit";
+static const char* STR_ME_WHITELIST_CALL = "Whitelist call";
+static const char* STR_ME_REMOVE_WHITELISTED_CALL = "Remove whitelisted call";
+static const char* STR_ME_DISPATCH_WHITELISTED_CALL = "Dispatch whitelisted call";
+static const char* STR_ME_DISPATCH_WHITELISTED_CALL_WITH_PREIMAGE = "Dispatch whitelisted call with preimage";
 static const char* STR_ME_BOND_EXTRA_OTHER = "Bond extra other";
 static const char* STR_ME_SET_CLAIM_PERMISSION = "Set claim permission";
 static const char* STR_ME_CLAIM_PAYOUT_OTHER = "Claim payout other";
-static const char* STR_ME_TELEPORT_ASSETS = "Teleport assets";
-static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
+static const char* STR_ME_SET_COMMISSION = "Set commission";
+static const char* STR_ME_SET_COMMISSION_MAX = "Set commission max";
+static const char* STR_ME_SET_COMMISSION_CHANGE_RATE = "Set commission change rate";
+static const char* STR_ME_CLAIM_COMMISSION = "Claim commission";
+static const char* STR_ME_SET_ASYNC_BACKING_PARAMS = "Set async backing params";
+static const char* STR_ME_SET_EXECUTOR_PARAMS = "Set executor params";
+static const char* STR_ME_FORCE_SUSPENSION = "Force suspension";
 
 // Items names
 static const char* STR_IT_remark = "Remark";
@@ -429,14 +455,27 @@ static const char* STR_IT_fee_asset_item = "Fee asset item";
 static const char* STR_IT_location = "Location";
 static const char* STR_IT_xcm_version = "Xcm version";
 static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
+static const char* STR_IT_old_reserved = "Old reserved";
 static const char* STR_IT_owner = "Owner";
 static const char* STR_IT_maybe_hash = "Maybe hash";
+static const char* STR_IT_poll_index = "Poll index";
+static const char* STR_IT_class_ = "Class";
+static const char* STR_IT_proposal_origin = "Proposal origin";
+static const char* STR_IT_enactment_moment = "Enactment moment";
+static const char* STR_IT_track = "Track";
+static const char* STR_IT_call_encoded_len = "Call encoded len";
+static const char* STR_IT_call_weight_witness = "Call weight witness";
 static const char* STR_IT_bouncer = "Bouncer";
+static const char* STR_IT_global_max_commission = "Global max commission";
 static const char* STR_IT_new_bouncer = "New bouncer";
 static const char* STR_IT_member = "Member";
 static const char* STR_IT_permission = "Permission";
 static const char* STR_IT_other = "Other";
+static const char* STR_IT_new_commission = "New commission";
+static const char* STR_IT_max_commission = "Max commission";
+static const char* STR_IT_change_rate = "Change rate";
 static const char* STR_IT_eras_to_check = "Eras to check";
+static const char* STR_IT_suspended = "Suspended";
 
 #ifdef __cplusplus
 }

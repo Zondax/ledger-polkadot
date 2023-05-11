@@ -26,6 +26,8 @@ include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.installer_script
 
 include $(BOLOS_SDK)/Makefile.defines
 
+DEFINES += HAVE_SWAP
+
 DEFINES += APP_SECRET_MODE_ENABLED
 
 $(info ************ TARGET_NAME  = [$(TARGET_NAME)])
@@ -77,7 +79,7 @@ endif
 
 APP_LOAD_PARAMS = --curve ed25519 $(COMMON_LOAD_PARAMS) --path $(APPPATH)
 
-NANOS_STACK_SIZE := 3216
+NANOS_STACK_SIZE := 3160
 
 include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.devices
 

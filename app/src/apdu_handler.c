@@ -32,6 +32,7 @@
 #include "secret.h"
 #include "app_mode.h"
 #include "view.h"
+#include "swap.h"
 
 static bool tx_initialized = false;
 
@@ -173,9 +174,15 @@ __Z_INLINE void handleSignSr25519(volatile uint32_t *flags, volatile uint32_t *t
         THROW(APDU_CODE_DATA_INVALID);
     }
 
-    view_review_init(tx_getItem, tx_getNumItems, app_return_sr25519);
-    view_review_show(REVIEW_TXN);
-    *flags |= IO_ASYNCH_REPLY;
+    if (G_swap_state.called_from_swap) {
+        G_swap_state.should_exit = 1;
+        app_sign_sr25519();
+        app_return_sr25519();
+    } else {
+        view_review_init(tx_getItem, tx_getNumItems, app_return_sr25519);
+        view_review_show(REVIEW_TXN);
+        *flags |= IO_ASYNCH_REPLY;
+    }
 }
 #endif
 
@@ -189,9 +196,14 @@ __Z_INLINE void handleSignEd25519(volatile uint32_t *flags, volatile uint32_t *t
         THROW(APDU_CODE_DATA_INVALID);
     }
 
-    view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
-    view_review_show(REVIEW_TXN);
-    *flags |= IO_ASYNCH_REPLY;
+    if (G_swap_state.called_from_swap) {
+        G_swap_state.should_exit = 1;
+        app_sign_ed25519();
+    } else {
+        view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
+        view_review_show(REVIEW_TXN);
+        *flags |= IO_ASYNCH_REPLY;
+    }
 }
 
 __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {

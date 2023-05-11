@@ -132,6 +132,7 @@ parser_error_t _readMultiAssetV0(parser_context_t* c, pd_MultiAssetV0_t* v);
 parser_error_t _readMultiAssetV1(parser_context_t* c, pd_MultiAssetV1_t* v);
 parser_error_t _readMultiAssetV2(parser_context_t* c, pd_MultiAssetV2_t* v);
 parser_error_t _readMultiAssetV3(parser_context_t* c, pd_MultiAssetV3_t* v);
+parser_error_t _readPerbill(parser_context_t* c, pd_Perbill_t* v);
 parser_error_t _readSr25519Public(parser_context_t* c, pd_Sr25519Public_t* v);
 parser_error_t _readSr25519Signature(parser_context_t* c, pd_Sr25519Signature_t* v);
 parser_error_t _readTupleDataData(parser_context_t* c, pd_TupleDataData_t* v);
@@ -140,11 +141,11 @@ parser_error_t _readAccountIdLookupOfT(parser_context_t* c, pd_AccountIdLookupOf
 parser_error_t _readAccountVoteSplit(parser_context_t* c, pd_AccountVoteSplit_t* v);
 parser_error_t _readAccountVoteStandard(parser_context_t* c, pd_AccountVoteStandard_t* v);
 parser_error_t _readCall(parser_context_t* c, pd_Call_t* v);
+parser_error_t _readClassOf(parser_context_t* c, pd_ClassOf_t* v);
 parser_error_t _readCompactPerBill(parser_context_t* c, pd_CompactPerBill_t* v);
 parser_error_t _readMultiSignature(parser_context_t* c, pd_MultiSignature_t* v);
 parser_error_t _readMultiSigner(parser_context_t* c, pd_MultiSigner_t* v);
 parser_error_t _readOptionu8_array_20(parser_context_t* c, pd_Optionu8_array_20_t* v);
-parser_error_t _readPerbill(parser_context_t* c, pd_Perbill_t* v);
 parser_error_t _readPercent(parser_context_t* c, pd_Percent_t* v);
 parser_error_t _readPreimageHash(parser_context_t* c, pd_PreimageHash_t* v);
 parser_error_t _readPropIndex(parser_context_t* c, pd_PropIndex_t* v);
@@ -153,6 +154,7 @@ parser_error_t _readReferendumIndex(parser_context_t* c, pd_ReferendumIndex_t* v
 parser_error_t _readTimepoint(parser_context_t* c, pd_Timepoint_t* v);
 parser_error_t _readTupleAccountIdData(parser_context_t* c, pd_TupleAccountIdData_t* v);
 parser_error_t _readTupleH256u32(parser_context_t* c, pd_TupleH256u32_t* v);
+parser_error_t _readTuplePerbillAccountId(parser_context_t* c, pd_TuplePerbillAccountId_t* v);
 parser_error_t _readVecMultiAssetV0(parser_context_t* c, pd_VecMultiAssetV0_t* v);
 parser_error_t _readVecMultiAssetV1(parser_context_t* c, pd_VecMultiAssetV1_t* v);
 parser_error_t _readVecMultiAssetV2(parser_context_t* c, pd_VecMultiAssetV2_t* v);
@@ -164,6 +166,7 @@ parser_error_t _readBondExtraBalanceOfT(parser_context_t* c, pd_BondExtraBalance
 parser_error_t _readBoundedCallOfT(parser_context_t* c, pd_BoundedCallOfT_t* v);
 parser_error_t _readBoxVersionedMultiAssets(parser_context_t* c, pd_BoxVersionedMultiAssets_t* v);
 parser_error_t _readBoxVersionedMultiLocation(parser_context_t* c, pd_BoxVersionedMultiLocation_t* v);
+parser_error_t _readCommissionChangeRateBlockNumber(parser_context_t* c, pd_CommissionChangeRateBlockNumber_t* v);
 parser_error_t _readConfigOpAccountId(parser_context_t* c, pd_ConfigOpAccountId_t* v);
 parser_error_t _readConfigOpBalanceOfT(parser_context_t* c, pd_ConfigOpBalanceOfT_t* v);
 parser_error_t _readConfigOpPerbill(parser_context_t* c, pd_ConfigOpPerbill_t* v);
@@ -174,6 +177,7 @@ parser_error_t _readMetadataOwner(parser_context_t* c, pd_MetadataOwner_t* v);
 parser_error_t _readOptionMultiSignature(parser_context_t* c, pd_OptionMultiSignature_t* v);
 parser_error_t _readOptionMultiSigner(parser_context_t* c, pd_OptionMultiSigner_t* v);
 parser_error_t _readOptionTimepoint(parser_context_t* c, pd_OptionTimepoint_t* v);
+parser_error_t _readOptionTuplePerbillAccountId(parser_context_t* c, pd_OptionTuplePerbillAccountId_t* v);
 parser_error_t _readProposal(parser_context_t* c, pd_Proposal_t* v);
 parser_error_t _readRewardDestination(parser_context_t* c, pd_RewardDestination_t* v);
 parser_error_t _readValidatorPrefs(parser_context_t* c, pd_ValidatorPrefs_t* v);
@@ -192,16 +196,19 @@ parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v);
 parser_error_t _readKeys(parser_context_t* c, pd_Keys_t* v);
 parser_error_t _readMemberCount(parser_context_t* c, pd_MemberCount_t* v);
 parser_error_t _readOptionAccountId(parser_context_t* c, pd_OptionAccountId_t* v);
+parser_error_t _readOptionClassOf(parser_context_t* c, pd_OptionClassOf_t* v);
 parser_error_t _readOptionPreimageHash(parser_context_t* c, pd_OptionPreimageHash_t* v);
 parser_error_t _readOptionProxyType(parser_context_t* c, pd_OptionProxyType_t* v);
 parser_error_t _readOptionReferendumIndex(parser_context_t* c, pd_OptionReferendumIndex_t* v);
 parser_error_t _readOptionu32(parser_context_t* c, pd_Optionu32_t* v);
 parser_error_t _readOverweightIndex(parser_context_t* c, pd_OverweightIndex_t* v);
 parser_error_t _readParaId(parser_context_t* c, pd_ParaId_t* v);
+parser_error_t _readPollIndexOf(parser_context_t* c, pd_PollIndexOf_t* v);
 parser_error_t _readPoolId(parser_context_t* c, pd_PoolId_t* v);
 parser_error_t _readPoolState(parser_context_t* c, pd_PoolState_t* v);
 parser_error_t _readRegistrarIndex(parser_context_t* c, pd_RegistrarIndex_t* v);
 parser_error_t _readSessionIndex(parser_context_t* c, pd_SessionIndex_t* v);
+parser_error_t _readTrackIdOf(parser_context_t* c, pd_TrackIdOf_t* v);
 parser_error_t _readVecAccountId(parser_context_t* c, pd_VecAccountId_t* v);
 parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v);
 parser_error_t _readVecu8(parser_context_t* c, pd_Vecu8_t* v);
@@ -950,6 +957,13 @@ parser_error_t _toStringMultiAssetV3(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringPerbill(
+    const pd_Perbill_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringSr25519Public(
     const pd_Sr25519Public_t* v,
     char* outValue,
@@ -1006,6 +1020,13 @@ parser_error_t _toStringCall(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringClassOf(
+    const pd_ClassOf_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringCompactPerBill(
     const pd_CompactPerBill_t* v,
     char* outValue,
@@ -1029,13 +1050,6 @@ parser_error_t _toStringMultiSigner(
 
 parser_error_t _toStringOptionu8_array_20(
     const pd_Optionu8_array_20_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringPerbill(
-    const pd_Perbill_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -1092,6 +1106,13 @@ parser_error_t _toStringTupleAccountIdData(
 
 parser_error_t _toStringTupleH256u32(
     const pd_TupleH256u32_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringTuplePerbillAccountId(
+    const pd_TuplePerbillAccountId_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -1174,6 +1195,13 @@ parser_error_t _toStringBoxVersionedMultiLocation(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringCommissionChangeRateBlockNumber(
+    const pd_CommissionChangeRateBlockNumber_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringConfigOpAccountId(
     const pd_ConfigOpAccountId_t* v,
     char* outValue,
@@ -1239,6 +1267,13 @@ parser_error_t _toStringOptionMultiSigner(
 
 parser_error_t _toStringOptionTimepoint(
     const pd_OptionTimepoint_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringOptionTuplePerbillAccountId(
+    const pd_OptionTuplePerbillAccountId_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
@@ -1370,6 +1405,13 @@ parser_error_t _toStringOptionAccountId(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringOptionClassOf(
+    const pd_OptionClassOf_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringOptionPreimageHash(
     const pd_OptionPreimageHash_t* v,
     char* outValue,
@@ -1412,6 +1454,13 @@ parser_error_t _toStringParaId(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringPollIndexOf(
+    const pd_PollIndexOf_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
 parser_error_t _toStringPoolId(
     const pd_PoolId_t* v,
     char* outValue,
@@ -1435,6 +1484,13 @@ parser_error_t _toStringRegistrarIndex(
 
 parser_error_t _toStringSessionIndex(
     const pd_SessionIndex_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringTrackIdOf(
+    const pd_TrackIdOf_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
