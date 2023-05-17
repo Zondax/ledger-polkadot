@@ -23,9 +23,11 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextern-c-compat"
 #pragma clang diagnostic pop
+#endif
 
 // https://github.com/paritytech/substrate/blob/effe489951d1edab9d34846b1eefdfaf9511dab9/frame/identity/src/lib.rs
 #define Data_e_NONE 0
@@ -797,6 +799,10 @@ typedef struct {
 } pd_MultiAssetV3_t;
 
 typedef struct {
+    uint32_t value;
+} pd_Perbill_t;
+
+typedef struct {
     const uint8_t* _ptr;
 } pd_Sr25519Public_t;
 
@@ -840,6 +846,10 @@ typedef struct {
 } pd_Call_t;
 
 typedef struct {
+    uint16_t value;
+} pd_ClassOf_t;
+
+typedef struct {
     compactInt_t value;
 } pd_CompactPerBill_t;
 
@@ -865,10 +875,6 @@ typedef struct {
     uint8_t some;
     pd_u8_array_20_t contained;
 } pd_Optionu8_array_20_t;
-
-typedef struct {
-    uint32_t value;
-} pd_Perbill_t;
 
 typedef struct {
     uint8_t value;
@@ -904,6 +910,11 @@ typedef struct {
     pd_H256_t h256;
     uint32_t u32;
 } pd_TupleH256u32_t;
+
+typedef struct {
+    pd_Perbill_t perbill;
+    pd_AccountId_t id;
+} pd_TuplePerbillAccountId_t;
 
 typedef struct {
     uint64_t _len;
@@ -957,7 +968,7 @@ typedef struct {
     uint8_t value;
     union {
         pd_H256_t legacy;
-        pd_Bytes_t _inline;
+        pd_Bytes_t bytes_inline;
         pd_TupleH256u32_t lookup;
     };
 } pd_BoundedCallOfT_t;
@@ -977,6 +988,11 @@ typedef struct {
         pd_MultiLocationV3_t multilocationV3;
     };
 } pd_BoxVersionedMultiLocation_t;
+
+typedef struct {
+    pd_Perbill_t maxIncrease;
+    uint32_t minDelay;
+} pd_CommissionChangeRateBlockNumber_t;
 
 typedef struct {
     uint8_t value;
@@ -1037,6 +1053,11 @@ typedef struct {
     uint8_t some;
     pd_Timepoint_t contained;
 } pd_OptionTimepoint_t;
+
+typedef struct {
+    uint8_t some;
+    pd_TuplePerbillAccountId_t contained;
+} pd_OptionTuplePerbillAccountId_t;
 
 typedef struct {
     pd_Call_t call;
@@ -1126,6 +1147,11 @@ typedef struct {
 
 typedef struct {
     uint8_t some;
+    pd_ClassOf_t contained;
+} pd_OptionClassOf_t;
+
+typedef struct {
+    uint8_t some;
     pd_PreimageHash_t contained;
 } pd_OptionPreimageHash_t;
 
@@ -1154,6 +1180,10 @@ typedef struct {
 
 typedef struct {
     uint32_t value;
+} pd_PollIndexOf_t;
+
+typedef struct {
+    uint32_t value;
 } pd_PoolId_t;
 
 typedef struct {
@@ -1167,6 +1197,10 @@ typedef struct {
 typedef struct {
     uint32_t value;
 } pd_SessionIndex_t;
+
+typedef struct {
+    uint16_t value;
+} pd_TrackIdOf_t;
 
 typedef struct {
     uint64_t _len;

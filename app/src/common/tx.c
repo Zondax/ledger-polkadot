@@ -20,8 +20,9 @@
 #include "parser.h"
 #include <string.h>
 #include "zxmacros.h"
+#include "swap.h"
 
-#if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
+#if defined(TARGET_NANOX) || defined(TARGET_NANOS2) || defined(TARGET_STAX)
 #define RAM_BUFFER_SIZE 8192
 #define FLASH_BUFFER_SIZE 16384
 #elif defined(TARGET_NANOS)
@@ -37,7 +38,7 @@ typedef struct {
     uint8_t buffer[FLASH_BUFFER_SIZE];
 } storage_t;
 
-#if defined(TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2)
+#if defined(TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2) || defined(TARGET_STAX)
 storage_t NV_CONST N_appdata_impl __attribute__ ((aligned(64)));
 #define N_appdata (*(NV_VOLATILE storage_t *)PIC(&N_appdata_impl))
 #endif
@@ -87,6 +88,15 @@ const char *tx_parse() {
 
     if (err != parser_ok) {
         return parser_getErrorDescription(err);
+    }
+
+    // If in swap mode, compare swap tx parameters with stored info.
+    if (G_swap_state.called_from_swap) {
+        err = check_swap_conditions(&ctx_parsed_tx);
+        CHECK_APP_CANARY()
+        if (err != parser_ok) {
+            return parser_getErrorDescription(err);
+        }
     }
 
     return NULL;
