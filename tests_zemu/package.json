@@ -15,11 +15,11 @@
   ],
   "scripts": {
     "clean": "ts-node tests/pullImageKillOld.ts",
-    "test": "yarn clean && jest"
+    "test": "yarn clean && jest --maxConcurrency 3"
   },
   "dependencies": {
     "@zondax/ledger-substrate": "^0.40.6",
-    "@zondax/zemu": "^0.42.0"
+    "@zondax/zemu": "^0.42.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
