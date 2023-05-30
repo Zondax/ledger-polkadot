@@ -176,7 +176,10 @@ __Z_INLINE void handleSignSr25519(volatile uint32_t *flags, volatile uint32_t *t
 
     if (G_swap_state.called_from_swap) {
         G_swap_state.should_exit = 1;
-        app_sign_sr25519();
+        err = app_sign_sr25519();
+        if (err != zxerr_ok) {
+            THROW(APDU_CODE_DATA_INVALID);
+        }
         app_return_sr25519();
     } else {
         view_review_init(tx_getItem, tx_getNumItems, app_return_sr25519);

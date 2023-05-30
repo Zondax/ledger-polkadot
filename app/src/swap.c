@@ -100,6 +100,10 @@ void handle_get_printable_amount( get_printable_amount_parameters_t* params) {
     MEMZERO(amount, sizeof(amount));
     MEMZERO(params->printable_amount, sizeof(params->printable_amount));
 
+    if (params->amount_length > 16) {
+        return;
+    }
+
     memcpy(amount + 16 - params->amount_length, params->amount, params->amount_length);
 
     char tmp_amount[100] = {0};
@@ -128,7 +132,7 @@ bool copy_transaction_parameters(create_transaction_parameters_t* sign_transacti
             sizeof(destination_address) - 1);
 
     if ((destination_address[sizeof(destination_address) - 1] != '\0') ||
-        (sign_transaction_params->amount_length > 8) ||
+        (sign_transaction_params->amount_length > 16) ||
         (sign_transaction_params->fee_amount_length > 8)) {
         return false;
     }
