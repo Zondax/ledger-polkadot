@@ -30,11 +30,20 @@ void secret_accept() {
 #endif
 }
 
+#if defined(TARGET_STAX)
+static const char *secret_message =
+        "You are about to enable DOT\n"
+        "recovery mode. Activating this\n"
+        "mode will temporarily allow\n"
+        "you to sign transactions\n"
+        "using Kusama keys.";
+#else
 static const char *secret_message =
         "USE AT YOUR OWN RISK!! "
         "You are about to enable the DOT recovery mode."
         "If you are not sure why you are here, reject or unplug your device immediately."
         "Activating this mode will temporarily allow you to sign transactions using Kusama keys";
+#endif
 
 zxerr_t secret_getNumItems(uint8_t *num_items) {
     zemu_log_stack("secret_getNumItems");
@@ -57,9 +66,17 @@ zxerr_t secret_getItem(int8_t displayIdx,
 
 zxerr_t secret_enabled() {
 #ifdef APP_SECRET_MODE_ENABLED
-    zemu_log("RECOVERY TRIGGERED");
-    view_review_init(secret_getItem, secret_getNumItems, secret_accept);
-    view_review_show(0x00);
+    if (app_mode_secret()) {
+        zemu_log("DISABLE RECOVERY");
+        app_mode_set_secret(false);
+#if !defined(TARGET_STAX)
+        view_idle_show(0, NULL);
+#endif
+    } else {
+        zemu_log("RECOVERY TRIGGERED");
+        view_review_init(secret_getItem, secret_getNumItems, secret_accept);
+        view_review_show(0x00);
+    }
 #endif
     return zxerr_ok;
 }
