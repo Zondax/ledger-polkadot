@@ -224,3 +224,37 @@ jobs:
           tag_name: ${{ steps.nanosp.outputs.tag_name }}
           draft: false
           prerelease: false
+
+  build_package_stax:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/stax-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build Stax
+        shell: bash -l {0}
+        run: make SUBSTRATE_PARSER_FULL=1
+      - name: Set tag
+        id: stax
+        run: echo "tag_name=$(./app/pkg/installer_stax.sh version)" >> $GITHUB_OUTPUT
+      - name: Update Release
+        id: update_release_2
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: ./app/pkg/installer_stax.sh
+          tag_name: ${{ steps.stax.outputs.tag_name }}
+          draft: false
+          prerelease: false
