@@ -39,5 +39,5 @@ typedef struct {
                  }          \
 }
 
-void ristretto255_p3_tobytes_sdk(unsigned char *s, const ge25519_p3_sdk *h);
-int crypto_scalarmult_ristretto255_base_sdk(unsigned char *q, const unsigned char *n);
+
+cx_err_t crypto_scalarmult_ristretto255_base_sdk(unsigned char *q, const unsigned char *n);

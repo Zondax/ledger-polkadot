@@ -20,15 +20,15 @@
 #if defined(TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2) || defined(TARGET_STAX)
 #include "cx.h"
 
-int ss58hash(const unsigned char *in, unsigned int inLen,
+cx_err_t ss58hash(const unsigned char *in, unsigned int inLen,
                    unsigned char *out, unsigned int outLen) {
 
     cx_blake2b_t ctx;
-    cx_blake2b_init(&ctx, 512);
-    cx_hash(&ctx.header, 0, SS58_BLAKE_PREFIX, SS58_BLAKE_PREFIX_LEN, NULL, 0);
-    cx_hash(&ctx.header, CX_LAST, in, inLen, out, outLen);
+    CHECK_CXERROR(cx_blake2b_init_no_throw(&ctx, 512))
+    CHECK_CXERROR(cx_hash_no_throw(&ctx.header, 0, SS58_BLAKE_PREFIX, SS58_BLAKE_PREFIX_LEN, NULL, 0))
+    CHECK_CXERROR(cx_hash_no_throw(&ctx.header, CX_LAST, in, inLen, out, outLen))
 
-    return 0;
+    return CX_OK;
 }
 #else
 
@@ -82,12 +82,18 @@ uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
     }
 
     memcpy(unencoded + prefixSize, pubkey, 32);           // account id
-    ss58hash((uint8_t *) unencoded, 32 + prefixSize, hash, 64);
+    if (ss58hash((uint8_t *) unencoded, 32 + prefixSize, hash, 64) != CX_OK) {
+        MEMZERO(buffer, buffer_len);
+        return 0;
+    }
     unencoded[32 + prefixSize] = hash[0];
     unencoded[33 + prefixSize] = hash[1];
 
     size_t outLen = buffer_len;
-    encode_base58(unencoded, 34 + prefixSize, buffer, &outLen);
+    if (encode_base58(unencoded, 34 + prefixSize, buffer, &outLen) != 0) {
+        MEMZERO(buffer, buffer_len);
+        return 0;
+    }
 
     return outLen;
 }
