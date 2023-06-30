@@ -26,10 +26,6 @@ extern "C" {
 #include <sigutils.h>
 #include "zxerror.h"
 
-//#define SS58_BLAKE_PREFIX  (const unsigned char *) "SS58PRE"
-//#define SS58_BLAKE_PREFIX_LEN 7
-#define SS58_ADDRESS_MAX_LEN 60u
-
 #define PREFIX_SIGNATURE_TYPE_ED25519  0
 #define PREFIX_SIGNATURE_TYPE_SR25519  1
 #define PREFIX_SIGNATURE_TYPE_EDCSA    2
