@@ -16,9 +16,11 @@
 
 #include "tx.h"
 #include "apdu_codes.h"
+#include "app_main.h"
 #include "buffering.h"
 #include "parser.h"
 #include <string.h>
+#include "zxformat.h"
 #include "zxmacros.h"
 #include "swap.h"
 
@@ -71,6 +73,30 @@ uint8_t *tx_get_buffer() {
     return buffering_get_buffer()->data;
 }
 
+const char *tx_raw_parse() {
+    const char prefix[] = "<Bytes>";
+    const uint8_t prefixLen = strlen(prefix);
+    const char postfix[] = "</Bytes>";
+    const uint8_t postfixLen = strlen(postfix);
+
+    const uint8_t *data = tx_get_buffer();
+    const size_t dataLen = tx_get_buffer_length();
+    if (data == NULL) return parser_getErrorDescription(parser_no_data);
+
+    // we need to have, at least, prefix and postfix
+    if (dataLen < prefixLen + postfixLen) {
+        return parser_getErrorDescription(parser_unexpected_value);
+    }
+
+    // check if both prefix and postfix are correct
+    if (strncmp((const char*)data, prefix, prefixLen) != 0 ||
+        strncmp((const char*)data + dataLen - postfixLen, postfix, postfixLen) != 0) {
+        return parser_getErrorDescription(parser_unexpected_value);
+    }
+
+    return NULL;
+}
+
 const char *tx_parse() {
 
     uint8_t err = parser_parse(
@@ -120,7 +146,7 @@ zxerr_t tx_getItem(int8_t displayIdx,
 
     CHECK_ZXERR(tx_getNumItems(&numItems))
 
-    if (displayIdx < 0 || displayIdx > numItems) {
+    if (displayIdx < 0 || displayIdx >= numItems) {
         return zxerr_no_data;
     }
 
@@ -138,6 +164,47 @@ zxerr_t tx_getItem(int8_t displayIdx,
 
     if (err != parser_ok)
         return zxerr_unknown;
+
+    return zxerr_ok;
+}
+
+zxerr_t tx_raw_getNumItems(uint8_t *num_items) {
+    *num_items = 2;
+    return zxerr_ok;
+}
+
+zxerr_t tx_raw_getItem(int8_t displayIdx,
+                       char *outKey, uint16_t outKeyLen,
+                       char *outVal, uint16_t outValLen,
+                       uint8_t pageIdx, uint8_t *pageCount) {
+    MEMZERO(outKey, outKeyLen);
+    MEMZERO(outVal, outValLen);
+
+    uint8_t numItems = 0;
+    CHECK_ZXERR(tx_raw_getNumItems(&numItems))
+    if (displayIdx < 0 || displayIdx >= numItems) return zxerr_no_data;
+
+    if (displayIdx == 0) {
+        *pageCount = 1;
+        snprintf(outKey, outKeyLen, "Sign and Verify");
+        snprintf(outVal, outValLen, "Arbitrary text");
+        return zxerr_ok;
+    }
+    const uint8_t *buf = tx_get_buffer();
+    const uint16_t bufLen = tx_get_buffer_length();
+    if (buf == NULL) return zxerr_no_data;
+
+    bool allPrintable = true;
+    for (uint16_t i = 0; i < bufLen; i++) {
+        allPrintable &= IS_PRINTABLE(buf[i]);
+    }
+    if (allPrintable) {
+        snprintf(outKey, outKeyLen, "Payload");
+        pageStringExt(outVal, outValLen, (const char*)buf, bufLen, pageIdx, pageCount);
+    } else {
+        snprintf(outKey, outKeyLen, "Payload (hex)");
+        pageStringHex(outVal, outValLen, (const char*)buf, bufLen, pageIdx, pageCount);
+    }
 
     return zxerr_ok;
 }

@@ -64,22 +64,23 @@ The general structure of commands and responses is as follows:
 
 ---
 
-### INS_GET_ADDR_ED25519
+### INS_GET_ADDR
 
 #### Command
 
-| Field   | Type     | Content                   | Expected   |     |
-| ------- | -------- | ------------------------- | ---------- | --- |
-| CLA     | byte (1) | Application Identifier    | 0x90       |     |
-| INS     | byte (1) | Instruction ID            | 0x01       |     |
-| P1      | byte (1) | Request User confirmation | No = 0     |     |
-| P2      | byte (1) | Parameter 2               | ignored    |     |
-| L       | byte (1) | Bytes in payload          | (depends)  |     |
-| Path[0] | byte (4) | Derivation Path Data      | 0x80000000 | 44  |
-| Path[1] | byte (4) | Derivation Path Data      | 0x80000000 | 354 |
-| Path[2] | byte (4) | Derivation Path Data      | ?          |     |
-| Path[3] | byte (4) | Derivation Path Data      | ?          |     |
-| Path[4] | byte (4) | Derivation Path Data      | ?          |     |
+| Field   | Type     | Content                   | Expected    |     |
+| ------- | -------- | ------------------------- | ----------- | --- |
+| CLA     | byte (1) | Application Identifier    | 0x90        |     |
+| INS     | byte (1) | Instruction ID            | 0x01        |     |
+| P1      | byte (1) | Request User confirmation | No = 0      |     |
+| P2      | byte (1) | Signature scheme          | Ed25519 = 0 |     |
+|         |          |                           | Sr25519 = 1 |     |
+| L       | byte (1) | Bytes in payload          | (depends)   |     |
+| Path[0] | byte (4) | Derivation Path Data      | 0x80000000  | 44  |
+| Path[1] | byte (4) | Derivation Path Data      | 0x80000000  | 354 |
+| Path[2] | byte (4) | Derivation Path Data      | ?           |     |
+| Path[3] | byte (4) | Derivation Path Data      | ?           |     |
+| Path[4] | byte (4) | Derivation Path Data      | ?           |     |
 
 #### Response
 
@@ -91,46 +92,20 @@ The general structure of commands and responses is as follows:
 
 ---
 
-### INS_GET_ADDR_SR25519
+### INS_SIGN
 
 #### Command
 
-| Field   | Type     | Content                   | Expected   |     |
-| ------- | -------- | ------------------------- | ---------- | --- |
-| CLA     | byte (1) | Application Identifier    | 0x90       |     |
-| INS     | byte (1) | Instruction ID            | 0x11       |     |
-| P1      | byte (1) | Request User confirmation | No = 0     |     |
-| P2      | byte (1) | Parameter 2               | ignored    |     |
-| L       | byte (1) | Bytes in payload          | (depends)  |     |
-| Path[0] | byte (4) | Derivation Path Data      | 0x80000000 | 44  |
-| Path[1] | byte (4) | Derivation Path Data      | 0x80000000 | 354 |
-| Path[2] | byte (4) | Derivation Path Data      | ?          |     |
-| Path[3] | byte (4) | Derivation Path Data      | ?          |     |
-| Path[4] | byte (4) | Derivation Path Data      | ?          |     |
-
-#### Response
-
-| Field   | Type      | Content     | Note                     |
-| ------- | --------- | ----------- | ------------------------ |
-| PK      | byte (32) | Public Key  |                          |
-| ADDR    | byte (??) | DOT address |                          |
-| SW1-SW2 | byte (2)  | Return code | see list of return codes |
-
----
-
-### INS_SIGN_ED25519
-
-#### Command
-
-| Field | Type     | Content                | Expected  |
-| ----- | -------- | ---------------------- | --------- |
-| CLA   | byte (1) | Application Identifier | 0x90      |
-| INS   | byte (1) | Instruction ID         | 0x02      |
-| P1    | byte (1) | Payload desc           | 0 = init  |
-|       |          |                        | 1 = add   |
-|       |          |                        | 2 = last  |
-| P2    | byte (1) | ----                   | not used  |
-| L     | byte (1) | Bytes in payload       | (depends) |
+| Field | Type     | Content                | Expected    |
+| ----- | -------- | ---------------------- | ----------- |
+| CLA   | byte (1) | Application Identifier | 0x90        |
+| INS   | byte (1) | Instruction ID         | 0x02        |
+| P1    | byte (1) | Payload desc           | 0 = init    |
+|       |          |                        | 1 = add     |
+|       |          |                        | 2 = last    |
+| P2    | byte (1) | Signature scheme       | Ed25519 = 0 |
+|       |          |                        | Sr25519 = 1 |
+| L     | byte (1) | Bytes in payload       | (depends)   |
 
 The first packet/chunk includes only the derivation path
 
@@ -161,19 +136,20 @@ All other packets/chunks contain data chunks that are described below
 
 ---
 
-### INS_SIGN_SR25519
+### INS_SIGN_RAW
 
 #### Command
 
-| Field | Type     | Content                | Expected  |
-| ----- | -------- | ---------------------- | --------- |
-| CLA   | byte (1) | Application Identifier | 0x90      |
-| INS   | byte (1) | Instruction ID         | 0x12      |
-| P1    | byte (1) | Payload desc           | 0 = init  |
-|       |          |                        | 1 = add   |
-|       |          |                        | 2 = last  |
-| P2    | byte (1) | ----                   | not used  |
-| L     | byte (1) | Bytes in payload       | (depends) |
+| Field | Type     | Content                | Expected    |
+| ----- | -------- | ---------------------- | ----------- |
+| CLA   | byte (1) | Application Identifier | 0x90        |
+| INS   | byte (1) | Instruction ID         | 0x03        |
+| P1    | byte (1) | Payload desc           | 0 = init    |
+|       |          |                        | 1 = add     |
+|       |          |                        | 2 = last    |
+| P2    | byte (1) | Signature scheme       | Ed25519 = 0 |
+|       |          |                        | Sr25519 = 1 |
+| L     | byte (1) | Bytes in payload       | (depends)   |
 
 The first packet/chunk includes only the derivation path
 
