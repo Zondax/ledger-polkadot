@@ -22,6 +22,8 @@ extern "C" {
 #define COIN_ADDR_TYPE 0
 #define CLA 0x90
 
+#define INS_SIGN_RAW 0x03
+
 #define HDPATH_LEN_DEFAULT 5
 #define HDPATH_0_DEFAULT (0x80000000 | 0x2c)
 #define HDPATH_1_DEFAULT (0x80000000 | 0x162)
