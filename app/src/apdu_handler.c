@@ -174,9 +174,14 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
     }
     switch (key_type) {
         case key_ed25519: {
-            view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
-            view_review_show(REVIEW_TXN);
-            *flags |= IO_ASYNCH_REPLY;
+            if (G_swap_state.called_from_swap) {
+                G_swap_state.should_exit = 1;
+                app_sign_ed25519();
+            } else {
+                view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
+                view_review_show(REVIEW_TXN);
+                *flags |= IO_ASYNCH_REPLY;
+            }
             break;
         }
 #ifdef SUPPORT_SR25519
