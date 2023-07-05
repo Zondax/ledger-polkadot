@@ -57,24 +57,24 @@ const fe25519_sdk ed25519_invsqrtamd_sdk = {
         0x5a, 0x41, 0x72, 0xbe, 0x99, 0xc8, 0xfd, 0xaa, 0x80, 0x5d, 0x40, 0xea
 };
 
-void fe25519_add_sdk(fe25519_sdk h, const fe25519_sdk f, const fe25519_sdk g)
+static cx_err_t fe25519_add_sdk(fe25519_sdk h, const fe25519_sdk f, const fe25519_sdk g)
 {
-    cx_math_addm(h, f, g, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
+    return cx_math_addm_no_throw(h, f, g, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
 }
 
-void fe25519_sub_sdk(fe25519_sdk h, const fe25519_sdk f, const fe25519_sdk g)
+static cx_err_t fe25519_sub_sdk(fe25519_sdk h, const fe25519_sdk f, const fe25519_sdk g)
 {
-    cx_math_subm(h, f, g, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
+    return cx_math_subm_no_throw(h, f, g, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
 }
 
-void fe25519_mul_sdk(fe25519_sdk h, const fe25519_sdk f, const fe25519_sdk g)
+static cx_err_t fe25519_mul_sdk(fe25519_sdk h, const fe25519_sdk f, const fe25519_sdk g)
 {
-    cx_math_multm(h, f, g, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
+    return cx_math_multm_no_throw(h, f, g, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
 }
 
-void fe25519_sq_sdk(fe25519_sdk h, const fe25519_sdk f)
+static cx_err_t fe25519_sq_sdk(fe25519_sdk h, const fe25519_sdk f)
 {
-    cx_math_multm(h, f, f, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
+    return cx_math_multm_no_throw(h, f, f, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
 }
 
 void fe25519_1_sdk(fe25519_sdk h)
@@ -93,9 +93,9 @@ int fe25519_isnegative_sdk(const fe25519_sdk f)
     return f[ED25519_SCALAR_BYTES-1] & 1;
 }
 
-void fe25519_neg_sdk(fe25519_sdk h, const fe25519_sdk f)
+static cx_err_t fe25519_neg_sdk(fe25519_sdk h, const fe25519_sdk f)
 {
-    cx_math_subm(h, ED25519_FIELD_ZERO, f, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
+    return cx_math_subm_no_throw(h, ED25519_FIELD_ZERO, f, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
 }
 
 void fe25519_copy_sdk(const fe25519_sdk h, const fe25519_sdk f)
@@ -107,8 +107,8 @@ void fe25519_copy_sdk(const fe25519_sdk h, const fe25519_sdk f)
 void fe25519_cmov_sdk(fe25519_sdk f, const fe25519_sdk g, unsigned int b)
 {
     uint8_t mask = (uint8_t) (-(int8_t) b);
-    uint8_t h[ED25519_SCALAR_BYTES];
-    uint8_t x[ED25519_SCALAR_BYTES];
+    uint8_t h[ED25519_SCALAR_BYTES] = {0};
+    uint8_t x[ED25519_SCALAR_BYTES] = {0};
     for(int i = 0; i < ED25519_SCALAR_BYTES; i++){
         h[i] = f[i];
         x[i] = h[i] ^ g[i];
@@ -117,18 +117,20 @@ void fe25519_cmov_sdk(fe25519_sdk f, const fe25519_sdk g, unsigned int b)
     }
 }
 
-void fe25519_cneg_sdk(fe25519_sdk h, const fe25519_sdk f, unsigned int b)
+static cx_err_t fe25519_cneg_sdk(fe25519_sdk h, const fe25519_sdk f, unsigned int b)
 {
     fe25519_sdk negf;
 
-    fe25519_neg_sdk(negf, f);
+    CHECK_CXERROR(fe25519_neg_sdk(negf, f))
     fe25519_copy_sdk(h, f);
     fe25519_cmov_sdk(h, negf, b);
+
+    return CX_OK;
 }
 
-void fe25519_abs_sdk(fe25519_sdk h, const fe25519_sdk f)
+static cx_err_t fe25519_abs_sdk(fe25519_sdk h, const fe25519_sdk f)
 {
-    fe25519_cneg_sdk(h, f, fe25519_isnegative_sdk(f));
+    return fe25519_cneg_sdk(h, f, fe25519_isnegative_sdk(f));
 }
 
 void fe25519_tobytes_sdk(unsigned char *s, const fe25519_sdk f)
@@ -138,47 +140,47 @@ void fe25519_tobytes_sdk(unsigned char *s, const fe25519_sdk f)
     SWAP_ENDIAN(&s[0], tmp);
 }
 
-void fe25519_pow22523_sdk(fe25519_sdk out, const fe25519_sdk z)
+static cx_err_t fe25519_pow22523_sdk(fe25519_sdk out, const fe25519_sdk z)
 {
-    cx_math_powm(out, z, ED25519_POW225, ED25519_SCALAR_BYTES, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
+    return cx_math_powm_no_throw(out, z, ED25519_POW225, ED25519_SCALAR_BYTES, ED25519_FIELD_SIZE, ED25519_SCALAR_BYTES);
 }
 
-int ristretto255_sqrt_ratio_m1_sdk(fe25519_sdk x, const fe25519_sdk u, const fe25519_sdk v)
+static cx_err_t ristretto255_sqrt_ratio_m1_sdk(fe25519_sdk x, const fe25519_sdk u, const fe25519_sdk v)
 {
     fe25519_sdk v3;
     fe25519_sdk vxx;
     fe25519_sdk m_root_check, p_root_check, f_root_check;
     fe25519_sdk x_sqrtm1;
-    int     has_m_root, has_p_root, has_f_root;
+    int has_p_root, has_f_root;
 
-    fe25519_sq_sdk(v3, v);
-    fe25519_mul_sdk(v3, v3, v); /* v3 = v^3 */
-    fe25519_sq_sdk(x, v3);
-    fe25519_mul_sdk(x, x, u);
-    fe25519_mul_sdk(x, x, v); /* x = uv^7 */
+    CHECK_CXERROR(fe25519_sq_sdk(v3, v))
+    CHECK_CXERROR(fe25519_mul_sdk(v3, v3, v)) /* v3 = v^3 */
+    CHECK_CXERROR(fe25519_sq_sdk(x, v3))
+    CHECK_CXERROR(fe25519_mul_sdk(x, x, u))
+    CHECK_CXERROR(fe25519_mul_sdk(x, x, v)) /* x = uv^7 */
 
-    fe25519_pow22523_sdk(x, x); /* x = (uv^7)^((q-5)/8) */
-    fe25519_mul_sdk(x, x, v3);
-    fe25519_mul_sdk(x, x, u); /* x = uv^3(uv^7)^((q-5)/8) */
+    CHECK_CXERROR(fe25519_pow22523_sdk(x, x)) /* x = (uv^7)^((q-5)/8) */
+    CHECK_CXERROR(fe25519_mul_sdk(x, x, v3))
+    CHECK_CXERROR(fe25519_mul_sdk(x, x, u)) /* x = uv^3(uv^7)^((q-5)/8) */
 
-    fe25519_sq_sdk(vxx, x);
-    fe25519_mul_sdk(vxx, vxx, v); /* vx^2 */
-    fe25519_sub_sdk(m_root_check, vxx, u); /* vx^2-u */
-    fe25519_add_sdk(p_root_check, vxx, u); /* vx^2+u */
-    fe25519_mul_sdk(f_root_check, u, fe25519_sqrtm1_sdk); /* u*sqrt(-1) */
-    fe25519_add_sdk(f_root_check, vxx, f_root_check); /* vx^2+u*sqrt(-1) */
-    has_m_root = fe25519_iszero_sdk(m_root_check);
+    CHECK_CXERROR(fe25519_sq_sdk(vxx, x))
+    CHECK_CXERROR(fe25519_mul_sdk(vxx, vxx, v)) /* vx^2 */
+    CHECK_CXERROR(fe25519_sub_sdk(m_root_check, vxx, u)) /* vx^2-u */
+    CHECK_CXERROR(fe25519_add_sdk(p_root_check, vxx, u)) /* vx^2+u */
+    CHECK_CXERROR(fe25519_mul_sdk(f_root_check, u, fe25519_sqrtm1_sdk)) /* u*sqrt(-1) */
+    CHECK_CXERROR(fe25519_add_sdk(f_root_check, vxx, f_root_check)) /* vx^2+u*sqrt(-1) */
+    fe25519_iszero_sdk(m_root_check);
     has_p_root = fe25519_iszero_sdk(p_root_check);
     has_f_root = fe25519_iszero_sdk(f_root_check);
-    fe25519_mul_sdk(x_sqrtm1,x, fe25519_sqrtm1_sdk);
+    CHECK_CXERROR(fe25519_mul_sdk(x_sqrtm1,x, fe25519_sqrtm1_sdk))
 
     fe25519_cmov_sdk(x, x_sqrtm1, has_p_root | has_f_root);
-    fe25519_abs_sdk(x, x);
+    CHECK_CXERROR(fe25519_abs_sdk(x, x))
 
-    return has_m_root | has_p_root;
+    return CX_OK;
 }
 
-void ristretto255_p3_tobytes_sdk(fe25519_sdk s, const ge25519_p3_sdk *h)
+static cx_err_t ristretto255_p3_tobytes_sdk(fe25519_sdk s, const ge25519_p3_sdk *h)
 {
     fe25519_sdk den1, den2;
     fe25519_sdk den_inv;
@@ -196,28 +198,28 @@ void ristretto255_p3_tobytes_sdk(fe25519_sdk s, const ge25519_p3_sdk *h)
     fe25519_sdk zmy;
     int     rotate;
 
-    fe25519_add_sdk(u1, h->Z, h->Y);       /* u1 = Z+Y */
-    fe25519_sub_sdk(zmy, h->Z, h->Y);      /* zmy = Z-Y */
-    fe25519_mul_sdk(u1, u1, zmy);          /* u1 = (Z+Y)*(Z-Y) */
-    fe25519_mul_sdk(u2, h->X, h->Y);       /* u2 = X*Y */
+    CHECK_CXERROR(fe25519_add_sdk(u1, h->Z, h->Y))       /* u1 = Z+Y */
+    CHECK_CXERROR(fe25519_sub_sdk(zmy, h->Z, h->Y))      /* zmy = Z-Y */
+    CHECK_CXERROR(fe25519_mul_sdk(u1, u1, zmy))          /* u1 = (Z+Y)*(Z-Y) */
+    CHECK_CXERROR(fe25519_mul_sdk(u2, h->X, h->Y))       /* u2 = X*Y */
 
-    fe25519_sq_sdk(u1_u2u2, u2);           /* u1_u2u2 = u2^2 */
-    fe25519_mul_sdk(u1_u2u2, u1, u1_u2u2); /* u1_u2u2 = u1*u2^2 */
+    CHECK_CXERROR(fe25519_sq_sdk(u1_u2u2, u2))           /* u1_u2u2 = u2^2 */
+    CHECK_CXERROR(fe25519_mul_sdk(u1_u2u2, u1, u1_u2u2)) /* u1_u2u2 = u1*u2^2 */
 
     fe25519_1_sdk(one);
-    ristretto255_sqrt_ratio_m1_sdk(inv_sqrt, one, u1_u2u2);
+    CHECK_CXERROR(ristretto255_sqrt_ratio_m1_sdk(inv_sqrt, one, u1_u2u2))
 
-    fe25519_mul_sdk(den1, inv_sqrt, u1);
-    fe25519_mul_sdk(den2, inv_sqrt, u2);
-    fe25519_mul_sdk(z_inv, den1, den2);
-    fe25519_mul_sdk(z_inv, z_inv, h->T);
+    CHECK_CXERROR(fe25519_mul_sdk(den1, inv_sqrt, u1))
+    CHECK_CXERROR(fe25519_mul_sdk(den2, inv_sqrt, u2))
+    CHECK_CXERROR(fe25519_mul_sdk(z_inv, den1, den2))
+    CHECK_CXERROR(fe25519_mul_sdk(z_inv, z_inv, h->T))
 
-    fe25519_mul_sdk(ix, h->X, fe25519_sqrtm1_sdk);
-    fe25519_mul_sdk(iy, h->Y, fe25519_sqrtm1_sdk);
+    CHECK_CXERROR(fe25519_mul_sdk(ix, h->X, fe25519_sqrtm1_sdk))
+    CHECK_CXERROR(fe25519_mul_sdk(iy, h->Y, fe25519_sqrtm1_sdk))
 
-    fe25519_mul_sdk(eden, den1, ed25519_invsqrtamd_sdk);
+    CHECK_CXERROR(fe25519_mul_sdk(eden, den1, ed25519_invsqrtamd_sdk))
 
-    fe25519_mul_sdk(t_z_inv, h->T, z_inv);
+    CHECK_CXERROR(fe25519_mul_sdk(t_z_inv, h->T, z_inv))
     rotate = fe25519_isnegative_sdk(t_z_inv);
 
     fe25519_copy_sdk(x_, h->X);
@@ -229,16 +231,18 @@ void ristretto255_p3_tobytes_sdk(fe25519_sdk s, const ge25519_p3_sdk *h)
     fe25519_cmov_sdk(y_, ix, rotate);
     fe25519_cmov_sdk(den_inv, eden, rotate);
 
-    fe25519_mul_sdk(x_z_inv, x_, z_inv);
-    fe25519_cneg_sdk(y_, y_, fe25519_isnegative_sdk(x_z_inv));
+    CHECK_CXERROR(fe25519_mul_sdk(x_z_inv, x_, z_inv))
+    CHECK_CXERROR(fe25519_cneg_sdk(y_, y_, fe25519_isnegative_sdk(x_z_inv)))
 
-    fe25519_sub_sdk(s_, h->Z, y_);
-    fe25519_mul_sdk(s_, den_inv, s_);
-    fe25519_abs_sdk(s, s_);
+    CHECK_CXERROR(fe25519_sub_sdk(s_, h->Z, y_))
+    CHECK_CXERROR(fe25519_mul_sdk(s_, den_inv, s_))
+    CHECK_CXERROR(fe25519_abs_sdk(s, s_))
+
+    return CX_OK;
 }
 
 
-int crypto_scalarmult_ristretto255_base_sdk(unsigned char *q,const unsigned char *n)
+cx_err_t crypto_scalarmult_ristretto255_base_sdk(unsigned char *q,const unsigned char *n)
 {
     unsigned char *t = q;
     unsigned int   i;
@@ -249,24 +253,24 @@ int crypto_scalarmult_ristretto255_base_sdk(unsigned char *q,const unsigned char
 
     uint8_t Pxy[ED25519_SDKPOINT_BYTES];
     memcpy(Pxy, ED25519_GEN, sizeof(Pxy));
-    cx_ecfp_scalar_mult(CX_CURVE_Ed25519, Pxy, sizeof(Pxy), t, ED25519_SCALAR_BYTES);
+    CHECK_CXERROR(cx_ecfp_scalar_mult_no_throw(CX_CURVE_Ed25519, Pxy, t, ED25519_SCALAR_BYTES))
 
     ge25519_p3_sdk Q_sdk;
     MEMZERO(&Q_sdk, sizeof(ge25519_p3_sdk));
     memcpy(Q_sdk.X, &Pxy[1],ED25519_SCALAR_BYTES);
     memcpy(Q_sdk.Y, &Pxy[1+ED25519_SCALAR_BYTES],ED25519_SCALAR_BYTES);
     fe25519_1_sdk(Q_sdk.Z);
-    fe25519_mul_sdk(Q_sdk.T, Q_sdk.X,Q_sdk.Y);
+    CHECK_CXERROR(fe25519_mul_sdk(Q_sdk.T, Q_sdk.X,Q_sdk.Y))
 
     fe25519_sdk s;
 
-    ristretto255_p3_tobytes_sdk(s, &Q_sdk);
+    CHECK_CXERROR(ristretto255_p3_tobytes_sdk(s, &Q_sdk))
 
     if (fe25519_iszero_sdk(s)) {
-        return -1;
+        return CX_INTERNAL_ERROR;
     }
 
     fe25519_tobytes_sdk(q,s);
 
-    return 0;
+    return CX_OK;
 }
