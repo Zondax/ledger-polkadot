@@ -118,6 +118,15 @@ const char *tx_parse() {
 
     // If in swap mode, compare swap tx parameters with stored info.
     if (G_swap_state.called_from_swap) {
+        if (G_swap_state.should_exit == 1) {
+            // Safety against trying to make the app sign multiple TX
+            // This panic quit is a failsafe that should never trigger, as the app is supposed to
+            // exit after the first send when started in swap mode
+            os_sched_exit(-1);
+        } else {
+            // We will quit the app after this transaction, whether it succeeds or fails
+            G_swap_state.should_exit = 1;
+        }
         err = check_swap_conditions(&ctx_parsed_tx);
         CHECK_APP_CANARY()
         if (err != parser_ok) {

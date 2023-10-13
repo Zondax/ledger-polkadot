@@ -18,6 +18,7 @@
 #include "base58.h"
 #include "coin.h"
 #include "cx.h"
+#include "swap.h"
 #include "zxmacros.h"
 #include "ristretto.h"
 #include "crypto_helper.h"
@@ -28,7 +29,7 @@
 
 uint32_t hdPath[HDPATH_LEN_DEFAULT];
 
-static zxerr_t crypto_extractPublicKey(key_kind_e addressKind, uint8_t *pubKey, uint16_t pubKeyLen) {
+static zxerr_t crypto_extractPublicKey(key_kind_e addressKind, uint8_t *pubKey, uint16_t pubKeyLen, uint32_t *hdPath_to_use) {
     if (pubKey == NULL || pubKeyLen < PK_LEN_25519) {
         return zxerr_invalid_crypto_settings;
     }
@@ -41,7 +42,7 @@ static zxerr_t crypto_extractPublicKey(key_kind_e addressKind, uint8_t *pubKey, 
     // Generate keys
     CATCH_CXERROR(os_derive_bip32_with_seed_no_throw(HDW_NORMAL,
                                                      CX_CURVE_Ed25519,
-                                                     hdPath,
+                                                     hdPath_to_use,
                                                      HDPATH_LEN_DEFAULT,
                                                      privateKeyData,
                                                      NULL,
@@ -215,12 +216,13 @@ zxerr_t crypto_sign_sr25519(const uint8_t *message, size_t messageLen) {
 }
 #endif
 
-zxerr_t crypto_fillAddress(key_kind_e addressKind, uint8_t *buffer, uint16_t bufferLen, uint16_t *addrResponseLen) {
+// Helper function to fill a crypto address using a given hdPath
+static zxerr_t crypto_fillAddress_helper(key_kind_e addressKind, uint8_t *buffer, uint16_t bufferLen, uint16_t *addrResponseLen, uint32_t *hdPath_to_use) {
     if (bufferLen < PK_LEN_25519 + SS58_ADDRESS_MAX_LEN) {
         return zxerr_unknown;
     }
     MEMZERO(buffer, bufferLen);
-    CHECK_ZXERR(crypto_extractPublicKey(addressKind, buffer, bufferLen))
+    CHECK_ZXERR(crypto_extractPublicKey(addressKind, buffer, bufferLen, hdPath_to_use))
 
     size_t outLen = crypto_SS58EncodePubkey(buffer + PK_LEN_25519,
                                             bufferLen - PK_LEN_25519,
@@ -232,4 +234,24 @@ zxerr_t crypto_fillAddress(key_kind_e addressKind, uint8_t *buffer, uint16_t buf
 
     *addrResponseLen = PK_LEN_25519 + outLen;
     return zxerr_ok;
+}
+
+// fill a crypto address using the global hdpath
+zxerr_t crypto_fillAddress(key_kind_e addressKind, uint8_t *buffer, uint16_t bufferLen, uint16_t *addrResponseLen) {
+    return crypto_fillAddress_helper(addressKind, buffer, bufferLen, addrResponseLen, hdPath);
+}
+
+// fill a crypto address using a locally computed hdpath
+zxerr_t crypto_fillAddress_standalone(uint8_t* params, uint8_t paramsSize, key_kind_e addressKind, uint8_t *buffer, uint16_t bufferLen, uint16_t *addrResponseLen) {
+    uint32_t local_hdPath[HDPATH_LEN_DEFAULT];
+
+    if (paramsSize != (sizeof(uint32_t) * HDPATH_LEN_DEFAULT)) {
+        return zxerr_invalid_crypto_settings;
+    }
+
+    for (uint32_t i = 0; i < HDPATH_LEN_DEFAULT; i++) {
+        CHECK_ZXERR(readU32BE(params + (i * 4), &local_hdPath[i]))
+    }
+
+    return crypto_fillAddress_helper(addressKind, buffer, bufferLen, addrResponseLen, local_hdPath);
 }
