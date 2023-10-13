@@ -46,9 +46,8 @@ void handle_check_address(check_address_parameters_t* params) {
 
     const uint8_t *address = buffer + PK_LEN_25519;
     const uint8_t addressLen = replyLen - PK_LEN_25519;
-    const uint8_t addressToCheckLen = strlen(params->address_to_check);
 
-    if (addressLen == addressToCheckLen &&
+    if (addressLen == params->address_parameters_length &&
         memcmp(address, params->address_to_check, addressLen) == 0) {
         params->result = 1;
     }
