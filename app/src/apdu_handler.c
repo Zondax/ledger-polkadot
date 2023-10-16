@@ -36,7 +36,7 @@
 
 static bool tx_initialized = false;
 
-void extractHDPath(uint32_t rx, uint32_t offset) {
+static void extractHDPath(uint32_t rx, uint32_t offset) {
     tx_initialized = false;
 
     if ((rx - offset) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT) {
@@ -175,7 +175,6 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
     switch (key_type) {
         case key_ed25519: {
             if (G_swap_state.called_from_swap) {
-                G_swap_state.should_exit = 1;
                 app_sign_ed25519();
             } else {
                 view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
@@ -191,7 +190,6 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
                 THROW(APDU_CODE_DATA_INVALID);
             }
             if (G_swap_state.called_from_swap) {
-                G_swap_state.should_exit = 1;
                 app_return_sr25519();
             } else {
                 view_review_init(tx_getItem, tx_getNumItems, app_return_sr25519);
@@ -329,6 +327,16 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
         }
         FINALLY
         {
+            #ifdef HAVE_SWAP
+                if (G_swap_state.called_from_swap && G_swap_state.should_exit) {
+                    // Swap checking failed, send reply now and exit, don't wait next cycle
+                    if (sw != 0) {
+                        io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, *tx);
+                    }
+                    // Go back to exchange and report our status
+                    finalize_exchange_sign_transaction(sw == 0);
+                }
+            #endif
         }
     }
     END_TRY;

@@ -80,7 +80,7 @@ endif
 
 APP_LOAD_PARAMS = --curve ed25519 $(COMMON_LOAD_PARAMS) --path $(APPPATH)
 
-NANOS_STACK_SIZE := 3136
+NANOS_STACK_SIZE := 3128
 
 include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.devices
 
