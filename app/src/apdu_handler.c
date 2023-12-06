@@ -119,7 +119,9 @@ __Z_INLINE void handle_getversion(__Z_UNUSED volatile uint32_t *flags, volatile 
     G_io_apdu_buffer[5] = (LEDGER_PATCH_VERSION >> 8) & 0xFF;
     G_io_apdu_buffer[6] = (LEDGER_PATCH_VERSION >> 0) & 0xFF;
 
-    G_io_apdu_buffer[7] = !IS_UX_ALLOWED;
+    // sdk won't pass the apdu message if device is locked
+    // keeping it for backwards compatibility
+    G_io_apdu_buffer[7] = 0;
 
     G_io_apdu_buffer[8] = (TARGET_ID >> 24) & 0xFF;
     G_io_apdu_buffer[9] = (TARGET_ID >> 16) & 0xFF;
@@ -187,6 +189,7 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
         case key_sr25519: {
             zxerr_t err = app_sign_sr25519();
             if (err != zxerr_ok) {
+                *tx = 0;
                 THROW(APDU_CODE_DATA_INVALID);
             }
             if (G_swap_state.called_from_swap) {

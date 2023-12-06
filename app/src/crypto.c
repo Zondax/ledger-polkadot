@@ -31,7 +31,7 @@ uint32_t hdPath[HDPATH_LEN_DEFAULT];
 
 static zxerr_t crypto_extractPublicKey(key_kind_e addressKind, uint8_t *pubKey, uint16_t pubKeyLen, uint32_t *hdPath_to_use) {
     if (pubKey == NULL || pubKeyLen < PK_LEN_25519) {
-        return zxerr_invalid_crypto_settings;
+        return zxerr_buffer_too_small;
     }
 
     zxerr_t error = zxerr_unknown;
@@ -87,8 +87,8 @@ catch_cx_error:
 }
 
 zxerr_t crypto_sign_ed25519(uint8_t *signature, uint16_t signatureMaxlen, const uint8_t *message, uint16_t messageLen) {
-    if (signature == NULL || message == NULL || signatureMaxlen < SIG_PLUS_TYPE_LEN) {
-        return zxerr_unknown;
+    if (signature == NULL || message == NULL || signatureMaxlen < SIG_PLUS_TYPE_LEN || messageLen == 0) {
+        return zxerr_buffer_too_small;
     }
     cx_ecfp_private_key_t cx_privateKey;
     uint8_t privateKeyData[SK_LEN_25519] = {0};
@@ -148,7 +148,7 @@ void zeroize_sr25519_signdata(void) {
 }
 
 zxerr_t copy_sr25519_signdata(uint8_t *buffer, uint16_t bufferLen) {
-    if (SIG_PLUS_TYPE_LEN > bufferLen) {
+    if (buffer == NULL || SIG_PLUS_TYPE_LEN > bufferLen) {
         return zxerr_buffer_too_small;
     }
 
@@ -157,6 +157,9 @@ zxerr_t copy_sr25519_signdata(uint8_t *buffer, uint16_t bufferLen) {
 }
 
 static zxerr_t crypto_sign_sr25519_helper(const uint8_t *data, size_t len) {
+    if (data == NULL || len == 0) {
+        return zxerr_buffer_too_small;
+    }
     uint8_t privateKeyData[SK_LEN_25519] = {0};
     uint8_t pubkey[PK_LEN_25519] = {0};
 
@@ -194,8 +197,8 @@ catch_cx_error:
 }
 
 zxerr_t crypto_sign_sr25519(const uint8_t *message, size_t messageLen) {
-    if (message == NULL) {
-        return zxerr_unknown;
+    if (message == NULL || messageLen == 0) {
+        return zxerr_buffer_too_small;
     }
 
     uint8_t messageDigest[BLAKE2B_DIGEST_SIZE] = {0};
@@ -219,7 +222,7 @@ zxerr_t crypto_sign_sr25519(const uint8_t *message, size_t messageLen) {
 // Helper function to fill a crypto address using a given hdPath
 static zxerr_t crypto_fillAddress_helper(key_kind_e addressKind, uint8_t *buffer, uint16_t bufferLen, uint16_t *addrResponseLen, uint32_t *hdPath_to_use) {
     if (bufferLen < PK_LEN_25519 + SS58_ADDRESS_MAX_LEN) {
-        return zxerr_unknown;
+        return zxerr_buffer_too_small;
     }
     MEMZERO(buffer, bufferLen);
     CHECK_ZXERR(crypto_extractPublicKey(addressKind, buffer, bufferLen, hdPath_to_use))
