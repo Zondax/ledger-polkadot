@@ -18,8 +18,8 @@
     "test": "yarn clean && jest --maxConcurrency 3"
   },
   "dependencies": {
-    "@zondax/ledger-substrate": "^0.41.1",
-    "@zondax/zemu": "^0.44.2"
+    "@zondax/ledger-substrate": "^0.41.3",
+    "@zondax/zemu": "^0.46.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",

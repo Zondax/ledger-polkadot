@@ -32,8 +32,8 @@ extern "C" {
 
 uint8_t crypto_SS58CalculatePrefix(uint16_t addressType, uint8_t *prefixBytes);
 
-uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
-                                uint16_t addressType, const uint8_t *pubkey);
+uint16_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
+                                 uint16_t addressType, const uint8_t *pubkey);
 
 #ifdef __cplusplus
 }

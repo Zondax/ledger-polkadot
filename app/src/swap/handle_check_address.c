@@ -22,7 +22,7 @@
 
 
 void handle_check_address(check_address_parameters_t* params) {
-    if (params == NULL || params->address_to_check == 0) {
+    if (params == NULL || params->address_to_check == NULL || params->address_parameters_length < 2) {
         return;
     }
     params->result = 0;

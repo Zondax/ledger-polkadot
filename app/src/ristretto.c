@@ -169,7 +169,6 @@ static cx_err_t ristretto255_sqrt_ratio_m1_sdk(fe25519_sdk x, const fe25519_sdk 
     CHECK_CXERROR(fe25519_add_sdk(p_root_check, vxx, u)) /* vx^2+u */
     CHECK_CXERROR(fe25519_mul_sdk(f_root_check, u, fe25519_sqrtm1_sdk)) /* u*sqrt(-1) */
     CHECK_CXERROR(fe25519_add_sdk(f_root_check, vxx, f_root_check)) /* vx^2+u*sqrt(-1) */
-    fe25519_iszero_sdk(m_root_check);
     has_p_root = fe25519_iszero_sdk(p_root_check);
     has_f_root = fe25519_iszero_sdk(f_root_check);
     CHECK_CXERROR(fe25519_mul_sdk(x_sqrtm1,x, fe25519_sqrtm1_sdk))

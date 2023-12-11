@@ -65,33 +65,6 @@ extern "C" {
 #define PD_CALL_CROWDLOAN_V24 73
 #define PD_CALL_XCMPALLET_V24 99
 
-#define PD_CALL_BALANCES_TRANSFER_ALL_V24 4
-typedef struct {
-    pd_AccountIdLookupOfT_t dest;
-    pd_bool_t keep_alive;
-} pd_balances_transfer_all_V24_t;
-
-#define PD_CALL_STAKING_VALIDATE_V24 4
-typedef struct {
-    pd_ValidatorPrefs_t prefs;
-} pd_staking_validate_V24_t;
-
-#define PD_CALL_STAKING_PAYOUT_STAKERS_V24 18
-typedef struct {
-    pd_AccountId_t validator_stash;
-    pd_EraIndex_t era;
-} pd_staking_payout_stakers_V24_t;
-
-#define PD_CALL_SESSION_SET_KEYS_V24 0
-typedef struct {
-    pd_Keys_t keys;
-    pd_Bytes_t proof;
-} pd_session_set_keys_V24_t;
-
-#define PD_CALL_SESSION_PURGE_KEYS_V24 1
-typedef struct {
-} pd_session_purge_keys_V24_t;
-
 #define PD_CALL_UTILITY_BATCH_V24 0
 typedef struct {
     pd_VecCall_t calls;
@@ -1157,11 +1130,6 @@ typedef struct {
 #endif
 
 typedef union {
-    pd_balances_transfer_all_V24_t balances_transfer_all_V24;
-    pd_staking_validate_V24_t staking_validate_V24;
-    pd_staking_payout_stakers_V24_t staking_payout_stakers_V24;
-    pd_session_set_keys_V24_t session_set_keys_V24;
-    pd_session_purge_keys_V24_t session_purge_keys_V24;
     pd_utility_batch_V24_t utility_batch_V24;
     pd_utility_batch_all_V24_t utility_batch_all_V24;
     pd_utility_force_batch_V24_t utility_force_batch_V24;
@@ -1375,6 +1343,12 @@ typedef struct {
     pd_CompactBalance_t amount;
 } pd_balances_transfer_keep_alive_V24_t;
 
+#define PD_CALL_BALANCES_TRANSFER_ALL_V24 4
+typedef struct {
+    pd_AccountIdLookupOfT_t dest;
+    pd_bool_t keep_alive;
+} pd_balances_transfer_all_V24_t;
+
 #define PD_CALL_BALANCES_TRANSFER_V24 7
 typedef struct {
     pd_AccountIdLookupOfT_t dest;
@@ -1402,6 +1376,11 @@ typedef struct {
     pd_u32_t num_slashing_spans;
 } pd_staking_withdraw_unbonded_V24_t;
 
+#define PD_CALL_STAKING_VALIDATE_V24 4
+typedef struct {
+    pd_ValidatorPrefs_t prefs;
+} pd_staking_validate_V24_t;
+
 #define PD_CALL_STAKING_NOMINATE_V24 5
 typedef struct {
     pd_VecAccountIdLookupOfT_t targets;
@@ -1420,10 +1399,26 @@ typedef struct {
 typedef struct {
 } pd_staking_set_controller_V24_t;
 
+#define PD_CALL_STAKING_PAYOUT_STAKERS_V24 18
+typedef struct {
+    pd_AccountId_t validator_stash;
+    pd_EraIndex_t era;
+} pd_staking_payout_stakers_V24_t;
+
 #define PD_CALL_STAKING_REBOND_V24 19
 typedef struct {
     pd_CompactBalance_t amount;
 } pd_staking_rebond_V24_t;
+
+#define PD_CALL_SESSION_SET_KEYS_V24 0
+typedef struct {
+    pd_Keys_t keys;
+    pd_Bytes_t proof;
+} pd_session_set_keys_V24_t;
+
+#define PD_CALL_SESSION_PURGE_KEYS_V24 1
+typedef struct {
+} pd_session_purge_keys_V24_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
@@ -1770,16 +1765,21 @@ typedef union {
     pd_balances_transfer_allow_death_V24_t balances_transfer_allow_death_V24;
     pd_balances_force_transfer_V24_t balances_force_transfer_V24;
     pd_balances_transfer_keep_alive_V24_t balances_transfer_keep_alive_V24;
+    pd_balances_transfer_all_V24_t balances_transfer_all_V24;
     pd_balances_transfer_V24_t balances_transfer_V24;
     pd_staking_bond_V24_t staking_bond_V24;
     pd_staking_bond_extra_V24_t staking_bond_extra_V24;
     pd_staking_unbond_V24_t staking_unbond_V24;
     pd_staking_withdraw_unbonded_V24_t staking_withdraw_unbonded_V24;
+    pd_staking_validate_V24_t staking_validate_V24;
     pd_staking_nominate_V24_t staking_nominate_V24;
     pd_staking_chill_V24_t staking_chill_V24;
     pd_staking_set_payee_V24_t staking_set_payee_V24;
     pd_staking_set_controller_V24_t staking_set_controller_V24;
+    pd_staking_payout_stakers_V24_t staking_payout_stakers_V24;
     pd_staking_rebond_V24_t staking_rebond_V24;
+    pd_session_set_keys_V24_t session_set_keys_V24;
+    pd_session_purge_keys_V24_t session_purge_keys_V24;
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
 #endif
