@@ -75,7 +75,7 @@ zxerr_t secret_enabled() {
     } else {
         zemu_log("RECOVERY TRIGGERED");
         view_review_init(secret_getItem, secret_getNumItems, secret_accept);
-        view_review_show(0x00);
+        view_review_show(REVIEW_UI);
     }
 #endif
     return zxerr_ok;
