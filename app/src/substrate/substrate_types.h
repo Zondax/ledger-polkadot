@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  (c) 2019 - 2023 Zondax AG
+ *  (c) 2019 - 2024 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -540,11 +540,6 @@ typedef struct {
 } pd_TupleDataData_t;
 
 typedef struct {
-    uint32_t first;
-    uint32_t second;
-} pd_Tupleu32u32_t;
-
-typedef struct {
     uint8_t value;
 } pd_Vote_t;
 
@@ -583,6 +578,10 @@ typedef struct {
 } pd_CompactPerBill_t;
 
 typedef struct {
+    const uint8_t* _ptr;
+} pd_Hash_t;
+
+typedef struct {
     uint8_t value;
     union {
         pd_Ed25519Signature_t ed25519;
@@ -619,28 +618,8 @@ typedef struct {
 } pd_PolkadotOrigins_t;
 
 typedef struct {
-    const uint8_t* _ptr;
-} pd_PreimageHash_t;
-
-typedef struct {
-    uint32_t value;
-} pd_PropIndex_t;
-
-typedef struct {
     uint8_t value;
 } pd_ProxyType_t;
-
-typedef struct {
-    uint8_t value;
-    union {
-        pd_Tupleu32u32_t members;
-        pd_AccountId_t member;
-    };
-} pd_RawOrigin_t;
-
-typedef struct {
-    uint32_t value;
-} pd_ReferendumIndex_t;
 
 typedef struct {
     uint8_t value;
@@ -716,11 +695,10 @@ typedef struct {
     uint8_t value;
     union {
         pd_SystemOrigin_t system;
-        pd_RawOrigin_t raw;
         pd_PolkadotOrigins_t origins;
         pd_ParachainsOrigin_t parachainsOrigin;
     };
-} pd_BoxPalletsOriginOfT_t;
+} pd_BoxPalletsOrigin_t;
 
 typedef struct {
     uint8_t value;
@@ -781,14 +759,6 @@ typedef struct {
 } pd_JudgementBalanceOfT_t;
 
 typedef struct {
-    uint8_t value;
-    union {
-        pd_PropIndex_t proposal;
-        pd_ReferendumIndex_t referendum;
-    };
-} pd_MetadataOwner_t;
-
-typedef struct {
     uint8_t some;
     pd_MultiSignature_t contained;
 } pd_OptionMultiSignature_t;
@@ -807,10 +777,6 @@ typedef struct {
     uint8_t some;
     pd_TuplePerbillAccountId_t contained;
 } pd_OptionTuplePerbillAccountId_t;
-
-typedef struct {
-    pd_Call_t call;
-} pd_Proposal_t;
 
 typedef struct {
     uint8_t value;
@@ -884,15 +850,7 @@ typedef struct {
 
 typedef struct {
     const uint8_t* _ptr;
-} pd_Hash_t;
-
-typedef struct {
-    const uint8_t* _ptr;
 } pd_Keys_t;
-
-typedef struct {
-    uint32_t value;
-} pd_MemberCount_t;
 
 typedef struct {
     uint8_t some;
@@ -906,8 +864,8 @@ typedef struct {
 
 typedef struct {
     uint8_t some;
-    pd_PreimageHash_t contained;
-} pd_OptionPreimageHash_t;
+    pd_Hash_t contained;
+} pd_OptionHash_t;
 
 typedef struct {
     uint8_t some;
@@ -916,17 +874,8 @@ typedef struct {
 
 typedef struct {
     uint8_t some;
-    pd_ReferendumIndex_t contained;
-} pd_OptionReferendumIndex_t;
-
-typedef struct {
-    uint8_t some;
     pd_u32_t contained;
 } pd_Optionu32_t;
-
-typedef struct {
-    uint64_t value;
-} pd_OverweightIndex_t;
 
 typedef struct {
     uint32_t value;
@@ -942,11 +891,19 @@ typedef struct {
 
 typedef struct {
     uint32_t value;
+} pd_ReferendumIndex_t;
+
+typedef struct {
+    uint32_t value;
 } pd_RegistrarIndex_t;
 
 typedef struct {
     uint32_t value;
 } pd_SessionIndex_t;
+
+typedef struct {
+    uint32_t value;
+} pd_SpendIndex_t;
 
 typedef struct {
     uint16_t value;
@@ -957,6 +914,12 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_VecAccountId_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecHash_t;
 
 typedef struct {
     uint64_t _len;
