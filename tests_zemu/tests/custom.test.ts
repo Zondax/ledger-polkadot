@@ -21,7 +21,7 @@ import { APP_SEED, models } from './common'
 // @ts-expect-error missing typings
 import ed25519 from 'ed25519-supercop'
 import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
-import { txBalances_transfer, txSession_setKeys, txStaking_nominate, txProxy_proxy, txUtility_batch } from './zemu_blobs'
+import { txBalances_transferAllowDeath, txSession_setKeys, txStaking_nominate, txProxy_proxy, txUtility_batch } from './zemu_blobs'
 
 const defaultOptions = {
   ...DEFAULT_START_OPTIONS,
@@ -35,7 +35,7 @@ jest.setTimeout(180000)
 const TXNS = [
   {
     name: 'balances_transfer',
-    blob: txBalances_transfer,
+    blob: txBalances_transferAllowDeath,
   },
   {
     name: 'session_setkeys',
@@ -110,7 +110,7 @@ test.concurrent.each(models)('balances transfer expert', async function (m) {
     // Change to expert mode
     await sim.toggleExpertMode()
 
-    const txBlob = Buffer.from(txBalances_transfer, 'hex')
+    const txBlob = Buffer.from(txBalances_transferAllowDeath, 'hex')
 
     const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
     const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
