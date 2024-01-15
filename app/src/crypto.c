@@ -47,13 +47,13 @@ static zxerr_t crypto_extractPublicKey(key_kind_e addressKind, uint8_t *pubKey, 
                                                      privateKeyData,
                                                      NULL,
                                                      NULL,
-                                                     0))
+                                                     0));
 
     switch (addressKind) {
         case key_ed25519: {
-            CATCH_CXERROR(cx_ecfp_init_private_key_no_throw(CX_CURVE_Ed25519, privateKeyData, 32, &cx_privateKey))
-            CATCH_CXERROR(cx_ecfp_init_public_key_no_throw(CX_CURVE_Ed25519, NULL, 0, &cx_publicKey))
-            CATCH_CXERROR(cx_ecfp_generate_pair_no_throw(CX_CURVE_Ed25519, &cx_publicKey, &cx_privateKey, 1))
+            CATCH_CXERROR(cx_ecfp_init_private_key_no_throw(CX_CURVE_Ed25519, privateKeyData, 32, &cx_privateKey));
+            CATCH_CXERROR(cx_ecfp_init_public_key_no_throw(CX_CURVE_Ed25519, NULL, 0, &cx_publicKey));
+            CATCH_CXERROR(cx_ecfp_generate_pair_no_throw(CX_CURVE_Ed25519, &cx_publicKey, &cx_privateKey, 1));
             for (unsigned int i = 0; i < PK_LEN_25519; i++) {
                 pubKey[i] = cx_publicKey.W[64 - i];
             }
@@ -67,7 +67,7 @@ static zxerr_t crypto_extractPublicKey(key_kind_e addressKind, uint8_t *pubKey, 
 #ifdef SUPPORT_SR25519
         case key_sr25519:
             get_sr25519_sk(privateKeyData);
-            CATCH_CXERROR(crypto_scalarmult_ristretto255_base_sdk(pubKey, privateKeyData))
+            CATCH_CXERROR(crypto_scalarmult_ristretto255_base_sdk(pubKey, privateKeyData));
             error = zxerr_ok;
             break;
 #endif
@@ -101,8 +101,8 @@ zxerr_t crypto_sign_ed25519(uint8_t *signature, uint16_t signatureMaxlen, const 
     if (messageLen > MAX_SIGN_SIZE) {
         // Hash it
         cx_blake2b_t ctx;
-        CATCH_CXERROR(cx_blake2b_init_no_throw(&ctx, 256))
-        CATCH_CXERROR(cx_hash_no_throw(&ctx.header, CX_LAST, message, messageLen, messageDigest, BLAKE2B_DIGEST_SIZE))
+        CATCH_CXERROR(cx_blake2b_init_no_throw(&ctx, 256));
+        CATCH_CXERROR(cx_hash_no_throw(&ctx.header, CX_LAST, message, messageLen, messageDigest, BLAKE2B_DIGEST_SIZE));
         toSign = messageDigest;
         messageLen = BLAKE2B_DIGEST_SIZE;
     }
@@ -115,9 +115,9 @@ zxerr_t crypto_sign_ed25519(uint8_t *signature, uint16_t signatureMaxlen, const 
                                                      privateKeyData,
                                                      NULL,
                                                      NULL,
-                                                     0))
+                                                     0));
 
-    CATCH_CXERROR(cx_ecfp_init_private_key_no_throw(CX_CURVE_Ed25519, privateKeyData, SCALAR_LEN_ED25519, &cx_privateKey))
+    CATCH_CXERROR(cx_ecfp_init_private_key_no_throw(CX_CURVE_Ed25519, privateKeyData, SCALAR_LEN_ED25519, &cx_privateKey));
 
     // Sign
     *signature = PREFIX_SIGNATURE_TYPE_ED25519;
@@ -126,7 +126,7 @@ zxerr_t crypto_sign_ed25519(uint8_t *signature, uint16_t signatureMaxlen, const 
                                          toSign,
                                          messageLen,
                                          signature + 1,
-                                         signatureMaxlen - 1))
+                                         signatureMaxlen - 1));
     error = zxerr_ok;
 
 catch_cx_error:
@@ -173,13 +173,13 @@ static zxerr_t crypto_sign_sr25519_helper(const uint8_t *data, size_t len) {
                                                      privateKeyData,
                                                      NULL,
                                                      NULL,
-                                                     0))
+                                                     0));
 
     get_sr25519_sk(privateKeyData);
-    CATCH_CXERROR(crypto_scalarmult_ristretto255_base_sdk(pubkey, privateKeyData))
+    CATCH_CXERROR(crypto_scalarmult_ristretto255_base_sdk(pubkey, privateKeyData));
     *sr25519_signature = PREFIX_SIGNATURE_TYPE_SR25519;
     sign_sr25519_phase1(privateKeyData, pubkey, NULL, 0, data, len, sr25519_signature + 1);
-    CATCH_CXERROR(crypto_scalarmult_ristretto255_base_sdk(sr25519_signature + 1, sr25519_signature + 1 + PK_LEN_25519))
+    CATCH_CXERROR(crypto_scalarmult_ristretto255_base_sdk(sr25519_signature + 1, sr25519_signature + 1 + PK_LEN_25519));
     error = zxerr_ok;
 
 catch_cx_error:

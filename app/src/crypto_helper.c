@@ -24,9 +24,9 @@ cx_err_t ss58hash(const unsigned char *in, unsigned int inLen,
                    unsigned char *out, unsigned int outLen) {
 
     cx_blake2b_t ctx;
-    CHECK_CXERROR(cx_blake2b_init_no_throw(&ctx, 512))
-    CHECK_CXERROR(cx_hash_no_throw(&ctx.header, 0, SS58_BLAKE_PREFIX, SS58_BLAKE_PREFIX_LEN, NULL, 0))
-    CHECK_CXERROR(cx_hash_no_throw(&ctx.header, CX_LAST, in, inLen, out, outLen))
+    CHECK_CXERROR(cx_blake2b_init_no_throw(&ctx, 512));
+    CHECK_CXERROR(cx_hash_no_throw(&ctx.header, 0, SS58_BLAKE_PREFIX, SS58_BLAKE_PREFIX_LEN, NULL, 0));
+    CHECK_CXERROR(cx_hash_no_throw(&ctx.header, CX_LAST, in, inLen, out, outLen));
 
     return CX_OK;
 }

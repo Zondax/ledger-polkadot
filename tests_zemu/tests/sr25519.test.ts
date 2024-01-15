@@ -17,7 +17,7 @@
 import Zemu, { DEFAULT_START_OPTIONS } from '@zondax/zemu'
 import { newPolkadotApp } from '@zondax/ledger-substrate'
 import { APP_SEED } from './common'
-import { txBalances_transfer } from './zemu_blobs'
+import { txBalances_transferAllowDeath } from './zemu_blobs'
 
 // @ts-ignore
 import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
@@ -114,7 +114,7 @@ describe('SR25519', function () {
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
 
-      const txBlob = Buffer.from(txBalances_transfer, 'hex')
+      const txBlob = Buffer.from(txBalances_transferAllowDeath, 'hex')
 
       const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex, false, 1)
       const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
@@ -160,7 +160,7 @@ describe('SR25519', function () {
       await sim.clickBoth()
       await sim.clickLeft()
 
-      const txBlob = Buffer.from(txBalances_transfer, 'hex')
+      const txBlob = Buffer.from(txBalances_transferAllowDeath, 'hex')
 
       const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex, false, 1)
       const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
