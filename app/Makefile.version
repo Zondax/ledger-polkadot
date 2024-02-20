@@ -3,4 +3,4 @@ APPVERSION_M=25
 # This is the `spec_version` field of `Runtime`
 APPVERSION_N=10100
 # This is the patch version of this release
-APPVERSION_P=0
+APPVERSION_P=1

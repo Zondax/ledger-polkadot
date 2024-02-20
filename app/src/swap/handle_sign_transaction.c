@@ -85,7 +85,7 @@ parser_error_t check_swap_conditions(const parser_context_t *ctx) {
         return err;
     }
     // Check method.
-    const char * valid_tx_method = "Balances Transfer";
+    const char * valid_tx_method = "Balances Transfer allow death";
     char tmp_str[80] = {0};
     snprintf(tmp_str, sizeof(tmp_str), "%s %s", _getMethod_ModuleName(ctx->tx_obj->transactionVersion,
                                                                     ctx->tx_obj->callIndex.moduleIdx),
