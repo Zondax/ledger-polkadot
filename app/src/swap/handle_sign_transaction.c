@@ -93,7 +93,8 @@ parser_error_t check_swap_conditions(const parser_context_t *ctx) {
                                                                 ctx->tx_obj->callIndex.moduleIdx,
                                                                 ctx->tx_obj->callIndex.idx));
 
-    if (strncmp(tmp_str, &valid_tx_method[0], strlen(valid_tx_method)) != 0) {
+    if (strnlen(tmp_str, sizeof(tmp_str)) != strlen(valid_tx_method) ||
+        strncmp(tmp_str, &valid_tx_method[0], strlen(valid_tx_method)) != 0) {
          ZEMU_LOGF(200, "Wrong swap tx method (%s, should be : %s).\n", tmp_str, valid_tx_method);
          return parser_swap_tx_wrong_method;
     }
