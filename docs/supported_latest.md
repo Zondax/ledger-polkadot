@@ -1,4 +1,4 @@
-# Polkadot 25.1001000.x
+# Enjin Relaychain 7.1026.x
 
 ## System
 
