@@ -2437,64 +2437,64 @@ parser_error_t _readMethod_V7(
 const char* _getMethod_ModuleName_V7(uint8_t moduleIdx)
 {
     switch (moduleIdx) {
-    case 6:
+    case 6: // ok
         return STR_MO_BALANCES;
     case 7:
         return STR_MO_STAKING;
-    case 9:
+    case 10: // ok 
         return STR_MO_SESSION;
-    case 26:
+    case 20: // ok
         return STR_MO_UTILITY;
-    case 73:
+    case 73: // ok
         return STR_MO_CROWDLOAN;
 #ifdef SUBSTRATE_PARSER_FULL
 #ifndef TARGET_NANOS
-    case 99:
+    case 99: // ok
         return STR_MO_XCMPALLET;
 #endif
-    case 0:
+    case 0: // ok
         return STR_MO_SYSTEM;
-    case 10:
+    case 101: // ok
         return STR_MO_PREIMAGE;
-    case 3:
+    case 2: // ok
         return STR_MO_TIMESTAMP;
     case 4:
         return STR_MO_INDICES;
-    case 19:
+    case 12: // ok
         return STR_MO_TREASURY;
-    case 20:
+    case 102: // ok
         return STR_MO_CONVICTIONVOTING;
-    case 21:
+    case 103: // ok
         return STR_MO_REFERENDA;
-    case 23:
+    case 105: // ok
         return STR_MO_WHITELIST;
     case 24:
         return STR_MO_CLAIMS;
     case 25:
         return STR_MO_VESTING;
-    case 28:
+    case 108: // ok
         return STR_MO_IDENTITY;
     case 29:
         return STR_MO_PROXY;
-    case 30:
+    case 21: // ok
         return STR_MO_MULTISIG;
     case 34:
         return STR_MO_BOUNTIES;
     case 38:
         return STR_MO_CHILDBOUNTIES;
-    case 37:
+    case 17: // ok
         return STR_MO_VOTERLIST;
     case 39:
         return STR_MO_NOMINATIONPOOLS;
     case 40:
         return STR_MO_FASTUNSTAKE;
-    case 51:
+    case 51: // ok
         return STR_MO_CONFIGURATION;
-    case 57:
+    case 57: // ok
         return STR_MO_INITIALIZER;
-    case 62:
+    case 62: // ok
         return STR_MO_PARASDISPUTES;
-    case 72:
+    case 72: // ok
         return STR_MO_AUCTIONS;
 #endif
     default:

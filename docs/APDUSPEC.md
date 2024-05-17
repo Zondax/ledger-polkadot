@@ -1,4 +1,4 @@
-# Polkadot App
+# Enjin App
 
 ## General structure
 
