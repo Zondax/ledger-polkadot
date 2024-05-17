@@ -1799,19 +1799,19 @@ parser_error_t _readMethod_V7(
     case 1811: /* module 7 call 19 */
         CHECK_ERROR(_readMethod_staking_rebond_V7(c, &method->nested.staking_rebond_V7))
         break;
-    case 2304: /* module 9 call 0 */
+    case 2560: /* module 10 call 0 */
         CHECK_ERROR(_readMethod_session_set_keys_V7(c, &method->nested.session_set_keys_V7))
         break;
-    case 2305: /* module 9 call 1 */
+    case 2561: /* module 10 call 1 */
         CHECK_ERROR(_readMethod_session_purge_keys_V7(c, &method->nested.session_purge_keys_V7))
         break;
-    case 6656: /* module 26 call 0 */
+    case 5120: /* module 20 call 0 */
         CHECK_ERROR(_readMethod_utility_batch_V7(c, &method->basic.utility_batch_V7))
         break;
-    case 6658: /* module 26 call 2 */
+    case 5122: /* module 20 call 2 */
         CHECK_ERROR(_readMethod_utility_batch_all_V7(c, &method->basic.utility_batch_all_V7))
         break;
-    case 6660: /* module 26 call 4 */
+    case 5124: /* module 20 call 4 */
         CHECK_ERROR(_readMethod_utility_force_batch_V7(c, &method->basic.utility_force_batch_V7))
         break;
     case 18688: /* module 73 call 0 */
@@ -1872,22 +1872,22 @@ parser_error_t _readMethod_V7(
     case 7: /* module 0 call 7 */
         CHECK_ERROR(_readMethod_system_remark_with_event_V7(c, &method->nested.system_remark_with_event_V7))
         break;
-    case 2560: /* module 10 call 0 */
+    case 25856: /* module 101 call 0 */
         CHECK_ERROR(_readMethod_preimage_note_preimage_V7(c, &method->basic.preimage_note_preimage_V7))
         break;
-    case 2561: /* module 10 call 1 */
+    case 25857: /* module 101 call 1 */
         CHECK_ERROR(_readMethod_preimage_unnote_preimage_V7(c, &method->basic.preimage_unnote_preimage_V7))
         break;
-    case 2562: /* module 10 call 2 */
+    case 25858: /* module 101 call 2 */
         CHECK_ERROR(_readMethod_preimage_request_preimage_V7(c, &method->basic.preimage_request_preimage_V7))
         break;
-    case 2563: /* module 10 call 3 */
+    case 25859: /* module 101 call 3 */
         CHECK_ERROR(_readMethod_preimage_unrequest_preimage_V7(c, &method->basic.preimage_unrequest_preimage_V7))
         break;
-    case 2564: /* module 10 call 4 */
+    case 25860: /* module 101 call 4 */
         CHECK_ERROR(_readMethod_preimage_ensure_updated_V7(c, &method->basic.preimage_ensure_updated_V7))
         break;
-    case 768: /* module 3 call 0 */
+    case 512: /* module 2 call 0 */
         CHECK_ERROR(_readMethod_timestamp_set_V7(c, &method->basic.timestamp_set_V7))
         break;
     case 1024: /* module 4 call 0 */
@@ -1959,85 +1959,85 @@ parser_error_t _readMethod_V7(
     case 1817: /* module 7 call 25 */
         CHECK_ERROR(_readMethod_staking_set_min_commission_V7(c, &method->basic.staking_set_min_commission_V7))
         break;
-    case 4864: /* module 19 call 0 */
+    case 3072: /* module 12 call 0 */
         CHECK_ERROR(_readMethod_treasury_propose_spend_V7(c, &method->basic.treasury_propose_spend_V7))
         break;
-    case 4865: /* module 19 call 1 */
+    case 3073: /* module 12 call 1 */
         CHECK_ERROR(_readMethod_treasury_reject_proposal_V7(c, &method->basic.treasury_reject_proposal_V7))
         break;
-    case 4866: /* module 19 call 2 */
+    case 3074: /* module 12 call 2 */
         CHECK_ERROR(_readMethod_treasury_approve_proposal_V7(c, &method->basic.treasury_approve_proposal_V7))
         break;
-    case 4867: /* module 19 call 3 */
+    case 3075: /* module 12 call 3 */
         CHECK_ERROR(_readMethod_treasury_spend_local_V7(c, &method->basic.treasury_spend_local_V7))
         break;
-    case 4868: /* module 19 call 4 */
+    case 3076: /* module 12 call 4 */
         CHECK_ERROR(_readMethod_treasury_remove_approval_V7(c, &method->basic.treasury_remove_approval_V7))
         break;
-    case 4870: /* module 19 call 6 */
+    case 3078: /* module 12 call 6 */
         CHECK_ERROR(_readMethod_treasury_payout_V7(c, &method->basic.treasury_payout_V7))
         break;
-    case 4871: /* module 19 call 7 */
+    case 3079: /* module 12 call 7 */
         CHECK_ERROR(_readMethod_treasury_check_status_V7(c, &method->basic.treasury_check_status_V7))
         break;
-    case 4872: /* module 19 call 8 */
+    case 3080: /* module 12 call 8 */
         CHECK_ERROR(_readMethod_treasury_void_spend_V7(c, &method->basic.treasury_void_spend_V7))
         break;
-    case 5120: /* module 20 call 0 */
+    case 26112: /* module 102 call 0 */
         CHECK_ERROR(_readMethod_convictionvoting_vote_V7(c, &method->nested.convictionvoting_vote_V7))
         break;
-    case 5121: /* module 20 call 1 */
+    case 26113: /* module 102 call 1 */
         CHECK_ERROR(_readMethod_convictionvoting_delegate_V7(c, &method->nested.convictionvoting_delegate_V7))
         break;
-    case 5122: /* module 20 call 2 */
+    case 26114: /* module 102 call 2 */
         CHECK_ERROR(_readMethod_convictionvoting_undelegate_V7(c, &method->nested.convictionvoting_undelegate_V7))
         break;
-    case 5123: /* module 20 call 3 */
+    case 26115: /* module 102 call 3 */
         CHECK_ERROR(_readMethod_convictionvoting_unlock_V7(c, &method->nested.convictionvoting_unlock_V7))
         break;
-    case 5124: /* module 20 call 4 */
+    case 26116: /* module 102 call 4 */
         CHECK_ERROR(_readMethod_convictionvoting_remove_vote_V7(c, &method->nested.convictionvoting_remove_vote_V7))
         break;
-    case 5125: /* module 20 call 5 */
+    case 26117: /* module 102 call 5 */
         CHECK_ERROR(_readMethod_convictionvoting_remove_other_vote_V7(c, &method->nested.convictionvoting_remove_other_vote_V7))
         break;
-    case 5376: /* module 21 call 0 */
+    case 26368: /* module 103 call 0 */
         CHECK_ERROR(_readMethod_referenda_submit_V7(c, &method->basic.referenda_submit_V7))
         break;
-    case 5377: /* module 21 call 1 */
+    case 26369: /* module 103 call 1 */
         CHECK_ERROR(_readMethod_referenda_place_decision_deposit_V7(c, &method->basic.referenda_place_decision_deposit_V7))
         break;
-    case 5378: /* module 21 call 2 */
+    case 26370: /* module 103 call 2 */
         CHECK_ERROR(_readMethod_referenda_refund_decision_deposit_V7(c, &method->basic.referenda_refund_decision_deposit_V7))
         break;
-    case 5379: /* module 21 call 3 */
+    case 26371: /* module 103 call 3 */
         CHECK_ERROR(_readMethod_referenda_cancel_V7(c, &method->basic.referenda_cancel_V7))
         break;
-    case 5380: /* module 21 call 4 */
+    case 26372: /* module 103 call 4 */
         CHECK_ERROR(_readMethod_referenda_kill_V7(c, &method->basic.referenda_kill_V7))
         break;
-    case 5381: /* module 21 call 5 */
+    case 26373: /* module 103 call 5 */
         CHECK_ERROR(_readMethod_referenda_nudge_referendum_V7(c, &method->basic.referenda_nudge_referendum_V7))
         break;
-    case 5382: /* module 21 call 6 */
+    case 26374: /* module 103 call 6 */
         CHECK_ERROR(_readMethod_referenda_one_fewer_deciding_V7(c, &method->basic.referenda_one_fewer_deciding_V7))
         break;
-    case 5383: /* module 21 call 7 */
+    case 26375: /* module 103 call 7 */
         CHECK_ERROR(_readMethod_referenda_refund_submission_deposit_V7(c, &method->basic.referenda_refund_submission_deposit_V7))
         break;
-    case 5384: /* module 21 call 8 */
+    case 26376: /* module 103 call 8 */
         CHECK_ERROR(_readMethod_referenda_set_metadata_V7(c, &method->basic.referenda_set_metadata_V7))
         break;
-    case 5888: /* module 23 call 0 */
+    case 26880: /* module 105 call 0 */
         CHECK_ERROR(_readMethod_whitelist_whitelist_call_V7(c, &method->basic.whitelist_whitelist_call_V7))
         break;
-    case 5889: /* module 23 call 1 */
+    case 26881: /* module 105 call 1 */
         CHECK_ERROR(_readMethod_whitelist_remove_whitelisted_call_V7(c, &method->basic.whitelist_remove_whitelisted_call_V7))
         break;
-    case 5890: /* module 23 call 2 */
+    case 26882: /* module 105 call 2 */
         CHECK_ERROR(_readMethod_whitelist_dispatch_whitelisted_call_V7(c, &method->basic.whitelist_dispatch_whitelisted_call_V7))
         break;
-    case 5891: /* module 23 call 3 */
+    case 26883: /* module 105 call 3 */
         CHECK_ERROR(_readMethod_whitelist_dispatch_whitelisted_call_with_preimage_V7(c, &method->basic.whitelist_dispatch_whitelisted_call_with_preimage_V7))
         break;
     case 6144: /* module 24 call 0 */
@@ -2067,52 +2067,52 @@ parser_error_t _readMethod_V7(
     case 6404: /* module 25 call 4 */
         CHECK_ERROR(_readMethod_vesting_merge_schedules_V7(c, &method->basic.vesting_merge_schedules_V7))
         break;
-    case 6659: /* module 26 call 3 */
+    case 5123: /* module 20 call 3 */
         CHECK_ERROR(_readMethod_utility_dispatch_as_V7(c, &method->basic.utility_dispatch_as_V7))
         break;
-    case 6661: /* module 26 call 5 */
+    case 5125: /* module 20 call 5 */
         CHECK_ERROR(_readMethod_utility_with_weight_V7(c, &method->basic.utility_with_weight_V7))
         break;
-    case 7168: /* module 28 call 0 */
+    case 27648: /* module 108 call 0 */
         CHECK_ERROR(_readMethod_identity_add_registrar_V7(c, &method->basic.identity_add_registrar_V7))
         break;
-    case 7169: /* module 28 call 1 */
+    case 27649: /* module 108 call 1 */
         CHECK_ERROR(_readMethod_identity_set_identity_V7(c, &method->basic.identity_set_identity_V7))
         break;
-    case 7170: /* module 28 call 2 */
+    case 27650: /* module 108 call 2 */
         CHECK_ERROR(_readMethod_identity_set_subs_V7(c, &method->basic.identity_set_subs_V7))
         break;
-    case 7171: /* module 28 call 3 */
+    case 27651: /* module 108 call 3 */
         CHECK_ERROR(_readMethod_identity_clear_identity_V7(c, &method->basic.identity_clear_identity_V7))
         break;
-    case 7172: /* module 28 call 4 */
+    case 27652: /* module 108 call 4 */
         CHECK_ERROR(_readMethod_identity_request_judgement_V7(c, &method->basic.identity_request_judgement_V7))
         break;
-    case 7173: /* module 28 call 5 */
+    case 27653: /* module 108 call 5 */
         CHECK_ERROR(_readMethod_identity_cancel_request_V7(c, &method->basic.identity_cancel_request_V7))
         break;
-    case 7174: /* module 28 call 6 */
+    case 27654: /* module 108 call 6 */
         CHECK_ERROR(_readMethod_identity_set_fee_V7(c, &method->basic.identity_set_fee_V7))
         break;
-    case 7175: /* module 28 call 7 */
+    case 27655: /* module 108 call 7 */
         CHECK_ERROR(_readMethod_identity_set_account_id_V7(c, &method->basic.identity_set_account_id_V7))
         break;
-    case 7177: /* module 28 call 9 */
+    case 27657: /* module 108 call 9 */
         CHECK_ERROR(_readMethod_identity_provide_judgement_V7(c, &method->basic.identity_provide_judgement_V7))
         break;
-    case 7178: /* module 28 call 10 */
+    case 27658: /* module 108 call 10 */
         CHECK_ERROR(_readMethod_identity_kill_identity_V7(c, &method->basic.identity_kill_identity_V7))
         break;
-    case 7179: /* module 28 call 11 */
+    case 27659: /* module 108 call 11 */
         CHECK_ERROR(_readMethod_identity_add_sub_V7(c, &method->basic.identity_add_sub_V7))
         break;
-    case 7180: /* module 28 call 12 */
+    case 27660: /* module 108 call 12 */
         CHECK_ERROR(_readMethod_identity_rename_sub_V7(c, &method->basic.identity_rename_sub_V7))
         break;
-    case 7181: /* module 28 call 13 */
+    case 27661: /* module 108 call 13 */
         CHECK_ERROR(_readMethod_identity_remove_sub_V7(c, &method->basic.identity_remove_sub_V7))
         break;
-    case 7182: /* module 28 call 14 */
+    case 27662: /* module 108 call 14 */
         CHECK_ERROR(_readMethod_identity_quit_sub_V7(c, &method->basic.identity_quit_sub_V7))
         break;
     case 7424: /* module 29 call 0 */
@@ -2136,16 +2136,16 @@ parser_error_t _readMethod_V7(
     case 7433: /* module 29 call 9 */
         CHECK_ERROR(_readMethod_proxy_proxy_announced_V7(c, &method->basic.proxy_proxy_announced_V7))
         break;
-    case 7680: /* module 30 call 0 */
+    case 5376: /* module 21 call 0 */
         CHECK_ERROR(_readMethod_multisig_as_multi_threshold_1_V7(c, &method->nested.multisig_as_multi_threshold_1_V7))
         break;
-    case 7681: /* module 30 call 1 */
+    case 5377: /* module 21 call 1 */
         CHECK_ERROR(_readMethod_multisig_as_multi_V7(c, &method->nested.multisig_as_multi_V7))
         break;
-    case 7682: /* module 30 call 2 */
+    case 5378: /* module 21 call 2 */
         CHECK_ERROR(_readMethod_multisig_approve_as_multi_V7(c, &method->nested.multisig_approve_as_multi_V7))
         break;
-    case 7683: /* module 30 call 3 */
+    case 5379: /* module 21 call 3 */
         CHECK_ERROR(_readMethod_multisig_cancel_as_multi_V7(c, &method->nested.multisig_cancel_as_multi_V7))
         break;
     case 8704: /* module 34 call 0 */
@@ -2196,13 +2196,13 @@ parser_error_t _readMethod_V7(
     case 9734: /* module 38 call 6 */
         CHECK_ERROR(_readMethod_childbounties_close_child_bounty_V7(c, &method->basic.childbounties_close_child_bounty_V7))
         break;
-    case 9472: /* module 37 call 0 */
+    case 4352: /* module 17 call 0 */
         CHECK_ERROR(_readMethod_voterlist_rebag_V7(c, &method->basic.voterlist_rebag_V7))
         break;
-    case 9473: /* module 37 call 1 */
+    case 4353: /* module 17 call 1 */
         CHECK_ERROR(_readMethod_voterlist_put_in_front_of_V7(c, &method->basic.voterlist_put_in_front_of_V7))
         break;
-    case 9474: /* module 37 call 2 */
+    case 4354: /* module 17 call 2 */
         CHECK_ERROR(_readMethod_voterlist_put_in_front_of_other_V7(c, &method->basic.voterlist_put_in_front_of_other_V7))
         break;
     case 9984: /* module 39 call 0 */
@@ -2539,15 +2539,15 @@ const char* _getMethod_Name_V7(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_PAYOUT_STAKERS;
     case 1811: /* module 7 call 19 */
         return STR_ME_REBOND;
-    case 2304: /* module 9 call 0 */
+    case 2560: /* module 10 call 0 */
         return STR_ME_SET_KEYS;
-    case 2305: /* module 9 call 1 */
+    case 2561: /* module 10 call 1 */
         return STR_ME_PURGE_KEYS;
-    case 6656: /* module 26 call 0 */
+    case 5120: /* module 20 call 0 */
         return STR_ME_BATCH;
-    case 6658: /* module 26 call 2 */
+    case 5122: /* module 20 call 2 */
         return STR_ME_BATCH_ALL;
-    case 6660: /* module 26 call 4 */
+    case 5124: /* module 20 call 4 */
         return STR_ME_FORCE_BATCH;
     case 18688: /* module 73 call 0 */
         return STR_ME_CREATE;
@@ -2598,17 +2598,17 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_SET_CODE_WITHOUT_CHECKS;
     case 7: /* module 0 call 7 */
         return STR_ME_REMARK_WITH_EVENT;
-    case 2560: /* module 10 call 0 */
+    case 25856: /* module 101 call 0 */
         return STR_ME_NOTE_PREIMAGE;
-    case 2561: /* module 10 call 1 */
+    case 25857: /* module 101 call 1 */
         return STR_ME_UNNOTE_PREIMAGE;
-    case 2562: /* module 10 call 2 */
+    case 25858: /* module 101 call 2 */
         return STR_ME_REQUEST_PREIMAGE;
-    case 2563: /* module 10 call 3 */
+    case 25859: /* module 101 call 3 */
         return STR_ME_UNREQUEST_PREIMAGE;
-    case 2564: /* module 10 call 4 */
+    case 25860: /* module 101 call 4 */
         return STR_ME_ENSURE_UPDATED;
-    case 768: /* module 3 call 0 */
+    case 512: /* module 2 call 0 */
         return STR_ME_SET;
     case 1024: /* module 4 call 0 */
         return STR_ME_CLAIM;
@@ -2656,59 +2656,59 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_FORCE_APPLY_MIN_COMMISSION;
     case 1817: /* module 7 call 25 */
         return STR_ME_SET_MIN_COMMISSION;
-    case 4864: /* module 19 call 0 */
+    case 3072: /* module 12 call 0 */
         return STR_ME_PROPOSE_SPEND;
-    case 4865: /* module 19 call 1 */
+    case 3073: /* module 12 call 1 */
         return STR_ME_REJECT_PROPOSAL;
-    case 4866: /* module 19 call 2 */
+    case 3074: /* module 12 call 2 */
         return STR_ME_APPROVE_PROPOSAL;
-    case 4867: /* module 19 call 3 */
+    case 3075: /* module 12 call 3 */
         return STR_ME_SPEND_LOCAL;
-    case 4868: /* module 19 call 4 */
+    case 3076: /* module 12 call 4 */
         return STR_ME_REMOVE_APPROVAL;
-    case 4870: /* module 19 call 6 */
+    case 3078: /* module 12 call 6 */
         return STR_ME_PAYOUT;
-    case 4871: /* module 19 call 7 */
+    case 3079: /* module 12 call 7 */
         return STR_ME_CHECK_STATUS;
-    case 4872: /* module 19 call 8 */
+    case 3080: /* module 12 call 8 */
         return STR_ME_VOID_SPEND;
-    case 5120: /* module 20 call 0 */
+    case 26112: /* module 102 call 0 */
         return STR_ME_VOTE;
-    case 5121: /* module 20 call 1 */
+    case 26113: /* module 102 call 1 */
         return STR_ME_DELEGATE;
-    case 5122: /* module 20 call 2 */
+    case 26114: /* module 102 call 2 */
         return STR_ME_UNDELEGATE;
-    case 5123: /* module 20 call 3 */
+    case 26115: /* module 102 call 3 */
         return STR_ME_UNLOCK;
-    case 5124: /* module 20 call 4 */
+    case 26116: /* module 102 call 4 */
         return STR_ME_REMOVE_VOTE;
-    case 5125: /* module 20 call 5 */
+    case 26117: /* module 102 call 5 */
         return STR_ME_REMOVE_OTHER_VOTE;
-    case 5376: /* module 21 call 0 */
+    case 26368: /* module 103 call 0 */
         return STR_ME_SUBMIT;
-    case 5377: /* module 21 call 1 */
+    case 26369: /* module 103 call 1 */
         return STR_ME_PLACE_DECISION_DEPOSIT;
-    case 5378: /* module 21 call 2 */
+    case 26370: /* module 103 call 2 */
         return STR_ME_REFUND_DECISION_DEPOSIT;
-    case 5379: /* module 21 call 3 */
+    case 26371: /* module 103 call 3 */
         return STR_ME_CANCEL;
-    case 5380: /* module 21 call 4 */
+    case 26372: /* module 103 call 4 */
         return STR_ME_KILL;
-    case 5381: /* module 21 call 5 */
+    case 26373: /* module 103 call 5 */
         return STR_ME_NUDGE_REFERENDUM;
-    case 5382: /* module 21 call 6 */
+    case 26374: /* module 103 call 6 */
         return STR_ME_ONE_FEWER_DECIDING;
-    case 5383: /* module 21 call 7 */
+    case 26375: /* module 103 call 7 */
         return STR_ME_REFUND_SUBMISSION_DEPOSIT;
-    case 5384: /* module 21 call 8 */
+    case 26376: /* module 103 call 8 */
         return STR_ME_SET_METADATA;
-    case 5888: /* module 23 call 0 */
+    case 26880: /* module 105 call 0 */
         return STR_ME_WHITELIST_CALL;
-    case 5889: /* module 23 call 1 */
+    case 26881: /* module 105 call 1 */
         return STR_ME_REMOVE_WHITELISTED_CALL;
-    case 5890: /* module 23 call 2 */
+    case 26882: /* module 105 call 2 */
         return STR_ME_DISPATCH_WHITELISTED_CALL;
-    case 5891: /* module 23 call 3 */
+    case 26883: /* module 105 call 3 */
         return STR_ME_DISPATCH_WHITELISTED_CALL_WITH_PREIMAGE;
     case 6144: /* module 24 call 0 */
         return STR_ME_CLAIM;
@@ -2728,37 +2728,37 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_FORCE_VESTED_TRANSFER;
     case 6404: /* module 25 call 4 */
         return STR_ME_MERGE_SCHEDULES;
-    case 6659: /* module 26 call 3 */
+    case 5123: /* module 20 call 3 */
         return STR_ME_DISPATCH_AS;
-    case 6661: /* module 26 call 5 */
+    case 5125: /* module 20 call 5 */
         return STR_ME_WITH_WEIGHT;
-    case 7168: /* module 28 call 0 */
+    case 27648: /* module 108 call 0 */
         return STR_ME_ADD_REGISTRAR;
-    case 7169: /* module 28 call 1 */
+    case 27649: /* module 108 call 1 */
         return STR_ME_SET_IDENTITY;
-    case 7170: /* module 28 call 2 */
+    case 27650: /* module 108 call 2 */
         return STR_ME_SET_SUBS;
-    case 7171: /* module 28 call 3 */
+    case 27651: /* module 108 call 3 */
         return STR_ME_CLEAR_IDENTITY;
-    case 7172: /* module 28 call 4 */
+    case 27652: /* module 108 call 4 */
         return STR_ME_REQUEST_JUDGEMENT;
-    case 7173: /* module 28 call 5 */
+    case 27653: /* module 108 call 5 */
         return STR_ME_CANCEL_REQUEST;
-    case 7174: /* module 28 call 6 */
+    case 27654: /* module 108 call 6 */
         return STR_ME_SET_FEE;
-    case 7175: /* module 28 call 7 */
+    case 27655: /* module 108 call 7 */
         return STR_ME_SET_ACCOUNT_ID;
-    case 7177: /* module 28 call 9 */
+    case 27657: /* module 108 call 9 */
         return STR_ME_PROVIDE_JUDGEMENT;
-    case 7178: /* module 28 call 10 */
+    case 27658: /* module 108 call 10 */
         return STR_ME_KILL_IDENTITY;
-    case 7179: /* module 28 call 11 */
+    case 27659: /* module 108 call 11 */
         return STR_ME_ADD_SUB;
-    case 7180: /* module 28 call 12 */
+    case 27660: /* module 108 call 12 */
         return STR_ME_RENAME_SUB;
-    case 7181: /* module 28 call 13 */
+    case 27661: /* module 108 call 13 */
         return STR_ME_REMOVE_SUB;
-    case 7182: /* module 28 call 14 */
+    case 27662: /* module 108 call 14 */
         return STR_ME_QUIT_SUB;
     case 7424: /* module 29 call 0 */
         return STR_ME_PROXY;
@@ -2774,13 +2774,13 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_KILL_PURE;
     case 7433: /* module 29 call 9 */
         return STR_ME_PROXY_ANNOUNCED;
-    case 7680: /* module 30 call 0 */
+    case 5376: /* module 21 call 0 */
         return STR_ME_AS_MULTI_THRESHOLD_1;
-    case 7681: /* module 30 call 1 */
+    case 5377: /* module 21 call 1 */
         return STR_ME_AS_MULTI;
-    case 7682: /* module 30 call 2 */
+    case 5378: /* module 21 call 2 */
         return STR_ME_APPROVE_AS_MULTI;
-    case 7683: /* module 30 call 3 */
+    case 5379: /* module 21 call 3 */
         return STR_ME_CANCEL_AS_MULTI;
     case 8704: /* module 34 call 0 */
         return STR_ME_PROPOSE_BOUNTY;
@@ -2814,11 +2814,11 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_CLAIM_CHILD_BOUNTY;
     case 9734: /* module 38 call 6 */
         return STR_ME_CLOSE_CHILD_BOUNTY;
-    case 9472: /* module 37 call 0 */
+    case 4352: /* module 17 call 0 */
         return STR_ME_REBAG;
-    case 9473: /* module 37 call 1 */
+    case 4353: /* module 17 call 1 */
         return STR_ME_PUT_IN_FRONT_OF;
-    case 9474: /* module 37 call 2 */
+    case 4354: /* module 17 call 2 */
         return STR_ME_PUT_IN_FRONT_OF_OTHER;
     case 9984: /* module 39 call 0 */
         return STR_ME_JOIN;
@@ -3007,15 +3007,15 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 1811: /* module 7 call 19 */
         return 1;
-    case 2304: /* module 9 call 0 */
+    case 2560: /* module 10 call 0 */
         return 2;
-    case 2305: /* module 9 call 1 */
+    case 2561: /* module 10 call 1 */
         return 0;
-    case 6656: /* module 26 call 0 */
+    case 5120: /* module 20 call 0 */
         return 1;
-    case 6658: /* module 26 call 2 */
+    case 5122: /* module 20 call 2 */
         return 1;
-    case 6660: /* module 26 call 4 */
+    case 5124: /* module 20 call 4 */
         return 1;
     case 18688: /* module 73 call 0 */
         return 6;
@@ -3056,17 +3056,17 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 7: /* module 0 call 7 */
         return 1;
-    case 2560: /* module 10 call 0 */
+    case 25856: /* module 101 call 0 */
         return 1;
-    case 2561: /* module 10 call 1 */
+    case 25857: /* module 101 call 1 */
         return 1;
-    case 2562: /* module 10 call 2 */
+    case 25858: /* module 101 call 2 */
         return 1;
-    case 2563: /* module 10 call 3 */
+    case 25859: /* module 101 call 3 */
         return 1;
-    case 2564: /* module 10 call 4 */
+    case 25860: /* module 101 call 4 */
         return 1;
-    case 768: /* module 3 call 0 */
+    case 512: /* module 2 call 0 */
         return 1;
     case 1024: /* module 4 call 0 */
         return 1;
@@ -3114,59 +3114,59 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 1817: /* module 7 call 25 */
         return 1;
-    case 4864: /* module 19 call 0 */
+    case 3072: /* module 12 call 0 */
         return 2;
-    case 4865: /* module 19 call 1 */
+    case 3073: /* module 12 call 1 */
         return 1;
-    case 4866: /* module 19 call 2 */
+    case 3074: /* module 12 call 2 */
         return 1;
-    case 4867: /* module 19 call 3 */
+    case 3075: /* module 12 call 3 */
         return 2;
-    case 4868: /* module 19 call 4 */
+    case 3076: /* module 12 call 4 */
         return 1;
-    case 4870: /* module 19 call 6 */
+    case 3078: /* module 12 call 6 */
         return 1;
-    case 4871: /* module 19 call 7 */
+    case 3079: /* module 12 call 7 */
         return 1;
-    case 4872: /* module 19 call 8 */
+    case 3080: /* module 12 call 8 */
         return 1;
-    case 5120: /* module 20 call 0 */
+    case 26112: /* module 102 call 0 */
         return 2;
-    case 5121: /* module 20 call 1 */
+    case 26113: /* module 102 call 1 */
         return 4;
-    case 5122: /* module 20 call 2 */
+    case 26114: /* module 102 call 2 */
         return 1;
-    case 5123: /* module 20 call 3 */
+    case 26115: /* module 102 call 3 */
         return 2;
-    case 5124: /* module 20 call 4 */
+    case 26116: /* module 102 call 4 */
         return 2;
-    case 5125: /* module 20 call 5 */
+    case 26117: /* module 102 call 5 */
         return 3;
-    case 5376: /* module 21 call 0 */
+    case 26368: /* module 103 call 0 */
         return 3;
-    case 5377: /* module 21 call 1 */
+    case 26369: /* module 103 call 1 */
         return 1;
-    case 5378: /* module 21 call 2 */
+    case 26370: /* module 103 call 2 */
         return 1;
-    case 5379: /* module 21 call 3 */
+    case 26371: /* module 103 call 3 */
         return 1;
-    case 5380: /* module 21 call 4 */
+    case 26372: /* module 103 call 4 */
         return 1;
-    case 5381: /* module 21 call 5 */
+    case 26373: /* module 103 call 5 */
         return 1;
-    case 5382: /* module 21 call 6 */
+    case 26374: /* module 103 call 6 */
         return 1;
-    case 5383: /* module 21 call 7 */
+    case 26375: /* module 103 call 7 */
         return 1;
-    case 5384: /* module 21 call 8 */
+    case 26376: /* module 103 call 8 */
         return 2;
-    case 5888: /* module 23 call 0 */
+    case 26880: /* module 105 call 0 */
         return 1;
-    case 5889: /* module 23 call 1 */
+    case 26881: /* module 105 call 1 */
         return 1;
-    case 5890: /* module 23 call 2 */
+    case 26882: /* module 105 call 2 */
         return 3;
-    case 5891: /* module 23 call 3 */
+    case 26883: /* module 105 call 3 */
         return 1;
     case 6144: /* module 24 call 0 */
         return 2;
@@ -3186,37 +3186,37 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 3;
     case 6404: /* module 25 call 4 */
         return 2;
-    case 6659: /* module 26 call 3 */
+    case 5123: /* module 20 call 3 */
         return 2;
-    case 6661: /* module 26 call 5 */
+    case 5125: /* module 20 call 5 */
         return 2;
-    case 7168: /* module 28 call 0 */
+    case 27648: /* module 108 call 0 */
         return 1;
-    case 7169: /* module 28 call 1 */
+    case 27649: /* module 108 call 1 */
         return 1;
-    case 7170: /* module 28 call 2 */
+    case 27650: /* module 108 call 2 */
         return 1;
-    case 7171: /* module 28 call 3 */
+    case 27651: /* module 108 call 3 */
         return 0;
-    case 7172: /* module 28 call 4 */
+    case 27652: /* module 108 call 4 */
         return 2;
-    case 7173: /* module 28 call 5 */
+    case 27653: /* module 108 call 5 */
         return 1;
-    case 7174: /* module 28 call 6 */
+    case 27654: /* module 108 call 6 */
         return 2;
-    case 7175: /* module 28 call 7 */
+    case 27655: /* module 108 call 7 */
         return 2;
-    case 7177: /* module 28 call 9 */
+    case 27657: /* module 108 call 9 */
         return 4;
-    case 7178: /* module 28 call 10 */
+    case 27658: /* module 108 call 10 */
         return 1;
-    case 7179: /* module 28 call 11 */
+    case 27659: /* module 108 call 11 */
         return 2;
-    case 7180: /* module 28 call 12 */
+    case 27660: /* module 108 call 12 */
         return 2;
-    case 7181: /* module 28 call 13 */
+    case 27661: /* module 108 call 13 */
         return 1;
-    case 7182: /* module 28 call 14 */
+    case 27662: /* module 108 call 14 */
         return 0;
     case 7424: /* module 29 call 0 */
         return 3;
@@ -3232,13 +3232,13 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 5;
     case 7433: /* module 29 call 9 */
         return 4;
-    case 7680: /* module 30 call 0 */
+    case 5376: /* module 21 call 0 */
         return 2;
-    case 7681: /* module 30 call 1 */
+    case 5377: /* module 21 call 1 */
         return 5;
-    case 7682: /* module 30 call 2 */
+    case 5378: /* module 21 call 2 */
         return 5;
-    case 7683: /* module 30 call 3 */
+    case 5379: /* module 21 call 3 */
         return 4;
     case 8704: /* module 34 call 0 */
         return 2;
@@ -3272,11 +3272,11 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 9734: /* module 38 call 6 */
         return 2;
-    case 9472: /* module 37 call 0 */
+    case 4352: /* module 17 call 0 */
         return 1;
-    case 9473: /* module 37 call 1 */
+    case 4353: /* module 17 call 1 */
         return 1;
-    case 9474: /* module 37 call 2 */
+    case 4354: /* module 17 call 2 */
         return 2;
     case 9984: /* module 39 call 0 */
         return 2;
@@ -3550,7 +3550,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 2304: /* module 9 call 0 */
+    case 2560: /* module 10 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_keys;
@@ -3559,26 +3559,26 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 2305: /* module 9 call 1 */
+    case 2561: /* module 10 call 1 */
         switch (itemIdx) {
         default:
             return NULL;
         }
-    case 6656: /* module 26 call 0 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_calls;
-        default:
-            return NULL;
-        }
-    case 6658: /* module 26 call 2 */
+    case 5120: /* module 20 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_calls;
         default:
             return NULL;
         }
-    case 6660: /* module 26 call 4 */
+    case 5122: /* module 20 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_calls;
+        default:
+            return NULL;
+        }
+    case 5124: /* module 20 call 4 */
         switch (itemIdx) {
         case 0:
             return STR_IT_calls;
@@ -3772,42 +3772,42 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 2560: /* module 10 call 0 */
+    case 25856: /* module 101 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_bytes;
         default:
             return NULL;
         }
-    case 2561: /* module 10 call 1 */
+    case 25857: /* module 101 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_hash;
         default:
             return NULL;
         }
-    case 2562: /* module 10 call 2 */
+    case 25858: /* module 101 call 2 */
         switch (itemIdx) {
         case 0:
             return STR_IT_hash;
         default:
             return NULL;
         }
-    case 2563: /* module 10 call 3 */
+    case 25859: /* module 101 call 3 */
         switch (itemIdx) {
         case 0:
             return STR_IT_hash;
         default:
             return NULL;
         }
-    case 2564: /* module 10 call 4 */
+    case 25860: /* module 101 call 4 */
         switch (itemIdx) {
         case 0:
             return STR_IT_hashes;
         default:
             return NULL;
         }
-    case 768: /* module 3 call 0 */
+    case 512: /* module 2 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_now;
@@ -3995,7 +3995,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 4864: /* module 19 call 0 */
+    case 3072: /* module 12 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_amount;
@@ -4004,21 +4004,21 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 4865: /* module 19 call 1 */
+    case 3073: /* module 12 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_proposal_id;
         default:
             return NULL;
         }
-    case 4866: /* module 19 call 2 */
+    case 3074: /* module 12 call 2 */
         switch (itemIdx) {
         case 0:
             return STR_IT_proposal_id;
         default:
             return NULL;
         }
-    case 4867: /* module 19 call 3 */
+    case 3075: /* module 12 call 3 */
         switch (itemIdx) {
         case 0:
             return STR_IT_amount;
@@ -4027,35 +4027,35 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 4868: /* module 19 call 4 */
+    case 3076: /* module 12 call 4 */
         switch (itemIdx) {
         case 0:
             return STR_IT_proposal_id;
         default:
             return NULL;
         }
-    case 4870: /* module 19 call 6 */
+    case 3078: /* module 12 call 6 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
         default:
             return NULL;
         }
-    case 4871: /* module 19 call 7 */
+    case 3079: /* module 12 call 7 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
         default:
             return NULL;
         }
-    case 4872: /* module 19 call 8 */
+    case 3080: /* module 12 call 8 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
         default:
             return NULL;
         }
-    case 5120: /* module 20 call 0 */
+    case 26112: /* module 102 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_poll_index;
@@ -4064,7 +4064,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 5121: /* module 20 call 1 */
+    case 26113: /* module 102 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_class_;
@@ -4077,14 +4077,14 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 5122: /* module 20 call 2 */
+    case 26114: /* module 102 call 2 */
         switch (itemIdx) {
         case 0:
             return STR_IT_class_;
         default:
             return NULL;
         }
-    case 5123: /* module 20 call 3 */
+    case 26115: /* module 102 call 3 */
         switch (itemIdx) {
         case 0:
             return STR_IT_class_;
@@ -4093,7 +4093,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 5124: /* module 20 call 4 */
+    case 26116: /* module 102 call 4 */
         switch (itemIdx) {
         case 0:
             return STR_IT_class_;
@@ -4102,7 +4102,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 5125: /* module 20 call 5 */
+    case 26117: /* module 102 call 5 */
         switch (itemIdx) {
         case 0:
             return STR_IT_target;
@@ -4113,7 +4113,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 5376: /* module 21 call 0 */
+    case 26368: /* module 103 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_proposal_origin;
@@ -4124,56 +4124,56 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 5377: /* module 21 call 1 */
+    case 26369: /* module 103 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
         default:
             return NULL;
         }
-    case 5378: /* module 21 call 2 */
+    case 26370: /* module 103 call 2 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
         default:
             return NULL;
         }
-    case 5379: /* module 21 call 3 */
+    case 26371: /* module 103 call 3 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
         default:
             return NULL;
         }
-    case 5380: /* module 21 call 4 */
+    case 26372: /* module 103 call 4 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
         default:
             return NULL;
         }
-    case 5381: /* module 21 call 5 */
+    case 26373: /* module 103 call 5 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
         default:
             return NULL;
         }
-    case 5382: /* module 21 call 6 */
+    case 26374: /* module 103 call 6 */
         switch (itemIdx) {
         case 0:
             return STR_IT_track;
         default:
             return NULL;
         }
-    case 5383: /* module 21 call 7 */
+    case 26375: /* module 103 call 7 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
         default:
             return NULL;
         }
-    case 5384: /* module 21 call 8 */
+    case 26376: /* module 103 call 8 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
@@ -4182,21 +4182,21 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 5888: /* module 23 call 0 */
+    case 26880: /* module 105 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_call_hash;
         default:
             return NULL;
         }
-    case 5889: /* module 23 call 1 */
+    case 26881: /* module 105 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_call_hash;
         default:
             return NULL;
         }
-    case 5890: /* module 23 call 2 */
+    case 26882: /* module 105 call 2 */
         switch (itemIdx) {
         case 0:
             return STR_IT_call_hash;
@@ -4207,7 +4207,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 5891: /* module 23 call 3 */
+    case 26883: /* module 105 call 3 */
         switch (itemIdx) {
         case 0:
             return STR_IT_call;
@@ -4293,7 +4293,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 6659: /* module 26 call 3 */
+    case 5123: /* module 20 call 3 */
         switch (itemIdx) {
         case 0:
             return STR_IT_as_origin;
@@ -4302,7 +4302,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 6661: /* module 26 call 5 */
+    case 5125: /* module 20 call 5 */
         switch (itemIdx) {
         case 0:
             return STR_IT_call;
@@ -4311,33 +4311,33 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7168: /* module 28 call 0 */
+    case 27648: /* module 108 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_account;
         default:
             return NULL;
         }
-    case 7169: /* module 28 call 1 */
+    case 27649: /* module 108 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_info;
         default:
             return NULL;
         }
-    case 7170: /* module 28 call 2 */
+    case 27650: /* module 108 call 2 */
         switch (itemIdx) {
         case 0:
             return STR_IT_subs;
         default:
             return NULL;
         }
-    case 7171: /* module 28 call 3 */
+    case 27651: /* module 108 call 3 */
         switch (itemIdx) {
         default:
             return NULL;
         }
-    case 7172: /* module 28 call 4 */
+    case 27652: /* module 108 call 4 */
         switch (itemIdx) {
         case 0:
             return STR_IT_reg_index;
@@ -4346,14 +4346,14 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7173: /* module 28 call 5 */
+    case 27653: /* module 108 call 5 */
         switch (itemIdx) {
         case 0:
             return STR_IT_reg_index;
         default:
             return NULL;
         }
-    case 7174: /* module 28 call 6 */
+    case 27654: /* module 108 call 6 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
@@ -4362,7 +4362,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7175: /* module 28 call 7 */
+    case 27655: /* module 108 call 7 */
         switch (itemIdx) {
         case 0:
             return STR_IT_index;
@@ -4371,7 +4371,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7177: /* module 28 call 9 */
+    case 27657: /* module 108 call 9 */
         switch (itemIdx) {
         case 0:
             return STR_IT_reg_index;
@@ -4384,14 +4384,14 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7178: /* module 28 call 10 */
+    case 27658: /* module 108 call 10 */
         switch (itemIdx) {
         case 0:
             return STR_IT_target;
         default:
             return NULL;
         }
-    case 7179: /* module 28 call 11 */
+    case 27659: /* module 108 call 11 */
         switch (itemIdx) {
         case 0:
             return STR_IT_sub;
@@ -4400,7 +4400,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7180: /* module 28 call 12 */
+    case 27660: /* module 108 call 12 */
         switch (itemIdx) {
         case 0:
             return STR_IT_sub;
@@ -4409,14 +4409,14 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7181: /* module 28 call 13 */
+    case 27661: /* module 108 call 13 */
         switch (itemIdx) {
         case 0:
             return STR_IT_sub;
         default:
             return NULL;
         }
-    case 7182: /* module 28 call 14 */
+    case 27662: /* module 108 call 14 */
         switch (itemIdx) {
         default:
             return NULL;
@@ -4498,7 +4498,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7680: /* module 30 call 0 */
+    case 5376: /* module 21 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_other_signatories;
@@ -4507,7 +4507,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7681: /* module 30 call 1 */
+    case 5377: /* module 21 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_threshold;
@@ -4522,7 +4522,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7682: /* module 30 call 2 */
+    case 5378: /* module 21 call 2 */
         switch (itemIdx) {
         case 0:
             return STR_IT_threshold;
@@ -4537,7 +4537,7 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7683: /* module 30 call 3 */
+    case 5379: /* module 21 call 3 */
         switch (itemIdx) {
         case 0:
             return STR_IT_threshold;
@@ -4694,21 +4694,21 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 9472: /* module 37 call 0 */
+    case 4352: /* module 17 call 0 */
         switch (itemIdx) {
         case 0:
             return STR_IT_dislocated;
         default:
             return NULL;
         }
-    case 9473: /* module 37 call 1 */
+    case 4353: /* module 17 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_lighter;
         default:
             return NULL;
         }
-    case 9474: /* module 37 call 2 */
+    case 4354: /* module 17 call 2 */
         switch (itemIdx) {
         case 0:
             return STR_IT_heavier;
@@ -5465,7 +5465,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 2304: /* module 9 call 0 */
+    case 2560: /* module 10 call 0 */
         switch (itemIdx) {
         case 0: /* session_set_keys_V7 - keys */;
             return _toStringKeys(
@@ -5480,12 +5480,12 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 2305: /* module 9 call 1 */
+    case 2561: /* module 10 call 1 */
         switch (itemIdx) {
         default:
             return parser_no_data;
         }
-    case 6656: /* module 26 call 0 */
+    case 5120: /* module 20 call 0 */
         switch (itemIdx) {
         case 0: /* utility_batch_V7 - calls */;
             return _toStringVecCall(
@@ -5495,7 +5495,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 6658: /* module 26 call 2 */
+    case 5122: /* module 20 call 2 */
         switch (itemIdx) {
         case 0: /* utility_batch_all_V7 - calls */;
             return _toStringVecCall(
@@ -5505,7 +5505,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 6660: /* module 26 call 4 */
+    case 5124: /* module 20 call 4 */
         switch (itemIdx) {
         case 0: /* utility_force_batch_V7 - calls */;
             return _toStringVecCall(
@@ -5843,7 +5843,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 2560: /* module 10 call 0 */
+    case 25856: /* module 101 call 0 */
         switch (itemIdx) {
         case 0: /* preimage_note_preimage_V7 - bytes */;
             return _toStringVecu8(
@@ -5853,7 +5853,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 2561: /* module 10 call 1 */
+    case 25857: /* module 101 call 1 */
         switch (itemIdx) {
         case 0: /* preimage_unnote_preimage_V7 - hash */;
             return _toStringHash(
@@ -5863,7 +5863,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 2562: /* module 10 call 2 */
+    case 25858: /* module 101 call 2 */
         switch (itemIdx) {
         case 0: /* preimage_request_preimage_V7 - hash */;
             return _toStringHash(
@@ -5873,7 +5873,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 2563: /* module 10 call 3 */
+    case 25859: /* module 101 call 3 */
         switch (itemIdx) {
         case 0: /* preimage_unrequest_preimage_V7 - hash */;
             return _toStringHash(
@@ -5883,7 +5883,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 2564: /* module 10 call 4 */
+    case 25860: /* module 101 call 4 */
         switch (itemIdx) {
         case 0: /* preimage_ensure_updated_V7 - hashes */;
             return _toStringVecHash(
@@ -5893,7 +5893,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 768: /* module 3 call 0 */
+    case 512: /* module 2 call 0 */
         switch (itemIdx) {
         case 0: /* timestamp_set_V7 - now */;
             return _toStringCompactu64(
@@ -6183,7 +6183,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 4864: /* module 19 call 0 */
+    case 3072: /* module 12 call 0 */
         switch (itemIdx) {
         case 0: /* treasury_propose_spend_V7 - amount */;
             return _toStringCompactBalance(
@@ -6198,7 +6198,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 4865: /* module 19 call 1 */
+    case 3073: /* module 12 call 1 */
         switch (itemIdx) {
         case 0: /* treasury_reject_proposal_V7 - proposal_id */;
             return _toStringCompactu32(
@@ -6208,7 +6208,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 4866: /* module 19 call 2 */
+    case 3074: /* module 12 call 2 */
         switch (itemIdx) {
         case 0: /* treasury_approve_proposal_V7 - proposal_id */;
             return _toStringCompactu32(
@@ -6218,7 +6218,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 4867: /* module 19 call 3 */
+    case 3075: /* module 12 call 3 */
         switch (itemIdx) {
         case 0: /* treasury_spend_local_V7 - amount */;
             return _toStringCompactBalance(
@@ -6233,7 +6233,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 4868: /* module 19 call 4 */
+    case 3076: /* module 12 call 4 */
         switch (itemIdx) {
         case 0: /* treasury_remove_approval_V7 - proposal_id */;
             return _toStringCompactu32(
@@ -6243,7 +6243,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 4870: /* module 19 call 6 */
+    case 3078: /* module 12 call 6 */
         switch (itemIdx) {
         case 0: /* treasury_payout_V7 - index */;
             return _toStringSpendIndex(
@@ -6253,7 +6253,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 4871: /* module 19 call 7 */
+    case 3079: /* module 12 call 7 */
         switch (itemIdx) {
         case 0: /* treasury_check_status_V7 - index */;
             return _toStringSpendIndex(
@@ -6263,7 +6263,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 4872: /* module 19 call 8 */
+    case 3080: /* module 12 call 8 */
         switch (itemIdx) {
         case 0: /* treasury_void_spend_V7 - index */;
             return _toStringSpendIndex(
@@ -6273,7 +6273,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5120: /* module 20 call 0 */
+    case 26112: /* module 102 call 0 */
         switch (itemIdx) {
         case 0: /* convictionvoting_vote_V7 - poll_index */;
             return _toStringCompactu32(
@@ -6288,7 +6288,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5121: /* module 20 call 1 */
+    case 26113: /* module 102 call 1 */
         switch (itemIdx) {
         case 0: /* convictionvoting_delegate_V7 - class_ */;
             return _toStringClassOf(
@@ -6313,7 +6313,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5122: /* module 20 call 2 */
+    case 26114: /* module 102 call 2 */
         switch (itemIdx) {
         case 0: /* convictionvoting_undelegate_V7 - class_ */;
             return _toStringClassOf(
@@ -6323,7 +6323,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5123: /* module 20 call 3 */
+    case 26115: /* module 102 call 3 */
         switch (itemIdx) {
         case 0: /* convictionvoting_unlock_V7 - class_ */;
             return _toStringClassOf(
@@ -6338,7 +6338,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5124: /* module 20 call 4 */
+    case 26116: /* module 102 call 4 */
         switch (itemIdx) {
         case 0: /* convictionvoting_remove_vote_V7 - class_ */;
             return _toStringOptionClassOf(
@@ -6353,7 +6353,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5125: /* module 20 call 5 */
+    case 26117: /* module 102 call 5 */
         switch (itemIdx) {
         case 0: /* convictionvoting_remove_other_vote_V7 - target */;
             return _toStringAccountIdLookupOfT(
@@ -6373,7 +6373,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5376: /* module 21 call 0 */
+    case 26368: /* module 103 call 0 */
         switch (itemIdx) {
         case 0: /* referenda_submit_V7 - proposal_origin */;
             return _toStringBoxPalletsOrigin(
@@ -6393,7 +6393,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5377: /* module 21 call 1 */
+    case 26369: /* module 103 call 1 */
         switch (itemIdx) {
         case 0: /* referenda_place_decision_deposit_V7 - index */;
             return _toStringReferendumIndex(
@@ -6403,7 +6403,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5378: /* module 21 call 2 */
+    case 26370: /* module 103 call 2 */
         switch (itemIdx) {
         case 0: /* referenda_refund_decision_deposit_V7 - index */;
             return _toStringReferendumIndex(
@@ -6413,7 +6413,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5379: /* module 21 call 3 */
+    case 26371: /* module 103 call 3 */
         switch (itemIdx) {
         case 0: /* referenda_cancel_V7 - index */;
             return _toStringReferendumIndex(
@@ -6423,7 +6423,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5380: /* module 21 call 4 */
+    case 26372: /* module 103 call 4 */
         switch (itemIdx) {
         case 0: /* referenda_kill_V7 - index */;
             return _toStringReferendumIndex(
@@ -6433,7 +6433,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5381: /* module 21 call 5 */
+    case 26373: /* module 103 call 5 */
         switch (itemIdx) {
         case 0: /* referenda_nudge_referendum_V7 - index */;
             return _toStringReferendumIndex(
@@ -6443,7 +6443,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5382: /* module 21 call 6 */
+    case 26374: /* module 103 call 6 */
         switch (itemIdx) {
         case 0: /* referenda_one_fewer_deciding_V7 - track */;
             return _toStringTrackIdOf(
@@ -6453,7 +6453,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5383: /* module 21 call 7 */
+    case 26375: /* module 103 call 7 */
         switch (itemIdx) {
         case 0: /* referenda_refund_submission_deposit_V7 - index */;
             return _toStringReferendumIndex(
@@ -6463,7 +6463,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5384: /* module 21 call 8 */
+    case 26376: /* module 103 call 8 */
         switch (itemIdx) {
         case 0: /* referenda_set_metadata_V7 - index */;
             return _toStringReferendumIndex(
@@ -6478,7 +6478,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5888: /* module 23 call 0 */
+    case 26880: /* module 105 call 0 */
         switch (itemIdx) {
         case 0: /* whitelist_whitelist_call_V7 - call_hash */;
             return _toStringHash(
@@ -6488,7 +6488,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5889: /* module 23 call 1 */
+    case 26881: /* module 105 call 1 */
         switch (itemIdx) {
         case 0: /* whitelist_remove_whitelisted_call_V7 - call_hash */;
             return _toStringHash(
@@ -6498,7 +6498,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5890: /* module 23 call 2 */
+    case 26882: /* module 105 call 2 */
         switch (itemIdx) {
         case 0: /* whitelist_dispatch_whitelisted_call_V7 - call_hash */;
             return _toStringHash(
@@ -6518,7 +6518,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 5891: /* module 23 call 3 */
+    case 26883: /* module 105 call 3 */
         switch (itemIdx) {
         case 0: /* whitelist_dispatch_whitelisted_call_with_preimage_V7 - call */;
             return _toStringCall(
@@ -6658,7 +6658,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 6659: /* module 26 call 3 */
+    case 5123: /* module 20 call 3 */
         switch (itemIdx) {
         case 0: /* utility_dispatch_as_V7 - as_origin */;
             return _toStringBoxPalletsOrigin(
@@ -6673,7 +6673,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 6661: /* module 26 call 5 */
+    case 5125: /* module 20 call 5 */
         switch (itemIdx) {
         case 0: /* utility_with_weight_V7 - call */;
             return _toStringCall(
@@ -6688,7 +6688,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7168: /* module 28 call 0 */
+    case 27648: /* module 108 call 0 */
         switch (itemIdx) {
         case 0: /* identity_add_registrar_V7 - account */;
             return _toStringAccountIdLookupOfT(
@@ -6698,7 +6698,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7169: /* module 28 call 1 */
+    case 27649: /* module 108 call 1 */
         switch (itemIdx) {
         case 0: /* identity_set_identity_V7 - info */;
             return _toStringIdentityInfo(
@@ -6708,7 +6708,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7170: /* module 28 call 2 */
+    case 27650: /* module 108 call 2 */
         switch (itemIdx) {
         case 0: /* identity_set_subs_V7 - subs */;
             return _toStringVecTupleAccountIdData(
@@ -6718,12 +6718,12 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7171: /* module 28 call 3 */
+    case 27651: /* module 108 call 3 */
         switch (itemIdx) {
         default:
             return parser_no_data;
         }
-    case 7172: /* module 28 call 4 */
+    case 27652: /* module 108 call 4 */
         switch (itemIdx) {
         case 0: /* identity_request_judgement_V7 - reg_index */;
             return _toStringCompactu32(
@@ -6738,7 +6738,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7173: /* module 28 call 5 */
+    case 27653: /* module 108 call 5 */
         switch (itemIdx) {
         case 0: /* identity_cancel_request_V7 - reg_index */;
             return _toStringRegistrarIndex(
@@ -6748,7 +6748,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7174: /* module 28 call 6 */
+    case 27654: /* module 108 call 6 */
         switch (itemIdx) {
         case 0: /* identity_set_fee_V7 - index */;
             return _toStringCompactu32(
@@ -6763,7 +6763,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7175: /* module 28 call 7 */
+    case 27655: /* module 108 call 7 */
         switch (itemIdx) {
         case 0: /* identity_set_account_id_V7 - index */;
             return _toStringCompactu32(
@@ -6778,7 +6778,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7177: /* module 28 call 9 */
+    case 27657: /* module 108 call 9 */
         switch (itemIdx) {
         case 0: /* identity_provide_judgement_V7 - reg_index */;
             return _toStringCompactu32(
@@ -6803,7 +6803,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7178: /* module 28 call 10 */
+    case 27658: /* module 108 call 10 */
         switch (itemIdx) {
         case 0: /* identity_kill_identity_V7 - target */;
             return _toStringAccountIdLookupOfT(
@@ -6813,7 +6813,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7179: /* module 28 call 11 */
+    case 27659: /* module 108 call 11 */
         switch (itemIdx) {
         case 0: /* identity_add_sub_V7 - sub */;
             return _toStringAccountIdLookupOfT(
@@ -6828,7 +6828,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7180: /* module 28 call 12 */
+    case 27660: /* module 108 call 12 */
         switch (itemIdx) {
         case 0: /* identity_rename_sub_V7 - sub */;
             return _toStringAccountIdLookupOfT(
@@ -6843,7 +6843,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7181: /* module 28 call 13 */
+    case 27661: /* module 108 call 13 */
         switch (itemIdx) {
         case 0: /* identity_remove_sub_V7 - sub */;
             return _toStringAccountIdLookupOfT(
@@ -6853,7 +6853,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7182: /* module 28 call 14 */
+    case 27662: /* module 108 call 14 */
         switch (itemIdx) {
         default:
             return parser_no_data;
@@ -6998,7 +6998,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7680: /* module 30 call 0 */
+    case 5376: /* module 21 call 0 */
         switch (itemIdx) {
         case 0: /* multisig_as_multi_threshold_1_V7 - other_signatories */;
             return _toStringVecAccountId(
@@ -7013,7 +7013,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7681: /* module 30 call 1 */
+    case 5377: /* module 21 call 1 */
         switch (itemIdx) {
         case 0: /* multisig_as_multi_V7 - threshold */;
             return _toStringu16(
@@ -7043,7 +7043,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7682: /* module 30 call 2 */
+    case 5378: /* module 21 call 2 */
         switch (itemIdx) {
         case 0: /* multisig_approve_as_multi_V7 - threshold */;
             return _toStringu16(
@@ -7073,7 +7073,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 7683: /* module 30 call 3 */
+    case 5379: /* module 21 call 3 */
         switch (itemIdx) {
         case 0: /* multisig_cancel_as_multi_V7 - threshold */;
             return _toStringu16(
@@ -7338,7 +7338,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 9472: /* module 37 call 0 */
+    case 4352: /* module 17 call 0 */
         switch (itemIdx) {
         case 0: /* voterlist_rebag_V7 - dislocated */;
             return _toStringAccountIdLookupOfT(
@@ -7348,7 +7348,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 9473: /* module 37 call 1 */
+    case 4353: /* module 17 call 1 */
         switch (itemIdx) {
         case 0: /* voterlist_put_in_front_of_V7 - lighter */;
             return _toStringAccountIdLookupOfT(
@@ -7358,7 +7358,7 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-    case 9474: /* module 37 call 2 */
+    case 4354: /* module 17 call 2 */
         switch (itemIdx) {
         case 0: /* voterlist_put_in_front_of_other_V7 - heavier */;
             return _toStringAccountIdLookupOfT(
