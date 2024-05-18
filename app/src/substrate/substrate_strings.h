@@ -48,6 +48,8 @@ static const char* STR_MO_PARASDISPUTES = "Parasdisputes";
 static const char* STR_MO_AUCTIONS = "Auctions";
 static const char* STR_MO_CROWDLOAN = "Crowdloan";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
+static const char* STR_MO_VOTEMANAGER = "Votemanager";
+static const char* STR_MO_VALIDATORMANAGER = "Validatormanager";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
@@ -259,6 +261,8 @@ static const char* STR_ME_TELEPORT_ASSETS = "Teleport assets";
 static const char* STR_ME_RESERVE_TRANSFER_ASSETS = "Reserve transfer assets";
 static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
 static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
+static const char* STR_ME_REGISTER_VALIDATORS = "Register validators";
+static const char* STR_ME_DEREGISTER_VALIDATORS = "Deregister validators";
 
 // Items names
 static const char* STR_IT_remark = "Remark";
@@ -411,6 +415,7 @@ static const char* STR_IT_version = "Version";
 static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
 static const char* STR_IT_weight_limit = "Weight limit";
 static const char* STR_IT_suspended = "Suspended";
+static const char* STR_IT_currency = "Currency";
 
 #ifdef __cplusplus
 }

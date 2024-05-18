@@ -35,7 +35,7 @@ extern "C" {
 #define PD_CALL_TIMESTAMP_V7 2 // ok
 #define PD_CALL_INDICES_V7 4
 #define PD_CALL_BALANCES_V7 6 // ok
-#define PD_CALL_STAKING_V7 7
+#define PD_CALL_STAKING_V7 9 // ok
 #define PD_CALL_SESSION_V7 10 // ok
 #define PD_CALL_TREASURY_V7 12 // ok
 #define PD_CALL_CONVICTIONVOTING_V7 102 // ok
@@ -58,6 +58,8 @@ extern "C" {
 #define PD_CALL_AUCTIONS_V7 72 // ok
 #define PD_CALL_CROWDLOAN_V7 73 // ok
 #define PD_CALL_XCMPALLET_V7 99 // ok
+#define PD_CALL_VOTEMANAGER_V7 109 // ok
+#define PD_CALL_VALIDATORMANAGER_V7 252 // ok
 
 #define PD_CALL_UTILITY_BATCH_V7 0
 typedef struct {
@@ -979,6 +981,43 @@ typedef struct {
 typedef struct {
 } pd_auctions_cancel_auction_V7_t;
 
+#define PD_CALL_VOTEMANAGER_VOTE_V7 0
+typedef struct {
+    pd_Compactu32_t poll_index;
+    pd_AccountVote_t vote;
+    pd_VoteCurrency_t currency;
+} pd_votemanager_vote_V7_t;
+
+#define PD_CALL_VOTEMANAGER_REMOVE_VOTE_V7 1
+typedef struct {
+    pd_Optionu16_t class;
+    pd_u32_t index;
+} pd_votemanager_remove_vote_V7_t;
+
+#define PD_CALL_VOTEMANAGER_REMOVE_OTHER_VOTE_V7 2
+typedef struct {
+    pd_AccountIdLookupOfT_t target;
+    pd_u16_t class;
+    pd_u32_t index;
+} pd_votemanager_remove_other_vote_V7_t;
+
+#define PD_CALL_VOTEMANAGER_UNLOCK_V7 3
+typedef struct {
+    pd_u16_t class;
+    pd_AccountIdLookupOfT_t target;
+    pd_u32_t index;
+} pd_votemanager_unlock_V7_t;
+
+#define PD_CALL_VALIDATORMANAGER_REGISTER_VALIDATORS_V7 0
+typedef struct {
+    pd_VecAccountId_t validators;
+} pd_validatormanager_register_validators_V7_t;
+
+#define PD_CALL_VALIDATORMANAGER_DEREGISTER_VALIDATORS_V7 1
+typedef struct {
+    pd_VecAccountId_t validators;
+} pd_validatormanager_deregister_validators_V7_t;
+
 #endif
 
 typedef union {
@@ -1150,6 +1189,12 @@ typedef union {
     pd_auctions_new_auction_V7_t auctions_new_auction_V7;
     pd_auctions_bid_V7_t auctions_bid_V7;
     pd_auctions_cancel_auction_V7_t auctions_cancel_auction_V7;
+    pd_votemanager_vote_V7_t votemanager_vote_V7;
+    pd_votemanager_remove_vote_V7_t votemanager_remove_vote_V7;
+    pd_votemanager_remove_other_vote_V7_t votemanager_remove_other_vote_V7;
+    pd_votemanager_unlock_V7_t votemanager_unlock_V7;
+    pd_validatormanager_register_validators_V7_t validatormanager_register_validators_V7;
+    pd_validatormanager_deregister_validators_V7_t validatormanager_deregister_validators_V7;
 #endif
 } pd_MethodBasic_V7_t;
 

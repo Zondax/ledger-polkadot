@@ -1698,6 +1698,16 @@ parser_error_t _readOptionProxyType(parser_context_t* c, pd_OptionProxyType_t* v
     return parser_ok;
 }
 
+parser_error_t _readOptionu16(parser_context_t* c, pd_Optionu16_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readu16(c, &v->contained))
+    }
+    return parser_ok;
+}
+
 parser_error_t _readOptionu32(parser_context_t* c, pd_Optionu32_t* v)
 {
     CHECK_INPUT()
@@ -4147,6 +4157,64 @@ parser_error_t _toStringAccountIdLookupOfT(
     return parser_ok;
 }
 
+parser_error_t _toStringAccountVoteSplitAbstain(
+    const pd_AccountVoteSplitAbstain_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    // First measure number of pages
+    uint8_t pages[4];
+
+    pages[0] = 1;
+    CHECK_ERROR(_toStringBalanceOf(&v->aye, outValue, outValueLen, 0, &pages[1]))
+    CHECK_ERROR(_toStringBalanceOf(&v->nay, outValue, outValueLen, 0, &pages[2]));
+    CHECK_ERROR(_toStringBalanceOf(&v->abstain, outValue, outValueLen, 0, &pages[3]));
+
+    *pageCount = 0;
+    for (uint8_t i = 0; i < (uint8_t)sizeof(pages); i++) {
+        *pageCount += pages[i];
+    }
+
+    if (pageIdx < pages[0]) {
+        snprintf(outValue, outValueLen, "SplitAbstain");
+        return parser_ok;
+    }
+    pageIdx -= pages[0];
+
+    /////////
+    /////////
+
+    if (pageIdx < pages[1]) {
+        CHECK_ERROR(_toStringBalanceOf(&v->aye, outValue, outValueLen, pageIdx, &pages[1]));
+        return parser_ok;
+    }
+    pageIdx -= pages[1];
+
+    /////////
+    /////////
+
+    if (pageIdx < pages[2]) {
+        CHECK_ERROR(_toStringBalanceOf(&v->nay, outValue, outValueLen, pageIdx, &pages[2]));
+        return parser_ok;
+    }
+
+    /////////
+    /////////
+
+    if (pageIdx < pages[3]) {
+        CHECK_ERROR(_toStringBalanceOf(&v->abstain, outValue, outValueLen, pageIdx, &pages[2]));
+        return parser_ok;
+    }
+
+    /////////
+    /////////
+
+    return parser_display_idx_out_of_range;
+}
+
 parser_error_t _toStringAccountVoteSplit(
     const pd_AccountVoteSplit_t* v,
     char* outValue,
@@ -4758,6 +4826,9 @@ parser_error_t _toStringAccountVote(
         break;
     case 1:
         CHECK_ERROR(_toStringAccountVoteSplit(&v->voteSplit, outValue, outValueLen, pageIdx, pageCount));
+        break;
+    case 2:
+        CHECK_ERROR(_toStringAccountVoteSplitAbstain(&v->voteSplitAbstain, outValue, outValueLen, pageIdx, pageCount));
         break;
     default:
         return parser_unexpected_value;
@@ -5869,6 +5940,27 @@ parser_error_t _toStringOptionProxyType(
     *pageCount = 1;
     if (v->some > 0) {
         CHECK_ERROR(_toStringProxyType(
+            &v->contained,
+            outValue, outValueLen,
+            pageIdx, pageCount));
+    } else {
+        snprintf(outValue, outValueLen, "None");
+    }
+    return parser_ok;
+}
+
+parser_error_t _toStringOptionu16(
+    const pd_Optionu16_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    *pageCount = 1;
+    if (v->some > 0) {
+        CHECK_ERROR(_toStringu16(
             &v->contained,
             outValue, outValueLen,
             pageIdx, pageCount));

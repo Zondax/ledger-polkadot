@@ -556,6 +556,12 @@ typedef struct {
 typedef struct {
     pd_BalanceOf_t aye;
     pd_BalanceOf_t nay;
+    pd_BalanceOf_t abstain;
+} pd_AccountVoteSplitAbstain_t;
+
+typedef struct {
+    pd_BalanceOf_t aye;
+    pd_BalanceOf_t nay;
 } pd_AccountVoteSplit_t;
 
 typedef struct {
@@ -674,8 +680,16 @@ typedef struct {
     union {
         pd_AccountVoteStandard_t voteStandard;
         pd_AccountVoteSplit_t voteSplit;
+        pd_AccountVoteSplitAbstain_t voteSplitAbstain;
     };
 } pd_AccountVote_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+
+    };
+} pd_VoteCurrency_t;
 
 typedef struct {
     uint8_t value;
@@ -871,6 +885,11 @@ typedef struct {
     uint8_t some;
     pd_ProxyType_t contained;
 } pd_OptionProxyType_t;
+
+typedef struct {
+    uint8_t some;
+    pd_u16_t contained;
+} pd_Optionu16_t;
 
 typedef struct {
     uint8_t some;
