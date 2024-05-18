@@ -1742,6 +1742,10 @@ __Z_INLINE parser_error_t _readMethod_auctions_cancel_auction_V7(
     return parser_ok;
 }
 
+////////////////////////////////////////////
+////// Custom
+////////////////////////////////////////////
+
 __Z_INLINE parser_error_t _readMethod_votemanager_vote_V7(
     parser_context_t* c, pd_votemanager_vote_V7_t* m)
 {
@@ -1790,6 +1794,365 @@ __Z_INLINE parser_error_t _readMethod_validatormanager_deregister_validators_V7(
     CHECK_ERROR(_readVecAccountId(c, &m->validators))
     return parser_ok;
 }
+
+__Z_INLINE parser_error_t _readMethod_extrinsicpause_pause_extrinsic_V7(
+    parser_context_t* c, pd_extrinsicpause_pause_extrinsic_V7_t* m)
+{
+    CHECK_ERROR(_readCall(c, &m->call))
+    CHECK_ERROR(_readbool(c, &m->pause_only_extrinsic))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_extrinsicpause_resume_extrinsic_V7(
+    parser_context_t* c, pd_extrinsicpause_resume_extrinsic_V7_t* m)
+{
+    CHECK_ERROR(_readCall(c, &m->call))
+    CHECK_ERROR(_readbool(c, &m->resume_only_extrinsic))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_stakeexchange_create_offer_V7(
+        parser_context_t* c, pd_stakeexchange_create_offer_V7_t* m)
+{
+    CHECK_ERROR(_readOfferOfT(c, &m->offer))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_stakeexchange_cancel_offer_V7(
+        parser_context_t* c, pd_stakeexchange_cancel_offer_V7_t* m)
+{
+    CHECK_ERROR(_readOfferId(c, &m->offer_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_stakeexchange_configure_liquidity_account_V7(
+        parser_context_t* c, pd_stakeexchange_configure_liquidity_account_V7_t* m)
+{
+    CHECK_ERROR(_readLiquidityAccountConfigOfT(c, &m->config))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_stakeexchange_withdraw_liquidity_V7(
+        parser_context_t* c, pd_stakeexchange_withdraw_liquidity_V7_t* m)
+{
+    CHECK_ERROR(_readOfferId(c, &m->offer_id))
+    CHECK_ERROR(_readBalanceOf(c, &m->amount))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_stakeexchange_add_liquidity_V7(
+        parser_context_t* c, pd_stakeexchange_add_liquidity_V7_t* m)
+{
+    CHECK_ERROR(_readOfferId(c, &m->offer_id))
+    CHECK_ERROR(_readBalanceOf(c, &m->amount))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_stakeexchange_buy_V7(
+        parser_context_t* c, pd_stakeexchange_buy_V7_t* m)
+{
+    CHECK_ERROR(_readOfferId(c, &m->offer_id))
+    CHECK_ERROR(_readBalanceOf(c, &m->amount))
+    CHECK_ERROR(_readTokenIdOf(c, &m->token_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_approve_collection_V7(
+        parser_context_t* c, pd_multitokens_approve_collection_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readAccountId(c, &m->operator_))
+    CHECK_ERROR(_readOptionu32(c, &m->expiration))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_approve_token_V7(
+        parser_context_t* c, pd_multitokens_approve_token_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readCompactTokenId(c, &m->token_id))
+    CHECK_ERROR(_readAccountId(c, &m->operator_))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    CHECK_ERROR(_readOptionu32(c, &m->expiration))
+    CHECK_ERROR(_readCompactBalance(c, &m->current_amount))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_batch_set_attribute_V7(
+        parser_context_t* c, pd_multitokens_batch_set_attribute_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readOptionTokenId(c, &m->token_id))
+    CHECK_ERROR(_readVecAttributeKeyValuePair(c, &m->attributes))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_batch_transfer_V7(
+        parser_context_t* c, pd_multitokens_batch_transfer_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readVecTransferRecipientsOf(c, &m->recipients))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_burn_V7(
+        parser_context_t* c, pd_multitokens_burn_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readBurnParamsOfT(c, &m->params))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_claim_collections_V7(
+        parser_context_t* c, pd_multitokens_claim_collections_V7_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->destination))
+    CHECK_ERROR(_readEcdsaSignature(c, &m->ethereum_signature))
+    CHECK_ERROR(_readEthereumAddress(c, &m->ethereum_address))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_claim_tokens_V7(
+        parser_context_t* c, pd_multitokens_claim_tokens_V7_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->destination))
+    CHECK_ERROR(_readEcdsaSignature(c, &m->ethereum_signature))
+    CHECK_ERROR(_readEthereumAddress(c, &m->ethereum_address))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_create_collection_V7(
+        parser_context_t* c, pd_multitokens_create_collection_V7_t* m)
+{
+    CHECK_ERROR(_readCollectionDescriptor(c, &m->descriptor))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_destroy_collection_V7(
+        parser_context_t* c, pd_multitokens_destroy_collection_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_freeze_V7(
+        parser_context_t* c, pd_multitokens_freeze_V7_t* m)
+{
+    CHECK_ERROR(_readFreezeOf(c, &m->info))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_mutate_collection_V7(
+        parser_context_t* c, pd_multitokens_mutate_collection_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readCollectionMutation(c, &m->mutation))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_remove_all_attributes_V7(
+        parser_context_t* c, pd_multitokens_remove_all_attributes_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readOptionTokenId(c, &m->token_id))
+    CHECK_ERROR(_readu32(c, &m->attribute_count))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_remove_attribute_V7(
+        parser_context_t* c, pd_multitokens_remove_attribute_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readOptionTokenId(c, &m->token_id))
+    CHECK_ERROR(_readBytes(c, &m->key))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_set_attribute_V7(
+        parser_context_t* c, pd_multitokens_set_attribute_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readOptionTokenId(c, &m->token_id))
+    CHECK_ERROR(_readBytes(c, &m->key))
+    CHECK_ERROR(_readBytes(c, &m->value))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_thaw_V7(
+        parser_context_t* c, pd_multitokens_thaw_V7_t* m)
+{
+    CHECK_ERROR(_readFreezeOf(c, &m->info))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_transfer_V7(
+        parser_context_t* c, pd_multitokens_transfer_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->recipient))
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readTransferParamsOfT(c, &m->params))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_unapprove_collection_V7(
+        parser_context_t* c, pd_multitokens_unapprove_collection_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readAccountId(c, &m->operator_))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_unapprove_token_V7(
+        parser_context_t* c, pd_multitokens_unapprove_token_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readCompactTokenId(c, &m->token_id))
+    CHECK_ERROR(_readAccountId(c, &m->operator_))
+    return parser_ok;
+}
+__Z_INLINE parser_error_t _readMethod_multitokens_batch_mint_V7(
+        parser_context_t* c, pd_multitokens_batch_mint_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readVecMintRecipientsOf(c, &m->recipients))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_mint_V7(
+        parser_context_t* c, pd_multitokens_mint_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->recipient))
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readMintParamsOf(c, &m->params))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_mutate_token_V7(
+        parser_context_t* c, pd_multitokens_mutate_token_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readCompactTokenId(c, &m->token_id))
+    CHECK_ERROR(_readTokenMutation(c, &m->mutation))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_approve_collection_V7(
+        parser_context_t* c, pd_multitokens_force_approve_collection_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->caller))
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readAccountId(c, &m->operator_))
+    CHECK_ERROR(_readOptionu32(c, &m->expiration))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_burn_V7(
+        parser_context_t* c, pd_multitokens_force_burn_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->caller))
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readBurnParamsOfT(c, &m->params))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_create_collection_V7(
+        parser_context_t* c, pd_multitokens_force_create_collection_V7_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->owner))
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readCollectionDescriptor(c, &m->descriptor))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_freeze_V7(
+        parser_context_t* c, pd_multitokens_force_freeze_V7_t* m)
+{
+    CHECK_ERROR(_readFreezeOf(c, &m->info))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_mint_V7(
+        parser_context_t* c, pd_multitokens_force_mint_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->caller))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->recipient))
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readMintParamsOf(c, &m->params))
+    CHECK_ERROR(_readOptionAccountIdLookupOfT(c, &m->deposit_backer))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_mutate_collection_V7(
+        parser_context_t* c, pd_multitokens_force_mutate_collection_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readCollectionMutation(c, &m->mutation))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_set_attribute_V7(
+        parser_context_t* c, pd_multitokens_force_set_attribute_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readOptionTokenId(c, &m->token_id))
+    CHECK_ERROR(_readBytes(c, &m->key))
+    CHECK_ERROR(_readOptionAttributeOf(c, &m->value))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_set_collection_V7(
+        parser_context_t* c, pd_multitokens_force_set_collection_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readOptionCollectionOf(c, &m->value))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_set_collection_account_V7(
+        parser_context_t* c, pd_multitokens_force_set_collection_account_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->account_id))
+    CHECK_ERROR(_readOptionCollectionAccountOf(c, &m->value))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_set_next_collection_id_V7(
+        parser_context_t* c, pd_multitokens_force_set_next_collection_id_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->value))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_set_token_V7(
+        parser_context_t* c, pd_multitokens_force_set_token_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readCompactTokenId(c, &m->token_id))
+    CHECK_ERROR(_readOptionTokenOf(c, &m->value))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_set_token_account_V7(
+        parser_context_t* c, pd_multitokens_force_set_token_account_V7_t* m)
+{
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readCompactTokenId(c, &m->token_id))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->account_id))
+    CHECK_ERROR(_readOptionTokenAccountOf(c, &m->value))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_multitokens_force_transfer_V7(
+        parser_context_t* c, pd_multitokens_force_transfer_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->source))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->destination))
+    CHECK_ERROR(_readCompactCollectionId(c, &m->collection_id))
+    CHECK_ERROR(_readTransferParamsOfT(c, &m->params))
+    return parser_ok;
+}
+
 
 #endif
 
@@ -2470,6 +2833,11 @@ parser_error_t _readMethod_V7(
     case 18434: /* module 72 call 2 */
         CHECK_ERROR(_readMethod_auctions_cancel_auction_V7(c, &method->basic.auctions_cancel_auction_V7))
         break;
+
+///////////////////////////////////////
+// Custom
+///////////////////////////////////////
+
     case 27904: /* module 109 call 0 */
         CHECK_ERROR(_readMethod_votemanager_vote_V7(c, &method->basic.votemanager_vote_V7))
         break;
@@ -2487,6 +2855,132 @@ parser_error_t _readMethod_V7(
         break;
     case 64513: /* module 252 call 1 */
         CHECK_ERROR(_readMethod_validatormanager_deregister_validators_V7(c, &method->basic.validatormanager_deregister_validators_V7))
+        break;
+    case 65280: /* module 255 call 0 */
+        CHECK_ERROR(_readMethod_extrinsicpause_pause_extrinsic_V7(c, &method->basic.extrinsicpause_pause_extrinsic_V7))
+        break;
+    case 65281: /* module 255 call 1 */
+        CHECK_ERROR(_readMethod_extrinsicpause_resume_extrinsic_V7(c, &method->basic.extrinsicpause_resume_extrinsic_V7))
+        break;
+    case 4864: /* module 19 call 0 */
+        CHECK_ERROR(_readMethod_stakeexchange_create_offer_V7(c, &method->basic.stakeexchange_create_offer_V7))
+            break;
+    case 4865: /* module 19 call 1 */
+        CHECK_ERROR(_readMethod_stakeexchange_cancel_offer_V7(c, &method->basic.stakeexchange_cancel_offer_V7))
+        break;
+    case 4866: /* module 19 call 2 */
+        CHECK_ERROR(_readMethod_stakeexchange_configure_liquidity_account_V7(c, &method->basic.stakeexchange_configure_liquidity_account_V7))
+        break;
+    case 4867: /* module 19 call 3 */
+        CHECK_ERROR(_readMethod_stakeexchange_withdraw_liquidity_V7(c, &method->basic.stakeexchange_withdraw_liquidity_V7))
+        break;
+    case 4868: /* module 19 call 4 */
+        CHECK_ERROR(_readMethod_stakeexchange_add_liquidity_V7(c, &method->basic.stakeexchange_add_liquidity_V7))
+        break;
+    case 4869: /* module 19 call 5 */
+        CHECK_ERROR(_readMethod_stakeexchange_buy_V7(c, &method->basic.stakeexchange_buy_V7))
+        break;
+    case 64768: /* module 253 call 0 */
+        CHECK_ERROR(_readMethod_multitokens_create_collection_V7(c, &method->basic.multitokens_create_collection_V7))
+        break;
+    case 64769: /* module 253 call 1 */
+        CHECK_ERROR(_readMethod_multitokens_destroy_collection_V7(c, &method->basic.multitokens_destroy_collection_V7))
+        break;
+    case 64770: /* module 253 call 2 */
+        CHECK_ERROR(_readMethod_multitokens_mutate_collection_V7(c, &method->basic.multitokens_mutate_collection_V7))
+        break;
+    case 64773: /* module 253 call 5 */
+        CHECK_ERROR(_readMethod_multitokens_burn_V7(c, &method->basic.multitokens_burn_V7))
+        break;
+    case 64774: /* module 253 call 6 */
+        CHECK_ERROR(_readMethod_multitokens_transfer_V7(c, &method->basic.multitokens_transfer_V7))
+        break;
+    case 64775: /* module 253 call 7 */
+        CHECK_ERROR(_readMethod_multitokens_freeze_V7(c, &method->basic.multitokens_freeze_V7))
+        break;
+    case 64776: /* module 253 call 8 */
+        CHECK_ERROR(_readMethod_multitokens_thaw_V7(c, &method->basic.multitokens_thaw_V7))
+        break;
+    case 64777: /* module 253 call 9 */
+        CHECK_ERROR(_readMethod_multitokens_set_attribute_V7(c, &method->basic.multitokens_set_attribute_V7))
+        break;
+    case 64778: /* module 253 call 10 */
+        CHECK_ERROR(_readMethod_multitokens_remove_attribute_V7(c, &method->basic.multitokens_remove_attribute_V7))
+        break;
+    case 64779: /* module 253 call 11 */
+        CHECK_ERROR(_readMethod_multitokens_remove_all_attributes_V7(c, &method->basic.multitokens_remove_all_attributes_V7))
+        break;
+    case 64780: /* module 253 call 12 */
+        CHECK_ERROR(_readMethod_multitokens_batch_transfer_V7(c, &method->basic.multitokens_batch_transfer_V7))
+        break;
+    case 64782: /* module 253 call 14 */
+        CHECK_ERROR(_readMethod_multitokens_batch_set_attribute_V7(c, &method->basic.multitokens_batch_set_attribute_V7))
+        break;
+    case 64783: /* module 253 call 15 */
+        CHECK_ERROR(_readMethod_multitokens_approve_collection_V7(c, &method->basic.multitokens_approve_collection_V7))
+        break;
+    case 64784: /* module 253 call 16 */
+        CHECK_ERROR(_readMethod_multitokens_unapprove_collection_V7(c, &method->basic.multitokens_unapprove_collection_V7))
+        break;
+    case 64785: /* module 253 call 17 */
+        CHECK_ERROR(_readMethod_multitokens_approve_token_V7(c, &method->basic.multitokens_approve_token_V7))
+        break;
+    case 64786: /* module 253 call 18 */
+        CHECK_ERROR(_readMethod_multitokens_unapprove_token_V7(c, &method->basic.multitokens_unapprove_token_V7))
+        break;
+    case 64800: /* module 253 call 32 */
+        CHECK_ERROR(_readMethod_multitokens_claim_collections_V7(c, &method->basic.multitokens_claim_collections_V7))
+        break;
+    case 64801: /* module 253 call 33 */
+        CHECK_ERROR(_readMethod_multitokens_claim_tokens_V7(c, &method->basic.multitokens_claim_tokens_V7))
+        break;
+    case 64771: /* module 253 call 3 */
+        CHECK_ERROR(_readMethod_multitokens_mutate_token_V7(c, &method->basic.multitokens_mutate_token_V7))
+        break;
+    case 64772: /* module 253 call 4 */
+        CHECK_ERROR(_readMethod_multitokens_mint_V7(c, &method->basic.multitokens_mint_V7))
+        break;
+    case 64781: /* module 253 call 13 */
+        CHECK_ERROR(_readMethod_multitokens_batch_mint_V7(c, &method->basic.multitokens_batch_mint_V7))
+        break;
+    case 64787: /* module 253 call 19 */
+        CHECK_ERROR(_readMethod_multitokens_force_mutate_collection_V7(c, &method->basic.multitokens_force_mutate_collection_V7))
+        break;
+    case 64788: /* module 253 call 20 */
+        CHECK_ERROR(_readMethod_multitokens_force_transfer_V7(c, &method->basic.multitokens_force_transfer_V7))
+        break;
+    case 64789: /* module 253 call 21 */
+        CHECK_ERROR(_readMethod_multitokens_force_set_collection_V7(c, &method->basic.multitokens_force_set_collection_V7))
+        break;
+    case 64790: /* module 253 call 22 */
+        CHECK_ERROR(_readMethod_multitokens_force_set_token_V7(c, &method->basic.multitokens_force_set_token_V7))
+        break;
+    case 64791: /* module 253 call 23 */
+        CHECK_ERROR(_readMethod_multitokens_force_set_attribute_V7(c, &method->basic.multitokens_force_set_attribute_V7))
+        break;
+    case 64792: /* module 253 call 24 */
+        CHECK_ERROR(_readMethod_multitokens_force_set_collection_account_V7(c, &method->basic.multitokens_force_set_collection_account_V7))
+        break;
+    case 64793: /* module 253 call 25 */
+        CHECK_ERROR(_readMethod_multitokens_force_set_token_account_V7(c, &method->basic.multitokens_force_set_token_account_V7))
+        break;
+    case 64794: /* module 253 call 26 */
+        CHECK_ERROR(_readMethod_multitokens_force_create_collection_V7(c, &method->basic.multitokens_force_create_collection_V7))
+        break;
+    case 64795: /* module 253 call 27 */
+        CHECK_ERROR(_readMethod_multitokens_force_mint_V7(c, &method->basic.multitokens_force_mint_V7))
+        break;
+    case 64796: /* module 253 call 28 */
+        CHECK_ERROR(_readMethod_multitokens_force_burn_V7(c, &method->basic.multitokens_force_burn_V7))
+        break;
+    case 64797: /* module 253 call 29 */
+        CHECK_ERROR(_readMethod_multitokens_force_approve_collection_V7(c, &method->basic.multitokens_force_approve_collection_V7))
+        break;
+    case 64798: /* module 253 call 30 */
+        CHECK_ERROR(_readMethod_multitokens_force_freeze_V7(c, &method->basic.multitokens_force_freeze_V7))
+        break;
+    case 64799: /* module 253 call 31 */
+        CHECK_ERROR(_readMethod_multitokens_force_set_next_collection_id_V7(c, &method->basic.multitokens_force_set_next_collection_id_V7))
         break;
 #endif
     default:
@@ -2567,6 +3061,12 @@ const char* _getMethod_ModuleName_V7(uint8_t moduleIdx)
         return STR_MO_VOTEMANAGER;
     case 252: // ok
         return STR_MO_VALIDATORMANAGER;
+    case 255: // ok
+        return STR_MO_EXTRINSICPAUSE;
+    case 19: // ok
+        return STR_MO_STAKEEXCHANGE;
+    case 253: // ok
+        return STR_MO_MULTITOKENS;
 #endif
     default:
         return NULL;
@@ -3035,6 +3535,11 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_BID;
     case 18434: /* module 72 call 2 */
         return STR_ME_CANCEL_AUCTION;
+        
+//////////////////////////////////
+// Custom
+//////////////////////////////////
+
     case 27904: /* module 109 call 0 */
         return STR_ME_VOTE;
     case 27905: /* module 109 call 1 */
@@ -3047,6 +3552,88 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_REGISTER_VALIDATORS;
     case 64513: /* module 252 call 1 */
         return STR_ME_DEREGISTER_VALIDATORS;
+    case 65280: /* module 255 call 0 */
+        return STR_ME_PAUSE_EXTRINSIC;
+    case 65281: /* module 255 call 1 */
+        return STR_ME_RESUME_EXTRINSIC;
+    case 4865: /* module 19 call 1 */
+        return STR_ME_CANCEL_OFFER;
+    case 4866: /* module 19 call 2 */
+        return STR_ME_CONFIGURE_LIQUIDITY_ACCOUNT;
+    case 4867: /* module 19 call 3 */
+        return STR_ME_WITHDRAW_LIQUIDITY;
+    case 4868: /* module 19 call 4 */
+        return STR_ME_ADD_LIQUIDITY;
+    case 4869: /* module 19 call 5 */
+        return STR_ME_BUY;
+    case 64768: /* module 253 call 0 */
+        return STR_ME_CREATE_COLLECTION;
+    case 64769: /* module 253 call 1 */
+        return STR_ME_DESTROY_COLLECTION;
+    case 64770: /* module 253 call 2 */
+        return STR_ME_MUTATE_COLLECTION;
+    case 64771: /* module 253 call 3 */
+        return STR_ME_MUTATE_TOKEN;
+    case 64772: /* module 253 call 4 */
+        return STR_ME_MINT;
+    case 64773: /* module 253 call 5 */
+        return STR_ME_BURN;
+    case 64774: /* module 253 call 6 */
+        return STR_ME_TRANSFER;
+    case 64775: /* module 253 call 7 */
+        return STR_ME_FREEZE;
+    case 64776: /* module 253 call 8 */
+        return STR_ME_THAW;
+    case 64777: /* module 253 call 9 */
+        return STR_ME_SET_ATTRIBUTE;
+    case 64778: /* module 253 call 10 */
+        return STR_ME_REMOVE_ATTRIBUTE;
+    case 64779: /* module 253 call 11 */
+        return STR_ME_REMOVE_ALL_ATTRIBUTES;
+    case 64780: /* module 253 call 12 */
+        return STR_ME_BATCH_TRANSFER;
+    case 64781: /* module 253 call 13 */
+        return STR_ME_BATCH_MINT;
+    case 64782: /* module 253 call 14 */
+        return STR_ME_BATCH_SET_ATTRIBUTE;
+    case 64783: /* module 253 call 15 */
+        return STR_ME_APPROVE_COLLECTION;
+    case 64784: /* module 253 call 16 */
+        return STR_ME_UNAPPROVE_COLLECTION;
+    case 64785: /* module 253 call 17 */
+        return STR_ME_APPROVE_TOKEN;
+    case 64786: /* module 253 call 18 */
+        return STR_ME_UNAPPROVE_TOKEN;
+    case 64787: /* module 253 call 19 */
+        return STR_ME_FORCE_MUTATE_COLLECTION;
+    case 64788: /* module 253 call 20 */
+        return STR_ME_FORCE_TRANSFER;
+    case 64789: /* module 253 call 21 */
+        return STR_ME_FORCE_SET_COLLECTION;
+    case 64790: /* module 253 call 22 */
+        return STR_ME_FORCE_SET_TOKEN;
+    case 64791: /* module 253 call 23 */
+        return STR_ME_FORCE_SET_ATTRIBUTE;
+    case 64792: /* module 253 call 24 */
+        return STR_ME_FORCE_SET_COLLECTION_ACCOUNT;
+    case 64793: /* module 253 call 25 */
+        return STR_ME_FORCE_SET_TOKEN_ACCOUNT;
+    case 64794: /* module 253 call 26 */
+        return STR_ME_FORCE_CREATE_COLLECTION;
+    case 64795: /* module 253 call 27 */
+        return STR_ME_FORCE_MINT;
+    case 64796: /* module 253 call 28 */
+        return STR_ME_FORCE_BURN;
+    case 64797: /* module 253 call 29 */
+        return STR_ME_FORCE_APPROVE_COLLECTION;
+    case 64798: /* module 253 call 30 */
+        return STR_ME_FORCE_FREEZE;
+    case 64799: /* module 253 call 31 */
+        return STR_ME_FORCE_SET_NEXT_COLLECTION_ID;
+    case 64800: /* module 253 call 32 */
+        return STR_ME_CLAIM_COLLECTIONS;
+    case 64801: /* module 253 call 33 */
+        return STR_ME_CLAIM_TOKENS;
 #endif
     default:
         return NULL;
@@ -3505,6 +4092,11 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 5;
     case 18434: /* module 72 call 2 */
         return 0;
+
+//////////////////////////////////
+// Custom
+//////////////////////////////////
+
     case 27904: /* module 109 call 0 */
         return 3;
     case 27905: /* module 109 call 1 */
@@ -3517,6 +4109,90 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 64513: /* module 252 call 1 */
         return 1;
+    case 65280: /* module 255 call 0 */
+        return 2;
+    case 65281: /* module 255 call 1 */
+        return 2;
+    case 4864: /* module 19 call 0 */
+        return 1;
+    case 4865: /* module 19 call 1 */
+        return 1;
+    case 4866: /* module 19 call 2 */
+        return 1;
+    case 4867: /* module 19 call 3 */
+        return 2;
+    case 4868: /* module 19 call 4 */
+        return 2;
+    case 4869: /* module 19 call 5 */
+        return 3;
+    case 64768: /* module 253 call 0 */
+        return 1;
+    case 64769: /* module 253 call 1 */
+        return 1;
+    case 64770: /* module 253 call 2 */
+        return 2;
+    case 64771: /* module 253 call 3 */
+        return 3;
+    case 64772: /* module 253 call 4 */
+        return 3;
+    case 64773: /* module 253 call 5 */
+        return 2;
+    case 64774: /* module 253 call 6 */
+        return 3;
+    case 64775: /* module 253 call 7 */
+        return 1;
+    case 64776: /* module 253 call 8 */
+        return 1;
+    case 64777: /* module 253 call 9 */
+        return 4;
+    case 64778: /* module 253 call 10 */
+        return 3;
+    case 64779: /* module 253 call 11 */
+        return 3;
+    case 64780: /* module 253 call 12 */
+        return 2;
+    case 64781: /* module 253 call 13 */
+        return 2;
+    case 64782: /* module 253 call 14 */
+        return 3;
+    case 64783: /* module 253 call 15 */
+        return 3;
+    case 64784: /* module 253 call 16 */
+        return 2;
+    case 64785: /* module 253 call 17 */
+        return 6;
+    case 64786: /* module 253 call 18 */
+        return 3;
+    case 64787: /* module 253 call 19 */
+        return 2;
+    case 64788: /* module 253 call 20 */
+        return 4;
+    case 64789: /* module 253 call 21 */
+        return 2;
+    case 64790: /* module 253 call 22 */
+        return 3;
+    case 64791: /* module 253 call 23 */
+        return 4;
+    case 64792: /* module 253 call 24 */
+        return 3;
+    case 64793: /* module 253 call 25 */
+        return 4;
+    case 64794: /* module 253 call 26 */
+        return 3;
+    case 64795: /* module 253 call 27 */
+        return 5;
+    case 64796: /* module 253 call 28 */
+        return 3;
+    case 64797: /* module 253 call 29 */
+        return 4;
+    case 64798: /* module 253 call 30 */
+        return 1;
+    case 64799: /* module 253 call 31 */
+        return 1;
+    case 64800: /* module 253 call 32 */
+        return 3;
+    case 64801: /* module 253 call 33 */
+        return 3;
 #endif
     default:
         return 0;
@@ -5368,6 +6044,11 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+
+//////////////////////////////////
+// Custom
+//////////////////////////////////
+
     case 27904: /* module 109 call 0 */
         switch (itemIdx) {
         case 0:
@@ -5424,6 +6105,431 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+    case 65280: /* module 255 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_call;
+        case 1:
+            return STR_IT_pause_only_extrinsic;
+        default:
+            return NULL;
+        }
+    case 65281: /* module 255 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_call;
+        case 1:
+            return STR_IT_resume_only_extrinsic;
+        default:
+            return NULL;
+    }
+    case 4864: /* module 19 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_offer;
+        default:
+            return NULL;
+        }
+    case 4865: /* module 19 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_offer_id;
+        default:
+            return NULL;
+        }
+    case 4866: /* module 19 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_config;
+        default:
+            return NULL;
+        }
+    case 4867: /* module 19 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_offer_id;
+        case 1:
+            return STR_IT_amount;
+        default:
+            return NULL;
+        }
+    case 4868: /* module 19 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_offer_id;
+        case 1:
+            return STR_IT_amount;
+        default:
+            return NULL;
+        }
+    case 4869: /* module 19 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_offer_id;
+        case 1:
+            return STR_IT_amount;
+        case 2:
+            return STR_IT_token_id;
+        default:
+            return NULL;
+        }
+    case 64768: /* module 253 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_descriptor;
+        default:
+            return NULL;
+        }
+    case 64769: /* module 253 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        default:
+            return NULL;
+        }
+    case 64770: /* module 253 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_mutation;
+        default:
+            return NULL;
+        }
+    case 64771: /* module 253 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_mutation;
+        default:
+            return NULL;
+        }
+    case 64772: /* module 253 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_recipient;
+        case 1:
+            return STR_IT_collection_id;
+        case 2:
+            return STR_IT_params;
+        default:
+            return NULL;
+        }
+    case 64773: /* module 253 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_params;
+        default:
+            return NULL;
+        }
+    case 64774: /* module 253 call 6 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_recipient;
+        case 1:
+            return STR_IT_collection_id;
+        case 2:
+            return STR_IT_params;
+        default:
+            return NULL;
+        }
+    case 64775: /* module 253 call 7 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_info;
+        default:
+            return NULL;
+        }
+    case 64776: /* module 253 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_info;
+        default:
+            return NULL;
+        }
+    case 64777: /* module 253 call 9 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_key;
+        case 3:
+            return STR_IT_value;
+        default:
+            return NULL;
+        }
+    case 64778: /* module 253 call 10 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_key;
+        default:
+            return NULL;
+        }
+    case 64779: /* module 253 call 11 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_attribute_count;
+        default:
+            return NULL;
+        }
+    case 64780: /* module 253 call 12 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_recipients;
+        default:
+            return NULL;
+        }
+    case 64781: /* module 253 call 13 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_recipients;
+        default:
+            return NULL;
+        }
+    case 64782: /* module 253 call 14 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_attributes;
+        default:
+            return NULL;
+        }
+    case 64783: /* module 253 call 15 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_operator;
+        case 2:
+            return STR_IT_expiration;
+        default:
+            return NULL;
+        }
+    case 64784: /* module 253 call 16 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_operator;
+        default:
+            return NULL;
+        }
+    case 64785: /* module 253 call 17 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_operator;
+        case 3:
+            return STR_IT_amount;
+        case 4:
+            return STR_IT_expiration;
+        case 5:
+            return STR_IT_current_amount;
+        default:
+            return NULL;
+        }
+    case 64786: /* module 253 call 18 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_operator;
+        default:
+            return NULL;
+        }
+    case 64787: /* module 253 call 19 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_mutation;
+        default:
+            return NULL;
+        }
+    case 64788: /* module 253 call 20 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_source;
+        case 1:
+            return STR_IT_destination;
+        case 2:
+            return STR_IT_collection_id;
+        case 3:
+            return STR_IT_params;
+        default:
+            return NULL;
+        }
+    case 64789: /* module 253 call 21 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_value;
+        default:
+            return NULL;
+        }
+    case 64790: /* module 253 call 22 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_value;
+        default:
+            return NULL;
+        }
+    case 64791: /* module 253 call 23 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_key;
+        case 3:
+            return STR_IT_value;
+        default:
+            return NULL;
+        }
+    case 64792: /* module 253 call 24 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_account_id;
+        case 2:
+            return STR_IT_value;
+        default:
+            return NULL;
+        }
+    case 64793: /* module 253 call 25 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_collection_id;
+        case 1:
+            return STR_IT_token_id;
+        case 2:
+            return STR_IT_account_id;
+        case 3:
+            return STR_IT_value;
+        default:
+            return NULL;
+        }
+    case 64794: /* module 253 call 26 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_owner;
+        case 1:
+            return STR_IT_collection_id;
+        case 2:
+            return STR_IT_descriptor;
+        default:
+            return NULL;
+        }
+    case 64795: /* module 253 call 27 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_caller;
+        case 1:
+            return STR_IT_recipient;
+        case 2:
+            return STR_IT_collection_id;
+        case 3:
+            return STR_IT_params;
+        case 4:
+            return STR_IT_deposit_backer;
+        default:
+            return NULL;
+        }
+    case 64796: /* module 253 call 28 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_caller;
+        case 1:
+            return STR_IT_collection_id;
+        case 2:
+            return STR_IT_params;
+        default:
+            return NULL;
+        }
+    case 64797: /* module 253 call 29 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_caller;
+        case 1:
+            return STR_IT_collection_id;
+        case 2:
+            return STR_IT_operator;
+        case 3:
+            return STR_IT_expiration;
+        default:
+            return NULL;
+        }
+    case 64798: /* module 253 call 30 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_info;
+        default:
+            return NULL;
+        }
+    case 64799: /* module 253 call 31 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_value;
+        default:
+            return NULL;
+        }
+    case 64800: /* module 253 call 32 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_destination;
+        case 1:
+            return STR_IT_ethereum_signature;
+        case 2:
+            return STR_IT_ethereum_address;
+        default:
+            return NULL;
+        }
+    case 64801: /* module 253 call 33 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_destination;
+        case 1:
+            return STR_IT_ethereum_signature;
+        case 2:
+            return STR_IT_ethereum_address;
+        default:
+            return NULL;
+        }
+
 #endif
     default:
         return NULL;
@@ -8374,6 +9480,11 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
+
+//////////////////////////////
+// Custom
+//////////////////////////////
+
     case 27904: /* module 109 call 0 */
         switch (itemIdx) {
         case 0: /* votemanager_vote_V7 - poll_index */;
@@ -8466,6 +9577,436 @@ parser_error_t _getMethod_ItemValue_V7(
                 &m->basic.validatormanager_deregister_validators_V7.validators,
                 outValue, outValueLen,
                 pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 65280: /* module 255 call 0 */
+        switch (itemIdx) {
+        case 0: /* extrinsicpause_pause_extrinsic_V7 - call */;
+            return _toStringCall(
+                &m->basic.extrinsicpause_pause_extrinsic_V7.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* extrinsicpause_pause_extrinsic_V7 - pause_only_extrinsic */;
+            return _toStringbool(
+                &m->basic.extrinsicpause_pause_extrinsic_V7.pause_only_extrinsic,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 65281: /* module 255 call 1 */
+        switch (itemIdx) {
+        case 0: /* extrinsicpause_resume_extrinsic_V7 - call */;
+            return _toStringCall(
+                &m->basic.extrinsicpause_resume_extrinsic_V7.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* extrinsicpause_resume_extrinsic_V7 - resume_only_extrinsic */;
+            return _toStringbool(
+                &m->basic.extrinsicpause_resume_extrinsic_V7.resume_only_extrinsic,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+   case 4864: /* module 19 call 0 */
+        switch (itemIdx) {
+        case 0: /* stakeexchange_create_offer_V7 - offer */;
+            return _toStringOfferOfT(
+                            &m->basic.stakeexchange_create_offer_V7.offer,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 4865: /* module 19 call 1 */
+        switch (itemIdx) {
+        case 0: /* stakeexchange_cancel_offer_V7 - offer_id */;
+            return _toStringOfferId(
+                            &m->basic.stakeexchange_cancel_offer_V7.offer_id,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 4866: /* module 19 call 2 */
+        switch (itemIdx) {
+        case 0: /* stakeexchange_configure_liquidity_account_V7 - config */;
+            return _toStringLiquidityAccountConfigOfT(
+                            &m->basic.stakeexchange_configure_liquidity_account_V7.config,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 4867: /* module 19 call 3 */
+        switch (itemIdx) {
+        case 0: /* stakeexchange_withdraw_liquidity_V7 - offer_id */;
+            return _toStringOfferId(
+                            &m->basic.stakeexchange_withdraw_liquidity_V7.offer_id,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        case 1: /* stakeexchange_withdraw_liquidity_V7 - amount */;
+            return _toStringBalanceOf(
+                            &m->basic.stakeexchange_withdraw_liquidity_V7.amount,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 4868: /* module 19 call 4 */
+        switch (itemIdx) {
+        case 0: /* stakeexchange_add_liquidity_V7 - offer_id */;
+            return _toStringOfferId(
+                            &m->basic.stakeexchange_add_liquidity_V7.offer_id,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        case 1: /* stakeexchange_add_liquidity_V7 - amount */;
+            return _toStringBalanceOf(
+                            &m->basic.stakeexchange_add_liquidity_V7.amount,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 4869: /* module 19 call 5 */
+        switch (itemIdx) {
+        case 0: /* stakeexchange_buy_V7 - offer_id */;
+            return _toStringOfferId(
+                            &m->basic.stakeexchange_buy_V7.offer_id,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        case 1: /* stakeexchange_buy_V7 - amount */;
+            return _toStringBalanceOf(
+                            &m->basic.stakeexchange_buy_V7.amount,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        case 2: /* stakeexchange_buy_V7 - token_id */;
+            return _toStringTokenIdOf(
+                            &m->basic.stakeexchange_buy_V7.token_id,
+                            outValue, outValueLen,
+                            pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64768: /* module 253 call 0 */
+        switch (itemIdx) {
+        case 0: /* multitokens_create_collection_V7 - descriptor */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.multitokens_create_collection_V7.descriptor,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64769: /* module 253 call 1 */
+        switch (itemIdx) {
+        case 0: /* multitokens_destroy_collection_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_destroy_collection_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64770: /* module 253 call 2 */
+        switch (itemIdx) {
+        case 0: /* multitokens_mutate_collection_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_mutate_collection_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_mutate_collection_V7 - mutation */;
+            return _toStringCollectionMutation(
+                    &m->basic.multitokens_mutate_collection_V7.mutation,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64773: /* module 253 call 5 */
+        switch (itemIdx) {
+        case 0: /* multitokens_burn_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_burn_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_burn_V7 - params */;
+            return _toStringBurnParamsOfT(
+                    &m->basic.multitokens_burn_V7.params,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64774: /* module 253 call 6 */
+        switch (itemIdx) {
+        case 0: /* multitokens_transfer_V7 - recipient */;
+            return _toStringAccountIdLookupOfT(
+                    &m->basic.multitokens_transfer_V7.recipient,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_transfer_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_transfer_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_transfer_V7 - params */;
+            return _toStringTransferParamsOfT(
+                    &m->basic.multitokens_transfer_V7.params,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64775: /* module 253 call 7 */
+        switch (itemIdx) {
+        case 0: /* multitokens_freeze_V7 - info */;
+            return _toStringFreezeOf(
+                    &m->basic.multitokens_freeze_V7.info,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64776: /* module 253 call 8 */
+        switch (itemIdx) {
+        case 0: /* multitokens_thaw_V7 - info */;
+            return _toStringFreezeOf(
+                    &m->basic.multitokens_thaw_V7.info,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64777: /* module 253 call 9 */
+        switch (itemIdx) {
+        case 0: /* multitokens_set_attribute_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_set_attribute_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_set_attribute_V7 - token_id */;
+            return _toStringOptionTokenId(
+                    &m->basic.multitokens_set_attribute_V7.token_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_set_attribute_V7 - key */;
+            return _toStringBytes(
+                    &m->basic.multitokens_set_attribute_V7.key,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 3: /* multitokens_set_attribute_V7 - value */;
+            return _toStringBytes(
+                    &m->basic.multitokens_set_attribute_V7.value,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64778: /* module 253 call 10 */
+        switch (itemIdx) {
+        case 0: /* multitokens_remove_attribute_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_remove_attribute_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_remove_attribute_V7 - token_id */;
+            return _toStringOptionTokenId(
+                    &m->basic.multitokens_remove_attribute_V7.token_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_remove_attribute_V7 - key */;
+            return _toStringBytes(
+                    &m->basic.multitokens_remove_attribute_V7.key,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64779: /* module 253 call 11 */
+        switch (itemIdx) {
+        case 0: /* multitokens_remove_all_attributes_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_remove_all_attributes_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_remove_all_attributes_V7 - token_id */;
+            return _toStringOptionTokenId(
+                    &m->basic.multitokens_remove_all_attributes_V7.token_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_remove_all_attributes_V7 - attribute_count */;
+            return _toStringu32(
+                    &m->basic.multitokens_remove_all_attributes_V7.attribute_count,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64780: /* module 253 call 12 */
+        switch (itemIdx) {
+        case 0: /* multitokens_batch_transfer_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_batch_transfer_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_batch_transfer_V7 - recipients */;
+            return _toStringVecTransferRecipientsOf(
+                    &m->basic.multitokens_batch_transfer_V7.recipients,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64782: /* module 253 call 14 */
+        switch (itemIdx) {
+        case 0: /* multitokens_batch_set_attribute_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_batch_set_attribute_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_batch_set_attribute_V7 - token_id */;
+            return _toStringOptionTokenId(
+                    &m->basic.multitokens_batch_set_attribute_V7.token_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_batch_set_attribute_V7 - attributes */;
+            return _toStringVecAttributeKeyValuePair(
+                    &m->basic.multitokens_batch_set_attribute_V7.attributes,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64783: /* module 253 call 15 */
+        switch (itemIdx) {
+        case 0: /* multitokens_approve_collection_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_approve_collection_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_approve_collection_V7 - operator */;
+            return _toStringAccountId(
+                    &m->basic.multitokens_approve_collection_V7.operator_,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_approve_collection_V7 - expiration */;
+            return _toStringOptionu32(
+                    &m->basic.multitokens_approve_collection_V7.expiration,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64784: /* module 253 call 16 */
+        switch (itemIdx) {
+        case 0: /* multitokens_unapprove_collection_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_unapprove_collection_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_unapprove_collection_V7 - operator */;
+            return _toStringAccountId(
+                    &m->basic.multitokens_unapprove_collection_V7.operator_,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64785: /* module 253 call 17 */
+        switch (itemIdx) {
+        case 0: /* multitokens_approve_token_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_approve_token_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_approve_token_V7 - token_id */;
+            return _toStringCompactTokenId(
+                    &m->basic.multitokens_approve_token_V7.token_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_approve_token_V7 - operator */;
+            return _toStringAccountId(
+                    &m->basic.multitokens_approve_token_V7.operator_,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 3: /* multitokens_approve_token_V7 - amount */;
+            return _toStringCompactBalance(
+                    &m->basic.multitokens_approve_token_V7.amount,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 4: /* multitokens_approve_token_V7 - expiration */;
+            return _toStringOptionu32(
+                    &m->basic.multitokens_approve_token_V7.expiration,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 5: /* multitokens_approve_token_V7 - current_amount */;
+            return _toStringCompactBalance(
+                    &m->basic.multitokens_approve_token_V7.current_amount,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64786: /* module 253 call 18 */
+        switch (itemIdx) {
+        case 0: /* multitokens_unapprove_token_V7 - collection_id */;
+            return _toStringCompactCollectionId(
+                    &m->basic.multitokens_unapprove_token_V7.collection_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_unapprove_token_V7 - token_id */;
+            return _toStringCompactTokenId(
+                    &m->basic.multitokens_unapprove_token_V7.token_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_unapprove_token_V7 - operator */;
+            return _toStringAccountId(
+                    &m->basic.multitokens_unapprove_token_V7.operator_,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64800: /* module 253 call 32 */
+        switch (itemIdx) {
+        case 0: /* multitokens_claim_collections_V7 - destination */;
+            return _toStringAccountId(
+                    &m->basic.multitokens_claim_collections_V7.destination,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_claim_collections_V7 - ethereum_signature */;
+            return _toStringEcdsaSignature(
+                    &m->basic.multitokens_claim_collections_V7.ethereum_signature,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_claim_collections_V7 - ethereum_address */;
+            return _toStringEthereumAddress(
+                    &m->basic.multitokens_claim_collections_V7.ethereum_address,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 64801: /* module 253 call 33 */
+        switch (itemIdx) {
+        case 0: /* multitokens_claim_tokens_V7 - destination */;
+            return _toStringAccountId(
+                    &m->basic.multitokens_claim_tokens_V7.destination,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* multitokens_claim_tokens_V7 - ethereum_signature */;
+            return _toStringEcdsaSignature(
+                    &m->basic.multitokens_claim_tokens_V7.ethereum_signature,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* multitokens_claim_tokens_V7 - ethereum_address */;
+            return _toStringEthereumAddress(
+                    &m->basic.multitokens_claim_tokens_V7.ethereum_address,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
         default:
             return parser_no_data;
         }

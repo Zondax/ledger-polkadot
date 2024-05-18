@@ -48,8 +48,16 @@ static const char* STR_MO_PARASDISPUTES = "Parasdisputes";
 static const char* STR_MO_AUCTIONS = "Auctions";
 static const char* STR_MO_CROWDLOAN = "Crowdloan";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
+
+/////////////////////////
+// Custom
+/////////////////////////
+
 static const char* STR_MO_VOTEMANAGER = "Votemanager";
 static const char* STR_MO_VALIDATORMANAGER = "Validatormanager";
+static const char* STR_MO_EXTRINSICPAUSE = "Extrinsicpause";
+static const char* STR_MO_STAKEEXCHANGE = "Stakeexchange";
+static const char* STR_MO_MULTITOKENS = "Multitokens";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
@@ -261,8 +269,52 @@ static const char* STR_ME_TELEPORT_ASSETS = "Teleport assets";
 static const char* STR_ME_RESERVE_TRANSFER_ASSETS = "Reserve transfer assets";
 static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
 static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
+
+///////////////////////////////
+// Custom
+///////////////////////////////
+
 static const char* STR_ME_REGISTER_VALIDATORS = "Register validators";
 static const char* STR_ME_DEREGISTER_VALIDATORS = "Deregister validators";
+static const char* STR_ME_PAUSE_EXTRINSIC = "Pause extrinsic";
+static const char* STR_ME_RESUME_EXTRINSIC = "Resume extrinsic";
+static const char* STR_ME_ADD_LIQUIDITY = "Add liquidity";
+static const char* STR_ME_BUY = "Buy";
+static const char* STR_ME_CANCEL_OFFER = "Cancel offer";
+static const char* STR_ME_CONFIGURE_LIQUIDITY_ACCOUNT = "Configure liquidity account";
+static const char* STR_ME_CREATE_OFFER = "Create offer";
+static const char* STR_ME_WITHDRAW_LIQUIDITY = "Withdraw liquidity";
+static const char* STR_ME_CREATE_COLLECTION = "Create collection";
+static const char* STR_ME_DESTROY_COLLECTION = "Destroy collection";
+static const char* STR_ME_MUTATE_COLLECTION = "Mutate collection";
+static const char* STR_ME_MUTATE_TOKEN = "Mutate token";
+static const char* STR_ME_MINT = "Mint";
+static const char* STR_ME_BURN = "Burn";
+static const char* STR_ME_THAW = "Thaw";
+static const char* STR_ME_SET_ATTRIBUTE = "Set attribute";
+static const char* STR_ME_REMOVE_ATTRIBUTE = "Remove attribute";
+static const char* STR_ME_REMOVE_ALL_ATTRIBUTES = "Remove all attributes";
+static const char* STR_ME_BATCH_TRANSFER = "Batch transfer";
+static const char* STR_ME_BATCH_MINT = "Batch mint";
+static const char* STR_ME_BATCH_SET_ATTRIBUTE = "Batch set attribute";
+static const char* STR_ME_APPROVE_COLLECTION = "Approve collection";
+static const char* STR_ME_UNAPPROVE_COLLECTION = "Unapprove collection";
+static const char* STR_ME_APPROVE_TOKEN = "Approve token";
+static const char* STR_ME_UNAPPROVE_TOKEN = "Unapprove token";
+static const char* STR_ME_FORCE_MUTATE_COLLECTION = "Force mutate collection";
+static const char* STR_ME_FORCE_SET_COLLECTION = "Force set collection";
+static const char* STR_ME_FORCE_SET_TOKEN = "Force set token";
+static const char* STR_ME_FORCE_SET_ATTRIBUTE = "Force set attribute";
+static const char* STR_ME_FORCE_SET_COLLECTION_ACCOUNT = "Force set collection account";
+static const char* STR_ME_FORCE_SET_TOKEN_ACCOUNT = "Force set token account";
+static const char* STR_ME_FORCE_CREATE_COLLECTION = "Force create collection";
+static const char* STR_ME_FORCE_MINT = "Force mint";
+static const char* STR_ME_FORCE_BURN = "Force burn";
+static const char* STR_ME_FORCE_APPROVE_COLLECTION = "Force approve collection";
+static const char* STR_ME_FORCE_FREEZE = "Force freeze";
+static const char* STR_ME_FORCE_SET_NEXT_COLLECTION_ID = "Force set next collection id";
+static const char* STR_ME_CLAIM_COLLECTIONS = "Claim collections";
+static const char* STR_ME_CLAIM_TOKENS = "Claim tokens";
 
 // Items names
 static const char* STR_IT_remark = "Remark";
@@ -415,7 +467,37 @@ static const char* STR_IT_version = "Version";
 static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
 static const char* STR_IT_weight_limit = "Weight limit";
 static const char* STR_IT_suspended = "Suspended";
+
+/////////////////////////
+// Custom
+/////////////////////////
+
 static const char* STR_IT_currency = "Currency";
+static const char* STR_IT_pause_only_extrinsic = "Pause only extrinsic";
+static const char* STR_IT_resume_only_extrinsic = "Resume only extrinsic";
+static const char* STR_IT_offer = "Offer";
+static const char* STR_IT_offer_id = "Offer id";
+static const char* STR_IT_config = "Config";
+static const char* STR_IT_token_id = "Token id";
+static const char* STR_IT_descriptor = "Descriptor";
+static const char* STR_IT_collection_id = "Collection id";
+static const char* STR_IT_recipient = "Recipient";
+static const char* STR_IT_params = "Params";
+static const char* STR_IT_key = "Key";
+static const char* STR_IT_attribute_count = "Attribute count";
+static const char* STR_IT_attributes = "Attributes";
+static const char* STR_IT_operator = "Operator";
+static const char* STR_IT_expiration = "Expiration";
+static const char* STR_IT_current_amount = "Current amount";
+static const char* STR_IT_destination = "Destination";
+static const char* STR_IT_caller = "Caller";
+static const char* STR_IT_value = "Value";
+static const char* STR_IT_deposit_backer = "Deposit backer";
+static const char* STR_IT_ethereum_address = "Ethereum address";
+static const char* STR_IT_account_id = "Account id";
+static const char* STR_IT_mutation = "Mutation";
+static const char* STR_IT_recipients = "Recipients";
+static const char* STR_IT_owner = "Owner";
 
 #ifdef __cplusplus
 }

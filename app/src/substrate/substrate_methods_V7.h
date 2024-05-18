@@ -58,8 +58,16 @@ extern "C" {
 #define PD_CALL_AUCTIONS_V7 72 // ok
 #define PD_CALL_CROWDLOAN_V7 73 // ok
 #define PD_CALL_XCMPALLET_V7 99 // ok
+
+////////////////////////////
+// Custom
+////////////////////////////
+
 #define PD_CALL_VOTEMANAGER_V7 109 // ok
 #define PD_CALL_VALIDATORMANAGER_V7 252 // ok
+#define PD_CALL_EXTRINSICPAUSE_V7 255 // ok
+#define PD_CALL_STAKEEXCHANGE_V7 19 // ok
+#define PD_CALL_MULTITOKENS_V7 253 // ok
 
 #define PD_CALL_UTILITY_BATCH_V7 0
 typedef struct {
@@ -981,6 +989,10 @@ typedef struct {
 typedef struct {
 } pd_auctions_cancel_auction_V7_t;
 
+////////////////////////////
+// Custom
+////////////////////////////
+
 #define PD_CALL_VOTEMANAGER_VOTE_V7 0
 typedef struct {
     pd_Compactu32_t poll_index;
@@ -1017,6 +1029,281 @@ typedef struct {
 typedef struct {
     pd_VecAccountId_t validators;
 } pd_validatormanager_deregister_validators_V7_t;
+
+#define PD_CALL_EXTRINSICPAUSE_PAUSE_EXTRINSIC_V7 0
+typedef struct {
+    pd_Call_t call;
+    pd_bool_t pause_only_extrinsic;
+} pd_extrinsicpause_pause_extrinsic_V7_t;
+
+#define PD_CALL_EXTRINSICPAUSE_RESUME_EXTRINSIC_V7 1
+typedef struct {
+    pd_Call_t call;
+    pd_bool_t resume_only_extrinsic;
+} pd_extrinsicpause_resume_extrinsic_V7_t;
+
+#define PD_CALL_STAKEEXCHANGE_CREATE_OFFER_V7 0
+typedef struct {
+    pd_OfferOfT_t offer;
+} pd_stakeexchange_create_offer_V7_t;
+
+#define PD_CALL_STAKEEXCHANGE_CANCEL_OFFER_V7 1
+typedef struct {
+    pd_OfferId_t offer_id;
+} pd_stakeexchange_cancel_offer_V7_t;
+
+#define PD_CALL_STAKEEXCHANGE_CONFIGURE_LIQUIDITY_ACCOUNT_V7 2
+typedef struct {
+    pd_LiquidityAccountConfigOfT_t config;
+} pd_stakeexchange_configure_liquidity_account_V7_t;
+
+#define PD_CALL_STAKEEXCHANGE_WITHDRAW_LIQUIDITY_V7 3
+typedef struct {
+    pd_OfferId_t offer_id;
+    pd_BalanceOf_t amount;
+} pd_stakeexchange_withdraw_liquidity_V7_t;
+
+#define PD_CALL_STAKEEXCHANGE_ADD_LIQUIDITY_V7 4
+typedef struct {
+    pd_OfferId_t offer_id;
+    pd_BalanceOf_t amount;
+} pd_stakeexchange_add_liquidity_V7_t;
+
+#define PD_CALL_STAKEEXCHANGE_BUY_V7 5
+typedef struct {
+    pd_OfferId_t offer_id;
+    pd_BalanceOf_t amount;
+    pd_TokenIdOf_t token_id;
+} pd_stakeexchange_buy_V7_t;
+
+#define PD_CALL_MULTITOKENS_CREATE_COLLECTION_V7 0
+typedef struct {
+    pd_CollectionDescriptor_t descriptor;
+} pd_multitokens_create_collection_V7_t;
+
+#define PD_CALL_MULTITOKENS_DESTROY_COLLECTION_V7 1
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+} pd_multitokens_destroy_collection_V7_t;
+
+#define PD_CALL_MULTITOKENS_MUTATE_COLLECTION_V7 2
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_CollectionMutation_t mutation;
+} pd_multitokens_mutate_collection_V7_t;
+
+#define PD_CALL_MULTITOKENS_BURN_V7 5
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_BurnParamsOfT_t params;
+} pd_multitokens_burn_V7_t;
+
+#define PD_CALL_MULTITOKENS_TRANSFER_V7 6
+typedef struct {
+    pd_AccountIdLookupOfT_t recipient;
+    pd_CompactCollectionId_t collection_id;
+    pd_TransferParamsOfT_t params;
+} pd_multitokens_transfer_V7_t;
+
+#define PD_CALL_MULTITOKENS_FREEZE_V7 7
+typedef struct {
+    pd_FreezeOf_t info;
+} pd_multitokens_freeze_V7_t;
+
+#define PD_CALL_MULTITOKENS_THAW_V7 8
+typedef struct {
+    pd_FreezeOf_t info;
+} pd_multitokens_thaw_V7_t;
+
+#define PD_CALL_MULTITOKENS_SET_ATTRIBUTE_V7 9
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_OptionTokenId_t token_id;
+    pd_Bytes_t key;
+    pd_Bytes_t value;
+} pd_multitokens_set_attribute_V7_t;
+
+#define PD_CALL_MULTITOKENS_REMOVE_ATTRIBUTE_V7 10
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_OptionTokenId_t token_id;
+    pd_Bytes_t key;
+} pd_multitokens_remove_attribute_V7_t;
+
+#define PD_CALL_MULTITOKENS_REMOVE_ALL_ATTRIBUTES_V7 11
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_OptionTokenId_t token_id;
+    pd_u32_t attribute_count;
+} pd_multitokens_remove_all_attributes_V7_t;
+
+#define PD_CALL_MULTITOKENS_BATCH_TRANSFER_V7 12
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_VecTransferRecipientsOf_t recipients;
+} pd_multitokens_batch_transfer_V7_t;
+
+#define PD_CALL_MULTITOKENS_BATCH_SET_ATTRIBUTE_V7 14
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_OptionTokenId_t  token_id;
+    pd_VecAttributeKeyValuePair_t attributes;
+} pd_multitokens_batch_set_attribute_V7_t;
+
+#define PD_CALL_MULTITOKENS_APPROVE_COLLECTION_V7 15
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_AccountId_t operator_;
+    pd_Optionu32_t expiration;
+} pd_multitokens_approve_collection_V7_t;
+
+#define PD_CALL_MULTITOKENS_UNAPPROVE_COLLECTION_V7 16
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_AccountId_t operator_;
+} pd_multitokens_unapprove_collection_V7_t;
+
+#define PD_CALL_MULTITOKENS_APPROVE_TOKEN_V7 17
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_CompactTokenId_t token_id;
+    pd_AccountId_t operator_;
+    pd_CompactBalance_t amount;
+    pd_Optionu32_t expiration;
+    pd_CompactBalance_t current_amount;
+} pd_multitokens_approve_token_V7_t;
+
+#define PD_CALL_MULTITOKENS_UNAPPROVE_TOKEN_V7 18
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_CompactTokenId_t token_id;
+    pd_AccountId_t operator_;
+} pd_multitokens_unapprove_token_V7_t;
+
+#define PD_CALL_MULTITOKENS_CLAIM_COLLECTIONS_V7 32
+typedef struct {
+    pd_AccountId_t destination;
+    pd_EcdsaSignature_t ethereum_signature;
+    pd_EthereumAddress_t ethereum_address;
+} pd_multitokens_claim_collections_V7_t;
+
+#define PD_CALL_MULTITOKENS_CLAIM_TOKENS_V7 33
+typedef struct {
+    pd_AccountId_t destination;
+    pd_EcdsaSignature_t ethereum_signature;
+    pd_EthereumAddress_t ethereum_address;
+} pd_multitokens_claim_tokens_V7_t;
+
+#define PD_CALL_MULTITOKENS_MUTATE_TOKEN_V7 3
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_CompactTokenId_t token_id;
+    pd_TokenMutation_t mutation;
+} pd_multitokens_mutate_token_V7_t;
+
+#define PD_CALL_MULTITOKENS_MINT_V7 4
+typedef struct {
+    pd_AccountIdLookupOfT_t recipient;
+    pd_CompactCollectionId_t collection_id;
+    pd_MintParamsOf_t params;
+} pd_multitokens_mint_V7_t;
+
+#define PD_CALL_MULTITOKENS_BATCH_MINT_V7 13
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_VecMintRecipientsOf_t recipients;
+} pd_multitokens_batch_mint_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_MUTATE_COLLECTION_V7 19
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_CollectionMutation_t mutation;
+} pd_multitokens_force_mutate_collection_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_TRANSFER_V7 20
+typedef struct {
+    pd_AccountIdLookupOfT_t source;
+    pd_AccountIdLookupOfT_t destination;
+    pd_CompactCollectionId_t collection_id;
+    pd_TransferParamsOfT_t params;
+} pd_multitokens_force_transfer_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_SET_COLLECTION_V7 21
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_OptionCollectionOf_t value;
+} pd_multitokens_force_set_collection_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_SET_TOKEN_V7 22
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_CompactTokenId_t token_id;
+    pd_OptionTokenOf_t value;
+} pd_multitokens_force_set_token_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_SET_ATTRIBUTE_V7 23
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_OptionTokenId_t token_id;
+    pd_Bytes_t key;
+    pd_OptionAttributeOf_t value;
+} pd_multitokens_force_set_attribute_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_SET_COLLECTION_ACCOUNT_V7 24
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_AccountIdLookupOfT_t account_id;
+    pd_OptionCollectionAccountOf_t value;
+} pd_multitokens_force_set_collection_account_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_SET_TOKEN_ACCOUNT_V7 25
+typedef struct {
+    pd_CompactCollectionId_t collection_id;
+    pd_CompactTokenId_t token_id;
+    pd_AccountIdLookupOfT_t account_id;
+    pd_OptionTokenAccountOf_t value;
+} pd_multitokens_force_set_token_account_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_CREATE_COLLECTION_V7 26
+typedef struct {
+    pd_AccountId_t owner;
+    pd_CompactCollectionId_t collection_id;
+    pd_CollectionDescriptor_t descriptor;
+} pd_multitokens_force_create_collection_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_MINT_V7 27
+typedef struct {
+    pd_AccountIdLookupOfT_t caller;
+    pd_AccountIdLookupOfT_t recipient;
+    pd_CompactCollectionId_t collection_id;
+    pd_MintParamsOf_t params;
+    pd_OptionAccountIdLookupOfT_t deposit_backer;
+} pd_multitokens_force_mint_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_BURN_V7 28
+typedef struct {
+    pd_AccountIdLookupOfT_t caller;
+    pd_CompactCollectionId_t collection_id;
+    pd_BurnParamsOfT_t params;
+} pd_multitokens_force_burn_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_APPROVE_COLLECTION_V7 29
+typedef struct {
+    pd_AccountIdLookupOfT_t caller;
+    pd_CompactCollectionId_t collection_id;
+    pd_AccountId_t operator_;
+    pd_Optionu32_t expiration;
+} pd_multitokens_force_approve_collection_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_FREEZE_V7 30
+typedef struct {
+    pd_FreezeOf_t info;
+} pd_multitokens_force_freeze_V7_t;
+
+#define PD_CALL_MULTITOKENS_FORCE_SET_NEXT_COLLECTION_ID_V7 31
+typedef struct {
+    pd_CompactCollectionId_t value;
+} pd_multitokens_force_set_next_collection_id_V7_t;
 
 #endif
 
@@ -1189,12 +1476,59 @@ typedef union {
     pd_auctions_new_auction_V7_t auctions_new_auction_V7;
     pd_auctions_bid_V7_t auctions_bid_V7;
     pd_auctions_cancel_auction_V7_t auctions_cancel_auction_V7;
+
+///////////////////////////
+// Custom
+///////////////////////////
+
     pd_votemanager_vote_V7_t votemanager_vote_V7;
     pd_votemanager_remove_vote_V7_t votemanager_remove_vote_V7;
     pd_votemanager_remove_other_vote_V7_t votemanager_remove_other_vote_V7;
     pd_votemanager_unlock_V7_t votemanager_unlock_V7;
     pd_validatormanager_register_validators_V7_t validatormanager_register_validators_V7;
     pd_validatormanager_deregister_validators_V7_t validatormanager_deregister_validators_V7;
+    pd_extrinsicpause_pause_extrinsic_V7_t extrinsicpause_pause_extrinsic_V7;
+    pd_extrinsicpause_resume_extrinsic_V7_t extrinsicpause_resume_extrinsic_V7;
+    pd_stakeexchange_create_offer_V7_t stakeexchange_create_offer_V7;
+    pd_stakeexchange_cancel_offer_V7_t stakeexchange_cancel_offer_V7;
+    pd_stakeexchange_configure_liquidity_account_V7_t stakeexchange_configure_liquidity_account_V7;
+    pd_stakeexchange_withdraw_liquidity_V7_t stakeexchange_withdraw_liquidity_V7;
+    pd_stakeexchange_add_liquidity_V7_t stakeexchange_add_liquidity_V7;
+    pd_stakeexchange_buy_V7_t stakeexchange_buy_V7;
+    pd_multitokens_create_collection_V7_t multitokens_create_collection_V7;
+    pd_multitokens_destroy_collection_V7_t multitokens_destroy_collection_V7;
+    pd_multitokens_mutate_collection_V7_t multitokens_mutate_collection_V7;
+    pd_multitokens_burn_V7_t multitokens_burn_V7;
+    pd_multitokens_transfer_V7_t multitokens_transfer_V7;
+    pd_multitokens_freeze_V7_t multitokens_freeze_V7;
+    pd_multitokens_thaw_V7_t multitokens_thaw_V7;
+    pd_multitokens_set_attribute_V7_t multitokens_set_attribute_V7;
+    pd_multitokens_remove_attribute_V7_t multitokens_remove_attribute_V7;
+    pd_multitokens_remove_all_attributes_V7_t multitokens_remove_all_attributes_V7;
+    pd_multitokens_batch_transfer_V7_t multitokens_batch_transfer_V7;
+    pd_multitokens_batch_set_attribute_V7_t multitokens_batch_set_attribute_V7;
+    pd_multitokens_approve_collection_V7_t multitokens_approve_collection_V7;
+    pd_multitokens_unapprove_collection_V7_t multitokens_unapprove_collection_V7;
+    pd_multitokens_approve_token_V7_t multitokens_approve_token_V7;
+    pd_multitokens_unapprove_token_V7_t multitokens_unapprove_token_V7;
+    pd_multitokens_claim_collections_V7_t multitokens_claim_collections_V7;
+    pd_multitokens_claim_tokens_V7_t multitokens_claim_tokens_V7;
+    pd_multitokens_mutate_token_V7_t multitokens_mutate_token_V7;
+    pd_multitokens_mint_V7_t multitokens_mint_V7;
+    pd_multitokens_batch_mint_V7_t multitokens_batch_mint_V7;
+    pd_multitokens_force_mutate_collection_V7_t multitokens_force_mutate_collection_V7;
+    pd_multitokens_force_transfer_V7_t multitokens_force_transfer_V7;
+    pd_multitokens_force_set_collection_V7_t multitokens_force_set_collection_V7;
+    pd_multitokens_force_set_token_V7_t multitokens_force_set_token_V7;
+    pd_multitokens_force_set_attribute_V7_t multitokens_force_set_attribute_V7;
+    pd_multitokens_force_set_collection_account_V7_t multitokens_force_set_collection_account_V7;
+    pd_multitokens_force_set_token_account_V7_t multitokens_force_set_token_account_V7;
+    pd_multitokens_force_create_collection_V7_t multitokens_force_create_collection_V7;
+    pd_multitokens_force_mint_V7_t multitokens_force_mint_V7;
+    pd_multitokens_force_burn_V7_t multitokens_force_burn_V7;
+    pd_multitokens_force_approve_collection_V7_t multitokens_force_approve_collection_V7;
+    pd_multitokens_force_freeze_V7_t multitokens_force_freeze_V7;
+    pd_multitokens_force_set_next_collection_id_V7_t multitokens_force_set_next_collection_id_V7;
 #endif
 } pd_MethodBasic_V7_t;
 
