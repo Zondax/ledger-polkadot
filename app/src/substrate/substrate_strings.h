@@ -40,7 +40,6 @@ static const char* STR_MO_MULTISIG = "Multisig";
 static const char* STR_MO_BOUNTIES = "Bounties";
 static const char* STR_MO_CHILDBOUNTIES = "Childbounties";
 static const char* STR_MO_VOTERLIST = "Voterlist";
-static const char* STR_MO_NOMINATIONPOOLS = "Nominationpools";
 static const char* STR_MO_FASTUNSTAKE = "Fastunstake";
 static const char* STR_MO_CONFIGURATION = "Configuration";
 static const char* STR_MO_INITIALIZER = "Initializer";
@@ -58,6 +57,7 @@ static const char* STR_MO_VALIDATORMANAGER = "Validatormanager";
 static const char* STR_MO_EXTRINSICPAUSE = "Extrinsicpause";
 static const char* STR_MO_STAKEEXCHANGE = "Stakeexchange";
 static const char* STR_MO_MULTITOKENS = "Multitokens";
+static const char* STR_MO_NOMINATIONPOOLS = "Nominationpools";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
