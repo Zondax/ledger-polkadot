@@ -1400,6 +1400,65 @@ typedef struct {
     pd_TokenAccountOf_t contained;
 } pd_OptionTokenAccountOf_t;
 
+typedef struct {
+    uint8_t some;
+    pd_Perbill_t contained;
+} pd_OptionPerbill_t;
+
+typedef struct {
+    uint8_t value;
+    pd_OptionPerbill_t set;
+} pd_CommissionNewCommission_t;
+
+typedef struct {
+    pd_Perbill_t maxDelta;
+    pd_u32_t minDelay;
+} pd_ChangeRate_t;
+
+typedef struct {
+    uint8_t some;
+    pd_ChangeRate_t contained;
+} pd_OptionCommissionChangeRate_t;
+
+typedef struct {
+    uint8_t value;
+    pd_OptionAccountId_t set;
+} pd_NewAdminMutation_t;
+
+typedef struct {
+    uint8_t value;
+    pd_OptionAccountId_t set;
+} pd_NewNominatorMutation_t;
+
+typedef struct {
+    pd_NewAdminMutation_t newAdmin;
+    pd_NewNominatorMutation_t newNominator;
+} pd_RolesMutation_t;
+
+typedef struct {
+    uint8_t some;
+    pd_RolesMutation_t contained;
+} pd_OptionPoolRolesMutation_t;
+
+typedef struct {
+    pd_Optionu32_t duration;
+    pd_CommissionNewCommission_t newCommission;
+    pd_OptionPerbill_t maxCommission;
+    pd_OptionCommissionChangeRate_t changeRate;
+    pd_OptionPoolRolesMutation_t roles;
+    pd_Optionu128_t capacity;
+} pd_PoolMutationOfT_t;
+
+typedef struct {
+    uint8_t value;
+    pd_CompactBalance_t amount;
+} pd_BondValueOfT_t;
+
+typedef struct {
+    pd_Perbill_t annual_inflation_rate;
+    pd_Perbill_t collator_payout_cut;
+} pd_StakingInfo_t;
+
 #ifdef __cplusplus
 }
 #endif

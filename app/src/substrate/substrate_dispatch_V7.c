@@ -1972,6 +1972,247 @@ __Z_INLINE parser_error_t _readMethod_multitokens_force_transfer_V7(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_nominationpools_bond_V7(
+        parser_context_t* c, pd_nominationpools_bond_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readBondValueOfT(c, &m->amount))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_chill_V7(
+        parser_context_t* c, pd_nominationpools_chill_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_create_V7(
+        parser_context_t* c, pd_nominationpools_create_V7_t* m)
+{
+    CHECK_ERROR(_readTokenIdOf(c, &m->token_id))
+    CHECK_ERROR(_readCompactBalance(c, &m->deposit))
+    CHECK_ERROR(_readCompactBalance(c, &m->capacity))
+    CHECK_ERROR(_readCompactIndex(c, &m->duration))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->admin))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->nominator))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_destroy_V7(
+        parser_context_t* c, pd_nominationpools_destroy_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_distribute_early_bird_bonus_V7(
+        parser_context_t* c, pd_nominationpools_distribute_early_bird_bonus_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->transfer_count))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_mutate_V7(
+        parser_context_t* c, pd_nominationpools_mutate_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readPoolMutationOfT(c, &m->mutation))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_nominate_V7(
+        parser_context_t* c, pd_nominationpools_nominate_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readVecAccountId(c, &m->validators))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_payout_rewards_V7(
+        parser_context_t* c, pd_nominationpools_payout_rewards_V7_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->validator_stash))
+    CHECK_ERROR(_readEraIndex(c, &m->era))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_pool_withdraw_unbonded_V7(
+        parser_context_t* c, pd_nominationpools_pool_withdraw_unbonded_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_queue_early_bird_bonus_V7(
+        parser_context_t* c, pd_nominationpools_queue_early_bird_bonus_V7_t* m)
+{
+    UNUSED(c);
+    UNUSED(m);
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_unbond_V7(
+        parser_context_t* c, pd_nominationpools_unbond_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->member_account))
+    CHECK_ERROR(_readCompactBalance(c, &m->unbonding_points))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_unbond_deposit_V7(
+        parser_context_t* c, pd_nominationpools_unbond_deposit_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_withdraw_deposit_V7(
+        parser_context_t* c, pd_nominationpools_withdraw_deposit_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_withdraw_unbonded_V7(
+        parser_context_t* c, pd_nominationpools_withdraw_unbonded_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->member_account))
+    CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_staking_info_V7(
+        parser_context_t* c, pd_nominationpools_set_staking_info_V7_t* m)
+{
+    CHECK_ERROR(_readStakingInfo(c, &m->info))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_configs_V7(
+        parser_context_t* c, pd_nominationpools_set_configs_V7_t* m)
+{
+    CHECK_ERROR(_readConfigOpBalanceOfT(c, &m->min_join_bond))
+    CHECK_ERROR(_readConfigOpBalanceOfT(c, &m->min_create_bond))
+    CHECK_ERROR(_readConfigOpPerbill(c, &m->global_max_commission))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_join_V7(
+        parser_context_t* c, pd_nominationpools_join_V7_t* m)
+{
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_bond_extra_V7(
+        parser_context_t* c, pd_nominationpools_bond_extra_V7_t* m)
+{
+    CHECK_ERROR(_readBondExtraBalanceOfT(c, &m->extra))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_claim_payout_V7(
+        parser_context_t* c, pd_nominationpools_claim_payout_V7_t* m)
+{
+    UNUSED(c);
+    UNUSED(m);
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_create_with_pool_id_V7(
+        parser_context_t* c, pd_nominationpools_create_with_pool_id_V7_t* m)
+{
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->root))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->nominator))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->bouncer))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_state_V7(
+        parser_context_t* c, pd_nominationpools_set_state_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readPoolState(c, &m->state))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_metadata_V7(
+        parser_context_t* c, pd_nominationpools_set_metadata_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readVecu8(c, &m->metadata))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_update_roles_V7(
+        parser_context_t* c, pd_nominationpools_update_roles_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readConfigOpAccountId(c, &m->new_root))
+    CHECK_ERROR(_readConfigOpAccountId(c, &m->new_nominator))
+    CHECK_ERROR(_readConfigOpAccountId(c, &m->new_bouncer))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_bond_extra_other_V7(
+        parser_context_t* c, pd_nominationpools_bond_extra_other_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->member))
+    CHECK_ERROR(_readBondExtraBalanceOfT(c, &m->extra))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_claim_permission_V7(
+        parser_context_t* c, pd_nominationpools_set_claim_permission_V7_t* m)
+{
+    CHECK_ERROR(_readClaimPermission(c, &m->permission))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_claim_payout_other_V7(
+        parser_context_t* c, pd_nominationpools_claim_payout_other_V7_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->other))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_commission_V7(
+        parser_context_t* c, pd_nominationpools_set_commission_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readOptionTuplePerbillAccountId(c, &m->new_commission))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_commission_max_V7(
+        parser_context_t* c, pd_nominationpools_set_commission_max_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readPerbill(c, &m->max_commission))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_commission_change_rate_V7(
+        parser_context_t* c, pd_nominationpools_set_commission_change_rate_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readCommissionChangeRateBlockNumber(c, &m->change_rate))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_claim_commission_V7(
+        parser_context_t* c, pd_nominationpools_claim_commission_V7_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
 
 #endif
 
@@ -2735,6 +2976,117 @@ parser_error_t _readMethod_V7(
     case 64799: /* module 253 call 31 */
         CHECK_ERROR(_readMethod_multitokens_force_set_next_collection_id_V7(c, &method->basic.multitokens_force_set_next_collection_id_V7))
         break;
+    case 4608: /* module 18 call 0 */
+        CHECK_ERROR(_readMethod_nominationpools_bond_V7(c, &method->basic.nominationpools_bond_V7))
+        break;
+    case 4611: /* module 18 call 3 */
+        CHECK_ERROR(_readMethod_nominationpools_unbond_V7(c, &method->basic.nominationpools_unbond_V7))
+        break;
+    case 4612: /* module 18 call 4 */
+        CHECK_ERROR(_readMethod_nominationpools_pool_withdraw_unbonded_V7(c, &method->basic.nominationpools_pool_withdraw_unbonded_V7))
+        break;
+    case 4613: /* module 18 call 5 */
+        CHECK_ERROR(_readMethod_nominationpools_withdraw_unbonded_V7(c, &method->basic.nominationpools_withdraw_unbonded_V7))
+        break;
+    case 4614: /* module 18 call 6 */
+        CHECK_ERROR(_readMethod_nominationpools_create_V7(c, &method->basic.nominationpools_create_V7))
+        break;
+    case 4616: /* module 18 call 8 */
+        CHECK_ERROR(_readMethod_nominationpools_nominate_V7(c, &method->basic.nominationpools_nominate_V7))
+        break;
+    case 4621: /* module 18 call 13 */
+        CHECK_ERROR(_readMethod_nominationpools_chill_V7(c, &method->basic.nominationpools_chill_V7))
+        break;
+    case 4622: /* module 18 call 14 */
+        CHECK_ERROR(_readMethod_nominationpools_destroy_V7(c, &method->basic.nominationpools_destroy_V7))
+        break;
+    case 4626: /* module 18 call 18 */
+        CHECK_ERROR(_readMethod_nominationpools_payout_rewards_V7(c, &method->basic.nominationpools_payout_rewards_V7))
+        break;
+    case 4627: /* module 18 call 19 */
+        CHECK_ERROR(_readMethod_nominationpools_mutate_V7(c, &method->basic.nominationpools_mutate_V7))
+        break;
+    case 4628: /* module 18 call 20 */
+        CHECK_ERROR(_readMethod_nominationpools_unbond_deposit_V7(c, &method->basic.nominationpools_unbond_deposit_V7))
+        break;
+    case 4629: /* module 18 call 21 */
+        CHECK_ERROR(_readMethod_nominationpools_withdraw_deposit_V7(c, &method->basic.nominationpools_withdraw_deposit_V7))
+        break;
+    case 4631: /* module 18 call 23 */
+        CHECK_ERROR(_readMethod_nominationpools_queue_early_bird_bonus_V7(c, &method->basic.nominationpools_queue_early_bird_bonus_V7))
+        break;
+    case 4632: /* module 18 call 24 */
+        CHECK_ERROR(_readMethod_nominationpools_distribute_early_bird_bonus_V7(c, &method->basic.nominationpools_distribute_early_bird_bonus_V7))
+        break;
+    case 9984: /* module 39 call 0 */
+        CHECK_ERROR(_readMethod_nominationpools_join_V7(c, &method->basic.nominationpools_join_V7))
+        break;
+    case 9985: /* module 39 call 1 */
+        CHECK_ERROR(_readMethod_nominationpools_bond_extra_V7(c, &method->basic.nominationpools_bond_extra_V7))
+        break;
+    case 9986: /* module 39 call 2 */
+        CHECK_ERROR(_readMethod_nominationpools_claim_payout_V7(c, &method->basic.nominationpools_claim_payout_V7))
+        break;
+    case 9987: /* module 39 call 3 */
+        CHECK_ERROR(_readMethod_nominationpools_unbond_V7(c, &method->basic.nominationpools_unbond_V7))
+        break;
+    case 9988: /* module 39 call 4 */
+        CHECK_ERROR(_readMethod_nominationpools_pool_withdraw_unbonded_V7(c, &method->basic.nominationpools_pool_withdraw_unbonded_V7))
+        break;
+    case 9989: /* module 39 call 5 */
+        CHECK_ERROR(_readMethod_nominationpools_withdraw_unbonded_V7(c, &method->basic.nominationpools_withdraw_unbonded_V7))
+        break;
+    case 9990: /* module 39 call 6 */
+        CHECK_ERROR(_readMethod_nominationpools_create_V7(c, &method->basic.nominationpools_create_V7))
+        break;
+    case 9991: /* module 39 call 7 */
+        CHECK_ERROR(_readMethod_nominationpools_create_with_pool_id_V7(c, &method->basic.nominationpools_create_with_pool_id_V7))
+        break;
+    case 9992: /* module 39 call 8 */
+        CHECK_ERROR(_readMethod_nominationpools_nominate_V7(c, &method->basic.nominationpools_nominate_V7))
+        break;
+    case 9993: /* module 39 call 9 */
+        CHECK_ERROR(_readMethod_nominationpools_set_state_V7(c, &method->basic.nominationpools_set_state_V7))
+        break;
+    case 9994: /* module 39 call 10 */
+        CHECK_ERROR(_readMethod_nominationpools_set_metadata_V7(c, &method->basic.nominationpools_set_metadata_V7))
+        break;
+    case 9995: /* module 39 call 11 */
+        CHECK_ERROR(_readMethod_nominationpools_set_configs_V7(c, &method->basic.nominationpools_set_configs_V7))
+        break;
+    case 9996: /* module 39 call 12 */
+        CHECK_ERROR(_readMethod_nominationpools_update_roles_V7(c, &method->basic.nominationpools_update_roles_V7))
+        break;
+    case 9997: /* module 39 call 13 */
+        CHECK_ERROR(_readMethod_nominationpools_chill_V7(c, &method->basic.nominationpools_chill_V7))
+        break;
+    case 9998: /* module 39 call 14 */
+        CHECK_ERROR(_readMethod_nominationpools_bond_extra_other_V7(c, &method->basic.nominationpools_bond_extra_other_V7))
+        break;
+    case 9999: /* module 39 call 15 */
+        CHECK_ERROR(_readMethod_nominationpools_set_claim_permission_V7(c, &method->basic.nominationpools_set_claim_permission_V7))
+        break;
+    case 10000: /* module 39 call 16 */
+        CHECK_ERROR(_readMethod_nominationpools_claim_payout_other_V7(c, &method->basic.nominationpools_claim_payout_other_V7))
+        break;
+    case 10001: /* module 39 call 17 */
+        CHECK_ERROR(_readMethod_nominationpools_set_commission_V7(c, &method->basic.nominationpools_set_commission_V7))
+        break;
+    case 10002: /* module 39 call 18 */
+        CHECK_ERROR(_readMethod_nominationpools_set_commission_max_V7(c, &method->basic.nominationpools_set_commission_max_V7))
+        break;
+    case 10003: /* module 39 call 19 */
+        CHECK_ERROR(_readMethod_nominationpools_set_commission_change_rate_V7(c, &method->basic.nominationpools_set_commission_change_rate_V7))
+        break;
+    case 10004: /* module 39 call 20 */
+        CHECK_ERROR(_readMethod_nominationpools_claim_commission_V7(c, &method->basic.nominationpools_claim_commission_V7))
+        break;
+    case 4619: /* module 18 call 11 */
+        CHECK_ERROR(_readMethod_nominationpools_set_configs_V7(c, &method->basic.nominationpools_set_configs_V7))
+        break;
+    case 4630: /* module 18 call 22 */
+        CHECK_ERROR(_readMethod_nominationpools_set_staking_info_V7(c, &method->basic.nominationpools_set_staking_info_V7))
+        break;
 #endif
     default:
         return parser_unexpected_callIndex;
@@ -2808,6 +3160,11 @@ const char* _getMethod_ModuleName_V7(uint8_t moduleIdx)
         return STR_MO_PARASDISPUTES;
     case 72: // ok
         return STR_MO_AUCTIONS;
+
+/////////////////////////
+// Custom
+/////////////////////////
+
     case 109: // ok
         return STR_MO_VOTEMANAGER;
     case 252: // ok
@@ -2818,6 +3175,8 @@ const char* _getMethod_ModuleName_V7(uint8_t moduleIdx)
         return STR_MO_STAKEEXCHANGE;
     case 253: // ok
         return STR_MO_MULTITOKENS;
+    case 18: // ok
+        return STR_MO_NOMINATIONPOOLS;
 #endif
     default:
         return NULL;
@@ -2927,19 +3286,7 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
     case 25858: /* module 101 call 2 */
         return STR_ME_REQUEST_PREIMAGE;
     case 25859: /* module 101 call 3 */
-        return STR_ME_UNREQUEST_PREIMAGE;
-    case 25860: /* module 101 call 4 */
-        return STR_ME_ENSURE_UPDATED;
-    case 512: /* module 2 call 0 */
-        return STR_ME_SET;
-    case 1024: /* module 4 call 0 */
-        return STR_ME_CLAIM;
-    case 1025: /* module 4 call 1 */
-        return STR_ME_TRANSFER;
-    case 1026: /* module 4 call 2 */
-        return STR_ME_FREE;
-    case 1027: /* module 4 call 3 */
-        return STR_ME_FORCE_TRANSFER;
+        return STR_ME_UNREQUEST_PREIMAGE;    
     case 1028: /* module 4 call 4 */
         return STR_ME_FREEZE;
     case 1541: /* module 6 call 5 */
@@ -3341,6 +3688,34 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_CLAIM_COLLECTIONS;
     case 64801: /* module 253 call 33 */
         return STR_ME_CLAIM_TOKENS;
+     case 4608: /* module 18 call 0 */
+            return STR_ME_BOND;
+        case 4611: /* module 18 call 3 */
+            return STR_ME_UNBOND;
+        case 4612: /* module 18 call 4 */
+            return STR_ME_POOL_WITHDRAW_UNBONDED;
+        case 4613: /* module 18 call 5 */
+            return STR_ME_WITHDRAW_UNBONDED;
+        case 4614: /* module 18 call 6 */
+            return STR_ME_CREATE;
+        case 4616: /* module 18 call 8 */
+            return STR_ME_NOMINATE;
+        case 4621: /* module 18 call 13 */
+            return STR_ME_CHILL;
+        case 4622: /* module 18 call 14 */
+            return STR_ME_DESTROY;
+        case 4626: /* module 18 call 18 */
+            return STR_ME_PAYOUT_REWARDS;
+        case 4627: /* module 18 call 19 */
+            return STR_ME_MUTATE;
+        case 4628: /* module 18 call 20 */
+            return STR_ME_UNBOND_DEPOSIT;
+        case 4629: /* module 18 call 21 */
+            return STR_ME_WITHDRAW_DEPOSIT;
+        case 4631: /* module 18 call 23 */
+            return STR_ME_QUEUE_EARLY_BIRD_BONUS;
+        case 4632: /* module 18 call 24 */
+            return STR_ME_DISTRIBUTE_EARLY_BIRD_BONUS;
 #endif
     default:
         return NULL;

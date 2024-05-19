@@ -2513,6 +2513,136 @@ parser_error_t _readTokenIdOf(parser_context_t* c, pd_TokenIdOf_t* v)
     return _readTokenId(c, &v->value);
 }
 
+parser_error_t _readOptionPerbill(parser_context_t* c, pd_OptionPerbill_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readPerbill(c, &v->contained))
+    }
+    return parser_ok;
+}
+
+parser_error_t _readBondValueOfT(parser_context_t* c, pd_BondValueOfT_t * v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+
+    if (v->value == 0) {
+        CHECK_ERROR(_readCompactBalance(c, &v->amount))
+    } else if (v->value > 1) {
+        return parser_value_out_of_range;
+    }
+    return parser_ok;
+}
+
+parser_error_t _readStakingInfo(parser_context_t* c, pd_StakingInfo_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readPerbill(c, &v->annual_inflation_rate))
+    CHECK_ERROR(_readPerbill(c, &v->collator_payout_cut))
+    return parser_ok;
+} 
+
+parser_error_t _readCommissionNewCommission(parser_context_t* c, pd_CommissionNewCommission_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+
+    switch (v->value) {
+        case 0: // NoMutation
+            break;
+        case 1: // SomeMutation
+        CHECK_ERROR(_readOptionPerbill(c, &v->set))
+            break;
+        default:
+            return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+parser_error_t _readChangeRate(parser_context_t* c, pd_ChangeRate_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readPerbill(c, &v->maxDelta))
+    CHECK_ERROR(_readu32(c, &v->minDelay))
+    return parser_ok;
+}
+
+parser_error_t _readOptionChangeRate(parser_context_t* c, pd_OptionCommissionChangeRate_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readChangeRate(c, &v->contained))
+    }
+    return parser_ok;
+}
+
+parser_error_t _readNewNominatorMutation(parser_context_t* c, pd_NewNominatorMutation_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+
+    switch (v->value) {
+        case 0: // NoMutation
+            break;
+        case 1: // SomeMutation
+        CHECK_ERROR(_readOptionAccountId(c, &v->set))
+            break;
+        default:
+            return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+parser_error_t _readNewAdminMutation(parser_context_t* c, pd_NewAdminMutation_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+
+    switch (v->value) {
+        case 0: // NoMutation
+            break;
+        case 1: // SomeMutation
+        CHECK_ERROR(_readOptionAccountId(c, &v->set))
+            break;
+        default:
+            return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+parser_error_t _readRolesMutation(parser_context_t* c, pd_RolesMutation_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readNewAdminMutation(c, &v->newAdmin))
+    CHECK_ERROR(_readNewNominatorMutation(c, &v->newNominator))
+    return parser_ok;
+}
+
+parser_error_t _readOptionRolesMutation(parser_context_t* c, pd_OptionPoolRolesMutation_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->some))
+    if (v->some > 0) {
+        CHECK_ERROR(_readRolesMutation(c, &v->contained))
+    }
+    return parser_ok;
+}
+
+parser_error_t _readPoolMutationOfT(parser_context_t* c, pd_PoolMutationOfT_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readOptionu32(c, &v->duration))
+    CHECK_ERROR(_readCommissionNewCommission(c, &v->newCommission))
+    CHECK_ERROR(_readOptionPerbill(c, &v->maxCommission))
+    CHECK_ERROR(_readOptionChangeRate(c, &v->changeRate))
+    CHECK_ERROR(_readOptionRolesMutation(c, &v->roles))
+    CHECK_ERROR(_readOptionu128(c, &v->capacity))
+    return parser_ok;
+}
+
 
 ///////////////////////////////////
 ///////////////////////////////////

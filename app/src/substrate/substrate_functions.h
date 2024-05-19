@@ -208,6 +208,9 @@ parser_error_t _readOptionTokenOf(parser_context_t* c, pd_OptionTokenOf_t* v);
 parser_error_t _readOptionTokenAccountOf(parser_context_t* c, pd_OptionTokenAccountOf_t* v);
 parser_error_t _readBurnParamsOfT(parser_context_t* c, pd_BurnParamsOfT_t * v);
 parser_error_t _readOptionu128(parser_context_t* c, pd_Optionu128_t* v);
+parser_error_t _readBondValueOfT(parser_context_t* c, pd_BondValueOfT_t* v);
+parser_error_t _readPoolMutationOfT(parser_context_t* c, pd_PoolMutationOfT_t* v);
+parser_error_t _readStakingInfo(parser_context_t* c, pd_StakingInfo_t* v);
 
 
 // Common toString functions
@@ -1281,7 +1284,7 @@ parser_error_t _toStringVecAttributeKeyValuePair(
         uint8_t* pageCount);
 
 parser_error_t _toStringLiquidityAccountConfigOfT(
-        const pd_LiquidityAccountConfigOfT_t * v,
+        const pd_LiquidityAccountConfigOfT_t* v,
         char* outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
@@ -1302,7 +1305,14 @@ parser_error_t _toStringOfferOfT(
         uint8_t* pageCount);
 
 parser_error_t _toStringTokenIdOf(
-        const pd_TokenIdOf_t * v,
+        const pd_TokenIdOf_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+parser_error_t _toStringTokenOf(
+        const pd_TokenOf_t* v,
         char* outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
@@ -1407,7 +1417,7 @@ parser_error_t _toStringVecTransferRecipientsOf(
         uint8_t* pageCount);
 
 parser_error_t _toStringTokenIdOf(
-        const pd_TokenIdOf_t * v,
+        const pd_TokenIdOf_t* v,
         char* outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
@@ -1415,26 +1425,67 @@ parser_error_t _toStringTokenIdOf(
 
 
 parser_error_t _toStringOptionTokenOf(
-        const pd_OptionTokenOf_t * v,
+        const pd_OptionTokenOf_t* v,
         char* outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
         uint8_t* pageCount);
 
 parser_error_t _toStringOptionTokenAccountOf(
-        const pd_OptionTokenAccountOf_t * v,
+        const pd_OptionTokenAccountOf_t* v,
         char* outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
         uint8_t* pageCount);
 
 parser_error_t _toStringTokenMutation(
-        const pd_TokenMutation_t * v,
+        const pd_TokenMutation_t* v,
         char* outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
         uint8_t* pageCount);
 
+parser_error_t _toStringMintTokenMintParam(
+        const pd_MintTokenMintParam_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+parser_error_t _toStringOptionTokenTokenMarketBehavior(
+        const pd_OptionTokenTokenMarketBehavior_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+parser_error_t _toStringOptionTokenTokenCap(
+        const pd_OptionTokenTokenCap_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+parser_error_t _toStringPolicyMintSufficiencyParam(
+        const pd_PolicyMintSufficiencyParam_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+parser_error_t _toStringPolicyMintForeignTokenCreationParams(
+        const pd_PolicyMintForeignTokenCreationParams_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+parser_error_t _toStringOptionMultiLocationV3(
+        const pd_OptionXcmV3MultiLocation* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
 
 #ifdef __cplusplus
 }

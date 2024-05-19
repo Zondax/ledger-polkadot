@@ -300,6 +300,14 @@ static const char* STR_ME_FORCE_FREEZE = "Force freeze";
 static const char* STR_ME_FORCE_SET_NEXT_COLLECTION_ID = "Force set next collection id";
 static const char* STR_ME_CLAIM_COLLECTIONS = "Claim collections";
 static const char* STR_ME_CLAIM_TOKENS = "Claim tokens";
+static const char* STR_ME_POOL_WITHDRAW_UNBONDED = "Pool withdraw unbonded";
+static const char* STR_ME_DESTROY = "Destroy";
+static const char* STR_ME_PAYOUT_REWARDS = "Payout rewards";
+static const char* STR_ME_MUTATE = "Mutate";
+static const char* STR_ME_UNBOND_DEPOSIT = "Unbond deposit";
+static const char* STR_ME_WITHDRAW_DEPOSIT = "Withdraw deposit";
+static const char* STR_ME_QUEUE_EARLY_BIRD_BONUS = "Queue early bird bonus";
+static const char* STR_ME_DISTRIBUTE_EARLY_BIRD_BONUS = "Distribute early bird bonus";
 
 // Items names
 static const char* STR_IT_remark = "Remark";
