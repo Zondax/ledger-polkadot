@@ -50,7 +50,6 @@ extern "C" {
 #define PD_CALL_BOUNTIES_V7 34
 #define PD_CALL_CHILDBOUNTIES_V7 38
 #define PD_CALL_VOTERLIST_V7 17 // ok
-
 #define PD_CALL_FASTUNSTAKE_V7 40
 #define PD_CALL_CONFIGURATION_V7 51 // ok
 #define PD_CALL_INITIALIZER_V7 57 // ok
@@ -58,17 +57,19 @@ extern "C" {
 #define PD_CALL_AUCTIONS_V7 72 // ok
 #define PD_CALL_CROWDLOAN_V7 73 // ok
 #define PD_CALL_XCMPALLET_V7 99 // ok
-
 ////////////////////////////
 // Custom
 ////////////////////////////
-
 #define PD_CALL_VOTEMANAGER_V7 109 // ok
 #define PD_CALL_VALIDATORMANAGER_V7 252 // ok
 #define PD_CALL_EXTRINSICPAUSE_V7 255 // ok
 #define PD_CALL_STAKEEXCHANGE_V7 19 // ok
 #define PD_CALL_MULTITOKENS_V7 253 // ok
 #define PD_CALL_NOMINATIONPOOLS_V7 18 // ok
+#define PD_CALL_FELLOWSHIPCOLLECTIVE_V7 106 // ok
+#define PD_CALL_FELLOWSHIPREFERENDA_V7 107 // ok
+#define PD_CALL_MARKETPLACE_V7 50
+#define PD_CALL_FUELTANKS_V7 54
 
 #define PD_CALL_UTILITY_BATCH_V7 0
 typedef struct {
@@ -953,11 +954,9 @@ typedef struct {
 #define PD_CALL_AUCTIONS_CANCEL_AUCTION_V7 2
 typedef struct {
 } pd_auctions_cancel_auction_V7_t;
-
 ////////////////////////////
 // Custom
 ////////////////////////////
-
 #define PD_CALL_VOTEMANAGER_VOTE_V7 0
 typedef struct {
     pd_Compactu32_t poll_index;
@@ -1449,6 +1448,251 @@ typedef struct {
     pd_ClaimPermission_t permission;
 } pd_nominationpools_set_claim_permission_V7_t;
 
+#define PD_CALL_FELLOWSHIPCOLLECTIVE_ADD_MEMBER_V7 0
+typedef struct {
+    pd_AccountIdLookupOfT_t who;
+} pd_fellowshipcollective_add_member_V7_t;
+
+#define PD_CALL_FELLOWSHIPCOLLECTIVE_PROMOTE_MEMBER_V7 1
+typedef struct {
+    pd_AccountIdLookupOfT_t who;
+} pd_fellowshipcollective_promote_member_V7_t;
+
+#define PD_CALL_FELLOWSHIPCOLLECTIVE_DEMOTE_MEMBER_V7 2
+typedef struct {
+    pd_AccountIdLookupOfT_t who;
+} pd_fellowshipcollective_demote_member_V7_t;
+
+#define PD_CALL_FELLOWSHIPCOLLECTIVE_REMOVE_MEMBER_V7 3
+typedef struct {
+    pd_AccountIdLookupOfT_t who;
+    pd_u16_t min_rank;
+} pd_fellowshipcollective_remove_member_V7_t;
+
+#define PD_CALL_FELLOWSHIPCOLLECTIVE_VOTE_V7 4
+typedef struct {
+    pd_u32_t poll;
+    pd_bool_t aye;
+} pd_fellowshipcollective_vote_V7_t;
+
+#define PD_CALL_FELLOWSHIPCOLLECTIVE_CLEANUP_POLL_V7 5
+typedef struct {
+    pd_u32_t poll_index;
+    pd_u32_t max;
+} pd_fellowshipcollective_cleanup_poll_V7_t;
+
+// TODO: FIX TYPES
+#define PD_CALL_FELLOWSHIPREFERENDA_SUBMIT_V7 0
+typedef struct {
+    pd_u32_t proposal_origin;
+    pd_u32_t proposal;
+    pd_u32_t enactment_moment;
+} pd_fellowshipreferenda_submit_V7_t;
+
+#define PD_CALL_FELLOWSHIPREFERENDA_PLACE_DECISION_DEPOSIT_V7 1
+typedef struct {
+    pd_u32_t index;
+} pd_fellowshipreferenda_place_decision_deposit_V7_t;
+
+#define PD_CALL_FELLOWSHIPREFERENDA_REFUND_DECISION_DEPOSIT_V7 2
+typedef struct {
+    pd_u32_t index;
+} pd_fellowshipreferenda_refund_decision_deposit_V7_t;
+
+#define PD_CALL_FELLOWSHIPREFERENDA_CANCEL_V7 3
+typedef struct {
+    pd_u32_t index;
+} pd_fellowshipreferenda_cancel_V7_t;
+
+#define PD_CALL_FELLOWSHIPREFERENDA_KILL_V7 4
+typedef struct {
+    pd_u32_t index;
+} pd_fellowshipreferenda_kill_V7_t;
+
+#define PD_CALL_FELLOWSHIPREFERENDA_NUDGE_REFERENDUM_V7 5
+typedef struct {
+    pd_u32_t index;
+} pd_fellowshipreferenda_nudge_referendum_V7_t;
+
+#define PD_CALL_FELLOWSHIPREFERENDA_ONE_FEWER_DECIDING_V7 6
+typedef struct {
+    pd_u16_t track;
+} pd_fellowshipreferenda_one_fewer_deciding_V7_t;
+
+#define PD_CALL_FELLOWSHIPREFERENDA_REFUND_SUBMISSION_DEPOSIT_V7 7
+typedef struct {
+    pd_u32_t index;
+} pd_fellowshipreferenda_refund_submission_deposit_V7_t;
+
+#define PD_CALL_FELLOWSHIPREFERENDA_SET_METADATA_V7 8
+typedef struct {
+    pd_u32_t index;
+    pd_OptionHash_t maybe_hash;
+} pd_fellowshipreferenda_set_metadata_V7_t;
+
+#define PD_CALL_MARKETPLACE_CREATE_LISTING_V7 0
+typedef struct {
+    pd_TokenAssetId_t make_asset_id;
+    pd_TokenAssetId_t take_asset_id;
+    pd_Compactu128_t amount;
+    pd_Compactu128_t price;
+    pd_Bytes_t salt;
+    pd_OptionAuctionDataOfT_t auction_data;
+} pd_marketplace_create_listing_V7_t;
+
+#define PD_CALL_MARKETPLACE_CANCEL_LISTING_V7 1
+typedef struct {
+    pd_ListingIdOfT_t listing_id;
+} pd_marketplace_cancel_listing_V7_t;
+
+#define PD_CALL_MARKETPLACE_FILL_LISTING_V7 2
+typedef struct {
+    pd_ListingIdOfT_t listing_id;
+    pd_Compactu128_t amount;
+} pd_marketplace_fill_listing_V7_t;
+
+#define PD_CALL_MARKETPLACE_PLACE_BID_V7 3
+typedef struct {
+    pd_ListingIdOfT_t listing_id;
+    pd_Compactu128_t price;
+} pd_marketplace_place_bid_V7_t;
+
+#define PD_CALL_MARKETPLACE_FINALIZE_AUCTION_V7 4
+typedef struct {
+    pd_ListingIdOfT_t listing_id;
+} pd_marketplace_finalize_auction_V7_t;
+
+#define PD_CALL_MARKETPLACE_SET_PROTOCOL_FEE_V7 5
+typedef struct {
+    pd_Perbill_t protocol_fee;
+} pd_marketplace_set_protocol_fee_V7_t;
+
+#define PD_CALL_MARKETPLACE_FORCE_CREATE_LISTING_V7 6
+typedef struct {
+    pd_AccountIdLookupOfT_t seller;
+    pd_TokenAssetId_t make_asset_id;
+    pd_TokenAssetId_t take_asset_id;
+    pd_Compactu128_t amount;
+    pd_Compactu128_t price;
+    pd_Bytes_t salt;
+    pd_OptionAuctionDataOfT_t auction_data;
+    pd_OptionAccountIdLookupOfT_t deposit_backer;
+} pd_marketplace_force_create_listing_V7_t;
+
+#define PD_CALL_MARKETPLACE_FORCE_PLACE_BID_V7 7
+typedef struct {
+    pd_AccountIdLookupOfT_t bidder;
+    pd_ListingIdOfT_t listing_id;
+    pd_Compactu128_t price;
+    pd_OptionAccountIdLookupOfT_t funds_backer;
+} pd_marketplace_force_place_bid_V7_t;
+
+#define PD_CALL_FUELTANKS_ADD_ACCOUNT_V7 2
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_AccountIdLookupOfT_t user_id;
+} pd_fueltanks_add_account_V7_t;
+
+#define PD_CALL_FUELTANKS_BATCH_ADD_ACCOUNT_V7 10
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_VecAccountIdLookupOfT_t user_ids;
+} pd_fueltanks_batch_add_account_V7_t;
+
+#define PD_CALL_FUELTANKS_BATCH_REMOVE_ACCOUNT_V7 11
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_VecAccountIdLookupOfT_t user_ids;
+} pd_fueltanks_batch_remove_account_V7_t;
+
+#define PD_CALL_FUELTANKS_CREATE_FUEL_TANK_V7 0
+typedef struct {
+    pd_FuelTankDescriptorOf_t descriptor;
+} pd_fueltanks_create_fuel_tank_V7_t;
+
+#define PD_CALL_FUELTANKS_DESTROY_FUEL_TANK_V7 13
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+} pd_fueltanks_destroy_fuel_tank_V7_t;
+
+#define PD_CALL_FUELTANKS_DISPATCH_V7 5
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_u32_t rule_set_id;
+    pd_Call_t call;
+    pd_OptionDispatchSettings_t settings;
+} pd_fueltanks_dispatch_V7_t;
+
+#define PD_CALL_FUELTANKS_DISPATCH_AND_TOUCH_V7 6
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_u32_t rule_set_id;
+    pd_Call_t call;
+    pd_OptionDispatchSettings_t settings;
+} pd_fueltanks_dispatch_and_touch_V7_t;
+
+#define PD_CALL_FUELTANKS_FORCE_BATCH_ADD_ACCOUNT_V7 15
+typedef struct {
+    pd_AccountIdLookupOfT_t owner;
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_VecAccountIdLookupOfT_t user_ids;
+} pd_fueltanks_force_batch_add_account_V7_t;
+
+#define PD_CALL_FUELTANKS_FORCE_CREATE_FUEL_TANK_V7 14
+typedef struct {
+    pd_AccountIdLookupOfT_t owner;
+    pd_FuelTankDescriptorOf_t descriptor;
+} pd_fueltanks_force_create_fuel_tank_V7_t;
+
+#define PD_CALL_FUELTANKS_FORCE_SET_CONSUMPTION_V7 12
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_OptionAccountIdLookupOfT_t user_id;
+    pd_u32_t rule_set_id;
+    pd_ConsumptionOf_t consumption;
+} pd_fueltanks_force_set_consumption_V7_t;
+
+#define PD_CALL_FUELTANKS_INSERT_RULE_SET_V7 8
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_u32_t rule_set_id;
+    pd_VecDispatchRuleDescriptor_t rules;
+} pd_fueltanks_insert_rule_set_V7_t;
+
+#define PD_CALL_FUELTANKS_MUTATE_FUEL_TANKS_V7 1
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_FuelTankMutationOf_t mutation;
+} pd_fueltanks_mutate_fuel_tank_V7_t;
+
+#define PD_CALL_FUELTANKS_REMOVE_ACCOUNT_V7 3
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_AccountIdLookupOfT_t user_id;
+} pd_fueltanks_remove_account_V7_t;
+
+#define PD_CALL_FUELTANKS_REMOVE_ACCOUNT_RULE_DATA_V7 4
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_AccountIdLookupOfT_t user_id;
+    pd_u32_t rule_set_id;
+    pd_DispatchRuleKind_t rule_kind;
+} pd_fueltanks_remove_account_rule_data_V7_t;
+
+#define PD_CALL_FUELTANKS_REMOVE_RULE_SET_V7 9
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_u32_t rule_set_id;
+} pd_fueltanks_remove_rule_set_V7_t;
+
+#define PD_CALL_FUELTANKS_SCHEDULE_MUTATE_FREEZE_STATE_V7 7
+typedef struct {
+    pd_AccountIdLookupOfT_t tank_id;
+    pd_Optionu32_t rule_set_id;
+    pd_bool_t is_frozen;
+} pd_fueltanks_schedule_mutate_freeze_state_V7_t;
+
+
 #endif
 
 typedef union {
@@ -1615,11 +1859,9 @@ typedef union {
     pd_auctions_new_auction_V7_t auctions_new_auction_V7;
     pd_auctions_bid_V7_t auctions_bid_V7;
     pd_auctions_cancel_auction_V7_t auctions_cancel_auction_V7;
-
 ///////////////////////////
 // Custom
 ///////////////////////////
-
     pd_votemanager_vote_V7_t votemanager_vote_V7;
     pd_votemanager_remove_vote_V7_t votemanager_remove_vote_V7;
     pd_votemanager_remove_other_vote_V7_t votemanager_remove_other_vote_V7;
@@ -1698,6 +1940,45 @@ typedef union {
     pd_nominationpools_update_roles_V7_t nominationpools_update_roles_V7;
     pd_nominationpools_set_claim_permission_V7_t nominationpools_set_claim_permission_V7;
     pd_nominationpools_set_state_V7_t nominationpools_set_state_V7;
+    pd_fellowshipcollective_add_member_V7_t fellowshipcollective_add_member_V7;
+    pd_fellowshipcollective_promote_member_V7_t fellowshipcollective_promote_member_V7;
+    pd_fellowshipcollective_demote_member_V7_t fellowshipcollective_demote_member_V7;
+    pd_fellowshipcollective_remove_member_V7_t fellowshipcollective_remove_member_V7;
+    pd_fellowshipcollective_vote_V7_t fellowshipcollective_vote_V7;
+    pd_fellowshipcollective_cleanup_poll_V7_t fellowshipcollective_cleanup_poll_V7;
+    pd_fellowshipreferenda_submit_V7_t fellowshipreferenda_submit_V7;
+    pd_fellowshipreferenda_place_decision_deposit_V7_t fellowshipreferenda_place_decision_deposit_V7;
+    pd_fellowshipreferenda_refund_decision_deposit_V7_t fellowshipreferenda_refund_decision_deposit_V7;
+    pd_fellowshipreferenda_cancel_V7_t fellowshipreferenda_cancel_V7;
+    pd_fellowshipreferenda_kill_V7_t fellowshipreferenda_kill_V7;
+    pd_fellowshipreferenda_nudge_referendum_V7_t fellowshipreferenda_nudge_referendum_V7;
+    pd_fellowshipreferenda_one_fewer_deciding_V7_t fellowshipreferenda_one_fewer_deciding_V7;
+    pd_fellowshipreferenda_refund_submission_deposit_V7_t fellowshipreferenda_refund_submission_deposit_V7;
+    pd_fellowshipreferenda_set_metadata_V7_t fellowshipreferenda_set_metadata_V7;
+    pd_marketplace_cancel_listing_V7_t marketplace_cancel_listing_V7;
+    pd_marketplace_create_listing_V7_t marketplace_create_listing_V7;
+    pd_marketplace_fill_listing_V7_t marketplace_fill_listing_V7;
+    pd_marketplace_place_bid_V7_t marketplace_place_bid_V7;
+    pd_marketplace_finalize_auction_V7_t marketplace_finalize_auction_V7;
+    pd_marketplace_set_protocol_fee_V7_t marketplace_set_protocol_fee_V7;
+    pd_marketplace_force_create_listing_V7_t marketplace_force_create_listing_V7;
+    pd_marketplace_force_place_bid_V7_t marketplace_force_place_bid_V7;
+    pd_fueltanks_add_account_V7_t fueltanks_add_account_V7;
+    pd_fueltanks_batch_add_account_V7_t fueltanks_batch_add_account_V7;
+    pd_fueltanks_batch_remove_account_V7_t fueltanks_batch_remove_account_V7;
+    pd_fueltanks_create_fuel_tank_V7_t fueltanks_create_fuel_tank_V7;
+    pd_fueltanks_destroy_fuel_tank_V7_t fueltanks_destroy_fuel_tank_V7;
+    pd_fueltanks_dispatch_V7_t fueltanks_dispatch_V7;
+    pd_fueltanks_dispatch_and_touch_V7_t fueltanks_dispatch_and_touch_V7;
+    pd_fueltanks_force_batch_add_account_V7_t fueltanks_force_batch_add_account_V7;
+    pd_fueltanks_force_create_fuel_tank_V7_t fueltanks_force_create_fuel_tank_V7;
+    pd_fueltanks_force_set_consumption_V7_t fueltanks_force_set_consumption_V7;
+    pd_fueltanks_insert_rule_set_V7_t fueltanks_insert_rule_set_V7;
+    pd_fueltanks_mutate_fuel_tank_V7_t fueltanks_mutate_fuel_tank_V7;
+    pd_fueltanks_remove_account_V7_t fueltanks_remove_account_V7;
+    pd_fueltanks_remove_account_rule_data_V7_t fueltanks_remove_account_rule_data_V7;
+    pd_fueltanks_remove_rule_set_V7_t fueltanks_remove_rule_set_V7;
+    pd_fueltanks_schedule_mutate_freeze_state_V7_t fueltanks_schedule_mutate_freeze_state_V7;
 #endif
 } pd_MethodBasic_V7_t;
 

@@ -951,11 +951,9 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_Vecu8_t;
-
-/////////////////////////
+////////////////////////////////////////
 // Custom
-/////////////////////////
-
+////////////////////////////////////////
 typedef struct {
     uint8_t some;
     pd_AccountIdLookupOfT_t contained;
@@ -983,6 +981,11 @@ typedef struct {
 typedef struct {
     compactInt_t value;
 } pd_CompactPerbill_t;
+
+typedef struct {
+    uint8_t some;
+    pd_bool_t contained;
+} pd_Optionbool_t;
 
 typedef struct {
     uint64_t _len;
@@ -1458,6 +1461,92 @@ typedef struct {
     pd_Perbill_t annual_inflation_rate;
     pd_Perbill_t collator_payout_cut;
 } pd_StakingInfo_t;
+
+typedef struct {
+    pd_Compactu32_t startBlock;
+    pd_Compactu32_t endBlock;
+} pd_AuctionDataOfT_t;
+
+typedef struct {
+    uint8_t some;
+    pd_AuctionDataOfT_t contained;
+} pd_OptionAuctionDataOfT_t;
+
+typedef struct {
+    pd_H256_t value;
+} pd_ListingIdOfT_t;
+
+
+typedef struct {
+    uint8_t value;
+} pd_DispatchRuleKind_t;
+
+typedef struct {
+    pd_bool_t tankReservesExistentialDeposit;
+    pd_bool_t tankReservesAccountCreationDeposit;
+} pd_UserAccountManagement_t;
+
+typedef struct {
+    uint8_t some;
+    pd_UserAccountManagement_t contained;
+} pd_OptionUserAccountManagement_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecRulesAccountRuleDescriptor_t;
+
+typedef struct {
+    pd_Bytes_t name;
+    pd_OptionUserAccountManagement_t userAccountManagement;
+    pd_Bytes_t ruleSets;
+    pd_bool_t providesDeposit;
+    pd_VecRulesAccountRuleDescriptor_t accountRules;
+} pd_FuelTankDescriptorOf_t;
+
+typedef struct {
+    pd_bool_t useNoneOrigin;
+    pd_bool_t paysRemainingFee;
+} pd_DispatchSettings_t;
+
+typedef struct {
+    uint8_t some;
+    pd_DispatchSettings_t contained;
+} pd_OptionDispatchSettings_t;
+
+typedef struct {
+    pd_Compactu128_t totalConsumed;
+    pd_Optionu32_t lastResetBlock;
+} pd_ConsumptionOf_t;
+
+typedef struct {
+    uint8_t value;
+    pd_OptionUserAccountManagement_t set;
+} pd_ShouldMutateOption_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecAccountRuleDescriptor_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecDispatchRuleDescriptor_t;
+
+typedef struct {
+    uint8_t some;
+    pd_VecAccountRuleDescriptor_t contained;
+} pd_OptionVecAccountRuleDescriptor_t;
+
+typedef struct {
+    pd_ShouldMutateOption_t userAccountManagement;
+    pd_Optionbool_t providesDeposit;
+    pd_OptionVecAccountRuleDescriptor_t accountRules;
+} pd_FuelTankMutationOf_t;
 
 #ifdef __cplusplus
 }

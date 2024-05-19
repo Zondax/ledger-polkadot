@@ -47,17 +47,19 @@ static const char* STR_MO_PARASDISPUTES = "Parasdisputes";
 static const char* STR_MO_AUCTIONS = "Auctions";
 static const char* STR_MO_CROWDLOAN = "Crowdloan";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
-
 /////////////////////////
 // Custom
 /////////////////////////
-
 static const char* STR_MO_VOTEMANAGER = "Votemanager";
 static const char* STR_MO_VALIDATORMANAGER = "Validatormanager";
 static const char* STR_MO_EXTRINSICPAUSE = "Extrinsicpause";
 static const char* STR_MO_STAKEEXCHANGE = "Stakeexchange";
 static const char* STR_MO_MULTITOKENS = "Multitokens";
 static const char* STR_MO_NOMINATIONPOOLS = "Nominationpools";
+static const char* STR_MO_FELLOWSHIPCOLLECTIVE = "Fellowshipcollective";
+static const char* STR_MO_FELLOWSHIPREFERENDA = "Fellowshipreferenda";
+static const char* STR_MO_MARKETPLACE = "Marketplace";
+static const char* STR_MO_FUELTANKS = "Fueltanks";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
@@ -254,11 +256,9 @@ static const char* STR_ME_TELEPORT_ASSETS = "Teleport assets";
 static const char* STR_ME_RESERVE_TRANSFER_ASSETS = "Reserve transfer assets";
 static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
 static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
-
 ///////////////////////////////
 // Custom
 ///////////////////////////////
-
 static const char* STR_ME_REGISTER_VALIDATORS = "Register validators";
 static const char* STR_ME_DEREGISTER_VALIDATORS = "Deregister validators";
 static const char* STR_ME_PAUSE_EXTRINSIC = "Pause extrinsic";
@@ -308,6 +308,35 @@ static const char* STR_ME_UNBOND_DEPOSIT = "Unbond deposit";
 static const char* STR_ME_WITHDRAW_DEPOSIT = "Withdraw deposit";
 static const char* STR_ME_QUEUE_EARLY_BIRD_BONUS = "Queue early bird bonus";
 static const char* STR_ME_DISTRIBUTE_EARLY_BIRD_BONUS = "Distribute early bird bonus";
+static const char* STR_ME_ADD_MEMBER = "Add member";
+static const char* STR_ME_PROMOTE_MEMBER = "Promote member";
+static const char* STR_ME_DEMOTE_MEMBER = "Demote member";
+static const char* STR_ME_REMOVE_MEMBER = "Remove member";
+static const char* STR_ME_CLEANUP_POLL = "Cleanup poll";
+static const char* STR_ME_CANCEL_LISTING = "Cancel listing";
+static const char* STR_ME_CREATE_LISTING = "Create listing";
+static const char* STR_ME_FILL_LISTING = "Fill listing";
+static const char* STR_ME_FINALIZE_AUCTION = "Finalize auction";
+static const char* STR_ME_FORCE_CREATE_LISTING = "Force create listing";
+static const char* STR_ME_FORCE_PLACE_BID = "Force place bid";
+static const char* STR_ME_PLACE_BID = "Place bid";
+static const char* STR_ME_SET_PROTOCOL_FEE = "Set protocol fee";
+static const char* STR_ME_CREATE_FUEL_TANK = "Create fuel tank";
+static const char* STR_ME_MUTATE_FUEL_TANK = "Mutate fuel tank";
+static const char* STR_ME_ADD_ACCOUNT = "Add account";
+static const char* STR_ME_REMOVE_ACCOUNT = "Remove account";
+static const char* STR_ME_REMOVE_ACCOUNT_RULE_DATA = "Remove account rule data";
+static const char* STR_ME_DISPATCH = "Dispatch";
+static const char* STR_ME_DISPATCH_AND_TOUCH = "Dispatch and touch";
+static const char* STR_ME_SCHEDULE_MUTATE_FREEZE_STATE = "Schedule mutate freeze state";
+static const char* STR_ME_INSERT_RULE_SET = "Insert rule set";
+static const char* STR_ME_REMOVE_RULE_SET = "Remove rule set";
+static const char* STR_ME_BATCH_ADD_ACCOUNT = "Batch add account";
+static const char* STR_ME_BATCH_REMOVE_ACCOUNT = "Batch remove account";
+static const char* STR_ME_FORCE_SET_CONSUMPTION = "Force set consumption";
+static const char* STR_ME_DESTROY_FUEL_TANK = "Destroy fuel tank";
+static const char* STR_ME_FORCE_CREATE_FUEL_TANK = "Force create fuel tank";
+static const char* STR_ME_FORCE_BATCH_ADD_ACCOUNT = "Force batch add account";
 
 // Items names
 static const char* STR_IT_remark = "Remark";
@@ -460,11 +489,9 @@ static const char* STR_IT_version = "Version";
 static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
 static const char* STR_IT_weight_limit = "Weight limit";
 static const char* STR_IT_suspended = "Suspended";
-
 /////////////////////////
 // Custom
 /////////////////////////
-
 static const char* STR_IT_currency = "Currency";
 static const char* STR_IT_pause_only_extrinsic = "Pause only extrinsic";
 static const char* STR_IT_resume_only_extrinsic = "Resume only extrinsic";
@@ -491,6 +518,27 @@ static const char* STR_IT_account_id = "Account id";
 static const char* STR_IT_mutation = "Mutation";
 static const char* STR_IT_recipients = "Recipients";
 static const char* STR_IT_owner = "Owner";
+static const char* STR_IT_min_rank = "Min rank";
+static const char* STR_IT_poll = "Poll";
+static const char* STR_IT_aye = "Aye";
+static const char* STR_IT_max = "Max";
+static const char* STR_IT_listing_id = "Listing id";
+static const char* STR_IT_protocol_fee = "Protocol fee";
+static const char* STR_IT_seller = "Seller";
+static const char* STR_IT_make_asset_id = "Make asset id";
+static const char* STR_IT_take_asset_id = "Take asset id";
+static const char* STR_IT_price = "Price";
+static const char* STR_IT_salt = "Salt";
+static const char* STR_IT_auction_data = "Auction data";
+static const char* STR_IT_tank_id = "Tank id";
+static const char* STR_IT_user_id = "User id";
+static const char* STR_IT_rule_set_id = "Rule set id";
+static const char* STR_IT_rule_kind = "Rule kind";
+static const char* STR_IT_settings = "Settings";
+static const char* STR_IT_is_frozen = "Is frozen";
+static const char* STR_IT_rules = "Rules";
+static const char* STR_IT_user_ids = "User ids";
+static const char* STR_IT_consumption = "Consumption";
 
 #ifdef __cplusplus
 }

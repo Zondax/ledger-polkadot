@@ -2214,6 +2214,298 @@ __Z_INLINE parser_error_t _readMethod_nominationpools_claim_commission_V7(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_fellowshipcollective_add_member_V7(
+        parser_context_t* c, pd_fellowshipcollective_add_member_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipcollective_promote_member_V7(
+        parser_context_t* c, pd_fellowshipcollective_promote_member_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipcollective_demote_member_V7(
+        parser_context_t* c, pd_fellowshipcollective_demote_member_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipcollective_remove_member_V7(
+        parser_context_t* c, pd_fellowshipcollective_remove_member_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
+    CHECK_ERROR(_readu16(c, &m->min_rank))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipcollective_vote_V7(
+        parser_context_t* c, pd_fellowshipcollective_vote_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->poll))
+    CHECK_ERROR(_readbool(c, &m->aye))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipcollective_cleanup_poll_V7(
+        parser_context_t* c, pd_fellowshipcollective_cleanup_poll_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->poll_index))
+    CHECK_ERROR(_readu32(c, &m->max))
+    return parser_ok;
+}
+
+// TODO: Fix type
+__Z_INLINE parser_error_t _readMethod_fellowshipreferenda_submit_V7(
+        parser_context_t* c, pd_fellowshipreferenda_submit_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->proposal_origin))
+    CHECK_ERROR(_readu32(c, &m->proposal))
+    CHECK_ERROR(_readu32(c, &m->enactment_moment))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipreferenda_place_decision_deposit_V7(
+        parser_context_t* c, pd_fellowshipreferenda_place_decision_deposit_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipreferenda_refund_decision_deposit_V7(
+        parser_context_t* c, pd_fellowshipreferenda_refund_decision_deposit_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipreferenda_cancel_V7(
+        parser_context_t* c, pd_fellowshipreferenda_cancel_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipreferenda_kill_V7(
+        parser_context_t* c, pd_fellowshipreferenda_kill_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipreferenda_nudge_referendum_V7(
+        parser_context_t* c, pd_fellowshipreferenda_nudge_referendum_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipreferenda_one_fewer_deciding_V7(
+        parser_context_t* c, pd_fellowshipreferenda_one_fewer_deciding_V7_t* m)
+{
+    CHECK_ERROR(_readu16(c, &m->track))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipreferenda_refund_submission_deposit_V7(
+        parser_context_t* c, pd_fellowshipreferenda_refund_submission_deposit_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fellowshipreferenda_set_metadata_V7(
+        parser_context_t* c, pd_fellowshipreferenda_set_metadata_V7_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->index))
+    CHECK_ERROR(_readOptionHash(c, &m->maybe_hash))
+    return parser_ok;
+}
+
+
+__Z_INLINE parser_error_t _readMethod_marketplace_cancel_listing_V7(
+        parser_context_t* c, pd_marketplace_cancel_listing_V7_t* m)
+{
+    CHECK_ERROR(_readListingIdOf(c, &m->listing_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_marketplace_create_listing_V7(
+        parser_context_t* c, pd_marketplace_create_listing_V7_t* m)
+{
+    CHECK_ERROR(_readTokenAssetId(c, &m->make_asset_id))
+    CHECK_ERROR(_readTokenAssetId(c, &m->take_asset_id))
+    CHECK_ERROR(_readCompactu128(c, &m->amount))
+    CHECK_ERROR(_readCompactu128(c, &m->price))
+    CHECK_ERROR(_readBytes(c, &m->salt))
+    CHECK_ERROR(_readOptionAuctionDataOfT(c, &m->auction_data))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_marketplace_fill_listing_V7(
+        parser_context_t* c, pd_marketplace_fill_listing_V7_t* m)
+{
+    CHECK_ERROR(_readListingIdOf(c, &m->listing_id))
+    CHECK_ERROR(_readCompactu128(c, &m->amount))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_marketplace_finalize_auction_V7(
+        parser_context_t* c, pd_marketplace_finalize_auction_V7_t* m)
+{
+    CHECK_ERROR(_readListingIdOf(c, &m->listing_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_marketplace_place_bid_V7(
+        parser_context_t* c, pd_marketplace_place_bid_V7_t* m)
+{
+    CHECK_ERROR(_readListingIdOf(c, &m->listing_id))
+    CHECK_ERROR(_readCompactu128(c, &m->price))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_add_account_V7(
+        parser_context_t* c, pd_fueltanks_add_account_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->user_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_batch_add_account_V7(
+        parser_context_t* c, pd_fueltanks_batch_add_account_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readVecAccountIdLookupOfT(c, &m->user_ids))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_batch_remove_account_V7(
+        parser_context_t* c, pd_fueltanks_batch_remove_account_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readVecAccountIdLookupOfT(c, &m->user_ids))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_create_fuel_tank_V7(
+        parser_context_t* c, pd_fueltanks_create_fuel_tank_V7_t* m)
+{
+    CHECK_ERROR(_readFuelTankDescriptorOf(c, &m->descriptor))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_destroy_fuel_tank_V7(
+        parser_context_t* c, pd_fueltanks_destroy_fuel_tank_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_dispatch_V7(
+        parser_context_t* c, pd_fueltanks_dispatch_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readu32(c, &m->rule_set_id))
+    CHECK_ERROR(_readCall(c, &m->call))
+    CHECK_ERROR(_readOptionDispatchSettings(c, &m->settings))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_dispatch_and_touch_V7(
+        parser_context_t* c, pd_fueltanks_dispatch_and_touch_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readu32(c, &m->rule_set_id))
+    CHECK_ERROR(_readCall(c, &m->call))
+    CHECK_ERROR(_readOptionDispatchSettings(c, &m->settings))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_force_batch_add_account_V7(
+        parser_context_t* c, pd_fueltanks_force_batch_add_account_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->owner))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readVecAccountIdLookupOfT(c, &m->user_ids))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_force_create_fuel_tank_V7(
+        parser_context_t* c, pd_fueltanks_force_create_fuel_tank_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->owner))
+    CHECK_ERROR(_readFuelTankDescriptorOf(c, &m->descriptor))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_force_set_consumption_V7(
+        parser_context_t* c, pd_fueltanks_force_set_consumption_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readOptionAccountIdLookupOfT(c, &m->user_id))
+    CHECK_ERROR(_readu32(c, &m->rule_set_id))
+    CHECK_ERROR(_readConsumptionOf(c, &m->consumption))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_insert_rule_set_V7(
+        parser_context_t* c, pd_fueltanks_insert_rule_set_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readu32(c, &m->rule_set_id))
+    CHECK_ERROR(_readVecDispatchRuleDescriptor(c, &m->rules))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_mutate_fuel_tank_V7(
+        parser_context_t* c, pd_fueltanks_mutate_fuel_tank_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readFuelTankMutationOf(c, &m->mutation))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_remove_account_V7(
+        parser_context_t* c, pd_fueltanks_remove_account_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->user_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_remove_account_rule_data_V7(
+        parser_context_t* c, pd_fueltanks_remove_account_rule_data_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->user_id))
+    CHECK_ERROR(_readu32(c, &m->rule_set_id))
+    CHECK_ERROR(_readDispatchRuleKind(c, &m->rule_kind))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_remove_rule_set_V7(
+        parser_context_t* c, pd_fueltanks_remove_rule_set_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readu32(c, &m->rule_set_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_fueltanks_schedule_mutate_freeze_state_V7(
+        parser_context_t* c, pd_fueltanks_schedule_mutate_freeze_state_V7_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->tank_id))
+    CHECK_ERROR(_readOptionu32(c, &m->rule_set_id))
+    CHECK_ERROR(_readbool(c, &m->is_frozen))
+    return parser_ok;
+}
+
 #endif
 
 parser_error_t _readMethod_V7(
@@ -2827,11 +3119,9 @@ parser_error_t _readMethod_V7(
     case 18434: /* module 72 call 2 */
         CHECK_ERROR(_readMethod_auctions_cancel_auction_V7(c, &method->basic.auctions_cancel_auction_V7))
         break;
-
 ///////////////////////////////////////
 // Custom
 ///////////////////////////////////////
-
     case 27904: /* module 109 call 0 */
         CHECK_ERROR(_readMethod_votemanager_vote_V7(c, &method->basic.votemanager_vote_V7))
         break;
@@ -3087,6 +3377,114 @@ parser_error_t _readMethod_V7(
     case 4630: /* module 18 call 22 */
         CHECK_ERROR(_readMethod_nominationpools_set_staking_info_V7(c, &method->basic.nominationpools_set_staking_info_V7))
         break;
+    case 27136: /* module 106 call 0 */
+        CHECK_ERROR(_readMethod_fellowshipcollective_add_member_V7(c, &method->basic.fellowshipcollective_add_member_V7))
+        break;
+    case 27137: /* module 106 call 1 */
+        CHECK_ERROR(_readMethod_fellowshipcollective_promote_member_V7(c, &method->basic.fellowshipcollective_promote_member_V7))
+        break;
+    case 27138: /* module 106 call 2 */
+        CHECK_ERROR(_readMethod_fellowshipcollective_demote_member_V7(c, &method->basic.fellowshipcollective_demote_member_V7))
+        break;
+    case 27139: /* module 106 call 3 */
+        CHECK_ERROR(_readMethod_fellowshipcollective_remove_member_V7(c, &method->basic.fellowshipcollective_remove_member_V7))
+        break;
+    case 27140: /* module 106 call 4 */
+        CHECK_ERROR(_readMethod_fellowshipcollective_vote_V7(c, &method->basic.fellowshipcollective_vote_V7))
+        break;
+    case 27141: /* module 106 call 5 */
+        CHECK_ERROR(_readMethod_fellowshipcollective_cleanup_poll_V7(c, &method->basic.fellowshipcollective_cleanup_poll_V7))
+        break;
+    case 27392: /* module 107 call 0 */
+        CHECK_ERROR(_readMethod_fellowshipreferenda_submit_V7(c, &method->basic.fellowshipreferenda_submit_V7))
+        break;
+    case 27393: /* module 107 call 1 */
+        CHECK_ERROR(_readMethod_fellowshipreferenda_place_decision_deposit_V7(c, &method->basic.fellowshipreferenda_place_decision_deposit_V7))
+        break;
+    case 27394: /* module 107 call 2 */
+        CHECK_ERROR(_readMethod_fellowshipreferenda_refund_decision_deposit_V7(c, &method->basic.fellowshipreferenda_refund_decision_deposit_V7))
+        break;
+    case 27395: /* module 107 call 3 */
+        CHECK_ERROR(_readMethod_fellowshipreferenda_cancel_V7(c, &method->basic.fellowshipreferenda_cancel_V7))
+        break;
+    case 27396: /* module 107 call 4 */
+        CHECK_ERROR(_readMethod_fellowshipreferenda_kill_V7(c, &method->basic.fellowshipreferenda_kill_V7))
+        break;
+    case 27397: /* module 107 call 5 */
+        CHECK_ERROR(_readMethod_fellowshipreferenda_nudge_referendum_V7(c, &method->basic.fellowshipreferenda_nudge_referendum_V7))
+        break;
+    case 27398: /* module 107 call 6 */
+        CHECK_ERROR(_readMethod_fellowshipreferenda_one_fewer_deciding_V7(c, &method->basic.fellowshipreferenda_one_fewer_deciding_V7))
+        break;
+    case 27399: /* module 107 call 7 */
+        CHECK_ERROR(_readMethod_fellowshipreferenda_refund_submission_deposit_V7(c, &method->basic.fellowshipreferenda_refund_submission_deposit_V7))
+        break;
+    case 27400: /* module 107 call 8 */
+        CHECK_ERROR(_readMethod_fellowshipreferenda_set_metadata_V7(c, &method->basic.fellowshipreferenda_set_metadata_V7))
+        break;
+    case 12800: /* module 50 call 0 */
+        CHECK_ERROR(_readMethod_marketplace_create_listing_V7(c, &method->basic.marketplace_create_listing_V7))
+        break;
+    case 12801: /* module 50 call 1 */
+        CHECK_ERROR(_readMethod_marketplace_cancel_listing_V7(c, &method->basic.marketplace_cancel_listing_V7))
+        break;
+    case 12802: /* module 50 call 2 */
+        CHECK_ERROR(_readMethod_marketplace_fill_listing_V7(c, &method->basic.marketplace_fill_listing_V7))
+        break;
+    case 12803: /* module 50 call 3 */
+        CHECK_ERROR(_readMethod_marketplace_place_bid_V7(c, &method->basic.marketplace_place_bid_V7))
+        break;
+    case 12804: /* module 50 call 4 */
+        CHECK_ERROR(_readMethod_marketplace_finalize_auction_V7(c, &method->basic.marketplace_finalize_auction_V7))
+        break;
+    case 13824: /* module 54 call 0 */
+        CHECK_ERROR(_readMethod_fueltanks_create_fuel_tank_V7(c, &method->basic.fueltanks_create_fuel_tank_V7))
+        break;
+    case 13825: /* module 54 call 1 */
+        CHECK_ERROR(_readMethod_fueltanks_mutate_fuel_tank_V7(c, &method->basic.fueltanks_mutate_fuel_tank_V7))
+        break;
+    case 13826: /* module 54 call 2 */
+        CHECK_ERROR(_readMethod_fueltanks_add_account_V7(c, &method->basic.fueltanks_add_account_V7))
+        break;
+    case 13827: /* module 54 call 3 */
+        CHECK_ERROR(_readMethod_fueltanks_remove_account_V7(c, &method->basic.fueltanks_remove_account_V7))
+        break;
+    case 13828: /* module 54 call 4 */
+        CHECK_ERROR(_readMethod_fueltanks_remove_account_rule_data_V7(c, &method->basic.fueltanks_remove_account_rule_data_V7))
+        break;
+    case 13829: /* module 54 call 5 */
+        CHECK_ERROR(_readMethod_fueltanks_dispatch_V7(c, &method->basic.fueltanks_dispatch_V7))
+        break;
+    case 13830: /* module 54 call 6 */
+        CHECK_ERROR(_readMethod_fueltanks_dispatch_and_touch_V7(c, &method->basic.fueltanks_dispatch_and_touch_V7))
+        break;
+    case 13831: /* module 54 call 7 */
+        CHECK_ERROR(_readMethod_fueltanks_schedule_mutate_freeze_state_V7(c, &method->basic.fueltanks_schedule_mutate_freeze_state_V7))
+        break;
+    case 13832: /* module 54 call 8 */
+        CHECK_ERROR(_readMethod_fueltanks_insert_rule_set_V7(c, &method->basic.fueltanks_insert_rule_set_V7))
+        break;
+    case 13833: /* module 54 call 9 */
+        CHECK_ERROR(_readMethod_fueltanks_remove_rule_set_V7(c, &method->basic.fueltanks_remove_rule_set_V7))
+        break;
+    case 13834: /* module 54 call 10 */
+        CHECK_ERROR(_readMethod_fueltanks_batch_add_account_V7(c, &method->basic.fueltanks_batch_add_account_V7))
+        break;
+    case 13835: /* module 54 call 11 */
+        CHECK_ERROR(_readMethod_fueltanks_batch_remove_account_V7(c, &method->basic.fueltanks_batch_remove_account_V7))
+        break;
+    case 13836: /* module 54 call 12 */
+        CHECK_ERROR(_readMethod_fueltanks_force_set_consumption_V7(c, &method->basic.fueltanks_force_set_consumption_V7))
+        break;
+    case 13837: /* module 54 call 13 */
+        CHECK_ERROR(_readMethod_fueltanks_destroy_fuel_tank_V7(c, &method->basic.fueltanks_destroy_fuel_tank_V7))
+        break;
+    case 13838: /* module 54 call 14 */
+        CHECK_ERROR(_readMethod_fueltanks_force_create_fuel_tank_V7(c, &method->basic.fueltanks_force_create_fuel_tank_V7))
+        break;
+    case 13839: /* module 54 call 15 */
+        CHECK_ERROR(_readMethod_fueltanks_force_batch_add_account_V7(c, &method->basic.fueltanks_force_batch_add_account_V7))
+        break;
 #endif
     default:
         return parser_unexpected_callIndex;
@@ -3160,11 +3558,9 @@ const char* _getMethod_ModuleName_V7(uint8_t moduleIdx)
         return STR_MO_PARASDISPUTES;
     case 72: // ok
         return STR_MO_AUCTIONS;
-
 /////////////////////////
 // Custom
 /////////////////////////
-
     case 109: // ok
         return STR_MO_VOTEMANAGER;
     case 252: // ok
@@ -3177,6 +3573,15 @@ const char* _getMethod_ModuleName_V7(uint8_t moduleIdx)
         return STR_MO_MULTITOKENS;
     case 18: // ok
         return STR_MO_NOMINATIONPOOLS;
+    case 106: // ok
+        return STR_MO_FELLOWSHIPCOLLECTIVE;
+    case 107: // ok
+        return STR_MO_FELLOWSHIPREFERENDA;
+    case 50: //
+        return STR_MO_MARKETPLACE;
+    case 54: //
+        return STR_MO_FUELTANKS;
+
 #endif
     default:
         return NULL;
@@ -3589,11 +3994,9 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_BID;
     case 18434: /* module 72 call 2 */
         return STR_ME_CANCEL_AUCTION;
-        
 //////////////////////////////////
 // Custom
 //////////////////////////////////
-
     case 27904: /* module 109 call 0 */
         return STR_ME_VOTE;
     case 27905: /* module 109 call 1 */
@@ -3688,34 +4091,112 @@ const char* _getMethod_Name_V7_ParserFull(uint16_t callPrivIdx)
         return STR_ME_CLAIM_COLLECTIONS;
     case 64801: /* module 253 call 33 */
         return STR_ME_CLAIM_TOKENS;
-     case 4608: /* module 18 call 0 */
-            return STR_ME_BOND;
-        case 4611: /* module 18 call 3 */
-            return STR_ME_UNBOND;
-        case 4612: /* module 18 call 4 */
-            return STR_ME_POOL_WITHDRAW_UNBONDED;
-        case 4613: /* module 18 call 5 */
-            return STR_ME_WITHDRAW_UNBONDED;
-        case 4614: /* module 18 call 6 */
-            return STR_ME_CREATE;
-        case 4616: /* module 18 call 8 */
-            return STR_ME_NOMINATE;
-        case 4621: /* module 18 call 13 */
-            return STR_ME_CHILL;
-        case 4622: /* module 18 call 14 */
-            return STR_ME_DESTROY;
-        case 4626: /* module 18 call 18 */
-            return STR_ME_PAYOUT_REWARDS;
-        case 4627: /* module 18 call 19 */
-            return STR_ME_MUTATE;
-        case 4628: /* module 18 call 20 */
-            return STR_ME_UNBOND_DEPOSIT;
-        case 4629: /* module 18 call 21 */
-            return STR_ME_WITHDRAW_DEPOSIT;
-        case 4631: /* module 18 call 23 */
-            return STR_ME_QUEUE_EARLY_BIRD_BONUS;
-        case 4632: /* module 18 call 24 */
-            return STR_ME_DISTRIBUTE_EARLY_BIRD_BONUS;
+    case 4608: /* module 18 call 0 */
+        return STR_ME_BOND;
+    case 4611: /* module 18 call 3 */
+        return STR_ME_UNBOND;
+    case 4612: /* module 18 call 4 */
+        return STR_ME_POOL_WITHDRAW_UNBONDED;
+    case 4613: /* module 18 call 5 */
+        return STR_ME_WITHDRAW_UNBONDED;
+    case 4614: /* module 18 call 6 */
+        return STR_ME_CREATE;
+    case 4616: /* module 18 call 8 */
+        return STR_ME_NOMINATE;
+    case 4621: /* module 18 call 13 */
+        return STR_ME_CHILL;
+    case 4622: /* module 18 call 14 */
+        return STR_ME_DESTROY;
+    case 4626: /* module 18 call 18 */
+        return STR_ME_PAYOUT_REWARDS;
+    case 4627: /* module 18 call 19 */
+        return STR_ME_MUTATE;
+    case 4628: /* module 18 call 20 */
+        return STR_ME_UNBOND_DEPOSIT;
+    case 4629: /* module 18 call 21 */
+        return STR_ME_WITHDRAW_DEPOSIT;
+    case 4631: /* module 18 call 23 */
+        return STR_ME_QUEUE_EARLY_BIRD_BONUS;
+    case 4632: /* module 18 call 24 */
+        return STR_ME_DISTRIBUTE_EARLY_BIRD_BONUS;
+    case 27136: /* module 106 call 0 */
+        return STR_ME_ADD_MEMBER;
+    case 27137: /* module 106 call 1 */
+        return STR_ME_PROMOTE_MEMBER;
+    case 27138: /* module 106 call 2 */
+        return STR_ME_DEMOTE_MEMBER;
+    case 27139: /* module 106 call 3 */
+        return STR_ME_REMOVE_MEMBER;
+    case 27140: /* module 106 call 4 */
+        return STR_ME_VOTE;
+    case 27141: /* module 106 call 5 */
+        return STR_ME_CLEANUP_POLL;
+    case 27392: /* module 107 call 0 */
+        return STR_ME_SUBMIT;
+    case 27393: /* module 107 call 1 */
+        return STR_ME_PLACE_DECISION_DEPOSIT;
+    case 27394: /* module 107 call 2 */
+        return STR_ME_REFUND_DECISION_DEPOSIT;
+    case 27395: /* module 107 call 3 */
+        return STR_ME_CANCEL;
+    case 27396: /* module 107 call 4 */
+        return STR_ME_KILL;
+    case 27397: /* module 107 call 5 */
+        return STR_ME_NUDGE_REFERENDUM;
+    case 27398: /* module 107 call 6 */
+        return STR_ME_ONE_FEWER_DECIDING;
+    case 27399: /* module 107 call 7 */
+        return STR_ME_REFUND_SUBMISSION_DEPOSIT;
+    case 27400: /* module 107 call 8 */
+        return STR_ME_SET_METADATA;
+    case 12800: /* module 50 call 0 */
+        return STR_ME_CREATE_LISTING;
+    case 12801: /* module 50 call 1 */
+        return STR_ME_CANCEL_LISTING;
+    case 12802: /* module 50 call 2 */
+        return STR_ME_FILL_LISTING;
+    case 12803: /* module 50 call 3 */
+        return STR_ME_PLACE_BID;
+    case 12804: /* module 50 call 4 */
+        return STR_ME_FINALIZE_AUCTION;
+    case 12805: /* module 50 call 5 */
+        return STR_ME_SET_PROTOCOL_FEE;
+    case 12806: /* module 50 call 6 */
+        return STR_ME_FORCE_CREATE_LISTING;
+    case 12807: /* module 50 call 7 */
+        return STR_ME_FORCE_PLACE_BID;
+    case 13824: /* module 54 call 0 */
+        return STR_ME_CREATE_FUEL_TANK;
+    case 13825: /* module 54 call 1 */
+        return STR_ME_MUTATE_FUEL_TANK;
+    case 13826: /* module 54 call 2 */
+        return STR_ME_ADD_ACCOUNT;
+    case 13827: /* module 54 call 3 */
+        return STR_ME_REMOVE_ACCOUNT;
+    case 13828: /* module 54 call 4 */
+        return STR_ME_REMOVE_ACCOUNT_RULE_DATA;
+    case 13829: /* module 54 call 5 */
+        return STR_ME_DISPATCH;
+    case 13830: /* module 54 call 6 */
+        return STR_ME_DISPATCH_AND_TOUCH;
+    case 13831: /* module 54 call 7 */
+        return STR_ME_SCHEDULE_MUTATE_FREEZE_STATE;
+    case 13832: /* module 54 call 8 */
+        return STR_ME_INSERT_RULE_SET;
+    case 13833: /* module 54 call 9 */
+        return STR_ME_REMOVE_RULE_SET;
+    case 13834: /* module 54 call 10 */
+        return STR_ME_BATCH_ADD_ACCOUNT;
+    case 13835: /* module 54 call 11 */
+        return STR_ME_BATCH_REMOVE_ACCOUNT;
+    case 13836: /* module 54 call 12 */
+        return STR_ME_FORCE_SET_CONSUMPTION;
+    case 13837: /* module 54 call 13 */
+        return STR_ME_DESTROY_FUEL_TANK;
+    case 13838: /* module 54 call 14 */
+        return STR_ME_FORCE_CREATE_FUEL_TANK;
+    case 13839: /* module 54 call 15 */
+        return STR_ME_FORCE_BATCH_ADD_ACCOUNT;
 #endif
     default:
         return NULL;
@@ -4130,11 +4611,9 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
         return 5;
     case 18434: /* module 72 call 2 */
         return 0;
-
 //////////////////////////////////
 // Custom
 //////////////////////////////////
-
     case 27904: /* module 109 call 0 */
         return 3;
     case 27905: /* module 109 call 1 */
@@ -4230,6 +4709,78 @@ uint8_t _getMethod_NumItems_V7(uint8_t moduleIdx, uint8_t callIdx)
     case 64800: /* module 253 call 32 */
         return 3;
     case 64801: /* module 253 call 33 */
+        return 3;
+    case 27136: /* module 106 call 0 */
+        return 1;
+    case 27137: /* module 106 call 1 */
+        return 1;
+    case 27138: /* module 106 call 2 */
+        return 1;
+    case 27139: /* module 106 call 3 */
+        return 2;
+    case 27140: /* module 106 call 4 */
+        return 2;
+    case 27141: /* module 106 call 5 */
+        return 2;
+    case 27392: /* module 107 call 0 */
+        return 3;
+    case 27393: /* module 107 call 1 */
+        return 1;
+    case 27394: /* module 107 call 2 */
+        return 1;
+    case 27395: /* module 107 call 3 */
+        return 1;
+    case 27396: /* module 107 call 4 */
+        return 1;
+    case 27397: /* module 107 call 5 */
+        return 1;
+    case 27398: /* module 107 call 6 */
+        return 1;
+    case 27399: /* module 107 call 7 */
+        return 1;
+    case 27400: /* module 107 call 8 */
+        return 2;
+    case 12800: /* module 50 call 0 */
+        return 6;
+    case 12801: /* module 50 call 1 */
+        return 1;
+    case 12802: /* module 50 call 2 */
+        return 2;
+    case 12803: /* module 50 call 3 */
+        return 2;
+    case 12804: /* module 50 call 4 */
+        return 1;
+    case 13824: /* module 54 call 0 */
+        return 1;
+    case 13825: /* module 54 call 1 */
+        return 2;
+    case 13826: /* module 54 call 2 */
+        return 2;
+    case 13827: /* module 54 call 3 */
+        return 2;
+    case 13828: /* module 54 call 4 */
+        return 4;
+    case 13829: /* module 54 call 5 */
+        return 4;
+    case 13830: /* module 54 call 6 */
+        return 4;
+    case 13831: /* module 54 call 7 */
+        return 3;
+    case 13832: /* module 54 call 8 */
+        return 3;
+    case 13833: /* module 54 call 9 */
+        return 2;
+    case 13834: /* module 54 call 10 */
+        return 2;
+    case 13835: /* module 54 call 11 */
+        return 2;
+    case 13836: /* module 54 call 12 */
+        return 4;
+    case 13837: /* module 54 call 13 */
+        return 1;
+    case 13838: /* module 54 call 14 */
+        return 2;
+    case 13839: /* module 54 call 15 */
         return 3;
 #endif
     default:
@@ -5878,11 +6429,9 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-
 //////////////////////////////////
 // Custom
 //////////////////////////////////
-
     case 27904: /* module 109 call 0 */
         switch (itemIdx) {
         case 0:
@@ -6363,7 +6912,371 @@ const char* _getMethod_ItemName_V7(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-
+    case 27136: /* module 106 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_who;
+        default:
+            return NULL;
+        }
+    case 27137: /* module 106 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_who;
+        default:
+            return NULL;
+        }
+    case 27138: /* module 106 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_who;
+        default:
+            return NULL;
+        }
+    case 27139: /* module 106 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_who;
+        case 1:
+            return STR_IT_min_rank;
+        default:
+            return NULL;
+        }
+    case 27140: /* module 106 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_poll;
+        case 1:
+            return STR_IT_aye;
+        default:
+            return NULL;
+        }
+    case 27141: /* module 106 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_poll_index;
+        case 1:
+            return STR_IT_max;
+        default:
+            return NULL;
+        }
+    case 27392: /* module 107 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_origin;
+        case 1:
+            return STR_IT_proposal;
+        case 2:
+            return STR_IT_enactment_moment;
+        default:
+            return NULL;
+        }
+    case 27393: /* module 107 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 27394: /* module 107 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 27395: /* module 107 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 27396: /* module 107 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 27397: /* module 107 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 27398: /* module 107 call 6 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_track;
+        default:
+            return NULL;
+        }
+    case 27399: /* module 107 call 7 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 27400: /* module 107 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        case 1:
+            return STR_IT_maybe_hash;
+        default:
+            return NULL;
+        }
+    case 12800: /* module 50 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_make_asset_id;
+        case 1:
+            return STR_IT_take_asset_id;
+        case 2:
+            return STR_IT_amount;
+        case 3:
+            return STR_IT_price;
+        case 4:
+            return STR_IT_salt;
+        case 5:
+            return STR_IT_auction_data;
+        default:
+            return NULL;
+        }
+    case 12801: /* module 50 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_listing_id;
+        default:
+            return NULL;
+        }
+    case 12802: /* module 50 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_listing_id;
+        case 1:
+            return STR_IT_amount;
+        default:
+            return NULL;
+        }
+    case 12803: /* module 50 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_listing_id;
+        case 1:
+            return STR_IT_price;
+        default:
+            return NULL;
+        }
+    case 12804: /* module 50 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_listing_id;
+        default:
+            return NULL;
+        }
+    case 12805: /* module 50 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_protocol_fee;
+        default:
+            return NULL;
+        }
+    case 12806: /* module 50 call 6 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_seller;
+        case 1:
+            return STR_IT_make_asset_id;
+        case 2:
+            return STR_IT_take_asset_id;
+        case 3:
+            return STR_IT_amount;
+        case 4:
+            return STR_IT_price;
+        case 5:
+            return STR_IT_salt;
+        case 6:
+            return STR_IT_auction_data;
+        case 7:
+            return STR_IT_deposit_backer;
+        default:
+            return NULL;
+        }
+    case 12807: /* module 50 call 7 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_dest;
+        case 1:
+            return STR_IT_amount;
+        default:
+            return NULL;
+        }
+    case 13824: /* module 54 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_descriptor;
+        default:
+            return NULL;
+        }
+    case 13825: /* module 54 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_mutation;
+        default:
+            return NULL;
+        }
+    case 13826: /* module 54 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_user_id;
+        default:
+            return NULL;
+        }
+    case 13827: /* module 54 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_user_id;
+        default:
+            return NULL;
+        }
+    case 13828: /* module 54 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_user_id;
+        case 2:
+            return STR_IT_rule_set_id;
+        case 3:
+            return STR_IT_rule_kind;
+        default:
+            return NULL;
+        }
+    case 13829: /* module 54 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_rule_set_id;
+        case 2:
+            return STR_IT_call;
+        case 3:
+            return STR_IT_settings;
+        default:
+            return NULL;
+        }
+    case 13830: /* module 54 call 6 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_rule_set_id;
+        case 2:
+            return STR_IT_call;
+        case 3:
+            return STR_IT_settings;
+        default:
+            return NULL;
+        }
+    case 13831: /* module 54 call 7 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_rule_set_id;
+        case 2:
+            return STR_IT_is_frozen;
+        default:
+            return NULL;
+        }
+    case 13832: /* module 54 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_rule_set_id;
+        case 2:
+            return STR_IT_rules;
+        default:
+            return NULL;
+        }
+    case 13833: /* module 54 call 9 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_rule_set_id;
+        default:
+            return NULL;
+        }
+    case 13834: /* module 54 call 10 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_user_ids;
+        default:
+            return NULL;
+        }
+    case 13835: /* module 54 call 11 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_user_ids;
+        default:
+            return NULL;
+        }
+    case 13836: /* module 54 call 12 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        case 1:
+            return STR_IT_user_id;
+        case 2:
+            return STR_IT_rule_set_id;
+        case 3:
+            return STR_IT_consumption;
+        default:
+            return NULL;
+        }
+    case 13837: /* module 54 call 13 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_tank_id;
+        default:
+            return NULL;
+        }
+    case 13838: /* module 54 call 14 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_owner;
+        case 1:
+            return STR_IT_descriptor;
+        default:
+            return NULL;
+        }
+    case 13839: /* module 54 call 15 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_owner;
+        case 1:
+            return STR_IT_tank_id;
+        case 2:
+            return STR_IT_user_ids;
+        default:
+            return NULL;
+        }
 #endif
     default:
         return NULL;
@@ -8969,11 +9882,9 @@ parser_error_t _getMethod_ItemValue_V7(
         default:
             return parser_no_data;
         }
-
 //////////////////////////////
 // Custom
 //////////////////////////////
-
     case 27904: /* module 109 call 0 */
         switch (itemIdx) {
         case 0: /* votemanager_vote_V7 - poll_index */;
@@ -9494,6 +10405,627 @@ parser_error_t _getMethod_ItemValue_V7(
         case 2: /* multitokens_claim_tokens_V7 - ethereum_address */;
             return _toStringEthereumAddress(
                     &m->basic.multitokens_claim_tokens_V7.ethereum_address,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27136: /* module 106 call 0 */
+        switch (itemIdx) {
+        case 0: /* fellowshipcollective_add_member_V7 - who */;
+            return _toStringAccountIdLookupOfT(
+                    &m->basic.fellowshipcollective_add_member_V7.who,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27137: /* module 106 call 1 */
+        switch (itemIdx) {
+        case 0: /* fellowshipcollective_promote_member_V7 - who */;
+            return _toStringAccountIdLookupOfT(
+                    &m->basic.fellowshipcollective_promote_member_V7.who,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27138: /* module 106 call 2 */
+        switch (itemIdx) {
+        case 0: /* fellowshipcollective_demote_member_V7 - who */;
+            return _toStringAccountIdLookupOfT(
+                    &m->basic.fellowshipcollective_demote_member_V7.who,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27139: /* module 106 call 3 */
+        switch (itemIdx) {
+        case 0: /* fellowshipcollective_remove_member_V7 - who */;
+            return _toStringAccountIdLookupOfT(
+                    &m->basic.fellowshipcollective_remove_member_V7.who,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fellowshipcollective_remove_member_V7 - min_rank */;
+            return _toStringu16(
+                    &m->basic.fellowshipcollective_remove_member_V7.min_rank,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27140: /* module 106 call 4 */
+        switch (itemIdx) {
+        case 0: /* fellowshipcollective_vote_V7 - poll */;
+            return _toStringu32(
+                    &m->basic.fellowshipcollective_vote_V7.poll,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fellowshipcollective_vote_V7 - aye */;
+            return _toStringbool(
+                    &m->basic.fellowshipcollective_vote_V7.aye,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27141: /* module 106 call 5 */
+        switch (itemIdx) {
+        case 0: /* fellowshipcollective_cleanup_poll_V7 - poll_index */;
+            return _toStringu32(
+                    &m->basic.fellowshipcollective_cleanup_poll_V7.poll_index,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fellowshipcollective_cleanup_poll_V7 - max */;
+            return _toStringu32(
+                    &m->basic.fellowshipcollective_cleanup_poll_V7.max,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27392: /* module 107 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_origin;
+        case 1:
+            return STR_IT_proposal;
+        case 2:
+            return STR_IT_enactment_moment;
+        default:
+            return NULL;
+        }
+    case 27393: /* module 107 call 1 */
+        switch (itemIdx) {
+        case 0: /* fellowshipreferenda_place_decision_deposit_V7 - index */;
+            return _toStringu32(
+                    &m->basic.fellowshipreferenda_place_decision_deposit_V7.index,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27394: /* module 107 call 2 */
+        switch (itemIdx) {
+        case 0: /* fellowshipreferenda_refund_decision_deposit_V7 - index */;
+            return _toStringu32(
+                    &m->basic.fellowshipreferenda_refund_decision_deposit_V7.index,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27395: /* module 107 call 3 */
+        switch (itemIdx) {
+        case 0: /* fellowshipreferenda_cancel_V7 - index */;
+            return _toStringu32(
+                    &m->basic.fellowshipreferenda_cancel_V7.index,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27396: /* module 107 call 4 */
+        switch (itemIdx) {
+        case 0: /* fellowshipreferenda_kill_V7 - index */;
+            return _toStringu32(
+                    &m->basic.fellowshipreferenda_kill_V7.index,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27397: /* module 107 call 5 */
+        switch (itemIdx) {
+        case 0: /* fellowshipreferenda_nudge_referendum_V7 - index */;
+            return _toStringu32(
+                    &m->basic.fellowshipreferenda_nudge_referendum_V7.index,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27398: /* module 107 call 6 */
+        switch (itemIdx) {
+        case 0: /* fellowshipreferenda_one_fewer_deciding_V7 - track */;
+            return _toStringu32(
+                    &m->basic.fellowshipreferenda_one_fewer_deciding_V7.track,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27399: /* module 107 call 7 */
+        switch (itemIdx) {
+        case 0: /* fellowshipreferenda_refund_submission_deposit_V7 - index */;
+            return _toStringu32(
+                    &m->basic.fellowshipreferenda_refund_submission_deposit_V7.index,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 27400: /* module 107 call 8 */
+        switch (itemIdx) {
+        case 0: /* fellowshipreferenda_set_metadata_V7 - index */;
+            return _toStringu32(
+                    &m->basic.fellowshipreferenda_set_metadata_V7.index,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fellowshipreferenda_set_metadata_V7 - maybe_hash */;
+            return _toStringOptionHash(
+                    &m->basic.fellowshipreferenda_set_metadata_V7.maybe_hash,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12800: /* module 50 call 0 */
+        switch (itemIdx) {
+        case 0: /* marketplace_create_listing_V7 - make_asset_id */;
+            return _toStringTokenAssetId(
+                    &m->basic.marketplace_create_listing_V7.make_asset_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* marketplace_create_listing_V7 - take_asset_id */;
+            return _toStringTokenAssetId(
+                    &m->basic.marketplace_create_listing_V7.take_asset_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* marketplace_create_listing_V7 - amount */;
+            return _toStringCompactu128(
+                    &m->basic.marketplace_create_listing_V7.amount,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 3: /* marketplace_create_listing_V7 - price */;
+            return _toStringCompactu128(
+                    &m->basic.marketplace_create_listing_V7.price,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 4: /* marketplace_create_listing_V7 - salt */;
+            return _toStringBytes(
+                    &m->basic.marketplace_create_listing_V7.salt,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 5: /* marketplace_create_listing_V7 - auction_data */;
+            return _toStringOptionAuctionDataOfT(
+                    &m->basic.marketplace_create_listing_V7.auction_data,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12801: /* module 50 call 1 */
+        switch (itemIdx) {
+        case 0: /* marketplace_cancel_listing_V7 - listing_id */;
+            return _toStringListingId(
+                    &m->basic.marketplace_cancel_listing_V7.listing_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12802: /* module 50 call 2 */
+        switch (itemIdx) {
+        case 0: /* marketplace_fill_listing_V7 - listing_id */;
+            return _toStringListingId(
+                    &m->basic.marketplace_fill_listing_V7.listing_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* marketplace_fill_listing_V7 - amount */;
+            return _toStringCompactu128(
+                    &m->basic.marketplace_fill_listing_V7.amount,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12803: /* module 50 call 3 */
+        switch (itemIdx) {
+        case 0: /* marketplace_place_bid_V7 - listing_id */;
+            return _toStringListingId(
+                    &m->basic.marketplace_place_bid_V7.listing_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* marketplace_place_bid_V7 - price */;
+            return _toStringCompactu128(
+                    &m->basic.marketplace_place_bid_V7.price,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12804: /* module 50 call 4 */
+        switch (itemIdx) {
+        case 0: /* marketplace_finalize_auction_V7 - listing_id */;
+            return _toStringListingId(
+                    &m->basic.marketplace_finalize_auction_V7.listing_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12805: /* module 50 call 5 */
+        switch (itemIdx) {
+        case 0: /* marketplace_set_protocol_fee_V7 - protocol_fee */;
+            return _toStringPerbill(
+                    &m->basic.marketplace_set_protocol_fee_V7.protocol_fee,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12806: /* module 50 call 6 */
+        switch (itemIdx) {
+        case 0: /* marketplace_force_create_listing_V7 - seller */;
+            return _toStringAccountIdLookupOfT(
+                    &m->basic.marketplace_force_create_listing_V7.seller,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* marketplace_force_create_listing_V7 - make_asset_id */;
+            return _toStringTokenAssetId(
+                    &m->basic.marketplace_force_create_listing_V7.make_asset_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* marketplace_force_create_listing_V7 - take_asset_id */;
+            return _toStringTokenAssetId(
+                    &m->basic.marketplace_force_create_listing_V7.take_asset_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 3: /* marketplace_force_create_listing_V7 - amount */;
+            return _toStringCompactu128(
+                    &m->basic.marketplace_force_create_listing_V7.amount,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 4: /* marketplace_force_create_listing_V7 - price */;
+            return _toStringCompactu128(
+                    &m->basic.marketplace_force_create_listing_V7.price,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 5: /* marketplace_force_create_listing_V7 - salt */;
+            return _toStringBytes(
+                    &m->basic.marketplace_force_create_listing_V7.salt,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 6: /* marketplace_force_create_listing_V7 - auction_data */;
+            return _toStringOptionAuctionDataOfT(
+                    &m->basic.marketplace_force_create_listing_V7.auction_data,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 7: /* marketplace_force_create_listing_V7 - deposit_backer */;
+            return _toStringOptionAccountIdLookupOfT(
+                    &m->basic.marketplace_force_create_listing_V7.deposit_backer,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12807: /* module 50 call 7 */
+        switch (itemIdx) {
+        case 0: /* marketplace_force_place_bid_V7 - bidder */;
+            return _toStringAccountIdLookupOfT(
+                    &m->basic.marketplace_force_place_bid_V7.bidder,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* marketplace_force_place_bid_V7 - listing_id */;
+            return _toStringListingId(
+                    &m->basic.marketplace_force_place_bid_V7.listing_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* marketplace_force_place_bid_V7 - price */;
+            return _toStringCompactu128(
+                    &m->basic.marketplace_force_place_bid_V7.price,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 3: /* marketplace_force_place_bid_V7 - funds_backer */;
+            return _toStringOptionAccountIdLookupOfT(
+                    &m->basic.marketplace_force_place_bid_V7.funds_backer,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+     case 13824: /* module 54 call 0 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_create_fuel_tank_V7 - descriptor */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_create_fuel_tank_V7.descriptor,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13825: /* module 54 call 1 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_mutate_fuel_tank_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_mutate_fuel_tank_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_mutate_fuel_tank_V7 - mutation */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_mutate_fuel_tank_V7.mutation,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13826: /* module 54 call 2 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_add_account_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_add_account_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_add_account_V7 - user_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_add_account_V7.user_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13827: /* module 54 call 3 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_remove_account_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_remove_account_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_remove_account_V7 - user_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_remove_account_V7.user_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13828: /* module 54 call 4 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_remove_account_rule_data_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_remove_account_rule_data_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_remove_account_rule_data_V7 - user_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_remove_account_rule_data_V7.user_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* fueltanks_remove_account_rule_data_V7 - rule_set_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_remove_account_rule_data_V7.rule_set_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 3: /* fueltanks_remove_account_rule_data_V7 - rule_kind */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_remove_account_rule_data_V7.rule_kind,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13829: /* module 54 call 5 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_dispatch_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_dispatch_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_dispatch_V7 - rule_set_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_dispatch_V7.rule_set_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* fueltanks_dispatch_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_dispatch_V7.call,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 3: /* fueltanks_dispatch_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_dispatch_V7.settings,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13830: /* module 54 call 6 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_dispatch_and_touch_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_dispatch_and_touch_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_dispatch_and_touch_V7 - rule_set_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_dispatch_and_touch_V7.rule_set_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* fueltanks_dispatch_and_touch_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_dispatch_and_touch_V7.call,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 3: /* fueltanks_dispatch_and_touch_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_dispatch_and_touch_V7.settings,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13831: /* module 54 call 7 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_schedule_mutate_freeze_state_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_schedule_mutate_freeze_state_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_schedule_mutate_freeze_state_V7 - rule_set_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_schedule_mutate_freeze_state_V7.rule_set_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* fueltanks_schedule_mutate_freeze_state_V7 - is_frozen */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_schedule_mutate_freeze_state_V7.is_frozen,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13832: /* module 54 call 8 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_insert_rule_set_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_insert_rule_set_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_insert_rule_set_V7 - rule_set_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_insert_rule_set_V7.rule_set_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* fueltanks_insert_rule_set_V7 - rules */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_insert_rule_set_V7.rules,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13833: /* module 54 call 9 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_remove_rule_set_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_remove_rule_set_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_remove_rule_set_V7 - rule_set_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_remove_rule_set_V7.rule_set_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13834: /* module 54 call 10 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_batch_add_account_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_batch_add_account_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_batch_add_account_V7 - user_ids */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_batch_add_account_V7.user_ids,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13835: /* module 54 call 11 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_batch_remove_account_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_batch_remove_account_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_batch_remove_account_V7 - user_ids */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_batch_remove_account_V7.user_ids,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13836: /* module 54 call 12 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_force_set_consumption_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_force_set_consumption_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_force_set_consumption_V7 - user_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_force_set_consumption_V7.user_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* fueltanks_force_set_consumption_V7 - rule_set_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_force_set_consumption_V7.rule_set_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 3: /* fueltanks_force_set_consumption_V7 - consumption */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_force_set_consumption_V7.consumption,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13837: /* module 54 call 13 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_destroy_fuel_tank_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_destroy_fuel_tank_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13838: /* module 54 call 14 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_force_create_fuel_tank_V7 - owner */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_force_create_fuel_tank_V7.owner,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_force_create_fuel_tank_V7 - descriptor */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_force_create_fuel_tank_V7.descriptor,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 13839: /* module 54 call 15 */
+        switch (itemIdx) {
+        case 0: /* fueltanks_force_batch_add_account_V7 - owner */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_force_batch_add_account_V7.owner,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 1: /* fueltanks_force_batch_add_account_V7 - tank_id */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_force_batch_add_account_V7.tank_id,
+                    outValue, outValueLen,
+                    pageIdx, pageCount);
+        case 2: /* fueltanks_force_batch_add_account_V7 - user_ids */;
+            return _toStringCollectionDescriptor(
+                    &m->basic.fueltanks_force_batch_add_account_V7.user_ids,
                     outValue, outValueLen,
                     pageIdx, pageCount);
         default:

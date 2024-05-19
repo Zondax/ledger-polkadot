@@ -173,11 +173,9 @@ parser_error_t _readVecAccountId(parser_context_t* c, pd_VecAccountId_t* v);
 parser_error_t _readVecHash(parser_context_t* c, pd_VecHash_t* v);
 parser_error_t _readVecu32(parser_context_t* c, pd_Vecu32_t* v);
 parser_error_t _readVecu8(parser_context_t* c, pd_Vecu8_t* v);
-
-//////////////////////////
+///////////////////////////////////////////
 // Custom
-//////////////////////////
-
+///////////////////////////////////////////
 parser_error_t _readOptionAccountIdLookupOfT(parser_context_t* c, pd_OptionAccountIdLookupOfT_t* v);
 parser_error_t _readOptionBytes(parser_context_t* c, pd_OptionBytes_t* v);
 parser_error_t _readOptionAttributeOf(parser_context_t* c, pd_OptionAttributeOf_t* v);
@@ -211,7 +209,15 @@ parser_error_t _readOptionu128(parser_context_t* c, pd_Optionu128_t* v);
 parser_error_t _readBondValueOfT(parser_context_t* c, pd_BondValueOfT_t* v);
 parser_error_t _readPoolMutationOfT(parser_context_t* c, pd_PoolMutationOfT_t* v);
 parser_error_t _readStakingInfo(parser_context_t* c, pd_StakingInfo_t* v);
-
+parser_error_t _readTokenAssetId(parser_context_t* c, pd_TokenAssetId_t* v);
+parser_error_t _readListingIdOf(parser_context_t* c, pd_ListingIdOfT_t* v);
+parser_error_t _readOptionAuctionDataOfT(parser_context_t* c, pd_OptionAuctionDataOfT_t* v);
+parser_error_t _readFuelTankDescriptorOf(parser_context_t* c, pd_FuelTankDescriptorOf_t* v);
+parser_error_t _readOptionDispatchSettings(parser_context_t* c, pd_OptionDispatchSettings_t* v);
+parser_error_t _readConsumptionOf(parser_context_t* c, pd_ConsumptionOf_t* v);
+parser_error_t _readVecDispatchRuleDescriptor(parser_context_t* c, pd_VecDispatchRuleDescriptor_t* v);
+parser_error_t _readFuelTankMutationOf(parser_context_t* c, pd_FuelTankMutationOf_t* v);
+parser_error_t _readDispatchRuleKind(parser_context_t* c, pd_DispatchRuleKind_t* v);
 
 // Common toString functions
 
@@ -1487,6 +1493,36 @@ parser_error_t _toStringOptionMultiLocationV3(
         uint8_t pageIdx,
         uint8_t* pageCount);
 
+
+parser_error_t _toStringTokenAssetId(
+        const pd_TokenAssetId_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+parser_error_t _toStringListingId(
+        const pd_ListingIdOfT_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+parser_error_t _toStringOptionAuctionDataOfT(
+        const pd_OptionAuctionDataOfT_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+parser_error_t _toStringOptionAccountIdLookupOfT(
+        const pd_OptionAccountIdLookupOfT_t* v,
+        char* outValue,
+        uint16_t outValueLen,
+        uint8_t pageIdx,
+        uint8_t* pageCount);
+
+        
 #ifdef __cplusplus
 }
 #endif
