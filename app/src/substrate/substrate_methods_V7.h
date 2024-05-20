@@ -1296,9 +1296,9 @@ typedef struct {
 // TODO: FIX TYPES
 #define PD_CALL_FELLOWSHIPREFERENDA_SUBMIT_V7 0
 typedef struct {
-    pd_u32_t proposal_origin;
-    pd_u32_t proposal;
-    pd_u32_t enactment_moment;
+    pd_BoxPalletsProposalOrigin_t proposal_origin;
+    pd_BoundedCallOfT_t proposal;
+    pd_DispatchTimeBlockNumber_t enactment_moment;
 } pd_fellowshipreferenda_submit_V7_t;
 
 #define PD_CALL_FELLOWSHIPREFERENDA_PLACE_DECISION_DEPOSIT_V7 1

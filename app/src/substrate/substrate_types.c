@@ -2690,6 +2690,66 @@ parser_error_t _readDispatchRuleKind(parser_context_t* c, pd_DispatchRuleKind_t*
 {
 }
 
+parser_error_t _readXcmOrigin(parser_context_t* c, pd_XcmOrigin_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0: // Xcm
+        CHECK_ERROR(_readMultiLocationV3(c, &v->xcm))
+        break;
+    case 1: // Response
+        CHECK_ERROR(_readMultiLocationV3(c, &v->response))
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+
+parser_error_t _readBoxPalletsProposalOrigin(parser_context_t* c, pd_BoxPalletsProposalOrigin_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0: // System
+        CHECK_ERROR(_readSystemOrigin(c, &v->system))
+        break;
+    case 4: // Void
+        break;
+    case 50: // ParachainsOrigins
+        CHECK_ERROR(_readParachainsOrigin(c, &v->parachainsOrigin))
+        break;
+    case 99: // XcmPallet
+        CHECK_ERROR(_readXcmOrigin(c, &v->xcmPallet))
+        break;
+    case 104: // Origins
+        CHECK_ERROR(_readPolkadotOrigins(c, &v->origins))
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+parser_error_t _readVoteCurrency(parser_context_t* c, pd_VoteCurrency_t* v)
+{
+    CHECK_INPUT()
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0: // Enj
+        break;
+    case 1: // SEnj
+        CHECK_ERROR(_readu128(c, &v->senj))
+        break;
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
+
+
 ///////////////////////////////////
 ///////////////////////////////////
 ///////////////////////////////////
@@ -7053,7 +7113,7 @@ parser_error_t _toStringVecu128(
 }
 
 parser_error_t _toStringCompactPerbill(
-        const pd_CompactPerBill_t* v,
+        const pd_CompactPerbill_t* v,
         char* outValue,
         uint16_t outValueLen,
         uint8_t pageIdx,
@@ -8842,6 +8902,81 @@ parser_error_t _toStringOptionAuctionDataOfT(
     return parser_ok;
 }
 
+parser_error_t _toStringVoteCurrency(
+    const pd_VoteCurrency_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    switch (v->value) {
+    case 0: // Enj
+        snprintf(outValue, outValueLen, "Enj");
+        break;
+    case 1: // SEnj
+        CHECK_ERROR(_toStringu128(&v->senj, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    default:
+        return parser_not_supported;
+    }
+    return parser_ok;
+}
+
+parser_error_t _toStringXcmOrigin(
+    const pd_XcmOrigin_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    switch (v->value) {
+    case 0: // Xcm
+        CHECK_ERROR(_toStringMultiLocationV3(&v->xcm, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 1: // Response
+        CHECK_ERROR(_toStringMultiLocationV3(&v->response, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    default:
+        return parser_not_supported;
+    }
+    return parser_ok;
+}
+
+parser_error_t _toStringBoxPalletsProposalOrigin(
+    const pd_BoxPalletsProposalOrigin_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    CLEAN_AND_CHECK()
+    *pageCount = 1;
+    switch (v->value) {
+    case 0: // System
+        CHECK_ERROR(_toStringSystemOrigin(&v->system, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 4: // Void
+        snprintf(outValue, outValueLen, "Void");
+        break;
+    case 50: // ParachainsOrigins
+        CHECK_ERROR(_toStringParachainsOrigin(&v->parachainsOrigin, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 99: // XcmPallet
+        CHECK_ERROR(_toStringXcmOrigin(&v->xcmPallet, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 104: // Origins
+        CHECK_ERROR(_toStringPolkadotOrigins(&v->origins, outValue, outValueLen, pageIdx, pageCount))
+        break;
+
+    default:
+        return parser_unexpected_value;
+    }
+    return parser_ok;
+}
 
 
 

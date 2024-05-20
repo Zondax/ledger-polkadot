@@ -686,13 +686,6 @@ typedef struct {
 
 typedef struct {
     uint8_t value;
-    union {
-
-    };
-} pd_VoteCurrency_t;
-
-typedef struct {
-    uint8_t value;
     pd_Balance_t freeBalance;
 } pd_BondExtraBalanceOfT_t;
 
@@ -955,6 +948,24 @@ typedef struct {
 // Custom
 ////////////////////////////////////////
 typedef struct {
+    uint8_t value;
+    union {
+        pd_MultiLocationV3_t xcm;
+        pd_MultiLocationV3_t response;
+    };
+} pd_XcmOrigin_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_SystemOrigin_t system;
+        pd_PolkadotOrigins_t origins;
+        pd_XcmOrigin_t xcmPallet;
+        pd_ParachainsOrigin_t parachainsOrigin;
+    };
+} pd_BoxPalletsProposalOrigin_t;
+
+typedef struct {
     uint8_t some;
     pd_AccountIdLookupOfT_t contained;
 } pd_OptionAccountIdLookupOfT_t;
@@ -992,6 +1003,11 @@ typedef struct {
     const uint8_t* _ptr;
     uint64_t _lenBuffer;
 } pd_Vecu128_t;
+
+typedef struct {
+    uint8_t value;
+    pd_u128_t senj;
+} pd_VoteCurrency_t;
 
 typedef struct {
     pd_u128_t value;
@@ -1475,7 +1491,6 @@ typedef struct {
 typedef struct {
     pd_H256_t value;
 } pd_ListingIdOfT_t;
-
 
 typedef struct {
     uint8_t value;
