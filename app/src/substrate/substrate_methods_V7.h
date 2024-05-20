@@ -33,7 +33,6 @@ extern "C" {
 #define PD_CALL_SYSTEM_V7 0 // ok
 #define PD_CALL_PREIMAGE_V7 101 // ok
 #define PD_CALL_TIMESTAMP_V7 2 // ok
-#define PD_CALL_INDICES_V7 4
 #define PD_CALL_BALANCES_V7 6 // ok
 #define PD_CALL_STAKING_V7 9 // ok
 #define PD_CALL_SESSION_V7 10 // ok
@@ -41,16 +40,11 @@ extern "C" {
 #define PD_CALL_CONVICTIONVOTING_V7 102 // ok
 #define PD_CALL_REFERENDA_V7 103 // ok
 #define PD_CALL_WHITELIST_V7 105 // ok
-#define PD_CALL_CLAIMS_V7 24
-#define PD_CALL_VESTING_V7 25
 #define PD_CALL_UTILITY_V7 20 // ok
 #define PD_CALL_IDENTITY_V7 108 // ok
 #define PD_CALL_PROXY_V7 29
 #define PD_CALL_MULTISIG_V7 21 // ok
-#define PD_CALL_BOUNTIES_V7 34
-#define PD_CALL_CHILDBOUNTIES_V7 38
 #define PD_CALL_VOTERLIST_V7 17 // ok
-#define PD_CALL_FASTUNSTAKE_V7 40
 #define PD_CALL_CONFIGURATION_V7 51 // ok
 #define PD_CALL_INITIALIZER_V7 57 // ok
 #define PD_CALL_PARASDISPUTES_V7 62 // ok
@@ -209,34 +203,6 @@ typedef struct {
 typedef struct {
     pd_Compactu64_t now;
 } pd_timestamp_set_V7_t;
-
-#define PD_CALL_INDICES_CLAIM_V7 0
-typedef struct {
-    pd_AccountIndex_t index;
-} pd_indices_claim_V7_t;
-
-#define PD_CALL_INDICES_TRANSFER_V7 1
-typedef struct {
-    pd_AccountIdLookupOfT_t new_;
-    pd_AccountIndex_t index;
-} pd_indices_transfer_V7_t;
-
-#define PD_CALL_INDICES_FREE_V7 2
-typedef struct {
-    pd_AccountIndex_t index;
-} pd_indices_free_V7_t;
-
-#define PD_CALL_INDICES_FORCE_TRANSFER_V7 3
-typedef struct {
-    pd_AccountIdLookupOfT_t new_;
-    pd_AccountIndex_t index;
-    pd_bool_t freeze;
-} pd_indices_force_transfer_V7_t;
-
-#define PD_CALL_INDICES_FREEZE_V7 4
-typedef struct {
-    pd_AccountIndex_t index;
-} pd_indices_freeze_V7_t;
 
 #define PD_CALL_BALANCES_FORCE_UNRESERVE_V7 5
 typedef struct {
@@ -447,59 +413,6 @@ typedef struct {
     pd_Call_t call;
 } pd_whitelist_dispatch_whitelisted_call_with_preimage_V7_t;
 
-#define PD_CALL_CLAIMS_CLAIM_V7 0
-typedef struct {
-    pd_AccountId_t dest;
-    pd_EcdsaSignature_t ethereum_signature;
-} pd_claims_claim_V7_t;
-
-#define PD_CALL_CLAIMS_CLAIM_ATTEST_V7 2
-typedef struct {
-    pd_AccountId_t dest;
-    pd_EcdsaSignature_t ethereum_signature;
-    pd_Bytes_t statement;
-} pd_claims_claim_attest_V7_t;
-
-#define PD_CALL_CLAIMS_ATTEST_V7 3
-typedef struct {
-    pd_Bytes_t statement;
-} pd_claims_attest_V7_t;
-
-#define PD_CALL_CLAIMS_MOVE_CLAIM_V7 4
-typedef struct {
-    pd_EthereumAddress_t old;
-    pd_EthereumAddress_t new_;
-    pd_OptionAccountId_t maybe_preclaim;
-} pd_claims_move_claim_V7_t;
-
-#define PD_CALL_VESTING_VEST_V7 0
-typedef struct {
-} pd_vesting_vest_V7_t;
-
-#define PD_CALL_VESTING_VEST_OTHER_V7 1
-typedef struct {
-    pd_AccountIdLookupOfT_t target;
-} pd_vesting_vest_other_V7_t;
-
-#define PD_CALL_VESTING_VESTED_TRANSFER_V7 2
-typedef struct {
-    pd_AccountIdLookupOfT_t target;
-    pd_VestingInfo_t schedule;
-} pd_vesting_vested_transfer_V7_t;
-
-#define PD_CALL_VESTING_FORCE_VESTED_TRANSFER_V7 3
-typedef struct {
-    pd_AccountIdLookupOfT_t source;
-    pd_AccountIdLookupOfT_t target;
-    pd_VestingInfo_t schedule;
-} pd_vesting_force_vested_transfer_V7_t;
-
-#define PD_CALL_VESTING_MERGE_SCHEDULES_V7 4
-typedef struct {
-    pd_u32_t schedule1_index;
-    pd_u32_t schedule2_index;
-} pd_vesting_merge_schedules_V7_t;
-
 #define PD_CALL_UTILITY_DISPATCH_AS_V7 3
 typedef struct {
     pd_BoxPalletsOrigin_t as_origin;
@@ -600,102 +513,6 @@ typedef struct {
     pd_Call_t call;
 } pd_proxy_proxy_announced_V7_t;
 
-#define PD_CALL_BOUNTIES_PROPOSE_BOUNTY_V7 0
-typedef struct {
-    pd_CompactBalance_t amount;
-    pd_Bytes_t description;
-} pd_bounties_propose_bounty_V7_t;
-
-#define PD_CALL_BOUNTIES_APPROVE_BOUNTY_V7 1
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_approve_bounty_V7_t;
-
-#define PD_CALL_BOUNTIES_PROPOSE_CURATOR_V7 2
-typedef struct {
-    pd_Compactu32_t bounty_id;
-    pd_AccountIdLookupOfT_t curator;
-    pd_CompactBalance_t fee;
-} pd_bounties_propose_curator_V7_t;
-
-#define PD_CALL_BOUNTIES_UNASSIGN_CURATOR_V7 3
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_unassign_curator_V7_t;
-
-#define PD_CALL_BOUNTIES_ACCEPT_CURATOR_V7 4
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_accept_curator_V7_t;
-
-#define PD_CALL_BOUNTIES_AWARD_BOUNTY_V7 5
-typedef struct {
-    pd_Compactu32_t bounty_id;
-    pd_AccountIdLookupOfT_t beneficiary;
-} pd_bounties_award_bounty_V7_t;
-
-#define PD_CALL_BOUNTIES_CLAIM_BOUNTY_V7 6
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_claim_bounty_V7_t;
-
-#define PD_CALL_BOUNTIES_CLOSE_BOUNTY_V7 7
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_close_bounty_V7_t;
-
-#define PD_CALL_BOUNTIES_EXTEND_BOUNTY_EXPIRY_V7 8
-typedef struct {
-    pd_Compactu32_t bounty_id;
-    pd_Bytes_t remark;
-} pd_bounties_extend_bounty_expiry_V7_t;
-
-#define PD_CALL_CHILDBOUNTIES_ADD_CHILD_BOUNTY_V7 0
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_CompactBalance_t amount;
-    pd_Vecu8_t description;
-} pd_childbounties_add_child_bounty_V7_t;
-
-#define PD_CALL_CHILDBOUNTIES_PROPOSE_CURATOR_V7 1
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-    pd_AccountIdLookupOfT_t curator;
-    pd_CompactBalance_t fee;
-} pd_childbounties_propose_curator_V7_t;
-
-#define PD_CALL_CHILDBOUNTIES_ACCEPT_CURATOR_V7 2
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-} pd_childbounties_accept_curator_V7_t;
-
-#define PD_CALL_CHILDBOUNTIES_UNASSIGN_CURATOR_V7 3
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-} pd_childbounties_unassign_curator_V7_t;
-
-#define PD_CALL_CHILDBOUNTIES_AWARD_CHILD_BOUNTY_V7 4
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-    pd_AccountIdLookupOfT_t beneficiary;
-} pd_childbounties_award_child_bounty_V7_t;
-
-#define PD_CALL_CHILDBOUNTIES_CLAIM_CHILD_BOUNTY_V7 5
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-} pd_childbounties_claim_child_bounty_V7_t;
-
-#define PD_CALL_CHILDBOUNTIES_CLOSE_CHILD_BOUNTY_V7 6
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-} pd_childbounties_close_child_bounty_V7_t;
-
 #define PD_CALL_VOTERLIST_REBAG_V7 0
 typedef struct {
     pd_AccountIdLookupOfT_t dislocated;
@@ -711,11 +528,6 @@ typedef struct {
     pd_AccountIdLookupOfT_t heavier;
     pd_AccountIdLookupOfT_t lighter;
 } pd_voterlist_put_in_front_of_other_V7_t;
-
-#define PD_CALL_FASTUNSTAKE_CONTROL_V7 2
-typedef struct {
-    pd_EraIndex_t eras_to_check;
-} pd_fastunstake_control_V7_t;
 
 #define PD_CALL_CONFIGURATION_SET_VALIDATION_UPGRADE_COOLDOWN_V7 0
 typedef struct {
@@ -1721,11 +1533,6 @@ typedef union {
     pd_preimage_unrequest_preimage_V7_t preimage_unrequest_preimage_V7;
     pd_preimage_ensure_updated_V7_t preimage_ensure_updated_V7;
     pd_timestamp_set_V7_t timestamp_set_V7;
-    pd_indices_claim_V7_t indices_claim_V7;
-    pd_indices_transfer_V7_t indices_transfer_V7;
-    pd_indices_free_V7_t indices_free_V7;
-    pd_indices_force_transfer_V7_t indices_force_transfer_V7;
-    pd_indices_freeze_V7_t indices_freeze_V7;
     pd_balances_force_unreserve_V7_t balances_force_unreserve_V7;
     pd_balances_upgrade_accounts_V7_t balances_upgrade_accounts_V7;
     pd_balances_force_set_balance_V7_t balances_force_set_balance_V7;
@@ -1765,15 +1572,6 @@ typedef union {
     pd_whitelist_remove_whitelisted_call_V7_t whitelist_remove_whitelisted_call_V7;
     pd_whitelist_dispatch_whitelisted_call_V7_t whitelist_dispatch_whitelisted_call_V7;
     pd_whitelist_dispatch_whitelisted_call_with_preimage_V7_t whitelist_dispatch_whitelisted_call_with_preimage_V7;
-    pd_claims_claim_V7_t claims_claim_V7;
-    pd_claims_claim_attest_V7_t claims_claim_attest_V7;
-    pd_claims_attest_V7_t claims_attest_V7;
-    pd_claims_move_claim_V7_t claims_move_claim_V7;
-    pd_vesting_vest_V7_t vesting_vest_V7;
-    pd_vesting_vest_other_V7_t vesting_vest_other_V7;
-    pd_vesting_vested_transfer_V7_t vesting_vested_transfer_V7;
-    pd_vesting_force_vested_transfer_V7_t vesting_force_vested_transfer_V7;
-    pd_vesting_merge_schedules_V7_t vesting_merge_schedules_V7;
     pd_utility_dispatch_as_V7_t utility_dispatch_as_V7;
     pd_utility_with_weight_V7_t utility_with_weight_V7;
     pd_identity_add_registrar_V7_t identity_add_registrar_V7;
@@ -1792,26 +1590,9 @@ typedef union {
     pd_identity_quit_sub_V7_t identity_quit_sub_V7;
     pd_proxy_remove_proxies_V7_t proxy_remove_proxies_V7;
     pd_proxy_proxy_announced_V7_t proxy_proxy_announced_V7;
-    pd_bounties_propose_bounty_V7_t bounties_propose_bounty_V7;
-    pd_bounties_approve_bounty_V7_t bounties_approve_bounty_V7;
-    pd_bounties_propose_curator_V7_t bounties_propose_curator_V7;
-    pd_bounties_unassign_curator_V7_t bounties_unassign_curator_V7;
-    pd_bounties_accept_curator_V7_t bounties_accept_curator_V7;
-    pd_bounties_award_bounty_V7_t bounties_award_bounty_V7;
-    pd_bounties_claim_bounty_V7_t bounties_claim_bounty_V7;
-    pd_bounties_close_bounty_V7_t bounties_close_bounty_V7;
-    pd_bounties_extend_bounty_expiry_V7_t bounties_extend_bounty_expiry_V7;
-    pd_childbounties_add_child_bounty_V7_t childbounties_add_child_bounty_V7;
-    pd_childbounties_propose_curator_V7_t childbounties_propose_curator_V7;
-    pd_childbounties_accept_curator_V7_t childbounties_accept_curator_V7;
-    pd_childbounties_unassign_curator_V7_t childbounties_unassign_curator_V7;
-    pd_childbounties_award_child_bounty_V7_t childbounties_award_child_bounty_V7;
-    pd_childbounties_claim_child_bounty_V7_t childbounties_claim_child_bounty_V7;
-    pd_childbounties_close_child_bounty_V7_t childbounties_close_child_bounty_V7;
     pd_voterlist_rebag_V7_t voterlist_rebag_V7;
     pd_voterlist_put_in_front_of_V7_t voterlist_put_in_front_of_V7;
     pd_voterlist_put_in_front_of_other_V7_t voterlist_put_in_front_of_other_V7;
-    pd_fastunstake_control_V7_t fastunstake_control_V7;
     pd_configuration_set_validation_upgrade_cooldown_V7_t configuration_set_validation_upgrade_cooldown_V7;
     pd_configuration_set_validation_upgrade_delay_V7_t configuration_set_validation_upgrade_delay_V7;
     pd_configuration_set_code_retention_period_V7_t configuration_set_code_retention_period_V7;
@@ -2207,14 +1988,6 @@ typedef struct {
     pd_H256_t call_hash;
 } pd_multisig_cancel_as_multi_V7_t;
 
-#define PD_CALL_FASTUNSTAKE_REGISTER_FAST_UNSTAKE_V7 0
-typedef struct {
-} pd_fastunstake_register_fast_unstake_V7_t;
-
-#define PD_CALL_FASTUNSTAKE_DEREGISTER_V7 1
-typedef struct {
-} pd_fastunstake_deregister_V7_t;
-
 #endif
 
 typedef union {
@@ -2258,8 +2031,6 @@ typedef union {
     pd_multisig_as_multi_V7_t multisig_as_multi_V7;
     pd_multisig_approve_as_multi_V7_t multisig_approve_as_multi_V7;
     pd_multisig_cancel_as_multi_V7_t multisig_cancel_as_multi_V7;
-    pd_fastunstake_register_fast_unstake_V7_t fastunstake_register_fast_unstake_V7;
-    pd_fastunstake_deregister_V7_t fastunstake_deregister_V7;
 #endif
 } pd_MethodNested_V7_t;
 
