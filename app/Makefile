@@ -61,13 +61,13 @@ ifneq ($(TARGET_NAME),TARGET_NANOS)
 DEFINES += SUBSTRATE_PARSER_FULL
 endif
 APPNAME = "Enjin"
-APPPATH = "44'/1155'" --path "44'/434'"
+APPPATH = "44'/1155'" --path "44'/354'"
 
 else ifeq ($(COIN),ENJ_XL)
 # XL app configuration
 DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
 APPNAME = "Enjin XL"
-APPPATH = "44'/1155'" --path "44'/434'"
+APPPATH = "44'/1155'" --path "44'/354'"
 
 else
 define error_message
