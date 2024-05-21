@@ -1,0 +1,80 @@
+# Created by .ignore support plugin (hsz.mobi)
+### C template
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+
+##########################
+
+tests_zemu/.yarn/*
+tests_zemu/!.yarn/patches
+tests_zemu/!.yarn/releases
+tests_zemu/!.yarn/plugins
+tests_zemu/!.yarn/sdks
+tests_zemu/!.yarn/versions
+tests_zemu/.pnp.*
+
+#########################
+
+.vscode
+.idea
+
+node_modules
+fuzz/corpora
+
+!build/.gitkeep
+build
+app/build
+cmake-build-debug
+
+tests_zemu/snapshots-tmp
+tests_zemu/yarn.lock
+tests_tools/target
+fuzz-*.log
+/scan-build
+
+.DS_Store

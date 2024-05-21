@@ -1,0 +1,48 @@
+name: Lint and format 💅
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder-legacy:latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Add missing deps
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          apt-get update
+          apt-get install -y bear sudo
+      - name: Generate compilation database
+        run: bear -- make -j BOLOS_SDK="$NANOSP_SDK"
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Lint and format 💅
+        uses: cpp-linter/cpp-linter-action@v2
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file-annotations: true
+          files-changed-only: false
+          ignore: "app/build|cmake|deps|fuzz|tests"
+          step-summary: true
+          style: file # uses .clang-format
+          thread-comments: true
+          tidy-checks: "" # use only .clang-tidy checks
+      - name: Fail if errors
+        if: steps.linter.outputs.checks-failed > 0
+        run: |
+          echo "Linter or formatter failed!"
+          exit 1

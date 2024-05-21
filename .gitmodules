@@ -1,0 +1,18 @@
+[submodule "deps/nanos-secure-sdk"]
+	path = deps/nanos-secure-sdk
+	url = https://github.com/LedgerHQ/nanos-secure-sdk.git
+[submodule "deps/BLAKE2"]
+	path = deps/BLAKE2
+	url = https://github.com/BLAKE2/BLAKE2
+[submodule "deps/nanox-secure-sdk"]
+	path = deps/nanox-secure-sdk
+	url = https://github.com/LedgerHQ/ledger-secure-sdk.git
+[submodule "deps/nanosplus-secure-sdk"]
+	path = deps/nanosplus-secure-sdk
+	url = https://github.com/LedgerHQ/ledger-secure-sdk.git
+[submodule "deps/ledger-zxlib"]
+	path = deps/ledger-zxlib
+	url = https://github.com/zondax/ledger-zxlib
+[submodule "deps/stax-secure-sdk"]
+	path = deps/stax-secure-sdk
+	url = https://github.com/LedgerHQ/ledger-secure-sdk.git

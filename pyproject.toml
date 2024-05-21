@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "ptemp"
+version = "0.1.0"
+description = ""
+authors = ["zondax <hello@zondax.ch>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.9"
+setuptools = "*"
+Cython = "*"
+ledgerblue = "*"
+hidapi = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

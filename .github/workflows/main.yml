@@ -1,0 +1,216 @@
+name: Build
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    outputs:
+      uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+    steps:
+      - id: get-user
+        run: echo "uid_gid=$(id -u):$(id -g)" >> $GITHUB_OUTPUT
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: |
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+          make deps
+      - run: make cpp_test
+
+  build_ledger:
+    needs: configure
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/nanos-secure-sdk
+    outputs:
+      size_generic: ${{steps.build_generic.outputs.size_generic}}
+      size_migration: ${{steps.build_migration.outputs.size_migration}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Build Standard app
+        id: build_generic
+        shell: bash -l {0}
+        run: |
+          make
+          echo "size_generic=$(python3 deps/ledger-zxlib/scripts/getSize.py s)" >> $GITHUB_OUTPUT
+      - name: Build Migration app
+        id: build_migration
+        shell: bash -l {0}
+        run: |
+          COIN=DOT_MIGRATION make
+          echo "size_migration=$(python3 deps/ledger-zxlib/scripts/getSize.py s)" >> $GITHUB_OUTPUT
+
+  size_nano_s:
+    needs: build_ledger
+    runs-on: ubuntu-latest
+    env:
+      NANOS_LIMIT_SIZE: 136
+    steps:
+      - run: |
+          echo "LNS Generic app size: ${{needs.build_ledger.outputs.size_generic}} KiB"
+          [ ${{needs.build_ledger.outputs.size_generic}} -le $NANOS_LIMIT_SIZE ]
+      - run: |
+          echo "LNS Migration app size: ${{needs.build_ledger.outputs.size_migration}} KiB"
+          [ ${{needs.build_ledger.outputs.size_migration}} -le $NANOS_LIMIT_SIZE ]
+
+  test_zemu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: |
+          id
+          echo $HOME
+          echo $DISPLAY
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install node
+        uses: actions/setup-node@v3
+      - name: Install yarn
+        run: |
+          npm install -g yarn
+      - name: Build and run zemu tests
+        run: |
+          make test_all
+
+  build_package_nanos:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/nanos-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build NanoS
+        shell: bash -l {0}
+        run: |
+          COIN=DOT_MIGRATION make
+          make
+          mv ./app/pkg/installer_s.sh ./app/pkg/installer_nanos.sh
+          mv ./app/pkg/migration_s.sh ./app/pkg/migration_nanos.sh
+      - name: Set tag
+        id: nanos_light
+        run: echo "tag_name=$(./app/pkg/installer_nanos.sh version)" >> $GITHUB_OUTPUT
+      - name: Create or Update Release (1)
+        id: create_release_0
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: |
+            ./app/pkg/installer_nanos.sh
+            ./app/pkg/migration_nanos.sh
+          tag_name: ${{ steps.nanos_light.outputs.tag_name }}
+          draft: false
+          prerelease: false
+
+  build_package_nanosp:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/nanosplus-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build NanoSP
+        shell: bash -l {0}
+        run: |
+          COIN=DOT_MIGRATION make
+          make
+          mv ./app/pkg/installer_s2.sh ./app/pkg/installer_nanos_plus.sh
+          mv ./app/pkg/migration_s2.sh ./app/pkg/migration_nanos_plus.sh
+      - name: Set tag
+        id: nanosp
+        run: echo "tag_name=$(./app/pkg/installer_nanos_plus.sh version)" >> $GITHUB_OUTPUT
+      - name: Update Release
+        id: update_release_2
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: |
+            ./app/pkg/installer_nanos_plus.sh
+            ./app/pkg/migration_nanos_plus.sh
+          tag_name: ${{ steps.nanosp.outputs.tag_name }}
+          draft: false
+          prerelease: false
+
+  build_package_stax:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/stax-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build Stax
+        shell: bash -l {0}
+        run: |
+          COIN=DOT_MIGRATION make
+          make
+      - name: Set tag
+        id: stax
+        run: echo "tag_name=$(./app/pkg/installer_stax.sh version)" >> $GITHUB_OUTPUT
+      - name: Update Release
+        id: update_release_2
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: |
+            ./app/pkg/installer_stax.sh
+            ./app/pkg/migration_stax.sh
+          tag_name: ${{ steps.stax.outputs.tag_name }}
+          draft: false
+          prerelease: false
