@@ -21,6 +21,7 @@ import { defaultOptions, DOT_SS58_PREFIX, PATH, models } from './common'
 import ed25519 from 'ed25519-supercop'
 import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
+import {ResponseError} from "@zondax/ledger-js";
 
 jest.setTimeout(180000)
 
@@ -79,11 +80,29 @@ test.concurrent.each(models)('raw signing - incorrect', async function (m) {
 
     const txBlob = Buffer.from('<Bytes>Incorrect blob/Bytes>')
 
-    await expect(app.signRaw(PATH, txBlob)).rejects.toThrow('Unexpected value')
+    let errorFound:any = undefined
+    try {
+      await app.signRaw(PATH, txBlob)
+    } catch (error) {
+      errorFound = error
+    }
+
+    console.log(errorFound)
+    
+    expect(errorFound).toBeDefined()
+    expect('returnCode' in errorFound).toBeTruthy()
+    expect('errorMessage' in errorFound).toBeTruthy()
+
+    if('returnCode' in errorFound){
+      expect(errorFound.returnCode).toBe(27012)
+    }
+    if('errorMessage' in errorFound){
+      expect(errorFound.errorMessage).toBe("Data is invalid : Unexpected value")
+    }
+
   } finally {
     await sim.close()
   }
 })
-
 
 // TODO: add a test for the legacy wrapper to ensure we don't throw

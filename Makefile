@@ -39,7 +39,11 @@ default:
 	COIN=$(COIN) $(MAKE) -C app $@
 endif
 
-test_all:
+build_all:
+	APP_TESTING=1 PRODUCTION_BUILD=1 COIN=DOT_MIGRATION make
+	APP_TESTING=1 PRODUCTION_BUILD=1 make
+
+test_all: build_all
 	make zemu_install
 	PRODUCTION_BUILD=1 COIN=DOT_MIGRATION make
 	PRODUCTION_BUILD=1 make

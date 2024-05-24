@@ -40,9 +40,9 @@ extern "C" {
 #define BLAKE2B_DIGEST_SIZE 32u
 
 #ifdef MIGRATION_APP
-#define MENU_MAIN_APP_LINE1 "Polkadot migration"
+#define MENU_MAIN_APP_LINE1 "DOT migration"
 #define MENU_MAIN_APP_LINE2 "Ready"
-#define APPVERSION_LINE1    "Polkadot migration"
+#define APPVERSION_LINE1    "DOT migration"
 #else
 #define MENU_MAIN_APP_LINE1 "Polkadot"
 #define MENU_MAIN_APP_LINE2 "Ready"

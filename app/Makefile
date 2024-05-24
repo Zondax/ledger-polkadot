@@ -24,13 +24,32 @@ MY_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
 include $(BOLOS_SDK)/Makefile.defines
 
-# DEFINES += HAVE_SWAP
-# HAVE_SWAP = 1
+# # Set the default value for HAVE_SWAP to undefined if not already defined
+# HAVE_SWAP ?= 
 
+# Set the default value for PRODUCTION_BUILD to 0 if not already defined
+PRODUCTION_BUILD ?= 0
+
+# Display the target name
 $(info ************ TARGET_NAME  = [$(TARGET_NAME)])
-$(info ************ PRODUCTION_BUILD  = [$(if $(filter 1,$(PRODUCTION_BUILD)),PRODUCTION BUILD,INTERNAL USE)])
-DEFINES += PRODUCTION_BUILD=$(PRODUCTION_BUILD)
 
+# Display whether this is a production build or for internal use
+ifeq ($(PRODUCTION_BUILD), 1)
+    $(info ************ PRODUCTION_BUILD  = [PRODUCTION BUILD])
+else
+    $(info ************ PRODUCTION_BUILD  = [INTERNAL USE])
+endif
+
+# Display whether swap functionality is enabled or not
+ifdef HAVE_SWAP
+    $(info ************ HAVE_SWAP  = [ENABLED])
+    DEFINES += HAVE_SWAP=$(HAVE_SWAP)
+else
+    $(info ************ HAVE_SWAP  = [DISABLED])
+endif
+
+# Add the PRODUCTION_BUILD definition to the compiler flags
+DEFINES += PRODUCTION_BUILD=$(PRODUCTION_BUILD)
 include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.app_testing
 
 ifndef COIN

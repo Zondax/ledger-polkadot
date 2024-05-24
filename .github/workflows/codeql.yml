@@ -13,6 +13,7 @@ on:
 jobs:
   analyse:
     name: Analyse
+    if: github.event.repository.private == false
     strategy:
       matrix:
         sdk: ["$NANOS_SDK", "$NANOX_SDK", "$NANOSP_SDK", "$STAX_SDK"]

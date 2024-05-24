@@ -1,31 +1,33 @@
 {
   "name": "integration-tests",
-  "author": "Zondax AG",
-  "license": "Apache-2.0",
   "version": "1.0.0",
   "description": "",
-  "types": "./dist/index.d.ts",
+  "keywords": [
+    "Zondax",
+    "Ledger",
+    "Polkadot",
+    "Substrate"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Zondax/ledger-polkadot"
   },
-  "keywords": [
-    "Zondax",
-    "Ledger"
-  ],
+  "license": "Apache-2.0",
+  "author": "Zondax AG",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "try": "node try.mjs",
     "clean": "ts-node tests/pullImageKillOld.ts",
     "format": "FORCE_COLOR=1 prettier --write . && sort-package-json",
     "format:check": "FORCE_COLOR=1 prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "jest",
+    "try": "node try.mjs",
     "upgrade": "bunx npm-check-updates -i"
   },
   "dependencies": {
-    "@zondax/ledger-substrate": "^0.44.1",
     "@zondax/ledger-js": "^0.8.1",
+    "@zondax/ledger-substrate": "^0.44.2",
     "@zondax/zemu": "^0.49.0"
   },
   "devDependencies": {

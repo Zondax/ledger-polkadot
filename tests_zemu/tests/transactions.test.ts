@@ -16,7 +16,7 @@
 
 import Zemu from '@zondax/zemu'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
-import {defaultOptions, DOT_SS58_PREFIX, PATH, TEST_TRANSACTIONS, models, TEST_TRANSACTIONS_FAIL} from './common'
+import { defaultOptions, DOT_SS58_PREFIX, PATH, TEST_TRANSACTIONS, models, TEST_TRANSACTIONS_FAIL } from './common'
 
 // @ts-expect-error missing typings
 import ed25519 from 'ed25519-supercop'
@@ -44,7 +44,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - OK', function (data) {
       await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-${data.name}`)
 
       const signatureResponse = await signatureRequest
-      console.log(signatureResponse.signature.toString("hex"))
+      console.log(signatureResponse.signature.toString('hex'))
 
       // Now verify the signature
       let prehash = blob
@@ -74,7 +74,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
 
       // Compare metadata from api service to local copy
       const metadata = await app.getTxMetadata(blob)
-      expect(metadata.toString("hex")).toBe(data.metadata)
+      expect(metadata.toString('hex')).toBe(data.metadata)
 
       // do not wait here.. we need to navigate
       const signatureRequest = app.sign(PATH, blob)
@@ -84,7 +84,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
       await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-${data.name}`)
 
       const signatureResponse = await signatureRequest
-      console.log(signatureResponse.signature.toString("hex"))
+      console.log(signatureResponse.signature.toString('hex'))
 
       // Now verify the signature
       let prehash = blob
@@ -111,15 +111,15 @@ describe.each(TEST_TRANSACTIONS_FAIL)('Transactions - FAIL', function (data) {
       const blob = Buffer.from(data.blob, 'hex')
       const metadata = Buffer.from(data.metadata, 'hex')
 
-      let errorFound = undefined;
-      try{
+      let errorFound = undefined
+      try {
         await app.signWithMetadata(PATH, blob, metadata)
-      } catch(e){
+      } catch (e) {
         errorFound = e
       }
 
       expect(errorFound).toBeDefined()
-      console.log(errorFound);
+      console.log(errorFound)
     } finally {
       await sim.close()
     }

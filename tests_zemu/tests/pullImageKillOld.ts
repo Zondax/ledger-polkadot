@@ -1,8 +1,8 @@
 import Zemu from '@zondax/zemu'
 
 async function main() {
-  await Zemu.checkAndPullImage();
-  await Zemu.stopAllEmuContainers();
+  await Zemu.checkAndPullImage()
+  await Zemu.stopAllEmuContainers()
 }
 
-main().catch(console.error);
+main().catch(console.error)

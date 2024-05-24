@@ -32,7 +32,7 @@ describe('Migration', function () {
       const migrationStartText = m.name == 'nanos' ? 'Migration' : 'Please'
       const mainmenuNavigation = zondaxMainmenuNavigation(m.name, clicks)
       await sim.start({ ...defaultOptions, startText: migrationStartText, model: m.name })
-      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-migration`, mainmenuNavigation.schedule)
+      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-migration-main`, mainmenuNavigation.schedule)
 
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
@@ -45,7 +45,6 @@ describe('Migration', function () {
       expect(respVersion).toHaveProperty('major')
       expect(respVersion).toHaveProperty('minor')
       expect(respVersion).toHaveProperty('patch')
-
     } finally {
       await sim.close()
     }
@@ -57,13 +56,14 @@ describe('Migration', function () {
       const clicks = [4, 0]
       const migrationStartText = m.name == 'nanos' ? 'Migration' : 'Please'
       const mainmenuNavigation = zondaxMainmenuNavigation(m.name, clicks)
+
       await sim.start({ ...defaultOptions, startText: migrationStartText, model: m.name })
-      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-migration`, mainmenuNavigation.schedule)
+      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-migration-main`, mainmenuNavigation.schedule)
 
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
       // Verify addresses
-      const respDOT = await app.getAddress( PATH, DOT_SS58_PREFIX)
+      const respDOT = await app.getAddress(PATH, DOT_SS58_PREFIX)
       console.log(respDOT)
 
       expect(respDOT.pubKey).toEqual(polkadot_pk)
