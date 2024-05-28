@@ -98,6 +98,12 @@ jobs:
       - name: Build and run zemu tests
         run: |
           make test_all
+      - name: Upload Snapshots (only failure)
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshots-tmp
+          path: tests_zemu/snapshots-tmp/
 
   build_package_nanos:
     needs: [configure, build, build_ledger, test_zemu]
