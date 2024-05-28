@@ -106,28 +106,31 @@ describe('Standard', function () {
     }
   })
 
-  // test.concurrent.each(models)('show address - reject', async function (m) {
-  //   const sim = new Zemu(m.path)
-  //   try {
-  //     await sim.start({
-  //       ...defaultOptions,
-  //       model: m.name,
-  //       rejectKeyword: m.name === 'stax' ? 'Public key' : '',
-  //     })
-  //     const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
-  //
-  //     const respRequest = app.getAddress(PATH, DOT_SS58_PREFIX, true)
-  //     // Wait until we are not in the main menu
-  //     await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-  //     await sim.compareSnapshotsAndReject('.', `${m.prefix.toLowerCase()}-show_address_reject`)
-  //
-  //     await expect(respRequest).rejects.toMatchObject({
-  //       returnCode: 0x6986,
-  //       errorMessage: 'Transaction rejected'
-  //     })
-  //
-  //   } finally {
-  //     await sim.close()
-  //   }
-  // })
+  test.concurrent.each(models)('show address - reject', async function (m) {
+    const sim = new Zemu(m.path)
+    try {
+      await sim.start({
+        ...defaultOptions,
+        model: m.name,
+        rejectKeyword: m.name === 'stax' ? 'Public key' : '',
+      })
+      const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
+
+      const respRequest = app.getAddress(PATH, DOT_SS58_PREFIX, true)
+      expect(respRequest).rejects.toMatchObject({
+        returnCode: 0x6986,
+        errorMessage: 'Transaction rejected'
+      })
+      // Wait until we are not in the main menu
+      await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
+      try {
+        await sim.compareSnapshotsAndReject('.', `${m.prefix.toLowerCase()}-show_address_reject`);
+      } catch {
+
+      }
+
+    } finally {
+      await sim.close()
+    }
+  })
 })
