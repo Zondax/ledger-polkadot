@@ -10,6 +10,11 @@ MUTATE_DEPTH = random.randint(1, 20)
 
 # (fuzzer name, max length, max time scale factor)
 CONFIGS = [
+    ('metadata_parser_primitives', 1000, 1),
+    ('metadata_parser_composite', 1000, 1),
+    ('metadata_parser_variant', 1000, 1),
+    ('metadata_parser_sequence', 1000, 1),
+    ('metadata_parser_array', 1000, 1),
     ('parser_parse', 17000, 4),
 ]
 
@@ -20,7 +25,7 @@ for config in CONFIGS:
 
     artifact_dir = os.path.join('fuzz', 'corpora', f'{fuzzer}-artifacts')
     corpus_dir = os.path.join('fuzz', 'corpora', f'{fuzzer}')
-    fuzz_path = os.path.join(f'build/bin/fuzz-{fuzzer}')
+    fuzz_path = os.path.join(f'build/fuzz-{fuzzer}')
 
     os.makedirs(artifact_dir, exist_ok=True)
     os.makedirs(corpus_dir, exist_ok=True)
