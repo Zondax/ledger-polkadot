@@ -12,7 +12,44 @@ _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
 ---
 
-This project contains the Polkadot app (<https://polkadot.network/>) for Ledger devices.
+This project contains the Polkadot Generic app (<https://polkadot.network/>) for Ledger devices.
+
+It provides support for both parachains and relay chains. This app aims to deliver a **unified solution for the entire Polkadot ecosystem**, ensuring top security standards.
+
+**All calls from any Polkadot SDK** chain, including nested ones, will be supported. However, while all methods will function in a nested call, the transaction may be rejected if there is insufficient RAM. 
+This situation might arise with the Ledger Nano S, which provides limited memory in comparison to the Ledger Nano S Plus and the Ledger Nano X.
+
+This application also supports the recent Ledger stax device. 
+
+If you were using one of the parachains applications (see the list below), you’ll have to migrate your funds to the Polkadot derivation path. This will enable you to manage your coins directly from the new Polkadot application.
+
+Here is the list of parachains applications:
+- Acala
+- Ajuna
+- Aleph Zero
+- Astar
+- Bifrost
+- Centrifuge
+- Darwinia
+- Edgeware
+- Hydradx
+- Karura
+- Khala
+- Kusama
+- Nodle
+- Parallel
+- Phala
+- Pendulum
+- Polkadex
+- Polymesh
+- Statemine
+- Statemint
+- Unique
+- xx network
+
+For testing purposes you can easily install the application via (<https://hub.zondax.ch/polkadot-new>)
+
+This repository contains:
 
 - Ledger (BOLOS) app
 - Specs / Documentation
