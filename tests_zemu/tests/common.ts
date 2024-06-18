@@ -11,6 +11,7 @@ const APP_PATH_ST = resolve('../app/output/app_stax.elf')
 const MIG_PATH_S = resolve('../app/output/migration_s.elf')
 const MIG_PATH_X = resolve('../app/output/migration_x.elf')
 const MIG_PATH_SP = resolve('../app/output/migration_s2.elf')
+const MIG_PATH_ST = resolve('../app/output/migration_stax.elf')
 
 export const models: IDeviceModel[] = [
   { name: 'nanos', prefix: 'S', path: APP_PATH_S },
@@ -23,6 +24,7 @@ export const migrationModels: IDeviceModel[] = [
   { name: 'nanos', prefix: 'S', path: MIG_PATH_S },
   { name: 'nanox', prefix: 'X', path: MIG_PATH_X },
   { name: 'nanosp', prefix: 'SP', path: MIG_PATH_SP },
+  { name: 'stax', prefix: 'ST', path: MIG_PATH_ST },
 ]
 
 export const defaultOptions = {

@@ -66,7 +66,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({ ...defaultOptions, model: m.name })
-      const app = new PolkadotGenericApp(sim.getTransport(), 'wsd-local', 'https://api.zondax.ch/polkadot/transaction/metadata')
+      const app = new PolkadotGenericApp(sim.getTransport(), 'roc', 'https://api.zondax.ch/polkadot/transaction/metadata')
 
       const blob = Buffer.from(data.blob, 'hex')
 

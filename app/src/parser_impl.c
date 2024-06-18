@@ -89,6 +89,29 @@ parser_error_t transaction_parse(parser_tx_t *txObj) {
             printItem.itemCount += tmpEra.isMortal ? 3 : 1;
             continue;
         }
+
+        // Extract Mode if present
+        if (identifierLen == strlen(STR_METADATA_HASH) &&
+            strncmp((const char *)tmpExtension.identifier.ptr, STR_METADATA_HASH, identifierLen) == 0) {
+
+            // The following byte must be 0x01
+            if(*(blobBuf->buffer + blobBuf->offset)!= 0x01) {
+                return parser_wrong_metadata_digest;
+            }
+
+            PrintItem_t tmpPrintItem = {0};
+            tmpPrintItem.printing = true;
+            tmpPrintItem.target = 1;
+            tmpPrintItem.itemCount = 0;
+            const uint16_t tmpBlobOffset = blobBuf->offset;
+            CHECK_ERROR(parseTypeRef(blobBuf, metadataBuf, &tmpEntry, &tmpExtension.includedInExtrinsic, &tmpPrintItem));
+
+            // Check that Mode is enabled
+            if (tmpPrintItem.item.val.len != strlen(STR_MODE_ENABLED) || strncmp((const char *)tmpPrintItem.item.val.ptr, STR_MODE_ENABLED, tmpPrintItem.item.val.len) != 0) {
+                return parser_wrong_metadata_digest;
+            }
+            blobBuf->offset = tmpBlobOffset;
+        }
         CHECK_ERROR(parseTypeRef(blobBuf, metadataBuf, &tmpEntry, &tmpExtension.includedInExtrinsic, &printItem));
 
         // first case is tip without assetid, second case is tip with assetid

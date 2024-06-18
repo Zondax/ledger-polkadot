@@ -25,6 +25,7 @@ static const char STR_TIP[] = "ChargeTransactionPayment";
 static const char STR_TIP_WITH_ASSETID[] = "ChargeAssetTxPayment";
 static const char STR_ERA[] = "CheckMortality";
 static const char STR_METADATA_HASH[] = "CheckMetadataHash";
+static const char STR_MODE_ENABLED[] = "Enabled";
 
 #ifdef __cplusplus
 }

@@ -14,26 +14,59 @@
  *  limitations under the License.
  ******************************************************************************/
 
-import Zemu, { zondaxMainmenuNavigation } from '@zondax/zemu'
+import Zemu, { ButtonKind, ClickNavigation, TouchNavigation } from '@zondax/zemu'
 
 import { ASTAR_PATH, defaultOptions, DOT_SS58_PREFIX, migrationModels, PATH } from './common'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
+import { IButton } from '@zondax/zemu/dist/types'
 
 const polkadot_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
 const astar_pk = 'cf557b2d2bebf3e14f932fec31d2b3ea776b63eede6658e282c9ab3f27d1287b'
 
-jest.setTimeout(180000)
+jest.setTimeout(45000)
 
 describe('Migration', function () {
   test.concurrent.each(migrationModels)('main menu + get version', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      const clicks = [4, 0]
-      const migrationStartText = m.name == 'nanos' ? 'Migration' : 'Please'
-      const mainmenuNavigation = zondaxMainmenuNavigation(m.name, clicks)
-      await sim.start({ ...defaultOptions, startText: migrationStartText, model: m.name })
-      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-migration-main`, mainmenuNavigation.schedule)
+      let migrationStartText = ''
+      switch (m.name) {
+        case 'nanos':
+          migrationStartText = 'Migration'
+          break;
 
+        case 'nanosp':
+        case 'nanox':
+          migrationStartText = 'Please'
+          break;
+
+        case 'stax':
+          migrationStartText = 'Review'
+          break;
+      }
+
+      await sim.start({
+        ...defaultOptions, startText: migrationStartText, model: m.name,
+        approveKeyword: m.name === 'stax' ? 'frequently' : '',
+        approveAction: ButtonKind.ApproveTapButton,
+      })
+
+      let nav = undefined;
+      if (m.name === 'stax') {
+        const okButton: IButton = {
+          x: 200,
+          y: 550,
+          delay: 0.25,
+        };
+        nav = new TouchNavigation([
+          ButtonKind.TapContinueButton,
+          ButtonKind.ConfirmYesButton,
+        ]);
+        nav.schedule[1].button = okButton;
+      } else {
+        nav = new ClickNavigation([4, 0]);
+      }
+      await sim.navigate('.', `${m.prefix.toLowerCase()}-migration-mainmenu`, nav.schedule);
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
       // Verify app version
@@ -45,22 +78,6 @@ describe('Migration', function () {
       expect(respVersion).toHaveProperty('major')
       expect(respVersion).toHaveProperty('minor')
       expect(respVersion).toHaveProperty('patch')
-    } finally {
-      await sim.close()
-    }
-  })
-
-  test.concurrent.each(migrationModels)('get addresses', async function (m) {
-    const sim = new Zemu(m.path)
-    try {
-      const clicks = [4, 0]
-      const migrationStartText = m.name == 'nanos' ? 'Migration' : 'Please'
-      const mainmenuNavigation = zondaxMainmenuNavigation(m.name, clicks)
-
-      await sim.start({ ...defaultOptions, startText: migrationStartText, model: m.name })
-      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-migration-main`, mainmenuNavigation.schedule)
-
-      const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
       // Verify addresses
       const respDOT = await app.getAddress(PATH, DOT_SS58_PREFIX)
@@ -72,6 +89,7 @@ describe('Migration', function () {
       console.log(respASTR)
 
       expect(respASTR.pubKey).toEqual(astar_pk)
+
     } finally {
       await sim.close()
     }

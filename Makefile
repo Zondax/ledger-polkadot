@@ -25,10 +25,6 @@ ifeq ($(BOLOS_SDK),)
 ZXLIB_COMPILE_STAX ?= 1
 PRODUCTION_BUILD ?= 0
 $(info ************ COIN  = [$(COIN)])
-
-ifeq ($(COIN), DOT_MIGRATION)
-    ZXLIB_COMPILE_STAX := 0
-endif
 include $(CURDIR)/deps/ledger-zxlib/dockerized_build.mk
 
 else
@@ -43,7 +39,7 @@ build_all:
 	APP_TESTING=1 PRODUCTION_BUILD=1 COIN=DOT_MIGRATION make
 	APP_TESTING=1 PRODUCTION_BUILD=1 make
 
-test_all: build_all
+test_all:
 	make zemu_install
 	PRODUCTION_BUILD=1 COIN=DOT_MIGRATION make
 	PRODUCTION_BUILD=1 make

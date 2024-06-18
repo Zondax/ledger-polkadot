@@ -50,9 +50,18 @@ zxerr_t migrationGetItem(int8_t displayIdx,
     return zxerr_ok;
 }
 
+void migrationOk() {
+    view_idle_show(0, NULL);
+}
+
 void migrationStartMessage() {
 #ifdef MIGRATION_APP
-    view_review_init(migrationGetItem, migrationGetNumItems, NULL);
-    view_review_show(REVIEW_MSG);
+#ifdef TARGET_STAX
+    const review_type_e reviewType = REVIEW_UI;
+#else
+    const review_type_e reviewType = REVIEW_MSG;
+#endif
+    view_review_init(migrationGetItem, migrationGetNumItems, migrationOk);
+    view_review_show(reviewType);
 #endif
 }
