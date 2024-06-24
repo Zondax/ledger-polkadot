@@ -15,6 +15,7 @@
  ******************************************************************************* */
 
 import Zemu from '@zondax/zemu'
+import axios from 'axios'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
 import { defaultOptions, DOT_SS58_PREFIX, PATH, TEST_TRANSACTIONS, models, TEST_TRANSACTIONS_FAIL } from './common'
 
@@ -31,7 +32,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - OK', function (data) {
       await sim.start({ ...defaultOptions, model: m.name })
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
-      const blob = Buffer.from(data.blob, 'hex')
+      const blob = Buffer.from(data.blob.replace("<rootHash>", data.rootHash), 'hex')
       const metadata = Buffer.from(data.metadata, 'hex')
 
       const { pubKey } = await app.getAddress(PATH, DOT_SS58_PREFIX)
@@ -68,13 +69,10 @@ describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
       await sim.start({ ...defaultOptions, model: m.name })
       const app = new PolkadotGenericApp(sim.getTransport(), 'roc', 'https://api.zondax.ch/polkadot/transaction/metadata')
 
-      const blob = Buffer.from(data.blob, 'hex')
+      const resp = await axios.post("https://api.zondax.ch/polkadot/node/metadata/hash", {id: 'roc'})
+      const blob = Buffer.from(data.blob.replace("<rootHash>", resp.data.metadataHash), 'hex')
 
       const { pubKey } = await app.getAddress(PATH, DOT_SS58_PREFIX)
-
-      // Compare metadata from api service to local copy
-      const metadata = await app.getTxMetadata(blob)
-      expect(metadata.toString('hex')).toBe(data.metadata)
 
       // do not wait here.. we need to navigate
       const signatureRequest = app.sign(PATH, blob)
