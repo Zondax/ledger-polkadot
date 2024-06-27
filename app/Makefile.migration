@@ -14,15 +14,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #*******************************************************************************
-
-# Versioning for Migration app
-# This is the `transaction_version` field of `Runtime`
-APPVERSION_M=100
-# This is the `spec_version` field of `Runtime`
-APPVERSION_N=0
-# This is the patch version of this release
-APPVERSION_P=1
-
 # Declare here all the allowed paths in migration app
 
 PATHS := "44'/434'" "44'/295'" "44'/523'" "44'/537'" "44'/594'" "44'/595'" "44'/617'" "44'/631'" \

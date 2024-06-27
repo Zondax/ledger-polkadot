@@ -25,7 +25,7 @@ MY_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 include $(BOLOS_SDK)/Makefile.defines
 
 # # Set the default value for HAVE_SWAP to undefined if not already defined
-# HAVE_SWAP ?= 
+# HAVE_SWAP ?=
 
 # Set the default value for PRODUCTION_BUILD to 0 if not already defined
 PRODUCTION_BUILD ?= 0
@@ -56,10 +56,7 @@ ifndef COIN
 COIN=DOT
 endif
 
-ifeq ($(COIN),DOT)
 include $(CURDIR)/Makefile.version
-endif
-
 $(info COIN  = [$(COIN)])
 
 APPPATH = "44'/354'"
