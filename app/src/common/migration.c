@@ -45,7 +45,7 @@ zxerr_t migrationGetItem(int8_t displayIdx,
 
     snprintf(outKey, outKeyLen, "Migration");
     const char instructions[] =
-        "This app is only meant for performing the migration to Polkadot Generic App. DO NOT use this app frequently.";
+        "This app is only meant for performing the migration to Polkadot Generic App; DO NOT use this app frequently.";
     pageStringExt(outVal, outValLen, instructions, sizeof(instructions), pageIdx, pageCount);
     return zxerr_ok;
 }
