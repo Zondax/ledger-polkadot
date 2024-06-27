@@ -28,7 +28,7 @@ include $(BOLOS_SDK)/Makefile.defines
 # HAVE_SWAP ?=
 
 # Set the default value for PRODUCTION_BUILD to 0 if not already defined
-PRODUCTION_BUILD ?= 0
+PRODUCTION_BUILD ?= 1
 
 # Display the target name
 $(info ************ TARGET_NAME  = [$(TARGET_NAME)])

@@ -125,8 +125,8 @@ jobs:
       - name: Build NanoS
         shell: bash -l {0}
         run: |
-          COIN=DOT_MIGRATION make
-          make
+          PRODUCTION_BUILD=0 COIN=DOT_MIGRATION make
+          PRODUCTION_BUILD=0 make
           mv ./app/pkg/installer_s.sh ./app/pkg/installer_nanos.sh
           mv ./app/pkg/migration_s.sh ./app/pkg/migration_nanos.sh
       - name: Set tag
@@ -165,8 +165,8 @@ jobs:
       - name: Build NanoSP
         shell: bash -l {0}
         run: |
-          COIN=DOT_MIGRATION make
-          make
+          PRODUCTION_BUILD=0 COIN=DOT_MIGRATION make
+          PRODUCTION_BUILD=0 make
           mv ./app/pkg/installer_s2.sh ./app/pkg/installer_nanos_plus.sh
           mv ./app/pkg/migration_s2.sh ./app/pkg/migration_nanos_plus.sh
       - name: Set tag
@@ -205,8 +205,8 @@ jobs:
       - name: Build Stax
         shell: bash -l {0}
         run: |
-          COIN=DOT_MIGRATION make
-          make
+          PRODUCTION_BUILD=0 COIN=DOT_MIGRATION make
+          PRODUCTION_BUILD=0 make
       - name: Set tag
         id: stax
         run: echo "tag_name=$(./app/pkg/installer_stax.sh version)" >> $GITHUB_OUTPUT

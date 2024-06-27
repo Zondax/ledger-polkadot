@@ -23,7 +23,7 @@ ifeq ($(BOLOS_SDK),)
 # When not using the SDK, we override and build the XL complete app
 
 ZXLIB_COMPILE_STAX ?= 1
-PRODUCTION_BUILD ?= 0
+PRODUCTION_BUILD ?= 1
 $(info ************ COIN  = [$(COIN)])
 include $(CURDIR)/deps/ledger-zxlib/dockerized_build.mk
 
@@ -41,6 +41,6 @@ build_all:
 
 test_all:
 	make zemu_install
-	PRODUCTION_BUILD=1 COIN=DOT_MIGRATION make
-	PRODUCTION_BUILD=1 make
+	COIN=DOT_MIGRATION make
+	make
 	make zemu_test
