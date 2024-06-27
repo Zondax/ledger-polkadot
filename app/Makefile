@@ -25,10 +25,10 @@ MY_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 include $(BOLOS_SDK)/Makefile.defines
 
 # # Set the default value for HAVE_SWAP to undefined if not already defined
-# HAVE_SWAP ?= 
+# HAVE_SWAP ?=
 
 # Set the default value for PRODUCTION_BUILD to 0 if not already defined
-PRODUCTION_BUILD ?= 0
+PRODUCTION_BUILD ?= 1
 
 # Display the target name
 $(info ************ TARGET_NAME  = [$(TARGET_NAME)])
@@ -56,10 +56,7 @@ ifndef COIN
 COIN=DOT
 endif
 
-ifeq ($(COIN),DOT)
 include $(CURDIR)/Makefile.version
-endif
-
 $(info COIN  = [$(COIN)])
 
 APPPATH = "44'/354'"
@@ -91,6 +88,12 @@ include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.installer_script
 $(info PATHS LIST = $(APPPATH))
 
 APP_LOAD_PARAMS = --curve ed25519 $(COMMON_LOAD_PARAMS) --path $(APPPATH)
+
+ifeq ($(TARGET_NAME),TARGET_NANOS)
+	APP_STACK_MIN_SIZE := 1600
+else
+	APP_STACK_MIN_SIZE := 1752
+endif
 
 include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.devices
 
