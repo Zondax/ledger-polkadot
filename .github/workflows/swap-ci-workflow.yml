@@ -1,0 +1,18 @@
+name: Swap functional tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - master
+    - main
+    - develop
+  pull_request:
+
+jobs:
+  job_functional_tests:
+    uses: LedgerHQ/app-exchange/.github/workflows/reusable_swap_functional_tests.yml@develop
+    with:
+      branch_for_polkadot: ${{ github.ref }}
+      repo_for_polkadot: ${{ github.repository }}
+      test_filter: '"DOT or dot or Polkadot or polkadot"'
