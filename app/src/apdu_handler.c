@@ -30,6 +30,10 @@
 #include "view.h"
 #include "zxmacros.h"
 
+#ifdef HAVE_SWAP
+#include "swap.h"
+#endif
+
 static bool tx_initialized = false;
 uint16_t blobLen = 0;
 
@@ -260,7 +264,6 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
             *tx += 2;
         }
         FINALLY {
-#if 0
 #ifdef HAVE_SWAP
             if (G_swap_state.called_from_swap && G_swap_state.should_exit) {
                 // Swap checking failed, send reply now and exit, don't wait next cycle
@@ -270,7 +273,6 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                 // Go back to exchange and report our status
                 finalize_exchange_sign_transaction(sw == 0);
             }
-#endif
 #endif
         }
     }
