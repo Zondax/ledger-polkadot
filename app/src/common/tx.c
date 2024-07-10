@@ -26,6 +26,10 @@
 #include "zxformat.h"
 #include "zxmacros.h"
 
+#ifdef HAVE_SWAP
+#include "swap.h"
+#endif
+
 extern uint16_t blobLen;
 
 #if defined(TARGET_NANOX) || defined(TARGET_NANOS2) || defined(TARGET_STAX)
@@ -111,7 +115,7 @@ const char *tx_parse() {
         return parser_getErrorDescription(err);
     }
 
-#if 0
+#ifdef HAVE_SWAP
     // If in swap mode, compare swap tx parameters with stored info.
     if (G_swap_state.called_from_swap) {
         if (G_swap_state.should_exit == 1) {
@@ -123,7 +127,7 @@ const char *tx_parse() {
             // We will quit the app after this transaction, whether it succeeds or fails
             G_swap_state.should_exit = 1;
         }
-        err = check_swap_conditions(&ctx_parsed_tx);
+        err = check_swap_conditions(&tx_obj);
         CHECK_APP_CANARY()
         if (err != parser_ok) {
             return parser_getErrorDescription(err);
