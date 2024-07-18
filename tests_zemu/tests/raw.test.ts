@@ -21,7 +21,7 @@ import { defaultOptions, DOT_SS58_PREFIX, PATH, models } from './common'
 import ed25519 from 'ed25519-supercop'
 import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
-import {ResponseError} from "@zondax/ledger-js";
+import { ResponseError } from "@zondax/ledger-js";
 
 jest.setTimeout(180000)
 
@@ -72,7 +72,7 @@ describe.each(TESTS)('Raw signing', function (data) {
   })
 })
 
-test.concurrent.each(models)('raw signing - incorrect', async function (m) {
+test.concurrent.each(models)('Raw signing - incorrect', async function (m) {
   const sim = new Zemu(m.path)
   try {
     await sim.start({ ...defaultOptions, model: m.name })
@@ -80,7 +80,7 @@ test.concurrent.each(models)('raw signing - incorrect', async function (m) {
 
     const txBlob = Buffer.from('<Bytes>Incorrect blob/Bytes>')
 
-    let errorFound:any = undefined
+    let errorFound: any = undefined
     try {
       await app.signRaw(PATH, txBlob)
     } catch (error) {
@@ -88,15 +88,15 @@ test.concurrent.each(models)('raw signing - incorrect', async function (m) {
     }
 
     console.log(errorFound)
-    
+
     expect(errorFound).toBeDefined()
     expect('returnCode' in errorFound).toBeTruthy()
     expect('errorMessage' in errorFound).toBeTruthy()
 
-    if('returnCode' in errorFound){
+    if ('returnCode' in errorFound) {
       expect(errorFound.returnCode).toBe(27012)
     }
-    if('errorMessage' in errorFound){
+    if ('errorMessage' in errorFound) {
       expect(errorFound.errorMessage).toBe("Data is invalid : Unexpected value")
     }
 
