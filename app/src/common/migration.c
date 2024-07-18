@@ -56,7 +56,7 @@ void migrationOk() {
 
 void migrationStartMessage() {
 #ifdef MIGRATION_APP
-#ifdef TARGET_STAX
+#if defined(TARGET_STAX) || defined(TARGET_FLEX)
     const review_type_e reviewType = REVIEW_UI;
 #else
     const review_type_e reviewType = REVIEW_MSG;
