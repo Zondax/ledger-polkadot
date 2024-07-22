@@ -36,8 +36,8 @@ describe('Migration', function () {
 
       await sim.start({
         ...defaultOptions, startText: migrationStartText, model: m.name,
-        approveKeyword: m.name === 'stax' ? 'frequently' : '',
-        approveAction: ButtonKind.ApproveTapButton,
+        approveKeyword: isTouchDevice(m.name) ? 'Accept' : '',
+        approveAction: ButtonKind.DynamicTapButton,
       })
 
       let nav = undefined;
@@ -56,8 +56,13 @@ describe('Migration', function () {
       } else {
         nav = new ClickNavigation([4, 0]);
       }
-      const lastIndex = await sim.navigate('.', `${m.prefix.toLowerCase()}-migration-mainmenu`, nav.schedule);
-      await sim.compareSnapshots('.', `${m.prefix.toLowerCase()}-migration-mainmenu`, lastIndex)
+
+      const path = '.'
+      const testcaseName = `${m.prefix.toLowerCase()}-migration-mainmenu`
+
+      const lastIndex = await sim.navigate(path, testcaseName, nav.schedule);
+      await sim.compareSnapshots(path, testcaseName, lastIndex)
+      await sim.takeSnapshotAndOverwrite(path, testcaseName, lastIndex);
 
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 

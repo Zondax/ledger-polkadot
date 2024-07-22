@@ -85,11 +85,10 @@ describe('Standard', function () {
       await sim.start({
         ...defaultOptions,
         model: m.name,
-        approveKeyword: isTouchDevice(m.name) ? 'Public key' : '',
-        approveAction: ButtonKind.ApproveTapButton,
+        approveKeyword: isTouchDevice(m.name) ? 'Confirm' : '',
+        approveAction: ButtonKind.DynamicTapButton,
       })
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot', '')
-
       const respRequest = app.getAddress(PATH, DOT_SS58_PREFIX, true)
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
