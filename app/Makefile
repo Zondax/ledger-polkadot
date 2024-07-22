@@ -89,12 +89,6 @@ $(info PATHS LIST = $(APPPATH))
 
 APP_LOAD_PARAMS = --curve ed25519 $(COMMON_LOAD_PARAMS) --path $(APPPATH)
 
-ifeq ($(TARGET_NAME),TARGET_NANOS)
-	APP_STACK_MIN_SIZE := 1600
-else
-	APP_STACK_MIN_SIZE := 1752
-endif
-
 include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.devices
 
 DEFAULT_NANOS_ICON = nanos_$(ICON_NAME).gif
