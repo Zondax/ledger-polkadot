@@ -26,7 +26,7 @@ import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
 jest.setTimeout(180000)
 
 describe.each(TEST_TRANSACTIONS)('Transactions - OK', function (data) {
-  test.each(models)(`Test: ${data.name}`, async function (m) {
+  test.concurrent.each(models)(`Test: ${data.name}`, async function (m) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({ ...defaultOptions, model: m.name })
@@ -63,13 +63,13 @@ describe.each(TEST_TRANSACTIONS)('Transactions - OK', function (data) {
 })
 
 describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
-  test.each(models)(`Test: ${data.name}`, async function (m) {
+  test.concurrent.each(models)(`Test: ${data.name}`, async function (m) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({ ...defaultOptions, model: m.name })
       const app = new PolkadotGenericApp(sim.getTransport(), 'roc', 'https://api.zondax.ch/polkadot/transaction/metadata')
 
-      const resp = await axios.post("https://api.zondax.ch/polkadot/node/metadata/hash", {id: 'roc'})
+      const resp = await axios.post("https://api.zondax.ch/polkadot/node/metadata/hash", { id: 'roc' })
       const blob = Buffer.from(data.blob.replace("<rootHash>", resp.data.metadataHash), 'hex')
 
       const { pubKey } = await app.getAddress(PATH, DOT_SS58_PREFIX)
@@ -100,7 +100,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
 })
 
 describe.each(TEST_TRANSACTIONS_FAIL)('Transactions - FAIL', function (data) {
-  test.each(models)(`Test: ${data.name} - ${data.description}`, async function (m) {
+  test.concurrent.each(models)(`Test: ${data.name} - ${data.description}`, async function (m) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({ ...defaultOptions, model: m.name })

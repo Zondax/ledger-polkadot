@@ -14,11 +14,11 @@
  *  limitations under the License.
  ******************************************************************************/
 
-import Zemu, { ButtonKind, ClickNavigation, TouchNavigation } from '@zondax/zemu'
+import Zemu, { ButtonKind, ClickNavigation, TouchNavigation, isTouchDevice } from '@zondax/zemu'
 
 import { ASTAR_PATH, defaultOptions, DOT_SS58_PREFIX, migrationModels, PATH } from './common'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
-import { IButton } from '@zondax/zemu/dist/types'
+import { IButton, SwipeDirection } from '@zondax/zemu/dist/types'
 
 const polkadot_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
 const astar_pk = 'cf557b2d2bebf3e14f932fec31d2b3ea776b63eede6658e282c9ab3f27d1287b'
@@ -29,44 +29,41 @@ describe('Migration', function () {
   test.concurrent.each(migrationModels)('main menu + get version', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      let migrationStartText = ''
-      switch (m.name) {
-        case 'nanos':
-          migrationStartText = 'Migration'
-          break;
-
-        case 'nanosp':
-        case 'nanox':
-          migrationStartText = 'Please'
-          break;
-
-        case 'stax':
-          migrationStartText = 'Review'
-          break;
+      let migrationStartText = 'review'
+      if (m.name === 'nanos') {
+        migrationStartText = 'Migration'
       }
 
       await sim.start({
         ...defaultOptions, startText: migrationStartText, model: m.name,
-        approveKeyword: m.name === 'stax' ? 'frequently' : '',
-        approveAction: ButtonKind.ApproveTapButton,
+        approveKeyword: isTouchDevice(m.name) ? 'Accept' : '',
+        approveAction: ButtonKind.DynamicTapButton,
       })
 
       let nav = undefined;
-      if (m.name === 'stax') {
+      if (isTouchDevice(m.name)) {
         const okButton: IButton = {
           x: 200,
           y: 550,
           delay: 0.25,
+          direction: SwipeDirection.NoSwipe,
         };
-        nav = new TouchNavigation([
-          ButtonKind.TapContinueButton,
+        nav = new TouchNavigation(m.name, [
+          ButtonKind.SwipeContinueButton,
           ButtonKind.ConfirmYesButton,
         ]);
         nav.schedule[1].button = okButton;
       } else {
         nav = new ClickNavigation([4, 0]);
       }
-      await sim.navigate('.', `${m.prefix.toLowerCase()}-migration-mainmenu`, nav.schedule);
+
+      const path = '.'
+      const testcaseName = `${m.prefix.toLowerCase()}-migration-mainmenu`
+
+      const lastIndex = await sim.navigate(path, testcaseName, nav.schedule);
+      await sim.compareSnapshots(path, testcaseName, lastIndex)
+      await sim.takeSnapshotAndOverwrite(path, testcaseName, lastIndex);
+
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
       // Verify app version

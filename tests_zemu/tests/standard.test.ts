@@ -14,7 +14,7 @@
  *  limitations under the License.
  ******************************************************************************* */
 
-import Zemu, { ButtonKind, zondaxMainmenuNavigation } from '@zondax/zemu'
+import Zemu, { ButtonKind, zondaxMainmenuNavigation, isTouchDevice } from '@zondax/zemu'
 import { defaultOptions, DOT_SS58_PREFIX, PATH, models } from './common'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
 
@@ -85,11 +85,10 @@ describe('Standard', function () {
       await sim.start({
         ...defaultOptions,
         model: m.name,
-        approveKeyword: m.name === 'stax' ? 'Public key' : '',
-        approveAction: ButtonKind.ApproveTapButton,
+        approveKeyword: isTouchDevice(m.name) ? 'Confirm' : '',
+        approveAction: ButtonKind.DynamicTapButton,
       })
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot', '')
-
       const respRequest = app.getAddress(PATH, DOT_SS58_PREFIX, true)
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
@@ -112,7 +111,7 @@ describe('Standard', function () {
       await sim.start({
         ...defaultOptions,
         model: m.name,
-        rejectKeyword: m.name === 'stax' ? 'Public key' : '',
+        rejectKeyword: isTouchDevice(m.name) ? 'Public key' : '',
       })
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
