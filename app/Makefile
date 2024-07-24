@@ -89,17 +89,16 @@ $(info PATHS LIST = $(APPPATH))
 
 APP_LOAD_PARAMS = --curve ed25519 $(COMMON_LOAD_PARAMS) --path $(APPPATH)
 
-ifeq ($(TARGET_NAME),TARGET_NANOS)
-	APP_STACK_MIN_SIZE := 1600
-else
-	APP_STACK_MIN_SIZE := 1752
-endif
-
 include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.devices
 
-DEFAULT_ICON = nanos_$(ICON_NAME).gif
+DEFAULT_NANOS_ICON = nanos_$(ICON_NAME).gif
+DEFAULT_NBGL_ICON_32 = stax_$(ICON_NAME).gif
+DEFAULT_NBGL_ICON_64 = stax_$(ICON_NAME)_64.gif
+
 copy_icon:
-	cp $(DEFAULT_ICON) glyphs/icon_app.gif
+	cp $(DEFAULT_NANOS_ICON) glyphs/icon_app.gif
+	cp $(DEFAULT_NBGL_ICON_32) glyphs/icon_stax_32.gif
+	cp $(DEFAULT_NBGL_ICON_64) glyphs/icon_stax_64.gif
 
 all: copy_icon
 
