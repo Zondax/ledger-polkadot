@@ -179,6 +179,17 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
         THROW(APDU_CODE_DATA_INVALID);
     }
 
+#ifdef HAVE_SWAP
+    if (G_swap_state.called_from_swap && G_swap_state.should_exit && error_msg == NULL) {
+        // Call app_sign_ed25519 without going through UI display, the UI validation was done in
+        // Exchange app already
+        app_sign_ed25519();
+        // Go back to Exchange and report our success to display the modal
+        finalize_exchange_sign_transaction(true);
+        // Unreachable
+    }
+#endif
+
     view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
     view_review_show(REVIEW_TXN);
     *flags |= IO_ASYNCH_REPLY;
