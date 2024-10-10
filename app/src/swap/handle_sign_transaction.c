@@ -75,6 +75,7 @@ bool copy_transaction_parameters(create_transaction_parameters_t *sign_transacti
     return true;
 }
 
+// Ensure the received transaction matches what was validated in the Exchange app UI
 parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     parser_error_t err = parser_unexpected_error;
     if (txObj == NULL) {
@@ -103,6 +104,7 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     CHECK_ERROR(parser_getItem(txObj, &uiFields));
     if (strncmp(valid_network, tmpValue, strlen(valid_network)) != 0) {
         ZEMU_LOGF(200, "Swap not enable on %s network.\n", tmpValue);
+        return parser_swap_tx_wrong_method;
     }
 
     // Check method.
@@ -150,12 +152,12 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     const size_t strLen = strlen(tmpValue);
     const size_t amountLen = strlen(tmpAmount);
     if (zxerr != zxerr_ok || strLen != amountLen || strncmp(tmpValue, tmpAmount, strLen) != 0) {
-        ZEMU_LOGF(200, "Wrong swap tx amount (%s, should be : %s).\n", tmp_str, tmpAmount);
+        ZEMU_LOGF(200, "Wrong swap tx amount (%s, should be : %s).\n", tmpValue, tmpAmount);
         return parser_swap_tx_wrong_amount;
     }
 
     ZEMU_LOGF(50, "Swap parameters verified by current tx\n");
-    return err;
+    return parser_ok;
 }
 
 void __attribute__((noreturn)) finalize_exchange_sign_transaction(bool is_success) {
