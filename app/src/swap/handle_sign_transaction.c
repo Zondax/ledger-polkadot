@@ -75,6 +75,7 @@ bool copy_transaction_parameters(create_transaction_parameters_t *sign_transacti
     return true;
 }
 
+// Ensure the received transaction matches what was validated in the Exchange app UI
 parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     parser_error_t err = parser_unexpected_error;
     if (txObj == NULL) {
@@ -82,8 +83,9 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     }
     // Check transaction method arguments number. Balance transfer Should be 3 (for tx v26).
     // [dest(address type) |  dest(address) | value(amount)]
-    if (txObj->blob.totalMethodItems != SWAP_EXPECTED_ITEMS) {
-        zemu_log("Wrong swap tx method arguments count.\n");
+    // We will check that index 5 does not have the TIP
+    if (txObj->blob.totalMethodItems != SWAP_EXPECTED_ITEMS && txObj->blob.totalMethodItems != SWAP_EXPECTED_ITEMS + 1) {
+        ZEMU_LOGF(100, "Wrong swap tx method arguments count %d.\n", txObj->blob.totalMethodItems);
         return parser_swap_tx_wrong_method_args_num;
     }
     // Check network.
@@ -101,8 +103,9 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
                            .pageCount = &pageCount};
 
     CHECK_ERROR(parser_getItem(txObj, &uiFields));
-    if (strncmp(valid_network, tmpValue, strlen(valid_network)) != 0) {
+    if (strncmp(valid_network, tmpValue, strlen(valid_network) + 1) != 0) {
         ZEMU_LOGF(200, "Swap not enable on %s network.\n", tmpValue);
+        return parser_swap_tx_wrong_method;
     }
 
     // Check method.
@@ -113,10 +116,21 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     const char *valid_tx_call = "transfer_allow_death";
 
     CHECK_ERROR(parser_getItem(txObj, &uiFields));
-    if (strncmp(valid_tx_pallet, tmpKey, strlen(valid_tx_pallet)) != 0 ||
-        strncmp(valid_tx_call, tmpValue, strlen(valid_tx_call)) != 0) {
+    if (strncmp(valid_tx_pallet, tmpKey, strlen(valid_tx_pallet) + 1) != 0 ||
+        strncmp(valid_tx_call, tmpValue, strlen(valid_tx_call) + 1) != 0) {
         ZEMU_LOGF(200, "Wrong swap tx method (%s %s, should be : %s %s).\n", tmpKey, tmpValue, valid_tx_pallet,
                   valid_tx_call);
+        return parser_swap_tx_wrong_method;
+    }
+
+    // Check destination id
+    uiFields.displayIdx = 2;
+    MEMZERO(tmpKey, sizeof(tmpKey));
+    MEMZERO(tmpValue, sizeof(tmpValue));
+    const char *valid_field = "dest";
+    CHECK_ERROR(parser_getItem(txObj, &uiFields));
+    if (strncmp(valid_field, tmpKey, strlen(valid_tx_pallet) + 1) != 0) {
+        ZEMU_LOGF(200, "Wrong field (%s, should be : %s).\n", tmpKey, valid_field);
         return parser_swap_tx_wrong_method;
     }
 
@@ -141,7 +155,7 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     MEMZERO(tmpValue, sizeof(tmpValue));
     if (parser_getItem(txObj, &uiFields) != parser_ok) {
         ZEMU_LOGF(100, "Could not parse swap tx amount.\n");
-        return parser_swap_tx_wrong_dest_addr;
+        return parser_swap_tx_wrong_amount;
     }
     char tmpAmount[100] = {0};
     const zxerr_t zxerr =
@@ -150,12 +164,21 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     const size_t strLen = strlen(tmpValue);
     const size_t amountLen = strlen(tmpAmount);
     if (zxerr != zxerr_ok || strLen != amountLen || strncmp(tmpValue, tmpAmount, strLen) != 0) {
-        ZEMU_LOGF(200, "Wrong swap tx amount (%s, should be : %s).\n", tmp_str, tmpAmount);
+        ZEMU_LOGF(200, "Wrong swap tx amount (%s, should be : %s).\n", tmpValue, tmpAmount);
         return parser_swap_tx_wrong_amount;
     }
 
+    // No item nb 5
+    uiFields.displayIdx = 5;
+    MEMZERO(tmpKey, sizeof(tmpKey));
+    MEMZERO(tmpValue, sizeof(tmpValue));
+    if (parser_getItem(txObj, &uiFields) == parser_ok) {
+        ZEMU_LOGF(100, "Refusing item number 5 %s.\n", tmpKey);
+        return parser_swap_tx_wrong_method_args_num;
+    }
+
     ZEMU_LOGF(50, "Swap parameters verified by current tx\n");
-    return err;
+    return parser_ok;
 }
 
 void __attribute__((noreturn)) finalize_exchange_sign_transaction(bool is_success) {
