@@ -25,6 +25,10 @@
 ////////////////////////////////////////////////////////////////
 
 zxerr_t bytesAmountToStringBalance(uint8_t *amount, uint8_t amount_len, char *out, uint8_t out_len) {
+    if (amount == NULL || out == NULL) {
+        return zxerr_no_data;
+    }
+
     uint8_t tmpBuf[50] = {0};
 
     // Convert byte array (up to 128bits/16bytes) to decimal string

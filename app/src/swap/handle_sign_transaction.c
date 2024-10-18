@@ -22,7 +22,10 @@
 #include "swap_utils.h"
 #include "zxformat.h"
 
-#define SWAP_EXPECTED_ITEMS 3
+#define SWAP_EXPECTED_ITEMS 4u
+#define MAX_ADDRESS_CHAR_LENGTH 64u
+#define MAX_AMOUNT_LENGTH 16u
+#define MAX_FEES_LENGTH 8u
 
 swap_globals_t G_swap_state;
 
@@ -38,24 +41,24 @@ bool copy_transaction_parameters(create_transaction_parameters_t *sign_transacti
 
     // First copy parameters to stack, and then to global data.
     // We need this "trick" as the input data position can overlap with globals
-    char destination_address[65] = {0};
-    uint8_t amount[16] = {0};
+    char destination_address[MAX_ADDRESS_CHAR_LENGTH + 1] = {0};
+    uint8_t amount[MAX_AMOUNT_LENGTH] = {0};
     uint8_t amount_length = {0};
-    uint8_t fees[8] = {0};
+    uint8_t fees[MAX_FEES_LENGTH] = {0};
 
     strncpy(destination_address, sign_transaction_params->destination_address, sizeof(destination_address) - 1);
 
-    if ((destination_address[sizeof(destination_address) - 1] != '\0') || (sign_transaction_params->amount_length > 16) ||
-        (sign_transaction_params->fee_amount_length > 8)) {
+    if ((destination_address[sizeof(destination_address) - 1] != '\0') || (sign_transaction_params->amount_length > MAX_AMOUNT_LENGTH) ||
+        (sign_transaction_params->fee_amount_length > MAX_FEES_LENGTH)) {
         return false;
     }
 
     // store amount as big endian in 16 bytes, so the passed data should be alligned to right
     // input {0xEE, 0x00, 0xFF} should be stored like {0x00, 0x00, 0x00, 0x00, 0x00, 0xEE, 0x00, 0xFF}
-    memcpy(amount + 16 - sign_transaction_params->amount_length, sign_transaction_params->amount,
+    memcpy(amount + MAX_AMOUNT_LENGTH - sign_transaction_params->amount_length, sign_transaction_params->amount,
            sign_transaction_params->amount_length);
 
-    memcpy(fees + 8 - sign_transaction_params->fee_amount_length, sign_transaction_params->fee_amount,
+    memcpy(fees + MAX_FEES_LENGTH - sign_transaction_params->fee_amount_length, sign_transaction_params->fee_amount,
            sign_transaction_params->fee_amount_length);
 
     amount_length = sign_transaction_params->amount_length;
@@ -81,13 +84,18 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     if (txObj == NULL) {
         return err;
     }
-    // Check transaction method arguments number. Balance transfer Should be 3 (for tx v26).
-    // [dest(address type) |  dest(address) | value(amount)]
-    // We will check that index 5 does not have the TIP
-    if (txObj->blob.totalMethodItems != SWAP_EXPECTED_ITEMS && txObj->blob.totalMethodItems != SWAP_EXPECTED_ITEMS + 1) {
+    // Check transaction method arguments number. Balance transfer Should be 4 (for tx v26).
+    // [chainID | dest(address type) |  dest(address) | value(amount)]
+    if (txObj->blob.totalMethodItems != SWAP_EXPECTED_ITEMS) {
         ZEMU_LOGF(100, "Wrong swap tx method arguments count %d.\n", txObj->blob.totalMethodItems);
         return parser_swap_tx_wrong_method_args_num;
     }
+
+    if (txObj->blob.tipItems != 0) {
+        ZEMU_LOGF(100, "Refusing tipItems, expected 0, received %d.\n", txObj->blob.tipItems);
+        return parser_swap_tx_wrong_method_args_num;
+    }
+
     // Check network.
     const char *valid_network = "polkadot";
     char tmpKey[20] = {0};
@@ -104,7 +112,7 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
 
     CHECK_ERROR(parser_getItem(txObj, &uiFields));
     if (strncmp(valid_network, tmpValue, strlen(valid_network) + 1) != 0) {
-        ZEMU_LOGF(200, "Swap not enable on %s network.\n", tmpValue);
+        ZEMU_LOGF(200, "Swap not enabled on %s network.\n", tmpValue);
         return parser_swap_tx_wrong_method;
     }
 
@@ -129,7 +137,7 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     MEMZERO(tmpValue, sizeof(tmpValue));
     const char *valid_field = "dest";
     CHECK_ERROR(parser_getItem(txObj, &uiFields));
-    if (strncmp(valid_field, tmpKey, strlen(valid_tx_pallet) + 1) != 0) {
+    if (strncmp(valid_field, tmpKey, strlen(valid_field) + 1) != 0) {
         ZEMU_LOGF(200, "Wrong field (%s, should be : %s).\n", tmpKey, valid_field);
         return parser_swap_tx_wrong_method;
     }
@@ -166,15 +174,6 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     if (zxerr != zxerr_ok || strLen != amountLen || strncmp(tmpValue, tmpAmount, strLen) != 0) {
         ZEMU_LOGF(200, "Wrong swap tx amount (%s, should be : %s).\n", tmpValue, tmpAmount);
         return parser_swap_tx_wrong_amount;
-    }
-
-    // No item nb 5
-    uiFields.displayIdx = 5;
-    MEMZERO(tmpKey, sizeof(tmpKey));
-    MEMZERO(tmpValue, sizeof(tmpValue));
-    if (parser_getItem(txObj, &uiFields) == parser_ok) {
-        ZEMU_LOGF(100, "Refusing item number 5 %s.\n", tmpKey);
-        return parser_swap_tx_wrong_method_args_num;
     }
 
     ZEMU_LOGF(50, "Swap parameters verified by current tx\n");
