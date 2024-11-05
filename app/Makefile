@@ -24,8 +24,18 @@ MY_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
 include $(BOLOS_SDK)/Makefile.defines
 
+# Coin definition
+ifndef COIN
+COIN=DOT
+endif
+
+include $(CURDIR)/Makefile.version
+$(info COIN  = [$(COIN)])
+
 # # Set the default value for HAVE_SWAP to undefined if not already defined
-# HAVE_SWAP ?=
+ifeq ($(COIN),DOT)
+HAVE_SWAP ?= 1
+endif
 
 # Set the default value for PRODUCTION_BUILD to 0 if not already defined
 PRODUCTION_BUILD ?= 1
@@ -41,7 +51,7 @@ else
 endif
 
 # Display whether swap functionality is enabled or not
-ifdef HAVE_SWAP
+ifeq ($(HAVE_SWAP), 1)
     $(info ************ HAVE_SWAP  = [ENABLED])
     DEFINES += HAVE_SWAP=$(HAVE_SWAP)
 else
@@ -51,13 +61,6 @@ endif
 # Add the PRODUCTION_BUILD definition to the compiler flags
 DEFINES += PRODUCTION_BUILD=$(PRODUCTION_BUILD)
 include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.app_testing
-
-ifndef COIN
-COIN=DOT
-endif
-
-include $(CURDIR)/Makefile.version
-$(info COIN  = [$(COIN)])
 
 APPPATH = "44'/354'"
 
