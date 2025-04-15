@@ -29,11 +29,25 @@ include $(BOLOS_SDK)/Makefile.defines
 ifndef COIN
 COIN=DOT
 endif
+$(info COIN  = [$(COIN)])
+VARIANT_PARAM=COIN
+VARIANT_VALUES=$(COIN)
+
+# Application allowed derivation paths.
+# You should request a specific path for your app.
+# This serve as an isolation mechanism.
+# Most application will have to request a path according to the BIP-0044
+# and SLIP-0044 standards.
+# If your app needs it, you can specify multiple path by using:
+# `PATH_APP_LOAD_PARAMS = "44'/1'" "45'/1'"`
+APPPATH = "44'/354'"
+
 
 ifeq ($(COIN),DOT)
 # Main app configuration
 APPNAME = "Polkadot"
 ICON_NAME = icon
+HAVE_SWAP ?= 1
 
 else ifeq ($(COIN),DOT_MIGRATION)
 # Migration app configuration
@@ -52,6 +66,9 @@ COIN value not supported: [$(COIN)]
 endef
 $(error "$(error_message)")
 endif
+
+$(info PATHS LIST = $(APPPATH))
+PATH_APP_LOAD_PARAMS = $(APPPATH)
 
 # Application version
 include $(CURDIR)/Makefile.version
@@ -90,31 +107,6 @@ ICON_FLEX = flex_icon.gif
 # If your app needs it, you can specify multiple curves by using:
 # `CURVE_APP_LOAD_PARAMS = <curve1> <curve2>`
 CURVE_APP_LOAD_PARAMS = ed25519
-
-# Application allowed derivation paths.
-# You should request a specific path for your app.
-# This serve as an isolation mechanism.
-# Most application will have to request a path according to the BIP-0044
-# and SLIP-0044 standards.
-# If your app needs it, you can specify multiple path by using:
-# `PATH_APP_LOAD_PARAMS = "44'/1'" "45'/1'"`
-
-APPPATH = "44'/354'"
-$(info PATHS LIST = $(APPPATH))
-PATH_APP_LOAD_PARAMS = $(APPPATH)
-
-# Setting to allow building variant applications
-# - <VARIANT_PARAM> is the name of the parameter which should be set
-#   to specify the variant that should be build.
-# - <VARIANT_VALUES> a list of variant that can be build using this app code.
-#   * It must at least contains one value.
-#   * Values can be the app ticker or anything else but should be unique.
-ifeq ($(COIN),)
-    COIN = UM
-endif
-$(info COIN  = [$(COIN)])
-VARIANT_PARAM=COIN
-VARIANT_VALUES=$(COIN)
 
 INCLUDES_PATH += $(CURDIR)/src/common
 INCLUDES_PATH += ../deps/ledger-zxlib/include
