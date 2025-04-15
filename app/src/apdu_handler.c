@@ -109,14 +109,14 @@ __Z_INLINE void handle_getversion(__Z_UNUSED volatile uint32_t *flags, volatile 
     G_io_apdu_buffer[0] = 0x01;
 #endif
 
-    G_io_apdu_buffer[1] = (LEDGER_MAJOR_VERSION >> 8) & 0xFF;
-    G_io_apdu_buffer[2] = (LEDGER_MAJOR_VERSION >> 0) & 0xFF;
+    G_io_apdu_buffer[1] = (MAJOR_VERSION >> 8) & 0xFF;
+    G_io_apdu_buffer[2] = (MAJOR_VERSION >> 0) & 0xFF;
 
-    G_io_apdu_buffer[3] = (LEDGER_MINOR_VERSION >> 8) & 0xFF;
-    G_io_apdu_buffer[4] = (LEDGER_MINOR_VERSION >> 0) & 0xFF;
+    G_io_apdu_buffer[3] = (MINOR_VERSION >> 8) & 0xFF;
+    G_io_apdu_buffer[4] = (MINOR_VERSION >> 0) & 0xFF;
 
-    G_io_apdu_buffer[5] = (LEDGER_PATCH_VERSION >> 8) & 0xFF;
-    G_io_apdu_buffer[6] = (LEDGER_PATCH_VERSION >> 0) & 0xFF;
+    G_io_apdu_buffer[5] = (PATCH_VERSION >> 8) & 0xFF;
+    G_io_apdu_buffer[6] = (PATCH_VERSION >> 0) & 0xFF;
 
     // sdk won't pass the apdu message if device is locked
     // keeping it for backwards compatibility
