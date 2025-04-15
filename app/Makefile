@@ -183,6 +183,7 @@ include $(CURDIR)/../deps/ledger-zxlib/makefiles/Makefile.platform
 # Use small buffers for NanoX
 ifeq ($(TARGET_NAME), TARGET_NANOX)
 CFLAGS += -DZXLIB_LIGHT_MODE
+endif
 
 $(info TARGET_NAME  = [$(TARGET_NAME)])
 $(info ICONNAME  = [$(ICONNAME)])

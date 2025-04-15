@@ -8,7 +8,7 @@ on:
       - main
       - develop
       - master # for safety reasons
-      - dev  # for safety reasons
+      - dev # for safety reasons
 
 jobs:
   analyse:
@@ -28,7 +28,7 @@ jobs:
           submodules: recursive
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: cpp
           queries: security-and-quality
@@ -37,4 +37,4 @@ jobs:
         run: |
           make -j BOLOS_SDK=${{ matrix.sdk }}
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
