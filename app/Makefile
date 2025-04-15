@@ -191,6 +191,10 @@ ifeq ($(ICONNAME),)
 $(error ICONNAME is not set)
 endif
 
+.PHONY: listvariants
+listvariants:
+	@echo VARIANTS COIN DOT DOT_MIGRATION
+
 .PHONY: version
 version:
 	@echo "v$(APPVERSION)" > app.version
