@@ -109,6 +109,7 @@ ICON_FLEX = flex_icon.gif
 CURVE_APP_LOAD_PARAMS = ed25519
 
 INCLUDES_PATH += $(CURDIR)/src/common
+INCLUDES_PATH += $(CURDIR)/src/swap
 INCLUDES_PATH += ../deps/ledger-zxlib/include
 
 ########################################
