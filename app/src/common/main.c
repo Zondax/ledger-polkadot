@@ -105,6 +105,7 @@ __attribute__((section(".boot"))) int main(int arg0) {
             }
             // NOLINTNEXTLINE
             CATCH_OTHER(e) {
+                UNUSED(e);
             }
             FINALLY {
             }

@@ -21,7 +21,7 @@ import { defaultOptions, DOT_SS58_PREFIX, PATH, models } from './common'
 import ed25519 from 'ed25519-supercop'
 import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
-import { ResponseError } from "@zondax/ledger-js";
+import { ResponseError } from '@zondax/ledger-js'
 
 jest.setTimeout(180000)
 
@@ -97,9 +97,8 @@ test.concurrent.each(models)('Raw signing - incorrect', async function (m) {
       expect(errorFound.returnCode).toBe(27012)
     }
     if ('errorMessage' in errorFound) {
-      expect(errorFound.errorMessage).toBe("Data is invalid : Unexpected value")
+      expect(errorFound.errorMessage).toBe('Data is invalid : Unexpected value')
     }
-
   } finally {
     await sim.close()
   }

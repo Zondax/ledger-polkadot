@@ -32,7 +32,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - OK', function (data) {
       await sim.start({ ...defaultOptions, model: m.name })
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
-      const blob = Buffer.from(data.blob.replace("<rootHash>", data.rootHash), 'hex')
+      const blob = Buffer.from(data.blob.replace('<rootHash>', data.rootHash), 'hex')
       const metadata = Buffer.from(data.metadata, 'hex')
 
       const { pubKey } = await app.getAddress(PATH, DOT_SS58_PREFIX)
@@ -69,8 +69,8 @@ describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
       await sim.start({ ...defaultOptions, model: m.name })
       const app = new PolkadotGenericApp(sim.getTransport(), 'roc', 'https://api.zondax.ch/polkadot/transaction/metadata')
 
-      const resp = await axios.post("https://api.zondax.ch/polkadot/node/metadata/hash", { id: 'roc' })
-      const blob = Buffer.from(data.blob.replace("<rootHash>", resp.data.metadataHash), 'hex')
+      const resp = await axios.post('https://api.zondax.ch/polkadot/node/metadata/hash', { id: 'roc' })
+      const blob = Buffer.from(data.blob.replace('<rootHash>', resp.data.metadataHash), 'hex')
 
       const { pubKey } = await app.getAddress(PATH, DOT_SS58_PREFIX)
 

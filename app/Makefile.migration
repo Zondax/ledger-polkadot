@@ -23,7 +23,7 @@ PATHS := "44'/434'" "44'/295'" "44'/523'" "44'/537'" "44'/594'" "44'/595'" "44'/
 
 
 $(foreach path,$(PATHS),\
-    $(eval APPPATH += --path $(path)) \
+    $(eval APPPATH += $(path)) \
 )
 
 

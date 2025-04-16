@@ -118,16 +118,13 @@ describe('Standard', function () {
       const respRequest = app.getAddress(PATH, DOT_SS58_PREFIX, true)
       expect(respRequest).rejects.toMatchObject({
         returnCode: 0x6986,
-        errorMessage: 'Transaction rejected'
+        errorMessage: 'Transaction rejected',
       })
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
       try {
-        await sim.compareSnapshotsAndReject('.', `${m.prefix.toLowerCase()}-show_address_reject`);
-      } catch {
-
-      }
-
+        await sim.compareSnapshotsAndReject('.', `${m.prefix.toLowerCase()}-show_address_reject`)
+      } catch {}
     } finally {
       await sim.close()
     }
