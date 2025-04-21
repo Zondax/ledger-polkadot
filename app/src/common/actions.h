@@ -18,6 +18,7 @@
 #include <os_io_seproxyhal.h>
 #include <stdint.h>
 
+#include "addr.h"
 #include "apdu_codes.h"
 #include "coin.h"
 #include "crypto.h"
@@ -46,9 +47,10 @@ __Z_INLINE void app_reject() {
     io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, 2);
 }
 
-__Z_INLINE zxerr_t app_fill_address(const uint16_t ss58prefix) {
+__Z_INLINE zxerr_t app_fill_address(const uint16_t ss58prefix, const scheme_type_e address_scheme) {
     // Put data directly in the apdu buffer
-    return crypto_fillAddress(G_io_apdu_buffer, IO_APDU_BUFFER_SIZE - 2, &action_addrResponseLen, ss58prefix);
+    return crypto_fillAddress(G_io_apdu_buffer, IO_APDU_BUFFER_SIZE - 2, &action_addrResponseLen, ss58prefix,
+                              address_scheme);
 }
 
 __Z_INLINE void app_reply_error() {

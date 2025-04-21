@@ -26,7 +26,7 @@
 
 uint32_t hdPath[HDPATH_LEN_DEFAULT];
 
-static zxerr_t crypto_extractPublicKey(uint8_t *pubKey, uint16_t pubKeyLen, uint32_t *hdPath_to_use) {
+static zxerr_t crypto_extractPublicKey_ed25519(uint8_t *pubKey, uint16_t pubKeyLen, uint32_t *hdPath_to_use) {
     if (pubKey == NULL || pubKeyLen < PK_LEN_25519) {
         return zxerr_buffer_too_small;
     }
@@ -55,6 +55,36 @@ static zxerr_t crypto_extractPublicKey(uint8_t *pubKey, uint16_t pubKeyLen, uint
 catch_cx_error:
     MEMZERO(&cx_privateKey, sizeof(cx_privateKey));
     MEMZERO(privateKeyData, SK_LEN_25519);
+
+    if (error != zxerr_ok) {
+        MEMZERO(pubKey, pubKeyLen);
+    }
+    return error;
+}
+
+static zxerr_t crypto_extractPublicKey_secp256k1(uint8_t *pubKey, uint16_t pubKeyLen, uint32_t *hdPath_to_use) {
+    if (pubKey == NULL || pubKeyLen < SECP256K1_PK_LEN_UNCOMPRESSED) {
+        return zxerr_buffer_too_small;
+    }
+
+    zxerr_t error = zxerr_unknown;
+    cx_ecfp_public_key_t cx_publicKey;
+    cx_ecfp_private_key_t cx_privateKey;
+    uint8_t privateKeyData[SECP256K1_PK_LEN_UNCOMPRESSED - 1] = {0};
+
+    // Generate keys
+    CATCH_CXERROR(os_derive_bip32_with_seed_no_throw(HDW_NORMAL, CX_CURVE_SECP256K1, hdPath_to_use, HDPATH_LEN_DEFAULT,
+                                                     privateKeyData, NULL, NULL, 0));
+
+    CATCH_CXERROR(cx_ecfp_init_private_key_no_throw(CX_CURVE_SECP256K1, privateKeyData, 32, &cx_privateKey));
+    CATCH_CXERROR(cx_ecfp_init_public_key_no_throw(CX_CURVE_SECP256K1, NULL, 0, &cx_publicKey));
+    CATCH_CXERROR(cx_ecfp_generate_pair_no_throw(CX_CURVE_SECP256K1, &cx_publicKey, &cx_privateKey, 1));
+    memcpy(pubKey, cx_publicKey.W, SECP256K1_PK_LEN_UNCOMPRESSED);
+    error = zxerr_ok;
+
+catch_cx_error:
+    MEMZERO(&cx_privateKey, sizeof(cx_privateKey));
+    MEMZERO(privateKeyData, sizeof(privateKeyData));
 
     if (error != zxerr_ok) {
         MEMZERO(pubKey, pubKeyLen);
@@ -106,13 +136,13 @@ catch_cx_error:
 }
 
 // Helper function to fill a crypto address using a given hdPath
-static zxerr_t crypto_fillAddress_helper(
+static zxerr_t crypto_fillAddress_ed25519(
     uint8_t *buffer, uint16_t bufferLen, uint16_t *addrResponseLen, uint16_t ss58prefix, uint32_t *hdPath_to_use) {
     if (bufferLen < PK_LEN_25519 + SS58_ADDRESS_MAX_LEN) {
         return zxerr_buffer_too_small;
     }
     MEMZERO(buffer, bufferLen);
-    CHECK_ZXERR(crypto_extractPublicKey(buffer, bufferLen, hdPath_to_use))
+    CHECK_ZXERR(crypto_extractPublicKey_ed25519(buffer, bufferLen, hdPath_to_use))
 
     const uint8_t outLen = crypto_SS58EncodePubkey(buffer + PK_LEN_25519, bufferLen - PK_LEN_25519, ss58prefix, buffer);
     if (outLen == 0) {
@@ -124,9 +154,62 @@ static zxerr_t crypto_fillAddress_helper(
     return zxerr_ok;
 }
 
+// Helper function to compress a secp256k1 public key
+__Z_INLINE zxerr_t compressPubkey(const uint8_t *pubkey, uint16_t pubkeyLen, uint8_t *output, uint16_t outputLen) {
+    if (pubkey == NULL || output == NULL || pubkeyLen != SECP256K1_PK_LEN_UNCOMPRESSED || outputLen < SECP256K1_PK_LEN) {
+        return zxerr_invalid_crypto_settings;
+    }
+
+    MEMCPY(output, pubkey, SECP256K1_PK_LEN);
+    output[0] = pubkey[64] & 1 ? 0x03 : 0x02;  // "Compress" public key in place
+    return zxerr_ok;
+}
+
+// Helper function to fill a crypto address using a given hdPath
+static zxerr_t crypto_fillAddress_secp256k1(uint8_t *buffer,
+                                            uint16_t bufferLen,
+                                            uint16_t *addrResponseLen,
+                                            uint32_t *hdPath_to_use) {
+    if (bufferLen < SECP256K1_PK_LEN + SECP256K1_ADDRESS_LEN) {
+        return zxerr_buffer_too_small;
+    }
+
+    // Clear the buffer
+    MEMZERO(buffer, bufferLen);
+    ZEMU_LOGF(50, "TEST 1\n");
+    // Extract the uncompressed public key
+    uint8_t uncompressedPubkey[SECP256K1_PK_LEN_UNCOMPRESSED] = {0};
+    CHECK_ZXERR(crypto_extractPublicKey_secp256k1(uncompressedPubkey, sizeof(uncompressedPubkey), hdPath_to_use))
+
+    // Compress the public key
+    CHECK_ZXERR(compressPubkey(uncompressedPubkey, sizeof(uncompressedPubkey), buffer, bufferLen))
+    char *addr = (char *)(buffer + SECP256K1_PK_LEN);
+
+    // Encode the address - skip the first byte (0x04) that indicates the uncompressed format
+    uint8_t hashed1_pk[CX_SHA256_SIZE] = {0};
+    CHECK_CX_OK(cx_keccak_256_hash(&uncompressedPubkey[1], sizeof(uncompressedPubkey) - 1, hashed1_pk));
+
+    // Take the last 20 bytes of the Keccak hash as the address
+    MEMCPY(addr, hashed1_pk + CX_SHA256_SIZE - SECP256K1_ADDRESS_LEN, SECP256K1_ADDRESS_LEN);
+
+    *addrResponseLen = SECP256K1_PK_LEN + SECP256K1_ADDRESS_LEN;
+
+    return zxerr_ok;
+}
+
 // fill a crypto address using the global hdpath
-zxerr_t crypto_fillAddress(uint8_t *buffer, uint16_t bufferLen, uint16_t *addrResponseLen, const uint16_t ss58prefix) {
-    return crypto_fillAddress_helper(buffer, bufferLen, addrResponseLen, ss58prefix, hdPath);
+zxerr_t crypto_fillAddress(uint8_t *buffer,
+                           uint16_t bufferLen,
+                           uint16_t *addrResponseLen,
+                           const uint16_t ss58prefix,
+                           const scheme_type_e address_scheme) {
+    if (address_scheme == secp256k1) {
+        ZEMU_LOGF(50, "fillAddress_secp256k1\n");
+        return crypto_fillAddress_secp256k1(buffer, bufferLen, addrResponseLen, hdPath);
+    }
+
+    // If not secp256k1, then it should be ed25519
+    return crypto_fillAddress_ed25519(buffer, bufferLen, addrResponseLen, ss58prefix, hdPath);
 }
 
 #if 0

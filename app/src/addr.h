@@ -23,6 +23,16 @@
 extern "C" {
 #endif
 
+/**
+ * @brief Address type
+ */
+typedef enum {
+    ed25519 = 0,
+    secp256k1 = 2,
+} scheme_type_e;
+
+extern scheme_type_e scheme;
+
 /// Return the number of items in the address view
 zxerr_t addr_getNumItems(uint8_t *num_items);
 
