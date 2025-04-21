@@ -48,7 +48,7 @@ describe.each(TESTS)('Raw signing', function (data) {
       const pubKey = responseAddr.pubKey
 
       // do not wait here.. we need to navigate
-      const signatureRequest = app.signRaw(PATH, txBlob)
+      const signatureRequest = app.signRawEd25519(PATH, txBlob)
 
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())

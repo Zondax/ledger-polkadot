@@ -71,7 +71,7 @@ describe('Standard', function () {
       await sim.start({ ...defaultOptions, model: m.name })
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
-      const resp = await app.getAddressEd25519(PATH, DOT_SS58_PREFIX, true)
+      const resp = await app.getAddressEd25519(PATH, DOT_SS58_PREFIX)
       console.log(resp)
 
       expect(resp.pubKey).toEqual(expected_pk)
