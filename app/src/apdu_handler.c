@@ -55,9 +55,10 @@ static void extractHDPath(uint32_t rx, uint32_t offset) {
 
 __Z_INLINE bool process_chunk(__Z_UNUSED volatile uint32_t *tx, uint32_t rx) {
     const uint8_t payloadType = G_io_apdu_buffer[OFFSET_PAYLOAD_TYPE];
-    if (G_io_apdu_buffer[OFFSET_P2] != 0) {
+    if (G_io_apdu_buffer[OFFSET_P2] != ed25519 && G_io_apdu_buffer[OFFSET_P2] != secp256k1) {
         THROW(APDU_CODE_INVALIDP1P2);
     }
+
     if (rx < OFFSET_DATA) {
         THROW(APDU_CODE_WRONG_LENGTH);
     }
@@ -178,6 +179,9 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
         THROW(APDU_CODE_OK);
     }
 
+    // Get the scheme from P2
+    scheme = G_io_apdu_buffer[OFFSET_P2];
+
     *tx = 0;
     const char *error_msg = tx_parse();
     CHECK_APP_CANARY()
@@ -188,7 +192,11 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
         THROW(APDU_CODE_DATA_INVALID);
     }
 
-    view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
+    if (scheme == ed25519) {
+        view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
+    } else {
+        view_review_init(tx_getItem, tx_getNumItems, app_sign_secp256k1);
+    }
     view_review_show(REVIEW_TXN);
     *flags |= IO_ASYNCH_REPLY;
 }
@@ -198,6 +206,9 @@ __Z_INLINE void handleSignRaw(volatile uint32_t *flags, volatile uint32_t *tx, u
     if (!process_chunk(tx, rx)) {
         THROW(APDU_CODE_OK);
     }
+
+    // Get the scheme from P2
+    scheme = G_io_apdu_buffer[OFFSET_P2];
 
     *tx = 0;
     const char *error_msg = tx_raw_parse();
@@ -209,7 +220,11 @@ __Z_INLINE void handleSignRaw(volatile uint32_t *flags, volatile uint32_t *tx, u
         THROW(APDU_CODE_DATA_INVALID);
     }
 
-    view_review_init(tx_raw_getItem, tx_raw_getNumItems, app_sign_ed25519);
+    if (scheme == ed25519) {
+        view_review_init(tx_raw_getItem, tx_raw_getNumItems, app_sign_ed25519);
+    } else {
+        view_review_init(tx_raw_getItem, tx_raw_getNumItems, app_sign_secp256k1);
+    }
     view_review_show(REVIEW_TXN);
     *flags |= IO_ASYNCH_REPLY;
 }
