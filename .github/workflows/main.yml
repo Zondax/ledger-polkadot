@@ -7,7 +7,7 @@ on:
       - main
       - develop
       - master # for safety reasons
-      - dev  # for safety reasons
+      - dev # for safety reasons
 
 jobs:
   configure:
@@ -17,6 +17,12 @@ jobs:
     steps:
       - id: get-user
         run: echo "uid_gid=$(id -u):$(id -g)" >> $GITHUB_OUTPUT
+
+  build_application:
+    name: Build application using the reusable workflow
+    uses: LedgerHQ/ledger-app-workflows/.github/workflows/reusable_build.yml@v1
+    with:
+      upload_app_binaries_artifact: "compiled_app_binaries"
 
   build:
     runs-on: ubuntu-latest
@@ -120,7 +126,7 @@ jobs:
         with:
           submodules: true
       - name: Install deps
-        run: pip install ledgerblue
+        run: pip install --break-system-packages ledgerblue
 
       - name: Build NanoS
         shell: bash -l {0}
@@ -160,7 +166,7 @@ jobs:
         with:
           submodules: true
       - name: Install deps
-        run: pip install ledgerblue
+        run: pip install --break-system-packages ledgerblue
 
       - name: Build NanoSP
         shell: bash -l {0}
@@ -200,7 +206,7 @@ jobs:
         with:
           submodules: true
       - name: Install deps
-        run: pip install ledgerblue
+        run: pip install --break-system-packages ledgerblue
 
       - name: Build Stax
         shell: bash -l {0}
@@ -220,5 +226,43 @@ jobs:
             ./app/pkg/installer_stax.sh
             ./app/pkg/migration_stax.sh
           tag_name: ${{ steps.stax.outputs.tag_name }}
+          draft: false
+          prerelease: false
+
+  build_package_flex:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/flex-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install --break-system-packages ledgerblue
+
+      - name: Build Flex
+        shell: bash -l {0}
+        run: |
+          PRODUCTION_BUILD=0 COIN=DOT_MIGRATION make
+          PRODUCTION_BUILD=0 make
+      - name: Set tag
+        id: flex
+        run: echo "tag_name=$(./app/pkg/installer_flex.sh version)" >> $GITHUB_OUTPUT
+      - name: Update Release
+        id: update_release_2
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: |
+            ./app/pkg/installer_flex.sh
+            ./app/pkg/migration_flex.sh
+          tag_name: ${{ steps.flex.outputs.tag_name }}
           draft: false
           prerelease: false

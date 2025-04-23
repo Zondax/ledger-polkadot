@@ -21,7 +21,8 @@ import { defaultOptions, DOT_SS58_PREFIX, PATH, models } from './common'
 import ed25519 from 'ed25519-supercop'
 import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
-import { ResponseError } from "@zondax/ledger-js";
+import { ResponseError } from '@zondax/ledger-js'
+import { ec } from 'elliptic'
 
 jest.setTimeout(180000)
 
@@ -44,11 +45,11 @@ describe.each(TESTS)('Raw signing', function (data) {
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
       const txBlob = Buffer.from(data.text)
-      const responseAddr = await app.getAddress(PATH, DOT_SS58_PREFIX)
+      const responseAddr = await app.getAddressEd25519(PATH, DOT_SS58_PREFIX)
       const pubKey = responseAddr.pubKey
 
       // do not wait here.. we need to navigate
-      const signatureRequest = app.signRaw(PATH, txBlob)
+      const signatureRequest = app.signRawEd25519(PATH, txBlob)
 
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
@@ -65,6 +66,41 @@ describe.each(TESTS)('Raw signing', function (data) {
         prehash = Buffer.from(blake2bFinal(context))
       }
       const valid = ed25519.verify(signatureResponse.signature.subarray(1), prehash, pubKey)
+      expect(valid).toEqual(true)
+    } finally {
+      await sim.close()
+    }
+  })
+
+  test.concurrent.each(models)(`${data.name}-secp256k1`, async function (m) {
+    const sim = new Zemu(m.path)
+    try {
+      await sim.start({ ...defaultOptions, model: m.name })
+      const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
+
+      const txBlob = Buffer.from(data.text)
+      const responseAddr = await app.getAddressEcdsa(PATH)
+      const pubKey = responseAddr.pubKey
+
+      // do not wait here.. we need to navigate
+      const signatureRequest = app.signRawEcdsa(PATH, txBlob)
+
+      // Wait until we are not in the main menu
+      await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
+      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-${data.name}-secp256k1`)
+
+      const signatureResponse = await signatureRequest
+      console.log(signatureResponse)
+
+      // Now verify the signature
+      const sha3 = require('js-sha3')
+      const msgHash = Buffer.from(sha3.keccak256(txBlob), 'hex')
+      const EC = new ec('secp256k1')
+      const signatureDER = {
+        r: signatureResponse.r,
+        s: signatureResponse.s,
+      }
+      const valid = EC.verify(msgHash, signatureDER, Buffer.from(pubKey, 'hex'), 'hex')
       expect(valid).toEqual(true)
     } finally {
       await sim.close()
@@ -97,9 +133,8 @@ test.concurrent.each(models)('Raw signing - incorrect', async function (m) {
       expect(errorFound.returnCode).toBe(27012)
     }
     if ('errorMessage' in errorFound) {
-      expect(errorFound.errorMessage).toBe("Data is invalid : Unexpected value")
+      expect(errorFound.errorMessage).toBe('Data is invalid : Unexpected value')
     }
-
   } finally {
     await sim.close()
   }

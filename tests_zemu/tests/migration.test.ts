@@ -31,38 +31,39 @@ describe('Migration', function () {
     try {
       let migrationStartText = 'review'
       if (m.name === 'nanos') {
-        migrationStartText = 'Migration'
+        migrationStartText = 'Review'
       }
 
       await sim.start({
-        ...defaultOptions, startText: migrationStartText, model: m.name,
+        ...defaultOptions,
+        startText: migrationStartText,
+        model: m.name,
         approveKeyword: isTouchDevice(m.name) ? 'Accept' : '',
         approveAction: ButtonKind.DynamicTapButton,
       })
 
-      let nav = undefined;
+      let nav = undefined
       if (isTouchDevice(m.name)) {
         const okButton: IButton = {
           x: 200,
           y: 550,
           delay: 0.25,
           direction: SwipeDirection.NoSwipe,
-        };
-        nav = new TouchNavigation(m.name, [
-          ButtonKind.SwipeContinueButton,
-          ButtonKind.ConfirmYesButton,
-        ]);
-        nav.schedule[1].button = okButton;
+        }
+        nav = new TouchNavigation(m.name, [ButtonKind.SwipeContinueButton, ButtonKind.ConfirmYesButton])
+        nav.schedule[1].button = okButton
+      } else if (m.name === 'nanos') {
+        nav = new ClickNavigation([5, 0])
       } else {
-        nav = new ClickNavigation([4, 0]);
+        nav = new ClickNavigation([4, 0])
       }
 
       const path = '.'
       const testcaseName = `${m.prefix.toLowerCase()}-migration-mainmenu`
 
-      const lastIndex = await sim.navigate(path, testcaseName, nav.schedule);
+      const lastIndex = await sim.navigate(path, testcaseName, nav.schedule)
       await sim.compareSnapshots(path, testcaseName, lastIndex)
-      await sim.takeSnapshotAndOverwrite(path, testcaseName, lastIndex);
+      await sim.takeSnapshotAndOverwrite(path, testcaseName, lastIndex)
 
       const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
@@ -86,7 +87,6 @@ describe('Migration', function () {
       console.log(respASTR)
 
       expect(respASTR.pubKey).toEqual(astar_pk)
-
     } finally {
       await sim.close()
     }
