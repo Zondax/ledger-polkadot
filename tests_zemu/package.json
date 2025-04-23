@@ -28,13 +28,16 @@
   "dependencies": {
     "@zondax/ledger-js": "^1.2.0",
     "@zondax/ledger-substrate": "^1.1.0",
-    "@zondax/zemu": "^0.55.3"
+    "@zondax/zemu": "^0.55.3",
+    "elliptic": "^6.5.4",
+    "js-sha3": "^0.9.3"
   },
   "devDependencies": {
     "@ledgerhq/hw-transport-node-hid": "^6.29.0",
     "@ledgerhq/logs": "^6.12.0",
-    "@noble/curves": "^1.4.0",
+    "@noble/curves": "^1.9.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/elliptic": "^6.4.14",
     "@types/jest": "^29.5.12",
     "@types/ledgerhq__hw-transport": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.31.0",
