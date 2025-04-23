@@ -25,6 +25,7 @@ extern "C" {
 
 /**
  * @brief Address type
+ * enum 1 was reserved for sr25519 which is not supported
  */
 typedef enum {
     ed25519 = 0,

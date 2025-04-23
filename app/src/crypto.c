@@ -176,7 +176,7 @@ static zxerr_t crypto_fillAddress_secp256k1(uint8_t *buffer,
 
     // Clear the buffer
     MEMZERO(buffer, bufferLen);
-    ZEMU_LOGF(50, "TEST 1\n");
+
     // Extract the uncompressed public key
     uint8_t uncompressedPubkey[SECP256K1_PK_LEN_UNCOMPRESSED] = {0};
     CHECK_ZXERR(crypto_extractPublicKey_secp256k1(uncompressedPubkey, sizeof(uncompressedPubkey), hdPath_to_use))
