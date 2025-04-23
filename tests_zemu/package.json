@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@zondax/ledger-js": "^1.2.0",
-    "@zondax/ledger-substrate": "^1.0.1",
+    "@zondax/ledger-substrate": "^1.1.0",
     "@zondax/zemu": "^0.55.3"
   },
   "devDependencies": {
@@ -37,12 +37,12 @@
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/jest": "^29.5.12",
     "@types/ledgerhq__hw-transport": "^6.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.30.1",
-    "@typescript-eslint/parser": "^8.30.1",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
     "blakejs": "^1.2.1",
     "crypto-js": "4.2.0",
     "ed25519-supercop": "^2.0.1",
-    "eslint": "^9.5.0",
+    "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "^28.6.0",

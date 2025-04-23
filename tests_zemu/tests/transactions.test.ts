@@ -35,10 +35,10 @@ describe.each(TEST_TRANSACTIONS)('Transactions - OK', function (data) {
       const blob = Buffer.from(data.blob.replace('<rootHash>', data.rootHash), 'hex')
       const metadata = Buffer.from(data.metadata, 'hex')
 
-      const { pubKey } = await app.getAddress(PATH, DOT_SS58_PREFIX)
+      const { pubKey } = await app.getAddressEd25519(PATH, DOT_SS58_PREFIX)
 
       // do not wait here.. we need to navigate
-      const signatureRequest = app.signWithMetadata(PATH, blob, metadata)
+      const signatureRequest = app.signWithMetadataEd25519(PATH, blob, metadata)
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
@@ -72,10 +72,10 @@ describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
       const resp = await axios.post('https://api.zondax.ch/polkadot/node/metadata/hash', { id: 'roc' })
       const blob = Buffer.from(data.blob.replace('<rootHash>', resp.data.metadataHash), 'hex')
 
-      const { pubKey } = await app.getAddress(PATH, DOT_SS58_PREFIX)
+      const { pubKey } = await app.getAddressEd25519(PATH, DOT_SS58_PREFIX)
 
       // do not wait here.. we need to navigate
-      const signatureRequest = app.sign(PATH, blob)
+      const signatureRequest = app.signEd25519(PATH, blob)
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
@@ -111,7 +111,7 @@ describe.each(TEST_TRANSACTIONS_FAIL)('Transactions - FAIL', function (data) {
 
       let errorFound = undefined
       try {
-        await app.signWithMetadata(PATH, blob, metadata)
+        await app.signWithMetadataEd25519(PATH, blob, metadata)
       } catch (e) {
         errorFound = e
       }

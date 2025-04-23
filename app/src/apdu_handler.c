@@ -32,6 +32,7 @@
 
 static bool tx_initialized = false;
 uint16_t blobLen = 0;
+scheme_type_e scheme = ed25519;
 
 static void extractHDPath(uint32_t rx, uint32_t offset) {
     tx_initialized = false;
@@ -135,16 +136,28 @@ __Z_INLINE void handleGetAddr(volatile uint32_t *flags, volatile uint32_t *tx, u
     uint16_t ss58prefix = 0;
     extractHDPath(rx, OFFSET_DATA);
 
-    // check if we have ss58prefix available
-    if ((rx - OFFSET_DATA) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT + sizeof(uint16_t)) {
-        THROW(APDU_CODE_WRONG_LENGTH);
+    // Get address type from P2
+    scheme = G_io_apdu_buffer[OFFSET_P2];
+
+    if (scheme == ed25519) {
+        // check if we have ss58prefix available
+        if ((rx - OFFSET_DATA) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT + sizeof(uint16_t)) {
+            THROW(APDU_CODE_WRONG_LENGTH);
+        }
+
+        // read ss58prefix, right after hdPath
+        memcpy(&ss58prefix, G_io_apdu_buffer + OFFSET_DATA + sizeof(uint32_t) * HDPATH_LEN_DEFAULT, sizeof(uint16_t));
+    } else {
+        if ((rx - OFFSET_DATA) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT) {
+            THROW(APDU_CODE_WRONG_LENGTH);
+        }
+        ss58prefix = 0;
     }
-    // read ss58prefix, right after hdPath
-    memcpy(&ss58prefix, G_io_apdu_buffer + OFFSET_DATA + sizeof(uint32_t) * HDPATH_LEN_DEFAULT, sizeof(uint16_t));
 
     const uint8_t requireConfirmation = G_io_apdu_buffer[OFFSET_P1];
 
-    const zxerr_t zxerr = app_fill_address(ss58prefix);
+    const zxerr_t zxerr = app_fill_address(ss58prefix, scheme);
+
     if (zxerr != zxerr_ok) {
         *tx = 0;
         THROW(APDU_CODE_DATA_INVALID);

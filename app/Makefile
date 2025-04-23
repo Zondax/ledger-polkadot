@@ -106,7 +106,11 @@ ICON_FLEX = flex_icon.gif
 # Possibles curves are: secp256k1, secp256r1, ed25519 and bls12381g1
 # If your app needs it, you can specify multiple curves by using:
 # `CURVE_APP_LOAD_PARAMS = <curve1> <curve2>`
+ifeq ($(COIN),DOT)
+CURVE_APP_LOAD_PARAMS = ed25519 secp256k1
+else ifeq ($(COIN),DOT_MIGRATION)
 CURVE_APP_LOAD_PARAMS = ed25519
+endif
 
 INCLUDES_PATH += $(CURDIR)/src/common
 INCLUDES_PATH += $(CURDIR)/src/swap
