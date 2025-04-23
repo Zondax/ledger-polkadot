@@ -42,6 +42,9 @@ zxerr_t crypto_fillAddress_standalone(uint8_t *params,
 
 zxerr_t crypto_sign_ed25519(uint8_t *signature, uint16_t signatureMaxlen, const uint8_t *message, uint16_t messageLen);
 
+zxerr_t crypto_sign_secp256k1(
+    uint8_t *output, uint16_t outputLen, const uint8_t *message, uint16_t messageLen, uint16_t *sigSize);
+
 #ifdef __cplusplus
 }
 #endif

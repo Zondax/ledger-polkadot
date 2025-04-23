@@ -8,7 +8,7 @@ The general structure of commands and responses is as follows:
 
 | Field   | Type     | Content                | Note |
 | :------ | :------- | :--------------------- | ---- |
-| CLA     | byte (1) | Application Identifier | 0x90 |
+| CLA     | byte (1) | Application Identifier | 0xF9 |
 | INS     | byte (1) | Instruction ID         |      |
 | P1      | byte (1) | Parameter 1            |      |
 | P2      | byte (1) | Parameter 2            |      |
@@ -76,7 +76,7 @@ The general structure of commands and responses is as follows:
 
 | Field | Type     | Content                | Expected |
 | ----- | -------- | ---------------------- | -------- |
-| CLA   | byte (1) | Application Identifier | 0x90     |
+| CLA   | byte (1) | Application Identifier | 0xF9     |
 | INS   | byte (1) | Instruction ID         | 0x00     |
 | P1    | byte (1) | Parameter 1            | ignored  |
 | P2    | byte (1) | Parameter 2            | ignored  |
@@ -102,25 +102,35 @@ The general structure of commands and responses is as follows:
 
 | Field   | Type     | Content                   | Expected          |
 | ------- | -------- | ------------------------- | ----------------- |
-| CLA     | byte (1) | Application Identifier    | 0x90              |
+| CLA     | byte (1) | Application Identifier    | 0xF9              |
 | INS     | byte (1) | Instruction ID            | 0x01              |
 | P1      | byte (1) | Request User confirmation | No = 0 / Yes = 1  |
-| P2      | byte (1) | Parameter 2               | ignored           |
+| P2      | byte (1) | Parameter 2               | 0 - ED25519   <br>2 - ECDSA |
 | L       | byte (1) | Bytes in payload          | 22 bytes          |
 | Path[0] | byte (4) | Derivation Path Data      | 0x80000000 \| 44  |
 | Path[1] | byte (4) | Derivation Path Data      | 0x80000000 \| 354 |
 | Path[2] | byte (4) | Derivation Path Data      | ?                 |
 | Path[3] | byte (4) | Derivation Path Data      | ?                 |
 | Path[4] | byte (4) | Derivation Path Data      | ?                 |
-| SS58    | byte (2) | SS58 for addr encoding    | ?                 |
+| SS58    | byte (2) | SS58 for addr encoding    | Not used if P2 = 2|
 
 #### Response
+
+- ED25519 (P2 = 0)
 
 | Field   | Type      | Content     | Note                     |
 | ------- | --------- | ----------- | ------------------------ |
 | PK      | byte (32) | Public Key  |                          |
 | ADDR    | byte (??) | address     |                          |
 | SW1-SW2 | byte (2)  | Return code | see list of return codes |
+
+- ECDSA (P2 = 2)
+
+| Field   | Type      | Content               | Note                     |
+| ------- | --------- | --------------------- | ------------------------ |
+| PK      | byte (33) | Compressed Public Key |                          |
+| ADDR    | byte (20) | Address               |                          |
+| SW1-SW2 | byte (2)  | Return code           | see list of return codes |
 
 ---
 
@@ -130,12 +140,12 @@ The general structure of commands and responses is as follows:
 
 | Field | Type     | Content                | Expected  |
 | ----- | -------- | ---------------------- | --------- |
-| CLA   | byte (1) | Application Identifier | 0x90      |
+| CLA   | byte (1) | Application Identifier | 0xF9      |
 | INS   | byte (1) | Instruction ID         | 0x02      |
 | P1    | byte (1) | Payload desc           | 0 = init  |
 |       |          |                        | 1 = add   |
 |       |          |                        | 2 = last  |
-| P2    | byte (1) | Parameter 2            | ignored   |
+| P2    | byte (1) | Parameter 2            | 0 - ED25519   <br>2 - ECDSA |
 | L     | byte (1) | Bytes in payload       | (depends) |
 
 The first packet/chunk includes only the derivation path and tx length.
@@ -162,9 +172,18 @@ spacing.
 
 #### Response
 
+- ED25519 (P2 = 0)
+
 | Field   | Type      | Content     | Note                     |
 | ------- | --------- | ----------- | ------------------------ |
 | SIG     | byte (65) | Signature   |                          |
+| SW1-SW2 | byte (2)  | Return code | see list of return codes |
+
+- ECDSA (P2 = 2)
+
+| Field   | Type      | Content     | Note                     |
+| ------- | --------- | ----------- | ------------------------ |
+| SIG     | byte (65) | Signature   | RSV format:<br>r - 32 bytes<br>s - 32 bytes<br>v - 1 byte |
 | SW1-SW2 | byte (2)  | Return code | see list of return codes |
 
 ---
@@ -175,7 +194,7 @@ spacing.
 
 | Field | Type     | Content                | Expected  |
 | ----- | -------- | ---------------------- | --------- |
-| CLA   | byte (1) | Application Identifier | 0x90      |
+| CLA   | byte (1) | Application Identifier | 0xF9      |
 | INS   | byte (1) | Instruction ID         | 0x03      |
 | P1    | byte (1) | Payload desc           | 0 = init  |
 |       |          |                        | 1 = add   |
@@ -206,7 +225,18 @@ All other packets/chunks contain data chunks that are described below
 
 #### Response
 
+- ED25519 (P2 = 0)
+
 | Field   | Type      | Content     | Note                     |
 | ------- | --------- | ----------- | ------------------------ |
 | SIG     | byte (65) | Signature   |                          |
 | SW1-SW2 | byte (2)  | Return code | see list of return codes |
+
+- ECDSA (P2 = 2)
+
+| Field   | Type      | Content     | Note                     |
+| ------- | --------- | ----------- | ------------------------ |
+| SIG     | byte (65) | Signature   | RSV format:<br>r - 32 bytes<br>s - 32 bytes<br>v - 1 byte |
+| SW1-SW2 | byte (2)  | Return code | see list of return codes |
+
+---
