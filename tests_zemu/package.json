@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@zondax/ledger-js": "^1.2.0",
-    "@zondax/ledger-substrate": "^1.1.0",
+    "@zondax/ledger-substrate": "^1.1.1",
     "@zondax/zemu": "^0.55.3",
     "elliptic": "^6.5.4",
     "js-sha3": "^0.9.3"
