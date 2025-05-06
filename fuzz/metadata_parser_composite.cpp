@@ -1,18 +1,14 @@
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
-#include <iostream>
 #include <string>
 
-#include "app_mode.h"
 #include "hexutils.h"
 #include "metadata_parser.h"
-#include "metadata_proof.h"
-#include "metadata_reader.h"
-#include "parser.h"
+#include "metadata_types.h"
 #include "parser_common.h"
 #include "parser_impl.h"
-
+#include "substrate_types.h"
 #ifdef NDEBUG
 #error "This fuzz target won't work correctly with NDEBUG defined, which will cause asserts to be eliminated"
 #endif

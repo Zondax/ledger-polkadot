@@ -3,6 +3,9 @@
 #include <cstdio>
 
 #include "parser.h"
+#include "parser_common.h"
+#include "parser_txdef.h"
+#include "view.h"
 
 #ifdef NDEBUG
 #error "This fuzz target won't work correctly with NDEBUG defined, which will cause asserts to be eliminated"
