@@ -169,8 +169,8 @@ zxerr_t crypto_sign_secp256k1(
                                                      privateKeyData, NULL, NULL, 0));
     zemu_log_stack("os_derive_bip32_with_seed_no_throw\n");
     CATCH_CXERROR(cx_ecfp_init_private_key_no_throw(CX_CURVE_SECP256K1, privateKeyData, 32, &cx_privateKey));
-    CATCH_CXERROR(cx_ecdsa_sign_no_throw(&cx_privateKey, CX_RND_RFC6979 | CX_LAST, CX_SHA256, messageDigest,
-                                         CX_KECCAK_256_SIZE, signature->der_signature, &signatureLength, &tmpInfo));
+    CATCH_CXERROR(cx_ecdsa_sign_no_throw(&cx_privateKey, CX_RND_RFC6979, CX_SHA256, messageDigest, CX_KECCAK_256_SIZE,
+                                         signature->der_signature, &signatureLength, &tmpInfo));
 
     // Convert DER signature to R, S, V
     const err_convert_e err_c =

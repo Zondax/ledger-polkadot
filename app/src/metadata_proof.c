@@ -236,7 +236,6 @@ parser_error_t getMetadataDigest(Metadata_t *metadata, uint8_t metadataDigest[BL
     proof.lemmas = metadata->shortMetadata.lemmas;
     proof.indices = metadata->shortMetadata.indices;
 
-    // CHECK_ERROR(setInitialConditions(&proof));
     const uint8_t MAX_ONE_BYTE_COMPACT = 0x3F;
 
     const ExtraInfo_t *extraInfo = &metadata->shortMetadata.extraInfo;
