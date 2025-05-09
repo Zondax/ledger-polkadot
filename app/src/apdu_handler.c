@@ -30,6 +30,10 @@
 #include "view.h"
 #include "zxmacros.h"
 
+#ifdef HAVE_SWAP
+#include "swap.h"
+#endif
+
 static bool tx_initialized = false;
 uint16_t blobLen = 0;
 scheme_type_e scheme = ed25519;
@@ -192,11 +196,18 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
         THROW(APDU_CODE_DATA_INVALID);
     }
 
-    if (scheme == ed25519) {
-        view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
-    } else {
-        view_review_init(tx_getItem, tx_getNumItems, app_sign_secp256k1);
+#ifdef HAVE_SWAP
+    if (G_swap_state.called_from_swap && G_swap_state.should_exit && error_msg == NULL) {
+        // Call app_sign_ed25519 without going through UI display, the UI validation was done in
+        // Exchange app already
+        app_sign_ed25519();
+        // Go back to Exchange and report our success to display the modal
+        finalize_exchange_sign_transaction(true);
+        // Unreachable
     }
+#endif
+
+    view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
     view_review_show(REVIEW_TXN);
     *flags |= IO_ASYNCH_REPLY;
 }
@@ -288,7 +299,6 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
             *tx += 2;
         }
         FINALLY {
-#if 0
 #ifdef HAVE_SWAP
             if (G_swap_state.called_from_swap && G_swap_state.should_exit) {
                 // Swap checking failed, send reply now and exit, don't wait next cycle
@@ -298,7 +308,6 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
                 // Go back to exchange and report our status
                 finalize_exchange_sign_transaction(sw == 0);
             }
-#endif
 #endif
         }
     }

@@ -20,6 +20,7 @@
 #include "coin.h"
 #include "crypto_helper.h"
 #include "cx.h"
+#include "swap_utils.h"
 #include "zxmacros.h"
 
 #define PREFIX_SIGNATURE_TYPE_ED25519 0
@@ -270,10 +271,13 @@ zxerr_t crypto_fillAddress(uint8_t *buffer,
     return crypto_fillAddress_ed25519(buffer, bufferLen, addrResponseLen, ss58prefix, hdPath);
 }
 
-#if 0
 // fill a crypto address using a locally computed hdpath
-zxerr_t crypto_fillAddress_standalone(uint8_t *params, uint8_t paramsSize, uint8_t *buffer, uint16_t bufferLen,
-                                      uint16_t *addrResponseLen, const uint16_t ss58prefix) {
+zxerr_t crypto_fillAddress_standalone(uint8_t *params,
+                                      uint8_t paramsSize,
+                                      uint8_t *buffer,
+                                      uint16_t bufferLen,
+                                      uint16_t *addrResponseLen,
+                                      const uint16_t ss58prefix) {
     uint32_t local_hdPath[HDPATH_LEN_DEFAULT];
 
     if (paramsSize != (sizeof(uint32_t) * HDPATH_LEN_DEFAULT)) {
@@ -286,4 +290,3 @@ zxerr_t crypto_fillAddress_standalone(uint8_t *params, uint8_t paramsSize, uint8
 
     return crypto_fillAddress_helper(buffer, bufferLen, addrResponseLen, ss58prefix, local_hdPath);
 }
-#endif
