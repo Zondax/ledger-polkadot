@@ -207,7 +207,11 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
     }
 #endif
 
-    view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
+    if (scheme == ed25519) {
+        view_review_init(tx_getItem, tx_getNumItems, app_sign_ed25519);
+    } else {
+        view_review_init(tx_getItem, tx_getNumItems, app_sign_secp256k1);
+    }
     view_review_show(REVIEW_TXN);
     *flags |= IO_ASYNCH_REPLY;
 }

@@ -288,5 +288,5 @@ zxerr_t crypto_fillAddress_standalone(uint8_t *params,
         CHECK_ZXERR(readU32BE(params + (i * 4), &local_hdPath[i]))
     }
 
-    return crypto_fillAddress_helper(buffer, bufferLen, addrResponseLen, ss58prefix, local_hdPath);
+    return crypto_fillAddress_ed25519(buffer, bufferLen, addrResponseLen, ss58prefix, local_hdPath);
 }

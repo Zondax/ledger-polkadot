@@ -78,6 +78,7 @@ static void library_main(libargs_t *args) {
             }
         }
         CATCH_OTHER(e) {
+            UNUSED(e);
         }
         FINALLY {
             os_lib_end();
