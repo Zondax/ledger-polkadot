@@ -17,16 +17,29 @@
 #pragma once
 
 #include "lib_standard_app/swap_lib_calls.h"
-#include "parser.h"
 #include "parser_common.h"
-#include "parser_txdef.h"
 #include "stdbool.h"
 #include "stdint.h"
 #include "zxerror.h"
 
+#define MAX_AMOUNT_LENGTH              16
+#define MAX_DESTINATION_ADDRESS_LENGTH 65
+
 typedef struct {
+    uint8_t amount[MAX_AMOUNT_LENGTH];
+    uint8_t amount_length;
+    uint64_t fees;
+    char destination_address[MAX_DESTINATION_ADDRESS_LENGTH];
+    /* Is swap mode */
     uint8_t called_from_swap;
     uint8_t should_exit;
 } swap_globals_t;
 
 extern swap_globals_t G_swap_state;
+
+// Handler for swap features
+parser_error_t check_swap_conditions(parser_tx_t *txObj);
+void handle_check_address(check_address_parameters_t *params);
+void handle_get_printable_amount(get_printable_amount_parameters_t *params);
+bool copy_transaction_parameters(create_transaction_parameters_t *sign_transaction_params);
+void __attribute__((noreturn)) finalize_exchange_sign_transaction(bool is_success);

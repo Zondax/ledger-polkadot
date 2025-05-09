@@ -24,12 +24,20 @@
 #include "nbgl_use_case.h"
 #endif
 
-#if 0
+#ifdef HAVE_SWAP
+#include "lib_standard_app/swap_lib_calls.h"
+#include "swap.h"
+#endif
+
+#ifdef HAVE_SWAP
 // Helper to quit the application in a limited THROW context
 static void app_exit(void) {
     BEGIN_TRY_L(exit) {
-        TRY_L(exit) { os_sched_exit(-1); }
-        FINALLY_L(exit) {}
+        TRY_L(exit) {
+            os_sched_exit(-1);
+        }
+        FINALLY_L(exit) {
+        }
     }
     END_TRY_L(exit);
 }
@@ -69,8 +77,12 @@ static void library_main(libargs_t *args) {
                     break;
             }
         }
-        CATCH_OTHER(e) {}
-        FINALLY { os_lib_end(); }
+        CATCH_OTHER(e) {
+            UNUSED(e);
+        }
+        FINALLY {
+            os_lib_end();
+        }
     }
     END_TRY;
 }
@@ -83,7 +95,7 @@ __attribute__((section(".boot"))) int main(int arg0) {
     os_boot();
 
     if (arg0 != 0) {
-#if 0
+#if HAVE_SWAP
         // The app has been started in library mode
         libargs_t *args = (libargs_t *)arg0;
         if (args->id != 0x100) {
