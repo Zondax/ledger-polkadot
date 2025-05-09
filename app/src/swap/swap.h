@@ -22,11 +22,14 @@
 #include "stdint.h"
 #include "zxerror.h"
 
+#define MAX_AMOUNT_LENGTH              16
+#define MAX_DESTINATION_ADDRESS_LENGTH 65
+
 typedef struct {
-    uint8_t amount[16];
+    uint8_t amount[MAX_AMOUNT_LENGTH];
     uint8_t amount_length;
     uint64_t fees;
-    char destination_address[65];
+    char destination_address[MAX_DESTINATION_ADDRESS_LENGTH];
     /* Is swap mode */
     uint8_t called_from_swap;
     uint8_t should_exit;

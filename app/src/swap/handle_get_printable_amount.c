@@ -25,16 +25,16 @@ void handle_get_printable_amount(get_printable_amount_parameters_t *params) {
     if (params == NULL) {
         return;
     }
-    uint8_t amount[16];
+    uint8_t amount[MAX_AMOUNT_LENGTH] = {0};
 
     MEMZERO(amount, sizeof(amount));
     MEMZERO(params->printable_amount, sizeof(params->printable_amount));
 
-    if (params->amount_length > 16) {
+    if (params->amount_length > MAX_AMOUNT_LENGTH) {
         return;
     }
 
-    memcpy(amount + 16 - params->amount_length, params->amount, params->amount_length);
+    MEMCPY(amount + MAX_AMOUNT_LENGTH - params->amount_length, params->amount, params->amount_length);
 
     char tmp_amount[100] = {0};
     const zxerr_t zxerr = bytesAmountToStringBalance(amount, sizeof(amount), tmp_amount, sizeof(tmp_amount));
