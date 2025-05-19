@@ -240,7 +240,7 @@ __Z_INLINE void handleSignRaw(volatile uint32_t *flags, volatile uint32_t *tx, u
     } else {
         view_review_init(tx_raw_getItem, tx_raw_getNumItems, app_sign_secp256k1);
     }
-    view_review_show(REVIEW_TXN);
+    view_review_show(REVIEW_MSG);
     *flags |= IO_ASYNCH_REPLY;
 }
 
