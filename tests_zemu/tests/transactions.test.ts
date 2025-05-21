@@ -90,10 +90,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - OK', function (data) {
       const msgHash = Buffer.from(sha3.keccak256(blob), 'hex')
 
       const EC = new ec('secp256k1')
-      const signatureDER = {
-        r: signatureResponse.r,
-        s: signatureResponse.s,
-      }
+      const signatureDER = PolkadotGenericApp.parseEcdsaSignature(signatureResponse.signature)
       const valid = EC.verify(msgHash, signatureDER, Buffer.from(pubKey, 'hex'), 'hex')
 
       expect(valid).toEqual(true)
@@ -139,7 +136,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
     }
   })
 
-  test.only.each(models)(`Test secp256k1: ${data.name}`, async function (m) {
+  test.concurrent.each(models)(`Test secp256k1: ${data.name}`, async function (m) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({ ...defaultOptions, model: m.name })
@@ -164,10 +161,7 @@ describe.each(TEST_TRANSACTIONS)('Transactions - API - OK', function (data) {
       const sha3 = require('js-sha3')
       const msgHash = Buffer.from(sha3.keccak256(blob), 'hex')
       const EC = new ec('secp256k1')
-      const signatureDER = {
-        r: signatureResponse.r,
-        s: signatureResponse.s,
-      }
+      const signatureDER = PolkadotGenericApp.parseEcdsaSignature(signatureResponse.signature)
       const valid = EC.verify(msgHash, signatureDER, Buffer.from(pubKey, 'hex'), 'hex')
       expect(valid).toEqual(true)
     } finally {
