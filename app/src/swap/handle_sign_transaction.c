@@ -22,10 +22,9 @@
 #include "swap_utils.h"
 #include "zxformat.h"
 
-#define SWAP_EXPECTED_ITEMS 4u
+#define SWAP_EXPECTED_ITEMS     4u
 #define MAX_ADDRESS_CHAR_LENGTH 64u
-#define MAX_AMOUNT_LENGTH 16u
-#define MAX_FEES_LENGTH 8u
+#define MAX_FEES_LENGTH         8u
 
 swap_globals_t G_swap_state;
 
@@ -48,17 +47,18 @@ bool copy_transaction_parameters(create_transaction_parameters_t *sign_transacti
 
     strncpy(destination_address, sign_transaction_params->destination_address, sizeof(destination_address) - 1);
 
-    if ((destination_address[sizeof(destination_address) - 1] != '\0') || (sign_transaction_params->amount_length > MAX_AMOUNT_LENGTH) ||
+    if ((destination_address[sizeof(destination_address) - 1] != '\0') ||
+        (sign_transaction_params->amount_length > MAX_AMOUNT_LENGTH) ||
         (sign_transaction_params->fee_amount_length > MAX_FEES_LENGTH)) {
         return false;
     }
 
     // store amount as big endian in 16 bytes, so the passed data should be alligned to right
     // input {0xEE, 0x00, 0xFF} should be stored like {0x00, 0x00, 0x00, 0x00, 0x00, 0xEE, 0x00, 0xFF}
-    memcpy(amount + MAX_AMOUNT_LENGTH - sign_transaction_params->amount_length, sign_transaction_params->amount,
+    MEMCPY(amount + MAX_AMOUNT_LENGTH - sign_transaction_params->amount_length, sign_transaction_params->amount,
            sign_transaction_params->amount_length);
 
-    memcpy(fees + MAX_FEES_LENGTH - sign_transaction_params->fee_amount_length, sign_transaction_params->fee_amount,
+    MEMCPY(fees + MAX_FEES_LENGTH - sign_transaction_params->fee_amount_length, sign_transaction_params->fee_amount,
            sign_transaction_params->fee_amount_length);
 
     amount_length = sign_transaction_params->amount_length;
@@ -71,8 +71,8 @@ bool copy_transaction_parameters(create_transaction_parameters_t *sign_transacti
 
     // Commit the values read from exchange to the clean global space
     G_swap_state.amount_length = amount_length;
-    memcpy(G_swap_state.amount, amount, sizeof(amount));
-    memcpy(G_swap_state.destination_address, destination_address, sizeof(G_swap_state.destination_address));
+    MEMCPY(G_swap_state.amount, amount, sizeof(amount));
+    MEMCPY(G_swap_state.destination_address, destination_address, sizeof(G_swap_state.destination_address));
     readU64BE(fees, &G_swap_state.fees);
 
     return true;
@@ -127,7 +127,7 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     CHECK_ERROR(parser_getItem(txObj, &uiFields));
     if (strncmp(valid_tx_pallet, tmpKey, strlen(valid_tx_pallet) + 1) != 0 ||
         (strncmp(valid_tx_call_1, tmpValue, strlen(valid_tx_call_1) + 1) != 0 &&
-        strncmp(valid_tx_call_2, tmpValue, strlen(valid_tx_call_2) + 1) != 0)) {
+         strncmp(valid_tx_call_2, tmpValue, strlen(valid_tx_call_2) + 1) != 0)) {
         ZEMU_LOGF(200, "Wrong swap tx method (%s %s, should be : %s %s).\n", tmpKey, tmpValue, valid_tx_pallet,
                   valid_tx_call);
         return parser_swap_tx_wrong_method;

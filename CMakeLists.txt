@@ -168,6 +168,11 @@ target_include_directories(app_lib PUBLIC
 if(ENABLE_FUZZING)
         set(FUZZ_TARGETS
                 parser_parse
+                metadata_parser_array
+                metadata_parser_composite
+                metadata_parser_primitives
+                metadata_parser_sequence
+                metadata_parser_variant
         )
 
         foreach(target ${FUZZ_TARGETS})

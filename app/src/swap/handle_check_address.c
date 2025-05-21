@@ -23,7 +23,8 @@
 #define ED25519_ADD_KIND 0
 
 void handle_check_address(check_address_parameters_t *params) {
-    if (params == NULL || params->address_to_check == NULL || params->address_parameters == NULL || params->address_parameters_length < 2) {
+    if (params == NULL || params->address_to_check == NULL || params->address_parameters == NULL ||
+        params->address_parameters_length < 2) {
         return;
     }
     params->result = 0;
