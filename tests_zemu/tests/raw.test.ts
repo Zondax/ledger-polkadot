@@ -96,10 +96,7 @@ describe.each(TESTS)('Raw signing', function (data) {
       const sha3 = require('js-sha3')
       const msgHash = Buffer.from(sha3.keccak256(txBlob), 'hex')
       const EC = new ec('secp256k1')
-      const signatureDER = {
-        r: signatureResponse.r,
-        s: signatureResponse.s,
-      }
+      const signatureDER = PolkadotGenericApp.parseEcdsaSignature(signatureResponse.signature)
       const valid = EC.verify(msgHash, signatureDER, Buffer.from(pubKey, 'hex'), 'hex')
       expect(valid).toEqual(true)
     } finally {
