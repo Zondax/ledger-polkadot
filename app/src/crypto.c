@@ -160,16 +160,18 @@ zxerr_t crypto_sign_secp256k1(
     // When the payload is bigger than MAX_SIGN_SIZE, it needs to be hashed with blake2b_256 before hashing with keccak_256.
     // https://github.com/paritytech/polkadot-sdk/blob/1a512570552119a49a8ecb2abfb7021954c4422d/substrate/primitives/runtime/src/generic/unchecked_extrinsic.rs#L567
     if (messageLen > MAX_SIGN_SIZE) {
-        // Hash it
+        uint8_t intermediate_digest[BLAKE2B_DIGEST_SIZE];
+        // Hash it with blake2b
         cx_blake2b_t ctx;
         CATCH_CXERROR(cx_blake2b_init_no_throw(&ctx, 256));
-        CATCH_CXERROR(cx_hash_no_throw(&ctx.header, CX_LAST, message, messageLen, messageDigest, BLAKE2B_DIGEST_SIZE));
-        message = messageDigest;
-        messageLen = BLAKE2B_DIGEST_SIZE;
-    }
+        CATCH_CXERROR(cx_hash_no_throw(&ctx.header, CX_LAST, message, messageLen, intermediate_digest, BLAKE2B_DIGEST_SIZE));
 
-    // Mandatory, hash the message with keccak_256
-    CHECK_CX_OK(cx_keccak_256_hash(message, messageLen, messageDigest));
+        // Then hash with keccak_256
+        CHECK_CX_OK(cx_keccak_256_hash(intermediate_digest, BLAKE2B_DIGEST_SIZE, messageDigest));
+    } else {
+        // Mandatory, hash the message with keccak_256
+        CHECK_CX_OK(cx_keccak_256_hash(message, messageLen, messageDigest));
+    }
 
     cx_ecfp_private_key_t cx_privateKey;
     uint8_t privateKeyData[SECP256K1_PK_LEN_UNCOMPRESSED - 1] = {0};
