@@ -23,9 +23,14 @@ ifeq ($(BOLOS_SDK),)
 # When not using the SDK, we override and build the XL complete app
 
 PRODUCTION_BUILD ?= 1
+SKIP_NANOS = 1
+
+ifeq ($(SKIP_NANOS), 0)
+$(error "NanoS device is not supported")
+endif
+
 $(info ************ COIN  = [$(COIN)])
 include $(CURDIR)/deps/ledger-zxlib/dockerized_build.mk
-
 else
 default:
 	$(MAKE) -C app
