@@ -5,18 +5,19 @@ Checks: "-*,
   google-runtime-int,
   google-readability-avoid-underscore-in-googletest-name,
   misc-*,
+  -misc-include-cleaner,
   performance-*,
   portability-*,
   readability-*,
   -misc-no-recursion,
-  -readability-function-cognitive-complexity
+  -readability-function-cognitive-complexity,
   -readability-magic-numbers"
 WarningsAsErrors: "*"
 CheckOptions:
   - key: readability-identifier-length.MinimumVariableNameLength
-    value: 2
+    value: 1
   - key: readability-identifier-length.MinimumParameterNameLength
-    value: 2
+    value: 1
   - key: readability-identifier-length.MinimumLoopCounterNameLength
     value: 1
   - key: readability-magic-numbers.IgnorePowersOf2IntegerValues
