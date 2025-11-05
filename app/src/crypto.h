@@ -31,7 +31,7 @@ extern "C" {
 extern uint32_t hdPath[HDPATH_LEN_DEFAULT];
 
 zxerr_t crypto_fillAddress(
-    uint8_t *buffer, uint16_t bufferLen, uint16_t *addrResponseLen, uint16_t ss58prefix, const scheme_type_e address_scheme);
+    uint8_t *buffer, uint16_t bufferLen, uint16_t *addrResponseLen, uint16_t ss58prefix, scheme_type_e address_scheme);
 
 zxerr_t crypto_fillAddress_standalone(uint8_t *params,
                                       uint8_t paramsSize,
