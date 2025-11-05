@@ -39,9 +39,8 @@ void handle_check_address(check_address_parameters_t *params) {
         return;
     }
 
-    zxerr_t err = crypto_fillAddress_standalone(params->address_parameters + 2,
-                                                params->address_parameters_length - 2, buffer, sizeof(buffer),
-                                                &replyLen, DOT_SS58_PREFIX);
+    zxerr_t err = crypto_fillAddress_standalone(params->address_parameters + 2, params->address_parameters_length - 2,
+                                                buffer, sizeof(buffer), &replyLen, DOT_SS58_PREFIX);
     if (err != zxerr_ok || replyLen <= PK_LEN_25519) {
         MEMZERO(buffer, sizeof(buffer));
         return;

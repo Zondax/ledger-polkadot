@@ -17,11 +17,11 @@
 
 #include <app_mode.h>
 #include <hexutils.h>
-#include <nlohmann/json.hpp>
 
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <sstream>
 #include <string>
 
@@ -119,9 +119,10 @@ vector<TestcaseGeneric_t> GetJsonTestCasesGeneric(const string &dir) {
                     for (const auto &s : entry["output_expert"]) {
                         outputs_expert.push_back(s.get<string>());
                     }
-                    answer.push_back(TestcaseGeneric_t{filenameShort, entry["index"].get<uint64_t>(), entry["name"].get<string>(),
-                                                       entry["blob"].get<string>(), entry["metadata"].get<string>(),
-                                                       entry["digest"].get<string>(), outputs, outputs_expert});
+                    answer.push_back(TestcaseGeneric_t{filenameShort, entry["index"].get<uint64_t>(),
+                                                       entry["name"].get<string>(), entry["blob"].get<string>(),
+                                                       entry["metadata"].get<string>(), entry["digest"].get<string>(),
+                                                       outputs, outputs_expert});
                 }
             } catch (const json::exception &e) {
                 cerr << "Failed to parse JSON: " << e.what() << endl;
