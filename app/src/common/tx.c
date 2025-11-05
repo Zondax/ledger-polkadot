@@ -32,11 +32,8 @@
 
 extern uint16_t blobLen;
 
-#if defined(TARGET_NANOX) || defined(TARGET_NANOS2) || defined(TARGET_STAX) || defined(TARGET_FLEX)
+#if defined(LEDGER_SPECIFIC)
 #define RAM_BUFFER_SIZE   16384  // 16 KiB
-#define FLASH_BUFFER_SIZE 16384  // 16 KiB
-#elif defined(TARGET_NANOS)
-#define RAM_BUFFER_SIZE   0
 #define FLASH_BUFFER_SIZE 16384  // 16 KiB
 #endif
 
@@ -48,7 +45,7 @@ typedef struct {
     uint8_t buffer[FLASH_BUFFER_SIZE];
 } storage_t;
 
-#if defined(TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2) || defined(TARGET_STAX) || defined(TARGET_FLEX)
+#if defined(LEDGER_SPECIFIC)
 storage_t NV_CONST N_appdata_impl __attribute__((aligned(64)));
 #define N_appdata (*(NV_VOLATILE storage_t *)PIC(&N_appdata_impl))
 #endif
@@ -56,7 +53,7 @@ storage_t NV_CONST N_appdata_impl __attribute__((aligned(64)));
 static parser_tx_t tx_obj;
 
 void tx_initialize() {
-    buffering_init(ram_buffer, sizeof(ram_buffer), (uint8_t *)N_appdata.buffer, sizeof(N_appdata.buffer));
+    buffering_init(ram_buffer, sizeof(ram_buffer), (uint8_t *)N_appdata.buffer, sizeof(((storage_t *)0)->buffer));
 }
 
 void tx_reset() {
