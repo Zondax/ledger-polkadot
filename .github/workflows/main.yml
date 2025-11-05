@@ -18,12 +18,12 @@ jobs:
       has-nanos: false
       node-version: '22'
 
-  build_package_nanosp:
+  build_migration_package_nanosp:
     needs: ledger-build
     runs-on: ${{ github.repository_owner == 'zondax' && 'zondax-runners' || 'ubuntu-latest' }}
     container:
       image: zondax/ledger-app-builder:latest
-      options: --user ${{ needs.configure.outputs.uid_gid }}
+      options: --user root
       env:
         BOLOS_SDK: /opt/nanosplus-secure-sdk
     steps:
@@ -55,12 +55,12 @@ jobs:
           draft: false
           prerelease: false
 
-  build_package_stax:
+  build_migration_package_stax:
     needs: ledger-build
     runs-on: ${{ github.repository_owner == 'zondax' && 'zondax-runners' || 'ubuntu-latest' }}
     container:
       image: zondax/ledger-app-builder:latest
-      options: --user ${{ needs.configure.outputs.uid_gid }}
+      options: --user root
       env:
         BOLOS_SDK: /opt/stax-secure-sdk
     steps:
@@ -90,12 +90,12 @@ jobs:
           draft: false
           prerelease: false
 
-  build_package_flex:
+  build_migration_package_flex:
     needs: ledger-build
     runs-on: ${{ github.repository_owner == 'zondax' && 'zondax-runners' || 'ubuntu-latest' }}
     container:
       image: zondax/ledger-app-builder:latest
-      options: --user ${{ needs.configure.outputs.uid_gid }}
+      options: --user root
       env:
         BOLOS_SDK: /opt/flex-secure-sdk
     steps:
@@ -126,12 +126,12 @@ jobs:
           draft: false
           prerelease: false
 
-  build_package_apex_p:
+  build_migration_package_apex_p:
     needs: ledger-build
     runs-on: ${{ github.repository_owner == 'zondax' && 'zondax-runners' || 'ubuntu-latest' }}
     container:
       image: zondax/ledger-app-builder:latest
-      options: --user ${{ needs.configure.outputs.uid_gid }}
+      options: --user root
       env:
         BOLOS_SDK: /opt/apex-secure-sdk
     steps:
