@@ -17,16 +17,18 @@
 
 #include <app_mode.h>
 #include <hexutils.h>
-#include <json/json.h>
 
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <sstream>
 #include <string>
 
 #include "gmock/gmock.h"
 #include "parser.h"
+
+using json = nlohmann::json;
 
 #define MAX_KEY_LEN 39U
 #define MAX_VAL_LEN 39U
@@ -100,30 +102,30 @@ vector<TestcaseGeneric_t> GetJsonTestCasesGeneric(const string &dir) {
         replace(filenameShort.begin(), filenameShort.end(), '-', '_');
         replace(filenameShort.begin(), filenameShort.end(), '.', '_');
         if (inFile.is_open()) {
-            const Json::CharReaderBuilder builder;
-            Json::Value entries;
-            JSONCPP_STRING errs;
+            try {
+                json entries;
+                inFile >> entries;
 
-            if (Json::parseFromStream(builder, inFile, &entries, &errs)) {
                 cout << "Number of testcases: " << entries.size() << endl;
                 // TestcaseGeneric_t chainTests;
                 auto tests = TestcaseGeneric_t();
                 for (const auto &entry : entries) {
                     auto outputs = vector<string>();
                     for (const auto &s : entry["output"]) {
-                        outputs.push_back(s.asString());
+                        outputs.push_back(s.get<string>());
                     }
 
                     auto outputs_expert = vector<string>();
                     for (const auto &s : entry["output_expert"]) {
-                        outputs_expert.push_back(s.asString());
+                        outputs_expert.push_back(s.get<string>());
                     }
-                    answer.push_back(TestcaseGeneric_t{filenameShort, entry["index"].asUInt64(), entry["name"].asString(),
-                                                       entry["blob"].asString(), entry["metadata"].asString(),
-                                                       entry["digest"].asString(), outputs, outputs_expert});
+                    answer.push_back(TestcaseGeneric_t{filenameShort, entry["index"].get<uint64_t>(),
+                                                       entry["name"].get<string>(), entry["blob"].get<string>(),
+                                                       entry["metadata"].get<string>(), entry["digest"].get<string>(),
+                                                       outputs, outputs_expert});
                 }
-            } else {
-                cerr << "Failed to parse JSON: " << errs << endl;
+            } catch (const json::exception &e) {
+                cerr << "Failed to parse JSON: " << e.what() << endl;
             }
             inFile.close();
         }

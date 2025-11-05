@@ -49,7 +49,7 @@ zxerr_t bytesAmountToStringBalance(uint8_t *amount, uint8_t amount_len, char *ou
     return zxerr_ok;
 }
 
-zxerr_t readU32BE(uint8_t *input, uint32_t *output) {
+zxerr_t readU32BE(const uint8_t *input, uint32_t *output) {
     if (input == NULL || output == NULL) {
         return zxerr_no_data;
     }
@@ -61,7 +61,7 @@ zxerr_t readU32BE(uint8_t *input, uint32_t *output) {
     return zxerr_ok;
 }
 
-zxerr_t readU64BE(uint8_t *input, uint64_t *output) {
+zxerr_t readU64BE(const uint8_t *input, uint64_t *output) {
     if (input == NULL || output == NULL) {
         return zxerr_no_data;
     }

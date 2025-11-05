@@ -15,7 +15,6 @@ const MIG_PATH_ST = resolve('../app/output/migration_stax.elf')
 const MIG_PATH_FL = resolve('../app/output/migration_flex.elf')
 const MIG_PATH_AP = resolve('../app/output/migration_apex_p.elf')
 
-
 export const models: IDeviceModel[] = [
   { name: 'nanox', prefix: 'X', path: APP_PATH_X },
   { name: 'nanosp', prefix: 'SP', path: APP_PATH_SP },
