@@ -17,9 +17,7 @@ This project contains the Polkadot Generic app (<https://polkadot.network/>) for
 It provides support for both parachains and relay chains. This app aims to deliver a **unified solution for the entire Polkadot ecosystem**, ensuring top security standards.
 
 **All calls from any Polkadot SDK** chain, including nested ones, will be supported. However, while all methods will function in a nested call, the transaction may be rejected if there is insufficient RAM. 
-This situation might arise with the Ledger Nano S, which provides limited memory in comparison to the Ledger Nano S Plus and the Ledger Nano X.
-
-This application also supports the recent Ledger stax device. 
+This situation might arise with the Ledger Nano S, which provides limited memory in comparison to the Ledger Nano S+, Nano X, Flex, Stax, and Apex P.
 
 If you were using one of the parachains applications (see the list below), you’ll have to migrate your funds to the Polkadot derivation path. This will enable you to manage your coins directly from the new Polkadot application.
 

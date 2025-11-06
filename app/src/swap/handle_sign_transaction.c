@@ -128,8 +128,6 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     if (strncmp(valid_tx_pallet, tmpKey, strlen(valid_tx_pallet) + 1) != 0 ||
         (strncmp(valid_tx_call_1, tmpValue, strlen(valid_tx_call_1) + 1) != 0 &&
          strncmp(valid_tx_call_2, tmpValue, strlen(valid_tx_call_2) + 1) != 0)) {
-        ZEMU_LOGF(200, "Wrong swap tx method (%s %s, should be : %s %s).\n", tmpKey, tmpValue, valid_tx_pallet,
-                  valid_tx_call);
         return parser_swap_tx_wrong_method;
     }
 

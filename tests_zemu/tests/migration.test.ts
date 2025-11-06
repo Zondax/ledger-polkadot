@@ -19,6 +19,7 @@ import Zemu, { ButtonKind, ClickNavigation, TouchNavigation, isTouchDevice } fro
 import { ASTAR_PATH, defaultOptions, DOT_SS58_PREFIX, migrationModels, PATH } from './common'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
 import { IButton, SwipeDirection } from '@zondax/zemu/dist/types'
+import { getTouchElement } from '@zondax/zemu/dist/buttons'
 
 const polkadot_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
 const astar_pk = 'cf557b2d2bebf3e14f932fec31d2b3ea776b63eede6658e282c9ab3f27d1287b'
@@ -30,9 +31,6 @@ describe('Migration', function () {
     const sim = new Zemu(m.path)
     try {
       let migrationStartText = 'review'
-      if (m.name === 'nanos') {
-        migrationStartText = 'Review'
-      }
 
       await sim.start({
         ...defaultOptions,
@@ -44,16 +42,9 @@ describe('Migration', function () {
 
       let nav = undefined
       if (isTouchDevice(m.name)) {
-        const okButton: IButton = {
-          x: 200,
-          y: 550,
-          delay: 0.25,
-          direction: SwipeDirection.NoSwipe,
-        }
+        const confirmButton: IButton = getTouchElement(m.name, ButtonKind.ConfirmYesButton)
         nav = new TouchNavigation(m.name, [ButtonKind.SwipeContinueButton, ButtonKind.ConfirmYesButton])
-        nav.schedule[1].button = okButton
-      } else if (m.name === 'nanos') {
-        nav = new ClickNavigation([5, 0])
+        nav.schedule[1].button = confirmButton
       } else {
         nav = new ClickNavigation([4, 0])
       }

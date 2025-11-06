@@ -87,11 +87,13 @@ APP_SOURCE_FILES += $(BLAKE3_DIR)/blake3.c $(BLAKE3_DIR)/blake3_dispatch.c $(BLA
 DEFAULT_NANOS_ICON = nanos_$(ICON_NAME).gif
 DEFAULT_NBGL_ICON_32 = stax_$(ICON_NAME).gif
 DEFAULT_NBGL_ICON_64 = stax_$(ICON_NAME)_64.gif
+DEFAULT_NBGL_ICON_48 = apex_p_$(ICON_NAME)_48.png
 
 copy_icon:
 	cp $(DEFAULT_NANOS_ICON) glyphs/icon_app.gif
 	cp $(DEFAULT_NBGL_ICON_32) glyphs/icon_stax_32.gif
 	cp $(DEFAULT_NBGL_ICON_64) glyphs/icon_stax_64.gif
+	cp $(DEFAULT_NBGL_ICON_48) glyphs/icon_apex_p_48.png
 
 all: copy_icon
 
@@ -101,6 +103,7 @@ ICON_NANOX = nanox_icon.gif
 ICON_NANOSP = nanox_icon.gif
 ICON_STAX = stax_icon.gif
 ICON_FLEX = flex_icon.gif
+ICON_APEX_P = apex_p_icon.png
 
 # Application allowed derivation curves.
 # Possibles curves are: secp256k1, secp256r1, ed25519 and bls12381g1

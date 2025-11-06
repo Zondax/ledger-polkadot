@@ -16,8 +16,8 @@
 cmake_minimum_required(VERSION 3.28)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.25.5.tar.gz"
-    SHA1 "a20151e4c0740ee7d0f9994476856d813cdead29"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.26.1.tar.gz"
+    SHA1 "e41ac7a18c49b35ebac99ff2b5244317b2638a65"
     LOCAL
 )
 
@@ -52,8 +52,14 @@ add_definitions(-DBLAKE3_NO_SSE2 -DBLAKE3_NO_SSE41 -DBLAKE3_NO_AVX2 -DBLAKE3_NO_
 hunter_add_package(fmt)
 find_package(fmt CONFIG REQUIRED)
 
-hunter_add_package(jsoncpp)
-find_package(jsoncpp CONFIG REQUIRED)
+# Use FetchContent to get nlohmann_json 3.12.0 since Hunter doesn't support this version
+include(FetchContent)
+FetchContent_Declare(
+    nlohmann_json
+    URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+    URL_HASH SHA256=42f6e95cad6ec532fd372391373363b62a14af6d771056dbfc86160e6dfff7aa
+)
+FetchContent_MakeAvailable(nlohmann_json)
 
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
@@ -190,14 +196,14 @@ else()
         target_include_directories(unittests PRIVATE
                 "${GTEST_ROOT}/include"
                 fmt::fmt
-                jsoncpp::jsoncpp
+                nlohmann_json::nlohmann_json
         )
 
         target_link_libraries(unittests PRIVATE
                 app_lib
                 GTest::gtest_main
                 fmt::fmt
-                JsonCpp::JsonCpp)
+                nlohmann_json::nlohmann_json)
 
         add_compile_definitions(TESTVECTORS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/")
         add_test(NAME unittests COMMAND unittests)

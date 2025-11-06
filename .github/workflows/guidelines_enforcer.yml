@@ -11,15 +11,14 @@ name: Ensure compliance with Ledger guidelines
 on:
   workflow_dispatch:
   push:
+  pull_request:
     branches:
       - main
       - develop
-      - master # for safety reasons
-      - dev  # for safety reasons
-  pull_request:
+      - master
+      - dev
 
 jobs:
   guidelines_enforcer:
-    if: github.event.repository.private == false
     name: Call Ledger guidelines_enforcer
     uses: LedgerHQ/ledger-app-workflows/.github/workflows/reusable_guidelines_enforcer.yml@v1
