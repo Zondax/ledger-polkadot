@@ -95,7 +95,7 @@ __attribute__((section(".boot"))) int main(int arg0) {
     os_boot();
 
     if (arg0 != 0) {
-#if HAVE_SWAP
+#ifdef HAVE_SWAP
         // The app has been started in library mode
         libargs_t *args = (libargs_t *)arg0;
         if (args->id != 0x100) {

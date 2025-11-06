@@ -93,9 +93,8 @@ parser_error_t transaction_parse(parser_tx_t *txObj) {
         // Extract Mode if present
         if (identifierLen == strlen(STR_METADATA_HASH) &&
             strncmp((const char *)tmpExtension.identifier.ptr, STR_METADATA_HASH, identifierLen) == 0) {
-
             // The following byte must be 0x01
-            if(*(blobBuf->buffer + blobBuf->offset)!= 0x01) {
+            if (*(blobBuf->buffer + blobBuf->offset) != 0x01) {
                 return parser_wrong_metadata_digest;
             }
 
@@ -107,7 +106,8 @@ parser_error_t transaction_parse(parser_tx_t *txObj) {
             CHECK_ERROR(parseTypeRef(blobBuf, metadataBuf, &tmpEntry, &tmpExtension.includedInExtrinsic, &tmpPrintItem));
 
             // Check that Mode is enabled
-            if (tmpPrintItem.item.val.len != strlen(STR_MODE_ENABLED) || strncmp((const char *)tmpPrintItem.item.val.ptr, STR_MODE_ENABLED, tmpPrintItem.item.val.len) != 0) {
+            if (tmpPrintItem.item.val.len != strlen(STR_MODE_ENABLED) ||
+                strncmp((const char *)tmpPrintItem.item.val.ptr, STR_MODE_ENABLED, tmpPrintItem.item.val.len) != 0) {
                 return parser_wrong_metadata_digest;
             }
             blobBuf->offset = tmpBlobOffset;
