@@ -41,7 +41,7 @@ jobs:
           mv ./app/pkg/migration_s2.sh ./app/pkg/migration_nanos_plus.sh
       - name: Set tag
         id: nanosp
-        run: echo "tag_name=$(./app/pkg/installer_nanos_plus.sh version)" >> $GITHUB_OUTPUT
+        run: echo "tag_name=$(./app/pkg/migration_nanos_plus.sh version)" >> $GITHUB_OUTPUT
       - name: Update Release
         if: ${{ github.ref == 'refs/heads/main' }}
         id: update_release_nanosp_migration
@@ -76,7 +76,7 @@ jobs:
           PRODUCTION_BUILD=0 COIN=DOT_MIGRATION make
       - name: Set tag
         id: stax
-        run: echo "tag_name=$(./app/pkg/installer_stax.sh version)" >> $GITHUB_OUTPUT
+        run: echo "tag_name=$(./app/pkg/migration_stax.sh version)" >> $GITHUB_OUTPUT
       - name: Update Release
         if: ${{ github.ref == 'refs/heads/main' }}
         id: update_release_stax_migration
@@ -112,7 +112,7 @@ jobs:
           PRODUCTION_BUILD=0 COIN=DOT_MIGRATION make
       - name: Set tag
         id: flex
-        run: echo "tag_name=$(./app/pkg/installer_flex.sh version)" >> $GITHUB_OUTPUT
+        run: echo "tag_name=$(./app/pkg/migration_flex.sh version)" >> $GITHUB_OUTPUT
       - name: Update Release
         if: ${{ github.ref == 'refs/heads/main' }}
         id: update_release_flex_migration
@@ -147,8 +147,8 @@ jobs:
         run: |
           PRODUCTION_BUILD=0 COIN=DOT_MIGRATION make
       - name: Set tag
-        id: flex
-        run: echo "tag_name=$(./app/pkg/installer_apex_p.sh version)" >> $GITHUB_OUTPUT
+        id: apex_p
+        run: echo "tag_name=$(./app/pkg/migration_apex_p.sh version)" >> $GITHUB_OUTPUT
       - name: Update Release
         if: ${{ github.ref == 'refs/heads/main' }}
         id: update_release_apex_migration
@@ -157,7 +157,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
-            ./app/pkg/migration_flex.sh
-          tag_name: ${{ steps.flex.outputs.tag_name }}
+            ./app/pkg/migration_apex_p.sh
+          tag_name: ${{ steps.apex_p.outputs.tag_name }}
           draft: false
           prerelease: false
