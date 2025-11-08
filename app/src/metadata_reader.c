@@ -29,8 +29,13 @@
 #include "zxmacros.h"
 
 #if defined(LEDGER_SPECIFIC)
+#include "os_io_legacy.h"
+#endif
+
+#if defined(LEDGER_SPECIFIC)
 #define STACK_SHIFT   20
 #define MINIMUM_STACK 400
+#define HEARBEAT_CALL 1000
 #else
 static uint16_t recursionDepthCounter = 0;
 #define MAX_RECURSION_DEPTH 50
@@ -43,12 +48,21 @@ static uint16_t recursionDepthCounter = 0;
  */
 parser_error_t checkStack() {
 #if defined(LEDGER_SPECIFIC)
+    static uint16_t heartbeatCounter = 0;
+
     // NOLINTNEXTLINE(readability-identifier-length): here `p` is fine
     void *p = NULL;
     const uint32_t availableStack = (uint32_t)((void *)&p) + STACK_SHIFT - (uint32_t)&app_stack_canary;
     ZEMU_LOGF(50, "Available stack: %d\n", availableStack)
     if (availableStack <= MINIMUM_STACK) {
         return parser_running_out_of_stack;
+    }
+
+    // Call io_seproxyhal_io_heartbeat every 100 invocations
+    heartbeatCounter++;
+    if (heartbeatCounter >= HEARBEAT_CALL) {
+        io_seproxyhal_io_heartbeat();
+        heartbeatCounter = 0;
     }
 #else
     if (recursionDepthCounter >= MAX_RECURSION_DEPTH) {
