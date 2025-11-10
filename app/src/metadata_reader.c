@@ -29,10 +29,6 @@
 #include "zxmacros.h"
 
 #if defined(LEDGER_SPECIFIC)
-#include "os_io_legacy.h"
-#endif
-
-#if defined(LEDGER_SPECIFIC)
 #define STACK_SHIFT   20
 #define MINIMUM_STACK 400
 #define HEARBEAT_CALL 1000
