@@ -17,7 +17,7 @@
 import Zemu from '@zondax/zemu'
 import axios from 'axios'
 import { PolkadotGenericApp } from '@zondax/ledger-substrate'
-import { defaultOptions, DOT_SS58_PREFIX, PATH, TEST_TRANSACTIONS, models, TEST_TRANSACTIONS_FAIL } from './common'
+import { defaultOptions, DOT_SS58_PREFIX, PATH, TEST_TRANSACTIONS, models, TEST_TRANSACTIONS_FAIL, TEST_ISSUES } from './common'
 
 // @ts-expect-error missing typings
 import ed25519 from 'ed25519-supercop'
@@ -189,6 +189,43 @@ describe.each(TEST_TRANSACTIONS_FAIL)('Transactions - FAIL', function (data) {
 
       expect(errorFound).toBeDefined()
       console.log(errorFound)
+    } finally {
+      await sim.close()
+    }
+  })
+})
+
+describe.each(TEST_ISSUES)('Transactions - issues', function (data) {
+  test.concurrent.each(models)(`Test: ${data.name}`, async function (m) {
+    const sim = new Zemu(m.path)
+    try {
+      await sim.start({ ...defaultOptions, model: m.name })
+      const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
+
+      const blob = Buffer.from(data.blob.replace('<rootHash>', data.rootHash), 'hex')
+      const metadata = Buffer.from(data.metadata, 'hex')
+
+      const { pubKey } = await app.getAddressEd25519(PATH, DOT_SS58_PREFIX)
+
+      // do not wait here.. we need to navigate
+      const signatureRequest = app.signWithMetadataEd25519(PATH, blob, metadata)
+      // Wait until we are not in the main menu
+      await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
+
+      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-${data.name}`)
+
+      const signatureResponse = await signatureRequest
+      console.log(signatureResponse.signature.toString('hex'))
+
+      // Now verify the signature
+      let prehash = blob
+      if (blob.length > 256) {
+        const context = blake2bInit(32)
+        blake2bUpdate(context, blob)
+        prehash = Buffer.from(blake2bFinal(context))
+      }
+      const valid = ed25519.verify(signatureResponse.signature.subarray(1), prehash, pubKey)
+      expect(valid).toEqual(true)
     } finally {
       await sim.close()
     }
