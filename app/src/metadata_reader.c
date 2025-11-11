@@ -54,7 +54,7 @@ parser_error_t checkStack() {
         return parser_running_out_of_stack;
     }
 
-    // Call io_seproxyhal_io_heartbeat every 100 invocations
+    // Call io_seproxyhal_io_heartbeat every HEARBEAT_CALL invocations
     heartbeatCounter++;
     if (heartbeatCounter >= HEARBEAT_CALL) {
         io_seproxyhal_io_heartbeat();
