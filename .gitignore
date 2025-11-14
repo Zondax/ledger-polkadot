@@ -78,3 +78,15 @@ fuzz-*.log
 /scan-build
 
 .DS_Store
+
+# Additional fuzzing artifacts
+fuzz/corpora/
+fuzz/build/
+fuzz/coverage/
+fuzz/logs/
+fuzz-*.log
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
