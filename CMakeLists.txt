@@ -141,6 +141,7 @@ if(ENABLE_FUZZING) # Fuzz Targets
     add_fuzz_target(metadata_parser_composite ${CMAKE_CURRENT_SOURCE_DIR}/fuzz/metadata_parser_composite.cpp app_lib)
     add_fuzz_target(metadata_parser_sequence ${CMAKE_CURRENT_SOURCE_DIR}/fuzz/metadata_parser_sequence.cpp app_lib)
     add_fuzz_target(metadata_parser_array ${CMAKE_CURRENT_SOURCE_DIR}/fuzz/metadata_parser_array.cpp app_lib)
+    add_fuzz_target(metadata_parser_tuple ${CMAKE_CURRENT_SOURCE_DIR}/fuzz/metadata_parser_tuple.cpp app_lib)
     add_fuzz_target(metadata_parser_primitives ${CMAKE_CURRENT_SOURCE_DIR}/fuzz/metadata_parser_primitives.cpp app_lib)
     add_fuzz_target(metadata_parser_variant ${CMAKE_CURRENT_SOURCE_DIR}/fuzz/metadata_parser_variant.cpp app_lib)
     

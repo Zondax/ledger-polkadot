@@ -1,10 +1,24 @@
 #include "blake3_impl.h"
 #include <string.h>
 
+// Disable UndefinedBehaviorSanitizer for BLAKE3 cryptographic operations
+// Unsigned integer overflow is intentional (modular arithmetic)
+#if defined(__has_attribute)
+#if __has_attribute(no_sanitize)
+#define NO_SANITIZE_UNSIGNED __attribute__((no_sanitize("unsigned-integer-overflow", "unsigned-shift-base")))
+#else
+#define NO_SANITIZE_UNSIGNED
+#endif
+#else
+#define NO_SANITIZE_UNSIGNED
+#endif
+
+NO_SANITIZE_UNSIGNED
 INLINE uint32_t rotr32(uint32_t w, uint32_t c) {
   return (w >> c) | (w << (32 - c));
 }
 
+NO_SANITIZE_UNSIGNED
 INLINE void g(uint32_t *state, size_t a, size_t b, size_t c, size_t d,
               uint32_t x, uint32_t y) {
   state[a] = state[a] + state[b] + x;
@@ -17,6 +31,7 @@ INLINE void g(uint32_t *state, size_t a, size_t b, size_t c, size_t d,
   state[b] = rotr32(state[b] ^ state[c], 7);
 }
 
+NO_SANITIZE_UNSIGNED
 INLINE void round_fn(uint32_t state[16], const uint32_t *msg, size_t round) {
   // Select the message schedule based on the round.
   const uint8_t *schedule = MSG_SCHEDULE[round];
@@ -34,6 +49,7 @@ INLINE void round_fn(uint32_t state[16], const uint32_t *msg, size_t round) {
   g(state, 3, 4, 9, 14, msg[schedule[14]], msg[schedule[15]]);
 }
 
+NO_SANITIZE_UNSIGNED
 INLINE void compress_pre(uint32_t state[16], const uint32_t cv[8],
                          const uint8_t block[BLAKE3_BLOCK_LEN],
                          uint8_t block_len, uint64_t counter, uint8_t flags) {
@@ -81,6 +97,7 @@ INLINE void compress_pre(uint32_t state[16], const uint32_t cv[8],
   round_fn(state, &block_words[0], 6);
 }
 
+NO_SANITIZE_UNSIGNED
 void blake3_compress_in_place_portable(uint32_t cv[8],
                                        const uint8_t block[BLAKE3_BLOCK_LEN],
                                        uint8_t block_len, uint64_t counter,
@@ -97,6 +114,7 @@ void blake3_compress_in_place_portable(uint32_t cv[8],
   cv[7] = state[7] ^ state[15];
 }
 
+NO_SANITIZE_UNSIGNED
 void blake3_compress_xof_portable(const uint32_t cv[8],
                                   const uint8_t block[BLAKE3_BLOCK_LEN],
                                   uint8_t block_len, uint64_t counter,

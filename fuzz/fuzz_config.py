@@ -31,6 +31,7 @@ def get_fuzzer_configs():
         FuzzConfig(name="metadata_parser_primitives", max_len=17000),  # Tests metadata_parser_primitives functionality
         FuzzConfig(name="metadata_parser_sequence", max_len=17000),  # Tests metadata_parser_sequence functionality
         FuzzConfig(name="metadata_parser_variant", max_len=17000),  # Tests metadata_parser_variant functionality
+        FuzzConfig(name="metadata_parser_tuple", max_len=17000),  # Tests metadata_parser_variant functionality
         FuzzConfig(name="parser_parse", max_len=17000),  # Tests parser_parse functionality
         # Add more fuzzers here as needed
     ]
