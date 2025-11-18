@@ -23,16 +23,28 @@ You can get pre-releases in two ways (*THESE ARE UNVETTED DEVELOPMENT RELEASES*)
 - Install Docker CE
     - Instructions can be found here: https://docs.docker.com/install/
 
-- We typically use Ubuntu or MacOS. Install the following packages:
+- We typically use Ubuntu. Install the following packages:
    ```sh
    sudo apt update && apt-get -y install build-essential git wget cmake \
   libssl-dev libgmp-dev autoconf libtool
    ```
 
+  Or for MacOS, install the following:
+   ```sh
+    brew install python@3.11 cmake
+    echo 'export PATH="$PATH:/opt/homebrew/opt/python@3.11/libexec/bin"' >> .zprofile
+    source ~/.zshrc
+   ```
+
 - Install [poetry](https://python-poetry.org/docs/#installing-with-the-official-installer). This simplifies python environments
 
     ```sh
-    https://python-poetry.org/docs/#installing-with-the-official-installer
+    curl -sSL https://install.python-poetry.org | python3 -
+    ```
+
+    After installing Poetry, restart your shell or run:
+    ```sh
+    source ~/.bashrc  # or ~/.zshrc on MacOS
     ```
 
 - Install [volta](https://docs.volta.sh/guide/getting-started)
@@ -47,6 +59,7 @@ You can get pre-releases in two ways (*THESE ARE UNVETTED DEVELOPMENT RELEASES*)
     ```
 
 - You will need python 3 and then run
+    - `poetry shell`
     - `make deps`
 
     - The current repository keeps track of Ledger's SDK but it is possible to override it by changing the git submodule.
