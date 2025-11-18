@@ -1,44 +1,38 @@
 #!/usr/bin/env python3
+"""
+Local convenience wrapper for running fuzzers
+"""
 
 import os
-import random
-import shlex
-import subprocess
+import sys
 
-MAX_SECONDS_PER_RUN = 600
-MUTATE_DEPTH = random.randint(1, 20)
+# Add the common fuzzing module to path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)
+common_fuzzing_path = os.path.join(project_root, "deps", "ledger-zxlib", "fuzzing")
 
-# (fuzzer name, max length, max time scale factor)
-CONFIGS = [
-    ('metadata_parser_primitives', 1000, 1),
-    ('metadata_parser_composite', 1000, 1),
-    ('metadata_parser_variant', 1000, 1),
-    ('metadata_parser_sequence', 1000, 1),
-    ('metadata_parser_array', 1000, 1),
-    ('parser_parse', 17000, 4),
-]
+sys.path.insert(0, common_fuzzing_path)
 
-for config in CONFIGS:
-    fuzzer, max_len, scale_factor = config
-    max_time = MAX_SECONDS_PER_RUN * scale_factor
-    print(f'######## {fuzzer} ########')
+try:
+    from run_fuzzers import main
+    from fuzz_config import MAX_SECONDS, FUZZER_JOBS
 
-    artifact_dir = os.path.join('fuzz', 'corpora', f'{fuzzer}-artifacts')
-    corpus_dir = os.path.join('fuzz', 'corpora', f'{fuzzer}')
-    fuzz_path = os.path.join(f'build/fuzz-{fuzzer}')
+    # Override default arguments to point to this project root
+    if "--fuzz-dir" not in sys.argv:
+        sys.argv.extend(["--fuzz-dir", current_dir])
 
-    os.makedirs(artifact_dir, exist_ok=True)
-    os.makedirs(corpus_dir, exist_ok=True)
+    # Override max-seconds if not provided
+    if "--max-seconds" not in sys.argv:
+        sys.argv.extend(["--max-seconds", str(MAX_SECONDS)])
 
-    env = os.environ.copy()
-    env['ASAN_OPTIONS'] = 'halt_on_error=1:print_stacktrace=1'
-    env['UBSAN_OPTIONS'] = 'halt_on_error=1:print_stacktrace=1'
+    # Override jobs if not provided
+    if "--jobs" not in sys.argv:
+        sys.argv.extend(["--jobs", str(FUZZER_JOBS)])
 
-    cmd = [fuzz_path, f'-max_total_time={max_time}',
-           f'-jobs=16'
-           f'-max_len={max_len}',
-           f'-mutate_depth={MUTATE_DEPTH}',
-           f'-artifact_prefix={artifact_dir}/',
-           corpus_dir]
-    print(' '.join(shlex.quote(c) for c in cmd))
-    subprocess.call(cmd, env=env)
+    # Run the common fuzzer
+    sys.exit(main())
+
+except ImportError as e:
+    print(f"Error: Cannot import common fuzzing module: {e}")
+    print("Make sure deps/ledger-zxlib/fuzzing/run_fuzzers.py exists")
+    sys.exit(1)

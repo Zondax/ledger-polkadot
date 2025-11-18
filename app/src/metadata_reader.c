@@ -335,9 +335,21 @@ static parser_error_t readMerkleIndices(parser_context_t *ctx, MerkleIndices_t *
     }
 
     CHECK_ERROR(readCompactU32(ctx, &indices->entries));
+
+    // Check for overflow when computing buffer length
+    // Each index is 4 bytes (u32), so total size = 4 * entries
+    // First check if multiplication would overflow uint32_t
+    if (indices->entries > UINT32_MAX / 4) {
+        return parser_value_out_of_range;
+    }
+    const uint32_t totalSize = 4 * indices->entries;
+    if (totalSize > UINT16_MAX) {
+        return parser_value_out_of_range;
+    }
+
     indices->indices.buffer = ctx->buffer + ctx->offset;
     indices->indices.offset = 0;
-    indices->indices.bufferLen = 4 * indices->entries;
+    indices->indices.bufferLen = (uint16_t)totalSize;
 
     uint32_t tmpIndex = 0;
     for (uint32_t idx = 0; idx < indices->entries; idx++) {
@@ -360,9 +372,20 @@ static parser_error_t readMerkleLemmas(parser_context_t *ctx, MerkleLemmas_t *le
 
     CHECK_ERROR(readCompactU32(ctx, &lemmas->entries));
 
+    // Check for overflow when computing buffer length
+    // Each lemma is 32 bytes, so total size = 32 * entries
+    // First check if multiplication would overflow uint32_t
+    if (lemmas->entries > UINT32_MAX / 32) {
+        return parser_value_out_of_range;
+    }
+    const uint32_t totalSize = 32 * lemmas->entries;
+    if (totalSize > UINT16_MAX) {
+        return parser_value_out_of_range;
+    }
+
     lemmas->lemmas.buffer = ctx->buffer + ctx->offset;
     lemmas->lemmas.offset = 0;
-    lemmas->lemmas.bufferLen = 32 * lemmas->entries;
+    lemmas->lemmas.bufferLen = (uint16_t)totalSize;
     for (uint32_t idx = 0; idx < lemmas->entries; idx++) {
         CTX_CHECK_AND_ADVANCE(ctx, 32);  // lemmas are [u8;32]
     }
