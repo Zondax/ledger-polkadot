@@ -7,12 +7,12 @@
     "start": "ts-node index.ts"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-node-hid": "^6.28.6",
-    "@polkadot/api": "^11.2.1",
-    "@polkadot/util": "^12.6.2",
-    "@zondax/ledger-substrate": "^0.44.2",
-    "axios": "^1.7.2",
+    "@ledgerhq/hw-transport-node-hid": "^6.29.14",
+    "@polkadot/api": "^16.5.2",
+    "@polkadot/util": "^13.5.8",
+    "@zondax/ledger-substrate": "^1.1.2",
+    "axios": "^1.13.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.9.3"
   }
 }
