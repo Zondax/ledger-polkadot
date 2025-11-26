@@ -62,6 +62,7 @@ typedef struct {
     uint16_t base58prefix;  ///< Base58 prefix
     uint8_t decimals;       ///< Number of decimals
     Bytes_t unit;           ///< Unit of measurement
+    Bytes_t palletName;     ///< Current pallet name (for context-aware formatting)
 } PrintItem_t;
 
 /**
