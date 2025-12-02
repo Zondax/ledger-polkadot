@@ -26,18 +26,20 @@ extern "C" {
  * @brief Enumeration of possible UI encodings.
  */
 typedef enum {
-    EncNoEncoding = 0,  ///< No encoding
-    EncUnsigned,        ///< Unsigned integer encoding
-    EncSigned,          ///< Signed integer encoding
-    EncBool,            ///< Boolean encoding
-    EncCompact,         ///< Compact encoding
-    EncString,          ///< String encoding
-    EncHexString,       ///< Hexadecimal string encoding
-    EncAddress,         ///< Address encoding
-    EncBalance,         ///< Balance encoding
-    EncCompactBalance,  ///< Compact balance encoding
-    EncVote,            ///< Vote encoding
-    EncEmptyVec,        ///< Empty vector encoding
+    EncNoEncoding = 0,     ///< No encoding
+    EncUnsigned,           ///< Unsigned integer encoding
+    EncSigned,             ///< Signed integer encoding
+    EncBool,               ///< Boolean encoding
+    EncCompact,            ///< Compact encoding
+    EncString,             ///< String encoding
+    EncHexString,          ///< Hexadecimal string encoding
+    EncAddress,            ///< Address encoding
+    EncBalance,            ///< Balance encoding
+    EncCompactBalance,     ///< Compact balance encoding
+    EncVote,               ///< Vote encoding
+    EncEmptyVec,           ///< Empty vector encoding
+    EncRawBalance,         ///< Raw balance encoding (no decimal formatting)
+    EncCompactRawBalance,  ///< Compact raw balance encoding (no decimal formatting)
 } UiEncoding_e;
 
 /**

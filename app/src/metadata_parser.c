@@ -82,21 +82,28 @@ static parser_error_t checkBalanceEncoding(Field_t *field, PrintItem_t *printIte
         return parser_ok;
     }
 
-    // Skip balance formatting for pallets that handle non-native tokens
+    // Check if we should skip balance formatting for pallets that handle non-native tokens
     // These tokens have their own decimals/symbols stored on-chain
-    if (shouldSkipBalanceFormatting(printItem)) {
-        return parser_ok;
-    }
+    const bool skipFormatting = shouldSkipBalanceFormatting(printItem);
 
     // If the typeName matches, and it's an uint/compact integer ==> parse as balance
     // At least typeName len needs to be 7
     for (size_t i = 0; i < sizeof(balanceTypes) / sizeof(PIC(balanceTypes[0])); i++) {
         if (field->typeName.bytes.len == strlen(PIC(balanceTypes[i])) &&
             strncmp((char *)field->typeName.bytes.ptr, PIC(balanceTypes[i]), field->typeName.bytes.len) == 0) {
-            if (printItem->item.valEnc == EncCompact) {
-                printItem->item.valEnc = EncCompactBalance;
-            } else if (printItem->item.valEnc == EncUnsigned) {
-                printItem->item.valEnc = EncBalance;
+            if (skipFormatting) {
+                // Mark as raw balance so the UI shows "[raw]" indicator
+                if (printItem->item.valEnc == EncCompact) {
+                    printItem->item.valEnc = EncCompactRawBalance;
+                } else if (printItem->item.valEnc == EncUnsigned) {
+                    printItem->item.valEnc = EncRawBalance;
+                }
+            } else {
+                if (printItem->item.valEnc == EncCompact) {
+                    printItem->item.valEnc = EncCompactBalance;
+                } else if (printItem->item.valEnc == EncUnsigned) {
+                    printItem->item.valEnc = EncBalance;
+                }
             }
             break;
         }

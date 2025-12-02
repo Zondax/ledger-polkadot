@@ -15,7 +15,7 @@
       "3 | target : Id",
       "4 | target [1/2] : 1555jLYVYv27cLhT2baocs64SWKEedshsBkqBB",
       "4 | target [2/2] : hLzkrMJ7iJ",
-      "5 | amount : 1000000"
+      "5 | Raw amount : 1000000"
     ],
     "output_expert": [
       "0 | Chain : statemint",
@@ -24,7 +24,7 @@
       "3 | target : Id",
       "4 | target [1/2] : 1555jLYVYv27cLhT2baocs64SWKEedshsBkqBB",
       "4 | target [2/2] : hLzkrMJ7iJ",
-      "5 | amount : 1000000",
+      "5 | Raw amount : 1000000",
       "6 | Mortality : Mortal",
       "7 | Era Period : 32",
       "8 | Era Phase : 20",
