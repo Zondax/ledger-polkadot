@@ -7,3 +7,6 @@
 [submodule "deps/ledger-secure-sdk"]
 	path = deps/ledger-secure-sdk
 	url = https://github.com/LedgerHQ/ledger-secure-sdk
+[submodule "deps/BLAKE3"]
+	path = deps/BLAKE3
+	url = https://github.com/Zondax/BLAKE3
