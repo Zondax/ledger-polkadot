@@ -27,6 +27,41 @@
 #include "substrate_types.h"
 #include "zxmacros.h"
 
+// List of pallets that handle non-native tokens
+// These pallets have their own asset registries with custom decimals/symbols
+static const char *const rawBalancePallets[] = {
+    "Assets",  // pallet-assets: fungible tokens
+};
+
+static const size_t rawBalancePalletsLen = sizeof(rawBalancePallets) / sizeof(rawBalancePallets[0]);
+
+/**
+ * @brief Check if the current pallet should skip balance formatting.
+ *
+ * Some pallets like Assets handle tokens with their own decimals and symbols
+ * that are stored on-chain and not available in the transaction metadata.
+ * For these pallets, we should display raw values instead of applying
+ * the native token's formatting.
+ *
+ * @param printItem Pointer to the print item containing the pallet context.
+ * @return bool True if balance formatting should be skipped.
+ */
+static bool shouldSkipBalanceFormatting(const PrintItem_t *printItem) {
+    if (printItem == NULL || printItem->palletName.ptr == NULL || printItem->palletName.len == 0) {
+        return false;
+    }
+
+    for (size_t i = 0; i < rawBalancePalletsLen; i++) {
+        const char *pallet = PIC(rawBalancePallets[i]);
+        if (printItem->palletName.len == strlen(pallet) &&
+            strncmp((const char *)printItem->palletName.ptr, pallet, printItem->palletName.len) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /**
  * @brief Check and update the balance encoding for a given field.
  *
@@ -47,15 +82,28 @@ static parser_error_t checkBalanceEncoding(Field_t *field, PrintItem_t *printIte
         return parser_ok;
     }
 
+    // Check if we should skip balance formatting for pallets that handle non-native tokens
+    // These tokens have their own decimals/symbols stored on-chain
+    const bool skipFormatting = shouldSkipBalanceFormatting(printItem);
+
     // If the typeName matches, and it's an uint/compact integer ==> parse as balance
     // At least typeName len needs to be 7
     for (size_t i = 0; i < sizeof(balanceTypes) / sizeof(PIC(balanceTypes[0])); i++) {
         if (field->typeName.bytes.len == strlen(PIC(balanceTypes[i])) &&
             strncmp((char *)field->typeName.bytes.ptr, PIC(balanceTypes[i]), field->typeName.bytes.len) == 0) {
-            if (printItem->item.valEnc == EncCompact) {
-                printItem->item.valEnc = EncCompactBalance;
-            } else if (printItem->item.valEnc == EncUnsigned) {
-                printItem->item.valEnc = EncBalance;
+            if (skipFormatting) {
+                // Mark as raw balance so the UI shows "[raw]" indicator
+                if (printItem->item.valEnc == EncCompact) {
+                    printItem->item.valEnc = EncCompactRawBalance;
+                } else if (printItem->item.valEnc == EncUnsigned) {
+                    printItem->item.valEnc = EncRawBalance;
+                }
+            } else {
+                if (printItem->item.valEnc == EncCompact) {
+                    printItem->item.valEnc = EncCompactBalance;
+                } else if (printItem->item.valEnc == EncUnsigned) {
+                    printItem->item.valEnc = EncBalance;
+                }
             }
             break;
         }
@@ -279,6 +327,9 @@ static parser_error_t parseEnumerationVariantType(parser_context_t *blob,
          strncmp((const char *)tmpEntry->enumeration.name.ptr, SOME_ID_STR, tmpEntry->enumeration.name.len) == 0);
 
     if (isPalletEntry) {
+        // Store pallet name for context-aware formatting (e.g., skip balance formatting for Assets pallet)
+        printItem->palletName = tmpEntry->enumeration.name;
+
         // We'll add the count in next iteration, in method
         if (printItem->printing && printItem->target == printItem->itemCount + 1) {
             printItem->item.key = tmpEntry->enumeration.name;

@@ -1,41 +1,33 @@
 #!/usr/bin/env python3
+"""
+Local convenience wrapper for analyzing fuzzer crashes
+"""
 
 import os
-import random
-import shlex
-import subprocess
+import sys
 
-MAX_SECONDS_PER_RUN = 600
-MUTATE_DEPTH = random.randint(1, 20)
+# Add the common fuzzing module to path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)
+common_fuzzing_path = os.path.join(project_root, "deps", "ledger-zxlib", "fuzzing")
 
-# (fuzzer name, max length, max time scale factor)
-CONFIGS = [
-    ('parser_parse', 17000, 4),
-]
+sys.path.insert(0, common_fuzzing_path)
 
-for config in CONFIGS:
-    fuzzer, max_len, scale_factor = config
-    max_time = MAX_SECONDS_PER_RUN * scale_factor
-    print(f'######## {fuzzer} ########')
+try:
+    from analyze_crashes import main
 
-    artifact_dir = os.path.join('fuzz', 'corpora', f'{fuzzer}-artifacts')
-    corpus_dir = os.path.join('fuzz', 'corpora', f'{fuzzer}')
-    fuzz_path = os.path.join(f'build/bin/fuzz-{fuzzer}')
+    # Override default arguments to point to this project root
+    if "--fuzz-dir" not in sys.argv:
+        sys.argv.extend(["--fuzz-dir", current_dir])
+    
+    # Set a shorter timeout to avoid infinite loops during crash analysis
+    if "--timeout" not in sys.argv:
+        sys.argv.extend(["--timeout", "10"])
 
-    os.makedirs(artifact_dir, exist_ok=True)
-    os.makedirs(corpus_dir, exist_ok=True)
+    # Run the common crash analyzer
+    sys.exit(main())
 
-    env = os.environ.copy()
-    env['ASAN_OPTIONS'] = 'halt_on_error=1:print_stacktrace=1'
-    env['UBSAN_OPTIONS'] = 'halt_on_error=1:print_stacktrace=1'
-
-    crash_files = os.listdir(artifact_dir)
-    for c in crash_files:
-        c_full_path = os.path.join(artifact_dir, c)
-        cmd = [fuzz_path, f'{c_full_path}']
-        print(' '.join(shlex.quote(c) for c in cmd))
-        error_code = subprocess.call(cmd, env=env)
-        if error_code != 0:
-            exit(error_code)
-
-
+except ImportError as e:
+    print(f"Error: Cannot import common fuzzing module: {e}")
+    print("Make sure deps/ledger-zxlib/fuzzing/analyze_crashes.py exists")
+    sys.exit(1)

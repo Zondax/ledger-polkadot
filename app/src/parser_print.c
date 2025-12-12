@@ -275,6 +275,52 @@ static parser_error_t printHexStringItem(ui_field_t *uiFields, PrintItem_t *prin
 }
 
 /**
+ * @brief Prints a raw balance item (balance without decimal formatting).
+ *
+ * @param uiFields Pointer to the UI fields.
+ * @param printItem Pointer to the print item.
+ * @return parser_error_t Error code.
+ */
+static parser_error_t printRawBalanceItem(ui_field_t *uiFields, PrintItem_t *printItem) {
+    if (uiFields == NULL || printItem == NULL) {
+        return parser_error_dummy;
+    }
+
+    // Prepend "Raw " to key to indicate this is an unformatted balance
+    char tmpKey[64] = {0};
+    snprintf(tmpKey, sizeof(tmpKey), "Raw %s", uiFields->outKey);
+    snprintf(uiFields->outKey, uiFields->outKeyLen, "%s", tmpKey);
+
+    // Print as unsigned (reuse the unsigned printing logic without balance formatting)
+    CHECK_ERROR(printUnsignedItem(uiFields, printItem));
+
+    return parser_ok;
+}
+
+/**
+ * @brief Prints a compact raw balance item (compact balance without decimal formatting).
+ *
+ * @param uiFields Pointer to the UI fields.
+ * @param printItem Pointer to the print item.
+ * @return parser_error_t Error code.
+ */
+static parser_error_t printCompactRawBalanceItem(ui_field_t *uiFields, PrintItem_t *printItem) {
+    if (uiFields == NULL || printItem == NULL) {
+        return parser_error_dummy;
+    }
+
+    // Prepend "Raw " to key to indicate this is an unformatted balance
+    char tmpKey[64] = {0};
+    snprintf(tmpKey, sizeof(tmpKey), "Raw %s", uiFields->outKey);
+    snprintf(uiFields->outKey, uiFields->outKeyLen, "%s", tmpKey);
+
+    // Print as compact (reuse the compact printing logic without balance formatting)
+    CHECK_ERROR(printCompactItem(uiFields, printItem));
+
+    return parser_ok;
+}
+
+/**
  * @brief Prints an address item.
  *
  * @param uiFields Pointer to the UI fields.
@@ -381,6 +427,14 @@ parser_error_t printGenericItem(ui_field_t *uiFields, PrintItem_t *printItem) {
         case EncEmptyVec:
             pageString(uiFields->outVal, uiFields->outValLen, STR_EMPTY_VEC, uiFields->pageIdx, uiFields->pageCount);
             return parser_ok;
+
+        case EncRawBalance:
+            CHECK_ERROR(printRawBalanceItem(uiFields, printItem));
+            break;
+
+        case EncCompactRawBalance:
+            CHECK_ERROR(printCompactRawBalanceItem(uiFields, printItem));
+            break;
 
         case EncNoEncoding:
             return parser_error_dummy;
