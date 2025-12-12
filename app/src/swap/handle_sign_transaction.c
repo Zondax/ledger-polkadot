@@ -97,7 +97,6 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
     }
 
     // Check network.
-    const char *valid_network = "polkadot";
     char tmpKey[20] = {0};
     char tmpValue[65] = {0};
 
@@ -111,7 +110,9 @@ parser_error_t check_swap_conditions(parser_tx_t *txObj) {
                            .pageCount = &pageCount};
 
     CHECK_ERROR(parser_getItem(txObj, &uiFields));
-    if (strncmp(valid_network, tmpValue, strlen(valid_network) + 1) != 0) {
+
+    // Check if network is polkadot (Relay Chain) or statemint (Asset Hub Polkadot)
+    if (strncmp("polkadot", tmpValue, 9) != 0 && strncmp("statemint", tmpValue, 10) != 0) {
         ZEMU_LOGF(200, "Swap not enabled on %s network.\n", tmpValue);
         return parser_swap_tx_wrong_method;
     }
