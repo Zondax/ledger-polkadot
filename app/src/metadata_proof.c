@@ -243,6 +243,13 @@ parser_error_t getMetadataDigest(Metadata_t *metadata, uint8_t metadataDigest[BL
     // get rootHash of registry
     CHECK_ERROR(getHash(ROOT_IDX, &proof));
 
+    // Require the proof to fully consume the supplied registry, indices and lemmas.
+    if (proof.registry.registry.offset != proof.registry.registry.bufferLen ||
+        proof.indices.indices.offset != proof.indices.indices.bufferLen ||
+        proof.lemmas.lemmas.offset != proof.lemmas.lemmas.bufferLen) {
+        return parser_unexpected_unparsed_bytes;
+    }
+
     // get hash of descriptor
     uint8_t extrinsicMetadataHash[BLAKE3_OUT_LEN] = {0};
     CHECK_ERROR(zxblake3_hash(metadata->shortMetadata.extrinsic.ctx.buffer, metadata->shortMetadata.extrinsic.ctx.bufferLen,

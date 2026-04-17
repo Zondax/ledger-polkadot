@@ -46,7 +46,7 @@ zxerr_t addr_getItem(int8_t displayIdx,
             snprintf(outKey, outKeyLen, "Address");
             if (scheme == secp256k1) {
                 // Size to comply with array_to_hexstr size check plus the 0x prefix
-                char tmp[SECP256K1_ADDRESS_LEN * 2 + 3] = {0};
+                char tmp[(SECP256K1_ADDRESS_LEN * 2) + 3] = {0};
                 tmp[0] = '0';
                 tmp[1] = 'x';
                 array_to_hexstr(tmp + 2, sizeof(tmp) - 2, G_io_apdu_buffer + SECP256K1_PK_LEN, SECP256K1_ADDRESS_LEN);
@@ -55,10 +55,12 @@ zxerr_t addr_getItem(int8_t displayIdx,
                 pageString(outVal, outValLen, (char *)(G_io_apdu_buffer + PK_LEN_25519), pageIdx, pageCount);
             }
             return zxerr_ok;
-        case 1:
+        case 1: {
             snprintf(outKey, outKeyLen, "Public key");
-            pageStringHex(outVal, outValLen, (char *)G_io_apdu_buffer, PK_LEN_25519, pageIdx, pageCount);
+            const uint16_t pkLen = (scheme == secp256k1) ? SECP256K1_PK_LEN : PK_LEN_25519;
+            pageStringHex(outVal, outValLen, (char *)G_io_apdu_buffer, pkLen, pageIdx, pageCount);
             return zxerr_ok;
+        }
         case 2: {
             if (!app_mode_expert()) {
                 return zxerr_no_data;

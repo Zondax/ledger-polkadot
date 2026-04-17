@@ -38,6 +38,8 @@ static bool tx_initialized = false;
 uint16_t blobLen = 0;
 scheme_type_e scheme = ed25519;
 
+bool review_pending = false;
+
 static void extractHDPath(uint32_t rx, uint32_t offset) {
     tx_initialized = false;
 
@@ -75,11 +77,11 @@ __Z_INLINE bool process_chunk(__Z_UNUSED volatile uint32_t *tx, uint32_t rx) {
             extractHDPath(rx, OFFSET_DATA);
 
             // check if we have blobLen available
-            if ((rx - OFFSET_DATA) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT + sizeof(uint16_t)) {
+            if ((rx - OFFSET_DATA) < (sizeof(uint32_t) * HDPATH_LEN_DEFAULT) + sizeof(uint16_t)) {
                 THROW(APDU_CODE_WRONG_LENGTH);
             }
             // read blobLen, right after hdPath
-            memcpy(&blobLen, G_io_apdu_buffer + OFFSET_DATA + sizeof(uint32_t) * HDPATH_LEN_DEFAULT, sizeof(uint16_t));
+            memcpy(&blobLen, G_io_apdu_buffer + OFFSET_DATA + (sizeof(uint32_t) * HDPATH_LEN_DEFAULT), sizeof(uint16_t));
             tx_initialized = true;
             return false;
         case P1_ADD:
@@ -143,15 +145,18 @@ __Z_INLINE void handleGetAddr(volatile uint32_t *flags, volatile uint32_t *tx, u
 
     // Get address type from P2
     scheme = G_io_apdu_buffer[OFFSET_P2];
+    if (scheme != ed25519 && scheme != secp256k1) {
+        THROW(APDU_CODE_INVALIDP1P2);
+    }
 
     if (scheme == ed25519) {
         // check if we have ss58prefix available
-        if ((rx - OFFSET_DATA) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT + sizeof(uint16_t)) {
+        if ((rx - OFFSET_DATA) < (sizeof(uint32_t) * HDPATH_LEN_DEFAULT) + sizeof(uint16_t)) {
             THROW(APDU_CODE_WRONG_LENGTH);
         }
 
         // read ss58prefix, right after hdPath
-        memcpy(&ss58prefix, G_io_apdu_buffer + OFFSET_DATA + sizeof(uint32_t) * HDPATH_LEN_DEFAULT, sizeof(uint16_t));
+        memcpy(&ss58prefix, G_io_apdu_buffer + OFFSET_DATA + (sizeof(uint32_t) * HDPATH_LEN_DEFAULT), sizeof(uint16_t));
     } else {
         if ((rx - OFFSET_DATA) < sizeof(uint32_t) * HDPATH_LEN_DEFAULT) {
             THROW(APDU_CODE_WRONG_LENGTH);
@@ -169,6 +174,7 @@ __Z_INLINE void handleGetAddr(volatile uint32_t *flags, volatile uint32_t *tx, u
     }
     if (requireConfirmation) {
         view_review_init(addr_getItem, addr_getNumItems, app_reply_address);
+        set_review_pending(true);
         view_review_show(REVIEW_ADDRESS);
         *flags |= IO_ASYNCH_REPLY;
         return;
@@ -212,6 +218,7 @@ __Z_INLINE void handleSign(volatile uint32_t *flags, volatile uint32_t *tx, uint
     } else {
         view_review_init(tx_getItem, tx_getNumItems, app_sign_secp256k1);
     }
+    set_review_pending(true);
     view_review_show(REVIEW_TXN);
     *flags |= IO_ASYNCH_REPLY;
 }
@@ -240,6 +247,7 @@ __Z_INLINE void handleSignRaw(volatile uint32_t *flags, volatile uint32_t *tx, u
     } else {
         view_review_init(tx_raw_getItem, tx_raw_getNumItems, app_sign_secp256k1);
     }
+    set_review_pending(true);
     view_review_show(REVIEW_MSG);
     *flags |= IO_ASYNCH_REPLY;
 }
@@ -255,6 +263,10 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
 
             if (rx < APDU_MIN_LENGTH) {
                 THROW(APDU_CODE_WRONG_LENGTH);
+            }
+
+            if (is_review_pending()) {
+                THROW(APDU_CODE_COMMAND_NOT_ALLOWED);
             }
 
             switch (G_io_apdu_buffer[OFFSET_INS]) {
@@ -285,6 +297,7 @@ void handleApdu(volatile uint32_t *flags, volatile uint32_t *tx, uint32_t rx) {
             }
         }
         CATCH(EXCEPTION_IO_RESET) {
+            set_review_pending(false);
             THROW(EXCEPTION_IO_RESET);
         }
         // NOLINTNEXTLINE(readability-identifier-length): `e` is descriptive

@@ -139,6 +139,7 @@ zxerr_t crypto_sign_ed25519(uint8_t *signature, uint16_t signatureMaxlen, const 
 catch_cx_error:
     MEMZERO(&cx_privateKey, sizeof(cx_privateKey));
     MEMZERO(privateKeyData, SK_LEN_25519);
+    MEMZERO(messageDigest, BLAKE2B_DIGEST_SIZE);
 
     if (error != zxerr_ok) {
         MEMZERO(signature, signatureMaxlen);
@@ -155,12 +156,12 @@ zxerr_t crypto_sign_secp256k1(
 
     // Hash the message
     uint8_t messageDigest[CX_KECCAK_256_SIZE] = {0};
+    uint8_t intermediate_digest[BLAKE2B_DIGEST_SIZE] = {0};
     zxerr_t error = zxerr_unknown;
 
     // When the payload is bigger than MAX_SIGN_SIZE, it needs to be hashed with blake2b_256 before hashing with keccak_256.
     // https://github.com/paritytech/polkadot-sdk/blob/1a512570552119a49a8ecb2abfb7021954c4422d/substrate/primitives/runtime/src/generic/unchecked_extrinsic.rs#L567
     if (messageLen > MAX_SIGN_SIZE) {
-        uint8_t intermediate_digest[BLAKE2B_DIGEST_SIZE];
         // Hash it with blake2b
         cx_blake2b_t ctx;
         CATCH_CXERROR(cx_blake2b_init_no_throw(&ctx, 256));
@@ -201,6 +202,8 @@ zxerr_t crypto_sign_secp256k1(
 catch_cx_error:
     MEMZERO(&cx_privateKey, sizeof(cx_privateKey));
     MEMZERO(privateKeyData, sizeof(privateKeyData));
+    MEMZERO(messageDigest, sizeof(messageDigest));
+    MEMZERO(intermediate_digest, sizeof(intermediate_digest));
 
     if (error != zxerr_ok) {
         MEMZERO(output, outputLen);
@@ -251,24 +254,36 @@ static zxerr_t crypto_fillAddress_secp256k1(uint8_t *buffer,
     // Clear the buffer
     MEMZERO(buffer, bufferLen);
 
-    // Extract the uncompressed public key
     uint8_t uncompressedPubkey[SECP256K1_PK_LEN_UNCOMPRESSED] = {0};
-    CHECK_ZXERR(crypto_extractPublicKey_secp256k1(uncompressedPubkey, sizeof(uncompressedPubkey), hdPath_to_use))
+    uint8_t hashed1_pk[CX_KECCAK_256_SIZE] = {0};
+    char *const addr = (char *)(buffer + SECP256K1_PK_LEN);
+    zxerr_t err = zxerr_unknown;
+
+    // Extract the uncompressed public key
+    if (crypto_extractPublicKey_secp256k1(uncompressedPubkey, sizeof(uncompressedPubkey), hdPath_to_use) != zxerr_ok) {
+        goto fill_secp256k1_cleanup;
+    }
 
     // Compress the public key
-    CHECK_ZXERR(compressPubkey(uncompressedPubkey, sizeof(uncompressedPubkey), buffer, bufferLen))
-    char *addr = (char *)(buffer + SECP256K1_PK_LEN);
+    if (compressPubkey(uncompressedPubkey, sizeof(uncompressedPubkey), buffer, bufferLen) != zxerr_ok) {
+        goto fill_secp256k1_cleanup;
+    }
 
     // Encode the address - skip the first byte (0x04) that indicates the uncompressed format
-    uint8_t hashed1_pk[CX_KECCAK_256_SIZE] = {0};
-    CHECK_CX_OK(cx_keccak_256_hash(&uncompressedPubkey[1], sizeof(uncompressedPubkey) - 1, hashed1_pk));
+    if (cx_keccak_256_hash(&uncompressedPubkey[1], sizeof(uncompressedPubkey) - 1, hashed1_pk) != CX_OK) {
+        goto fill_secp256k1_cleanup;
+    }
 
     // Take the last 20 bytes of the Keccak hash as the address
     MEMCPY(addr, hashed1_pk + CX_KECCAK_256_SIZE - SECP256K1_ADDRESS_LEN, SECP256K1_ADDRESS_LEN);
 
     *addrResponseLen = SECP256K1_PK_LEN + SECP256K1_ADDRESS_LEN;
+    err = zxerr_ok;
 
-    return zxerr_ok;
+fill_secp256k1_cleanup:
+    MEMZERO(uncompressedPubkey, sizeof(uncompressedPubkey));
+    MEMZERO(hashed1_pk, sizeof(hashed1_pk));
+    return err;
 }
 
 // fill a crypto address using the global hdpath

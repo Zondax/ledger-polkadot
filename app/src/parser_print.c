@@ -39,7 +39,7 @@ static parser_error_t printUnsignedItem(ui_field_t *uiFields, PrintItem_t *print
     if (printItem->item.val.len <= 8) {
         uint64_t value = 0;
         for (uint8_t i = 0; i < (uint8_t)printItem->item.val.len; i++) {
-            value += (uint64_t) * (printItem->item.val.ptr + i) << (8 * i);
+            value += (uint64_t)*(printItem->item.val.ptr + i) << (8 * i);
         }
         const char *printReturn = uint64_to_str(bufUi, sizeof(bufUi), value);
         if (printReturn != NULL) {
