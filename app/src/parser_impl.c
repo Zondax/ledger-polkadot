@@ -80,21 +80,19 @@ parser_error_t transaction_parse(parser_tx_t *txObj) {
         const uint16_t initialOffset = blobBuf->offset;
 
         bool hasTip = false;
-        const uint64_t identifierLen = tmpExtension.identifier.len;
         // we have custom logic for Era
-        if (identifierLen == strlen(STR_ERA) &&
-            strncmp((const char *)tmpExtension.identifier.ptr, STR_ERA, identifierLen) == 0) {
+        if (identifier_matches(&tmpExtension.identifier, STR_ERA)) {
             pd_ExtrinsicEra_t tmpEra = {0};
             CHECK_ERROR(_readEra(blobBuf, &tmpEra));
-            printItem.itemCount += tmpEra.isMortal ? 3 : 1;
+            CHECK_ERROR(addItemCount(&printItem, tmpEra.isMortal ? 3 : 1));
             continue;
         }
 
         // Extract Mode if present
-        if (identifierLen == strlen(STR_METADATA_HASH) &&
-            strncmp((const char *)tmpExtension.identifier.ptr, STR_METADATA_HASH, identifierLen) == 0) {
+        if (identifier_matches(&tmpExtension.identifier, STR_METADATA_HASH)) {
+            CTX_CHECK_AVAIL(blobBuf, 1)
             // The following byte must be 0x01
-            if (*(blobBuf->buffer + blobBuf->offset) != 0x01) {
+            if (blobBuf->buffer[blobBuf->offset] != 0x01) {
                 return parser_wrong_metadata_digest;
             }
 
@@ -117,8 +115,8 @@ parser_error_t transaction_parse(parser_tx_t *txObj) {
         // first case is tip without assetid, second case is tip with assetid
         // both cases start with Compact<u128> as tip
         // we want to show it also if expert mode is disabled if tip != 0
-        if (strncmp((const char *)tmpExtension.identifier.ptr, STR_TIP, tmpExtension.identifier.len) == 0 ||
-            strncmp((const char *)tmpExtension.identifier.ptr, STR_TIP_WITH_ASSETID, tmpExtension.identifier.len) == 0) {
+        if (identifier_matches(&tmpExtension.identifier, STR_TIP) ||
+            identifier_matches(&tmpExtension.identifier, STR_TIP_WITH_ASSETID)) {
             CHECK_ERROR(getType(metadataBuf, &tmpEntry, tmpExtension.includedInExtrinsic.byId));
             if (tmpEntry.kind == Composite) {
                 Field_t entry = {0};
@@ -145,10 +143,8 @@ parser_error_t transaction_parse(parser_tx_t *txObj) {
     for (uint32_t i = 0; i < metadata->shortMetadata.extrinsic.signedExtensions.len; i++) {
         CHECK_ERROR(readSignedExtension(&metadata->shortMetadata.extrinsic.signedExtensions.ctx, &tmpExtension));
 
-        const uint64_t identifierLen = tmpExtension.identifier.len;
         // Extract CheckMetadataHash if present
-        if (identifierLen == strlen(STR_METADATA_HASH) &&
-            strncmp((const char *)tmpExtension.identifier.ptr, STR_METADATA_HASH, identifierLen) == 0) {
+        if (identifier_matches(&tmpExtension.identifier, STR_METADATA_HASH)) {
             PrintItem_t tmpPrintItem = {0};
             tmpPrintItem.printing = true;
             tmpPrintItem.target = 1;

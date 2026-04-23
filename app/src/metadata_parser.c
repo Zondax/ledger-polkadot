@@ -132,7 +132,7 @@ parser_error_t parseTypeRef(parser_context_t *blob,
     }
 
     if (type->index != Void && type->index != ById) {
-        printItem->itemCount++;
+        CHECK_ERROR(addItemCount(printItem, 1));
     }
 
     if (printItem->printing && printItem->target == printItem->itemCount) {
@@ -336,7 +336,7 @@ static parser_error_t parseEnumerationVariantType(parser_context_t *blob,
         }
     } else {
         if (!isOption && !isSome) {
-            printItem->itemCount++;
+            CHECK_ERROR(addItemCount(printItem, 1));
             if (printItem->printing && printItem->target == printItem->itemCount) {
                 printItem->item.val = tmpEntry->enumeration.name;
                 printItem->item.valEnc = EncString;
@@ -398,7 +398,7 @@ static parser_error_t parseSequenceType(parser_context_t *blob,
     CHECK_ERROR(readCompactU32(blob, &sequenceLen));
     TypeRef_t sequenceType = tmpEntry->sequence;
     if (sequenceLen == 0) {
-        printItem->itemCount++;
+        CHECK_ERROR(addItemCount(printItem, 1));
         if (printItem->printing && printItem->target == printItem->itemCount) {
             printItem->item.valEnc = EncEmptyVec;
         }
@@ -406,7 +406,7 @@ static parser_error_t parseSequenceType(parser_context_t *blob,
     }
 
     if (sequenceType.index == U8) {
-        printItem->itemCount++;
+        CHECK_ERROR(addItemCount(printItem, 1));
         if (printItem->printing && printItem->target == printItem->itemCount) {
             printItem->item.valEnc = EncHexString;
             printItem->item.val.ptr = blob->buffer + blob->offset;
@@ -454,7 +454,7 @@ static parser_error_t parseArrayType(parser_context_t *blob,
     const uint32_t arrLen = tmpEntry->array.len;
     const TypeRef_t arrType = tmpEntry->array.typeParam;
     if (arrType.index == U8) {
-        printItem->itemCount++;
+        CHECK_ERROR(addItemCount(printItem, 1));
         if (printItem->printing && printItem->target == printItem->itemCount) {
             printItem->item.valEnc = EncHexString;
             printItem->item.val.ptr = blob->buffer + blob->offset;
@@ -523,13 +523,8 @@ static parser_error_t parseTupleType(parser_context_t *blob,
  * @param printItem Pointer to the print item to update.
  * @return parser_error_t Error code indicating the result of the operation.
  */
-parser_error_t parseMetadataEntry(
+static parser_error_t parseMetadataEntryInner(
     parser_context_t *blob, parser_context_t *metadata, uint32_t typeId, RegistryEntry_t *tmpEntry, PrintItem_t *printItem) {
-    if (metadata == NULL || blob == NULL || tmpEntry == NULL || printItem == NULL) {
-        return parser_no_data;
-    }
-
-    CHECK_ERROR(checkStack());
     MEMZERO(tmpEntry, sizeof(*tmpEntry));
 
     // Get the requested entry corresponding to typeId
@@ -553,11 +548,23 @@ parser_error_t parseMetadataEntry(
             break;
         case BitSequenceType:
             // TODO: implement BitSequence
-            return parser_value_out_of_range;
-
         default:
             return parser_value_out_of_range;
     }
 
-    return freeStack();
+    return parser_ok;
+}
+
+parser_error_t parseMetadataEntry(
+    parser_context_t *blob, parser_context_t *metadata, uint32_t typeId, RegistryEntry_t *tmpEntry, PrintItem_t *printItem) {
+    if (metadata == NULL || blob == NULL || tmpEntry == NULL || printItem == NULL) {
+        return parser_no_data;
+    }
+
+    // Acquire a recursion slot. On failure no slot was taken, so don't free.
+    CHECK_ERROR(checkStack());
+
+    const parser_error_t err = parseMetadataEntryInner(blob, metadata, typeId, tmpEntry, printItem);
+    (void)freeStack();
+    return err;
 }

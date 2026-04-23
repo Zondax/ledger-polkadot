@@ -14,17 +14,20 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
+#include "coin.h"
 #include "crypto.h"
 #include "lib_standard_app/swap_lib_calls.h"
 #include "swap.h"
+#include "swap_utils.h"
 #include "zxformat.h"
 
-#define DOT_SS58_PREFIX  0
-#define ED25519_ADD_KIND 0
+#define DOT_SS58_PREFIX        0
+#define ED25519_ADD_KIND       0
+#define ADDRESS_PARAMS_MIN_LEN (1u + 1u + sizeof(uint32_t) * HDPATH_LEN_DEFAULT)
 
 void handle_check_address(check_address_parameters_t *params) {
     if (params == NULL || params->address_to_check == NULL || params->address_parameters == NULL ||
-        params->address_parameters_length < 2) {
+        params->address_parameters_length < ADDRESS_PARAMS_MIN_LEN) {
         return;
     }
     params->result = 0;
@@ -34,10 +37,29 @@ void handle_check_address(check_address_parameters_t *params) {
     // address parameters have the following structure
     // address kind (1 byte) | path length (1 byte) | bip44 path (4 * pathLength bytes)
     // address kind won't be used anymore since Generic Polkadot app only works for ED25519
-    const uint8_t add_kind = *params->address_parameters;
+    const uint8_t add_kind = params->address_parameters[0];
     if (add_kind != ED25519_ADD_KIND) {
         return;
     }
+
+    const uint8_t path_length = params->address_parameters[1];
+    if (path_length != HDPATH_LEN_DEFAULT) {
+        return;
+    }
+
+#ifndef MIGRATION_APP
+    // Mirror the SIGN-side whitelist from apdu_handler.c:extractHDPath so that
+    // check_address agrees with what SIGN_TRANSACTION will later accept.
+    uint32_t path_head[2] = {0};
+    for (uint32_t i = 0; i < 2; i++) {
+        if (readU32BE(params->address_parameters + 2 + (i * sizeof(uint32_t)), &path_head[i]) != zxerr_ok) {
+            return;
+        }
+    }
+    if (path_head[0] != HDPATH_0_DEFAULT || path_head[1] != HDPATH_1_DEFAULT) {
+        return;
+    }
+#endif
 
     zxerr_t err = crypto_fillAddress_standalone(params->address_parameters + 2, params->address_parameters_length - 2,
                                                 buffer, sizeof(buffer), &replyLen, DOT_SS58_PREFIX);

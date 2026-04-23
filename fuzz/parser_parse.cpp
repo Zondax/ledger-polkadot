@@ -46,7 +46,6 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
                            .pageCount = NULL};
 
     for (uint8_t i = 0; i < num_items; i += 1) {
-        uint8_t page_idx = 0;
         uint8_t page_count = 1;
 
         uiFields.displayIdx = i;
@@ -58,12 +57,12 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
             (void)fprintf(stderr, "%s = %s\n", PARSER_KEY, PARSER_VALUE);
 
             if (rc != parser_ok) {
-                (void)fprintf(stderr, "error getting item %u at page index %u: %s\n", (unsigned)i, (unsigned)page_idx,
-                              parser_getErrorDescription(rc));
+                (void)fprintf(stderr, "error getting item %u at page index %u: %s\n", (unsigned)i,
+                              (unsigned)uiFields.pageIdx, parser_getErrorDescription(rc));
                 assert(false);
             }
 
-            page_idx += 1;
+            uiFields.pageIdx++;
         }
     }
 

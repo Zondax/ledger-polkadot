@@ -167,7 +167,7 @@ parser_error_t parser_getItem(parser_tx_t *txObj, ui_field_t *uiFields) {
             CHECK_ERROR(readSignedExtension(signedExtensions, &tmpExtension));
 
             // we have custom logic for Era
-            if (strncmp((const char *)tmpExtension.identifier.ptr, STR_ERA, tmpExtension.identifier.len) == 0) {
+            if (identifier_matches(&tmpExtension.identifier, STR_ERA)) {
                 pd_ExtrinsicEra_t tmpEra = {0};
                 CHECK_ERROR(_readEra(blobBuf, &tmpEra));
 
@@ -191,17 +191,16 @@ parser_error_t parser_getItem(parser_tx_t *txObj, ui_field_t *uiFields) {
                     }
                 }
 
-                printItem.itemCount += tmpEra.isMortal ? 3 : 1;
+                CHECK_ERROR(addItemCount(&printItem, tmpEra.isMortal ? 3 : 1));
                 continue;
             }
 
             CHECK_ERROR(parseTypeRef(blobBuf, metadataBuf, &tmpEntry, &tmpExtension.includedInExtrinsic, &printItem));
 
             if (printItem.itemCount == printItem.target && printItem.item.valEnc != EncNoEncoding) {
-                if (strncmp((const char *)tmpExtension.identifier.ptr, STR_TIP, tmpExtension.identifier.len) == 0) {
+                if (identifier_matches(&tmpExtension.identifier, STR_TIP)) {
                     snprintf(uiFields->outKey, uiFields->outKeyLen, "Tip");
-                } else if (strncmp((const char *)tmpExtension.identifier.ptr, STR_TIP_WITH_ASSETID,
-                                   tmpExtension.identifier.len) == 0) {
+                } else if (identifier_matches(&tmpExtension.identifier, STR_TIP_WITH_ASSETID)) {
                     snprintf(uiFields->outKey, uiFields->outKeyLen, "Tip");
 
                     if (printItem.item.valEnc == EncBalance) {
@@ -231,7 +230,7 @@ parser_error_t parser_getItem(parser_tx_t *txObj, ui_field_t *uiFields) {
 
             if (printItem.itemCount == printItem.target && printItem.item.valEnc != EncNoEncoding) {
                 // we have custom title in case of era and tip
-                if (strncmp((const char *)tmpExtension.identifier.ptr, STR_ERA, tmpExtension.identifier.len) == 0) {
+                if (identifier_matches(&tmpExtension.identifier, STR_ERA)) {
                     snprintf(uiFields->outKey, uiFields->outKeyLen, "Mortality Block");
                 } else {
                     snprintf(uiFields->outKey, uiFields->outKeyLen, "%.*s", (int)tmpExtension.identifier.len,
@@ -247,8 +246,8 @@ parser_error_t parser_getItem(parser_tx_t *txObj, ui_field_t *uiFields) {
             printItem.printing = false;
             CHECK_ERROR(readSignedExtension(signedExtensions, &tmpExtension));
 
-            if (strncmp((const char *)tmpExtension.identifier.ptr, STR_TIP, tmpExtension.identifier.len) == 0 ||
-                strncmp((const char *)tmpExtension.identifier.ptr, STR_TIP_WITH_ASSETID, tmpExtension.identifier.len) == 0) {
+            if (identifier_matches(&tmpExtension.identifier, STR_TIP) ||
+                identifier_matches(&tmpExtension.identifier, STR_TIP_WITH_ASSETID)) {
                 printItem.printing = true;
                 printItem.itemCount = 0;
             }
@@ -258,8 +257,7 @@ parser_error_t parser_getItem(parser_tx_t *txObj, ui_field_t *uiFields) {
             if (printItem.printing && printItem.itemCount == printItem.target && printItem.item.valEnc != EncNoEncoding) {
                 snprintf(uiFields->outKey, uiFields->outKeyLen, "Tip");
 
-                if (strncmp((const char *)tmpExtension.identifier.ptr, STR_TIP_WITH_ASSETID, tmpExtension.identifier.len) ==
-                    0) {
+                if (identifier_matches(&tmpExtension.identifier, STR_TIP_WITH_ASSETID)) {
                     if (printItem.item.valEnc == EncBalance) {
                         printItem.item.valEnc = EncUnsigned;
                     } else if (printItem.item.valEnc == EncCompactBalance) {

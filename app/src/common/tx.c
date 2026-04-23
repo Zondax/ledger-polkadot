@@ -84,6 +84,11 @@ const char *tx_raw_parse() {
         return parser_getErrorDescription(parser_no_data);
     }
 
+    // Check the actual buffered payload
+    if (dataLen != blobLen) {
+        return parser_getErrorDescription(parser_unexpected_value);
+    }
+
     // we need to have, at least, prefix and postfix
     if (dataLen < prefixLen + postfixLen) {
         return parser_getErrorDescription(parser_unexpected_value);
