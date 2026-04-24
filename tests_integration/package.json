@@ -11,7 +11,7 @@
     "@polkadot/api": "^16.5.2",
     "@polkadot/util": "^13.5.8",
     "@zondax/ledger-substrate": "^1.1.2",
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
