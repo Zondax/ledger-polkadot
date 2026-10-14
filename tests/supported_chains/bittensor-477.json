@@ -97,7 +97,7 @@
       "2 | hotkey [2/2] : cNoHGKutQY",
       "3 | netuid : 1",
       "4 | amount_staked : TAO 1.5",
-      "5 | limit_price : TAO 0.05",
+      "5 | limit_price : 50000000",
       "6 | allow_partial : False"
     ],
     "output_expert": [
@@ -107,7 +107,7 @@
       "2 | hotkey [2/2] : cNoHGKutQY",
       "3 | netuid : 1",
       "4 | amount_staked : TAO 1.5",
-      "5 | limit_price : TAO 0.05",
+      "5 | limit_price : 50000000",
       "6 | allow_partial : False",
       "7 | Mortality : Mortal",
       "8 | Era Period : 64",

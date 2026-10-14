@@ -82,6 +82,18 @@ static parser_error_t checkBalanceEncoding(Field_t *field, PrintItem_t *printIte
         return parser_ok;
     }
 
+    // Subtensor reuses TaoBalance for both native amounts and prices. A
+    // limit_price may be TAO per alpha or a relative exchange ratio; neither
+    // has the native token's unit alone. Keep these fields as raw integers.
+    const char *const taoBalanceType = "TaoBalance";
+    const char *const limitPriceField = "limit_price";
+    if (field->name.hasBytes && field->name.bytes.len == strlen(PIC(limitPriceField)) &&
+        strncmp((const char *)field->name.bytes.ptr, PIC(limitPriceField), field->name.bytes.len) == 0 &&
+        field->typeName.bytes.len == strlen(PIC(taoBalanceType)) &&
+        strncmp((const char *)field->typeName.bytes.ptr, PIC(taoBalanceType), field->typeName.bytes.len) == 0) {
+        return parser_ok;
+    }
+
     // Check if we should skip balance formatting for pallets that handle non-native tokens
     // These tokens have their own decimals/symbols stored on-chain
     const bool skipFormatting = shouldSkipBalanceFormatting(printItem);
