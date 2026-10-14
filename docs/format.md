@@ -50,6 +50,7 @@ DepositBalance
 ExtendedBalance
 PalletBalanceOf<T>
 T::Balance
+TaoBalance
 ```
 
 By using the appropriate type, the application ensures that amounts are displayed correctly, enhancing the overall usability.

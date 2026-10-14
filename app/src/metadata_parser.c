@@ -72,7 +72,7 @@ static bool shouldSkipBalanceFormatting(const PrintItem_t *printItem) {
 static parser_error_t checkBalanceEncoding(Field_t *field, PrintItem_t *printItem) {
     // Array of balance type strings
     const char *balanceTypes[] = {"Balance",         "BalanceOf<T>",       "BalanceOf<T, I>", "DepositBalance",
-                                  "ExtendedBalance", "PalletBalanceOf<T>", "T::Balance"};
+                                  "ExtendedBalance", "PalletBalanceOf<T>", "T::Balance",      "TaoBalance"};
 
     if (field == NULL) {
         return parser_error_dummy;
