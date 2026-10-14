@@ -50,7 +50,14 @@ DepositBalance
 ExtendedBalance
 PalletBalanceOf<T>
 T::Balance
+TaoBalance
 ```
+
+Fields named `limit_price` with type name `TaoBalance` are displayed as raw
+integers. Subtensor uses that type for prices per alpha and for relative
+exchange ratios, so applying the native token's symbol would assert an
+incorrect unit. Other `TaoBalance` amount fields use the native token's decimals
+and symbol.
 
 By using the appropriate type, the application ensures that amounts are displayed correctly, enhancing the overall usability.
 
