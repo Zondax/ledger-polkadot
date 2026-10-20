@@ -21,7 +21,7 @@
 const unsigned char SS58_BLAKE_PREFIX[] = "SS58PRE";
 #define SS58_BLAKE_PREFIX_LEN 7
 
-#if defined(LEDGER_SPECIFIC)
+#ifdef LEDGER_SPECIFIC
 #include "cx.h"
 
 cx_err_t ss58hash(const unsigned char *in, unsigned int inLen, unsigned char *out, unsigned int outLen) {

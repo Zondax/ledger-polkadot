@@ -14,7 +14,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_SWAP_SWAP_H
+#define APP_SWAP_SWAP_H
 
 #include "lib_standard_app/swap_lib_calls.h"
 #include "parser_common.h"
@@ -43,3 +44,5 @@ void handle_check_address(check_address_parameters_t *params);
 void handle_get_printable_amount(get_printable_amount_parameters_t *params);
 bool copy_transaction_parameters(create_transaction_parameters_t *sign_transaction_params);
 void __attribute__((noreturn)) finalize_exchange_sign_transaction(bool is_success);
+
+#endif  // APP_SWAP_SWAP_H

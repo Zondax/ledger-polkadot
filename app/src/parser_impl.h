@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_PARSER_IMPL_H
+#define APP_PARSER_IMPL_H
 
 #include <string.h>
 
@@ -209,3 +210,5 @@ parser_error_t _readEra(parser_context_t *ctx, pd_ExtrinsicEra_t *era);
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_PARSER_IMPL_H

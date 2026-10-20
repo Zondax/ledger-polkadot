@@ -14,7 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 
-#pragma once
+#ifndef APP_COMMON_PARSER_H
+#define APP_COMMON_PARSER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,3 +42,5 @@ parser_error_t parser_getItem(parser_tx_t *txObj, ui_field_t *uiFields);
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_COMMON_PARSER_H

@@ -14,7 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 
-#pragma once
+#ifndef APP_ADDR_H
+#define APP_ADDR_H
 
 #include <stdint.h>
 
@@ -49,3 +50,5 @@ zxerr_t addr_getItem(int8_t displayIdx,
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_ADDR_H

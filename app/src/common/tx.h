@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_COMMON_TX_H
+#define APP_COMMON_TX_H
 
 #include "coin.h"
 #include "os.h"
@@ -67,3 +68,5 @@ zxerr_t tx_raw_getItem(int8_t displayIdx,
                        uint16_t outValLen,
                        uint8_t pageIdx,
                        uint8_t *pageCount);
+
+#endif  // APP_COMMON_TX_H

@@ -14,7 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 
-#pragma once
+#ifndef APP_METADATA_PARSER_H
+#define APP_METADATA_PARSER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -65,3 +66,5 @@ parser_error_t parseTypeRef(parser_context_t *blob,
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_METADATA_PARSER_H

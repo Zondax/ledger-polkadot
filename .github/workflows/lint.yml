@@ -10,6 +10,13 @@ on:
       - master
       - dev
 
+# cpp-linter posts its findings as a PR thread comment (thread-comments: true in
+# _ledger_lint.yml). Without pull-requests: write that POST 403s and fails the job
+# even when the lint itself is clean.
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   ledger-lint:
     uses: Zondax/_workflows/.github/workflows/_ledger_lint.yml@v3

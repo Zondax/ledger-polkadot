@@ -14,7 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 
-#pragma once
+#ifndef APP_METADATA_PROOF_H
+#define APP_METADATA_PROOF_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -47,3 +48,5 @@ parser_error_t getMetadataDigest(Metadata_t *metadata, uint8_t metadataDigest[BL
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_METADATA_PROOF_H

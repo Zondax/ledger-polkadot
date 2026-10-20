@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_SUBSTRATE_TYPES_H
+#define APP_SUBSTRATE_TYPES_H
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -50,3 +51,5 @@ typedef struct {
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_SUBSTRATE_TYPES_H

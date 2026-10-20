@@ -23,7 +23,7 @@
 
 #define DOT_SS58_PREFIX        0
 #define ED25519_ADD_KIND       0
-#define ADDRESS_PARAMS_MIN_LEN (1u + 1u + sizeof(uint32_t) * HDPATH_LEN_DEFAULT)
+#define ADDRESS_PARAMS_MIN_LEN (1u + 1u + (sizeof(uint32_t) * HDPATH_LEN_DEFAULT))
 
 void handle_check_address(check_address_parameters_t *params) {
     if (params == NULL || params->address_to_check == NULL || params->address_parameters == NULL ||

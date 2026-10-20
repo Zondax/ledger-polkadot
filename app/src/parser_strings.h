@@ -14,7 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 
-#pragma once
+#ifndef APP_PARSER_STRINGS_H
+#define APP_PARSER_STRINGS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,3 +31,5 @@ static const char STR_MODE_ENABLED[] = "Enabled";
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_PARSER_STRINGS_H

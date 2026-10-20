@@ -14,7 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 
-#pragma once
+#ifndef APP_CRYPTO_H
+#define APP_CRYPTO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,3 +49,5 @@ zxerr_t crypto_sign_secp256k1(
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_CRYPTO_H

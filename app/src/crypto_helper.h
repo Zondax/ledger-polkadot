@@ -14,7 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 
-#pragma once
+#ifndef APP_CRYPTO_HELPER_H
+#define APP_CRYPTO_HELPER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,3 +37,5 @@ uint16_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len, uint16_t 
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_CRYPTO_HELPER_H

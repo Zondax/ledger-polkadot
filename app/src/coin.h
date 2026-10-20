@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_COIN_H
+#define APP_COIN_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,3 +58,5 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_COIN_H

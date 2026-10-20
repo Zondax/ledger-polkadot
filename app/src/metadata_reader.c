@@ -28,7 +28,7 @@
 #include "substrate_types.h"
 #include "zxmacros.h"
 
-#if defined(LEDGER_SPECIFIC)
+#ifdef LEDGER_SPECIFIC
 #define STACK_SHIFT   20
 #define MINIMUM_STACK 400
 #define HEARBEAT_CALL 1000
@@ -43,7 +43,7 @@ static uint16_t recursionDepthCounter = 0;
  * @return parser_error_t Returns parser_running_out_of_stack if stack space is insufficient, otherwise parser_ok.
  */
 parser_error_t checkStack() {
-#if defined(LEDGER_SPECIFIC)
+#ifdef LEDGER_SPECIFIC
     static uint16_t heartbeatCounter = 0;
 
     // NOLINTNEXTLINE(readability-identifier-length): here `p` is fine
@@ -75,7 +75,7 @@ parser_error_t checkStack() {
  * @return parser_error_t Always returns parser_ok.
  */
 parser_error_t freeStack() {
-#if !defined(LEDGER_SPECIFIC)
+#ifndef LEDGER_SPECIFIC
     if (recursionDepthCounter > 0) {
         recursionDepthCounter--;
     }

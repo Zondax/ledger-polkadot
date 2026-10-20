@@ -14,7 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 
-#pragma once
+#ifndef APP_METADATA_READER_H
+#define APP_METADATA_READER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,3 +44,5 @@ parser_error_t readTypeRef(parser_context_t *ctx, TypeRef_t *type);
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_METADATA_READER_H

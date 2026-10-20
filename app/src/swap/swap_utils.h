@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_SWAP_SWAP_UTILS_H
+#define APP_SWAP_SWAP_UTILS_H
 
 #include "stdbool.h"
 #include "stdint.h"
@@ -23,3 +24,5 @@
 zxerr_t bytesAmountToStringBalance(uint8_t *amount, uint8_t amount_len, char *out, uint8_t out_len);
 zxerr_t readU64BE(const uint8_t *input, uint64_t *output);
 zxerr_t readU32BE(const uint8_t *input, uint32_t *output);
+
+#endif  // APP_SWAP_SWAP_UTILS_H

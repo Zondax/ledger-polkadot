@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_ZXBLAKE3_H
+#define APP_ZXBLAKE3_H
 
 #include "blake3.h"
 #include "parser_common.h"
@@ -32,3 +33,5 @@ parser_error_t zxblake3_hash_finalize(uint8_t *out, uint16_t outLen);
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_ZXBLAKE3_H

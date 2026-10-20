@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_METADATA_TYPES_H
+#define APP_METADATA_TYPES_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -117,3 +118,5 @@ typedef struct {
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_METADATA_TYPES_H

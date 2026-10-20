@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_SCALE_HELPER_H
+#define APP_SCALE_HELPER_H
 
 #include <stdint.h>
 
@@ -32,3 +33,5 @@ parser_error_t readCompactU32(parser_context_t *ctx, uint32_t *value);
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_SCALE_HELPER_H

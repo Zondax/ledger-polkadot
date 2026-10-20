@@ -14,7 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 
-#pragma once
+#ifndef APP_PARSER_PRINT_H
+#define APP_PARSER_PRINT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,3 +29,5 @@ parser_error_t printGenericItem(ui_field_t *uiFields, PrintItem_t *printItem);
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // APP_PARSER_PRINT_H

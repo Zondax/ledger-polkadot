@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
-#pragma once
+#ifndef APP_COMMON_ACTIONS_H
+#define APP_COMMON_ACTIONS_H
 
 #include <os_io_seproxyhal.h>
 #include <stdbool.h>
@@ -29,14 +30,14 @@
 extern uint16_t action_addrResponseLen;
 extern uint16_t blobLen;
 
-extern bool review_pending;
+extern bool g_review_pending;
 
 __Z_INLINE void set_review_pending(bool val) {
-    review_pending = val;
+    g_review_pending = val;
 }
 
 __Z_INLINE bool is_review_pending(void) {
-    return review_pending;
+    return g_review_pending;
 }
 
 __Z_INLINE void app_sign_ed25519() {
@@ -99,3 +100,5 @@ __Z_INLINE void app_reply_address() {
     set_code(G_io_apdu_buffer, action_addrResponseLen, APDU_CODE_OK);
     io_exchange(CHANNEL_APDU | IO_RETURN_AFTER_TX, action_addrResponseLen + 2);
 }
+
+#endif  // APP_COMMON_ACTIONS_H
